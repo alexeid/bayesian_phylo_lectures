@@ -1,16 +1,14 @@
 {% assign lectureIdx = 0 %}
-{% for week in site.data.lectures %}
-{% assign weekIdx = forloop.index %}
-{% for lecturePrime in week.lectures %}
-{% assign lectureIdx = lectureIdx | plus:1 %}
-{% if lectureIdx == page.lecture_num %}
-{% assign lecture = lecturePrime %}
-{% assign lectureWeekNum = weekIdx %}
-{% endif %}
-{% endfor %}
-{% endfor %}
+{% for lecturePrime in site.data.lectures %}
+{% assign lecturePrimeNum = forloop.index %}
+{% assign pgurl = "/" | append: lecturePrime.folder | append: "/" %}
 
-{% assign finalWeekIdx = weekIdx %}
+{% if pgurl == page.url %}
+{% assign lecture = lecturePrime %}
+{% assign lectureNum = lecturePrimeNum %}
+{% endif %}
+
+{% endfor %}
 
 <!doctype html>
 <html>
@@ -58,7 +56,7 @@
                 <section class="titlepage center">
                     <div class="course">{{site.course}}</div>
 
-                    <div class="title">Lecture {{page.lecture_num}}: {{lecture.title}}</div>
+                    <div class="title">Lecture {{lectureNum}}: {{lecture.title}}</div>
                     <div id="print-button">
                         <a href="{{site.baseurl}}{{page.url}}?print-pdf" target="_new">Generate layout for printing</a>
                     </div>

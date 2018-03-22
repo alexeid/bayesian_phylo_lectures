@@ -25,19 +25,17 @@ layout: null
             <div class="row">
                 <div class="col-xs-12 col-md-8 col-md-offset-2">
 
-                    <h1>BIOINF 702 Lectures</h1>
+                    <h1>Bayesian phylogenetics lectures</h1>
 
-                    <p>This page contains links to a subset of the lectures delivered by Alexei Drummond and myself
-                    for the BIOINF 702 paper in Semester 1, 2017.</p>
-
+                    <p>This page contains links to a module of lectures on Bayesian phylogenetics
+                       prepared by Alexei Drummond and Tim Vaughan</p>
+                       
                     <ol>
                         {% assign lectureIdx = 0 %}
-                        {% for week in site.data.lectures %}
-                        {% assign weekNum = forloop.index %}
-                        {% for lecture in week.lectures %}
-                        {% assign lectureIdx = lectureIdx | plus:1 %}
+                        {% for lecture in site.data.lectures %}
+                        {% assign lectureNum = forloop.index %}
 
-                        {% assign lectureURL = "/lecture" | append: lectureIdx | append: "/" %}
+                        {% assign lectureURL = "/" |append: lecture.folder | append: "/" %}
 
                         {% assign found = false %}
                         {% for page in site.pages %}
@@ -48,7 +46,7 @@ layout: null
 
                         <li><b>
                         {% if found %}
-                        <a href="{{site.baseURL}}lecture{{lectureIdx}}">{{lecture.title}}</a>
+                        <a href="{{site.baseURL}}{{lectureURL}}">{{lecture.title}}</a>
                         {% else %}
                         {{lecture.title}}
                         {% endif %}
@@ -57,7 +55,6 @@ layout: null
                         ({{lecture.lecturer}}, {{lecture.date | date: "%-d %B %Y"}})
                         </li>
 
-                        {% endfor %}
                         {% endfor %}
                     </ol>
 
