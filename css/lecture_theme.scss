@@ -187,6 +187,6 @@ table.overview tr td {
     border: 0px;
 }
 
-table.overview tr:nth-child(6n), table.overview tr:nth-child(6n-1), table.overview tr:nth-child(6n-2) {
+table.overview tr:nth-child(2n) {
     background-color: lightgrey;
 }

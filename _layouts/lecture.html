@@ -77,39 +77,16 @@
 
                     <table class="overview">
 
-                        {% assign minWeek = lectureWeekNum | minus:1 %}
-                        {% assign maxWeek = minWeek | plus:3 %}
-                        {% if minWeek < 1 %}
-                        {% assign minWeek = 1 %}
-                        {% assign maxWeek = minWeek | plus:3 %}
-                        {% endif %}
-
-                        {% if maxWeek > finalWeekIdx %}
-                        {% assign maxWeek = finalWeekIdx %}
-                        {% assign minWeek = maxWeek | minus:2 %}
-                        {% endif %}
-
-                        {% for week in site.data.lectures %}
-                        {% assign weekNum = forloop.index %}
-
-                        {% if weekNum < minWeek or weekNum > maxWeek %}
-                        {% continue %}
-                        {% endif %}
-
-                        {% for lecturePrime in week.lectures %}
-                        <tr>
-                            {% if forloop.first %}
-                            <td rowspan="{{week.lectures | size}}">Week {{week.week}}</td>
-                            {% endif %}
-
+                        {% for lecturePrime in site.data.lectures %}
+                        {% assign lecturePrimeNum = forloop.index %}
+			<tr>
                             {% if lecturePrime == lecture %}
                             <td class="current">
                             {% else %}
                             <td>
                             {% endif %}
-                            {{lecturePrime.title}}</td>
+                            {{lecturePrimeNum}}. {{lecturePrime.title}}</td>
                         </tr>
-                        {% endfor %}
                         {% endfor %}
                     </table>
 
