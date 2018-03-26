@@ -22,6 +22,7 @@
 
         <link rel="stylesheet" href="{{site.baseurl}}/css/lecture_theme.css">
 
+
 		<!-- Theme used for syntax highlighting of code -->
 		<link rel="stylesheet" href="{{site.baseurl}}/js/reveal.js/lib/css/zenburn.css">
 
@@ -39,6 +40,10 @@
 
         <!-- Plotly -->
         <script src="{{site.baseurl}}/js/plotly-latest.min.js"></script>
+
+        <!-- Processing -->
+        <script src="{{site.baseurl}}/js/processing.min.js"></script>
+
 
         <!-- Include lecture-specific JS -->
         {% for file in site.static_files %}{% if file.path contains page.dir and file.extname == ".js"%}

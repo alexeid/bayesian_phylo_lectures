@@ -144,18 +144,25 @@ lecture_num: 7
         <ul class="spaced" style="width:80%">
             <li>CTMCs are the continuous-time generalization of Markov chains: state $X(t)$ is
             a function of a continuous time parameter.</li>
-            <li>Obey the Chapman-Kolmogorov equation:
-                $$p(x_1,t_1|x_0,t_0)=\sum_{x_{1/2}}p(x_1,t_1|x_{1/2},t_{1/2})p(x_{1/2},t_{1/2}|x_0,t_0)$$
-                where $p(x_1,t_1)\equiv P(X(t_1)=x_1)$ and $t_0&lt;t_{1/2}&lt;t_1$.
-            </li>
+            <li>Obey the <a href="https://en.wikipedia.org/wiki/Chapman–Kolmogorov_equation">Chapman-Kolmogorov equation</a>:
+                $$p(x_1,t_1|x_0,t_0)=\sum_{x_i}p(x_1,t_1|x_i,t_i)p(x_i,t_i|x_0,t_0)$$
+                where $p(x_1,t_1)\equiv P(X(t_1)=x_1)$ and $t_0&lt;t_i&lt;t_1$.
+            </li> Informally: you can find the probability of going from state $x_0$ to $x_1$ by averaging over all
+                 intermediate states $x_i$ at intermediate time $t_i$.
+        </ul>
+            
+	<ul class="spaced" style="width:80%">
+ 
             <li>Can be written in the following differential form:
                 \begin{align*}
-                \frac{d}{dt}p(x,t|x_0,t_0)&amp;=\sum_{x'\neq x}\left[p(x',t|x_0,t_0)Q_{xx'}-p(x,t|x_0,_0)Q_{x'x}\right]\\
+                \frac{d}{dt}p(x,t|x_0,t_0)&amp;=\sum_{x'\neq x}\left[p(x',t|x_0,t_0)Q_{x'x}-p(x,t|x_0,_0)Q_{xx'}\right]\\
                 &amp;=\sum_{x'}Q_{x'x}p(x',t|x_0,t_0)
                 \end{align*}
-                defining $Q_{xx}=-\sum_{x'\neq x}Q_{x'x}$.
+                defining $Q_{xx}=-\sum_{x'\neq x}Q_{xx'}$.
             </li>
-            <li>This form is known as the Master Equation or Kolmogorov forward equation. Linear, so solution is "simply" $\vec{p}(t)=\exp[-Qt]\vec{p}(0)$.</li>
+            <li>This form is known as the 
+            <a href="https://en.wikipedia.org/wiki/Master_equation">Master Equation</a> or 
+            <a href="https://en.wikipedia.org/wiki/Kolmogorov_equations_(Markov_jump_process)">Kolmogorov forward equation</a>. Linear, so solution is "simply" $\vec{p}(t)=\exp[-Qt]\vec{p}(0)$.</li>
         </ul>
     </section>
 
@@ -178,7 +185,8 @@ lecture_num: 7
             $("#ctmcRun").click(function (e) {
                 e.preventDefault();
 
-                console.log("Hello, world!");
+		var t0 = 0;
+		var t1 = 0;
 
                 var trace = {
                     x: [0], y: [0],
@@ -189,11 +197,16 @@ lecture_num: 7
                 var i=0;
                 while (true) {
                     if (trace.y[i]==0)
-                        a = 1;
-                    else
                         a = 2;
+                    else
+                        a = 1;
                     
-                    t += -Math.log(Math.random())/a;
+                    var dt = -Math.log(Math.random())/a;
+		    t += dt;
+		    if (trace.y[i]==0) 
+		    	t0 += dt;
+		    else
+		    	t1 += dt;
 
                     if (t>20)
                         break;
@@ -207,7 +220,14 @@ lecture_num: 7
                 trace.x[i+1] = 20;
                 trace.y[i+1] = trace.y[i];
 
+		var titleStr = "total time in state 0 = ";
+		titleStr = titleStr.concat(t0.toFixed(1), ", total time in state 1 = ", t1.toFixed(1));  
+
                 var layout = {
+                    title: titleStr,
+                    titlefont: {
+    			size: 12
+  		    },
                     showlegend: false,
 
                     xaxis: {
@@ -228,6 +248,8 @@ lecture_num: 7
                 
                 Plotly.purge("ctmcOutput");
                 Plotly.newPlot("ctmcOutput", [trace], layout, {displayModeBar: false});
+                
+                
             });
         </script>
         </div>
@@ -235,7 +257,7 @@ lecture_num: 7
 
         <p>Time $\Delta t$ spent in state before transition:
         $$ P(\Delta t|x) = \lambda e^{-\lambda \Delta t}$$
-        where $\lambda = \sum_{x'\neq x}Q_{x'x}$.</p>
+        where $\lambda = \sum_{x'\neq x}Q_{xx'}$.</p>
     </section>
 
     <section>
@@ -257,7 +279,7 @@ lecture_num: 7
 
         <div style="margin-top:2em">
             \begin{align*}
-            P(X(t)=x|X(0)=x_0) &amp;= \left[\exp(-Qt)\right]_{xx_0}\\
+            P(X(t)=x|X(0)=x_0) &amp;= \left[\exp(-Qt)\right]_{x_0x}\\
             &amp;=\left\{\begin{array}{ll}
             \frac{1}{4}+\frac{3}{4}e^{-\frac{4}{3}\mu t} &amp; \text{for } x=x_0\\
             \frac{1}{4}-\frac{1}{4}e^{-\frac{4}{3}\mu t} &amp; \text{for } x\neq x_0
