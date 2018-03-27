@@ -172,8 +172,8 @@ lecture_num: 7
 
         <p>Consider a system with two states (0 and 1) and a transition rate matrix
         $$Q = \left[\begin{array}{cc}
-        - &amp; 1.5 \\
-        0.75 &amp; -
+        - &amp; 2 \\
+        1 &amp; -
         \end{array}\right]$$</p>
 
         <p>Gives rise to the following trajectories:</p>
@@ -198,9 +198,9 @@ lecture_num: 7
                 var i=0;
                 while (true) {
                     if (trace.y[i]==0)
-                        a = 1.5;
+                        a = 2;
                     else
-                        a = 0.75;
+                        a = 1;
                     
                     var dt = -Math.log(Math.random())/a;
 		    if ((t+dt)>20) {
@@ -265,6 +265,31 @@ lecture_num: 7
         $$ P(\Delta t|x) = \lambda e^{-\lambda \Delta t}$$
         where $\lambda = \sum_{x'\neq x}Q_{xx'} = -Q_{xx}$.</p>
     </section>
+
+
+    <section>
+        <h3>Time-reversible CTMCs and detailed balance</h3>
+
+	<p>A CTMC is time-reversible if and only if it satisfies the property:
+	\begin{equation}
+	\pi_iQ_{ij} = \pi_jQ_{ji},
+	\end{equation}</p>
+	<p> or equivalently the <a href="https://en.wikipedia.org/wiki/Detailed_balance">detailed balance</a> property: $$\pi_iP_{ij}(t) = \pi_jP_{ji}(t).$$</p>
+
+        <p>From this it can be shown that a CTMC is time-reversible iff there exists a row-vector of state probabilities $\Pi$ such that: \begin{equation} \Pi Q = 0 \end{equation}</p>
+
+        <p>Consider again a system with two states (0 and 1) and a transition rate matrix:
+        $$Q = \left[\begin{array}{cc}
+        -2 &amp; 2 \\
+        1 &amp; -1
+        \end{array}\right]$$
+         </p>
+
+	<p>Then it is easy to show that $\Pi = [\frac{1}{3}, \frac{2}{3}]$ is a solution, so that this CTMC is time-reversible and $\Pi$ is the equilibrium distribution over states.</p>
+         
+     </section>   
+        
+
 
     <section>
         <h3>Jukes-Cantor model of nucelotide substitution</h3>
