@@ -18,20 +18,20 @@
 
         <title>{{page.title}}</title>
 
-        <link rel="stylesheet" href="{{site.baseurl}}/js/reveal.js/css/reveal.css">
+        <link rel="stylesheet" href="{{site.baseurl}}/js/reveal.js-3.6.0/css/reveal.css">
 
         <link rel="stylesheet" href="{{site.baseurl}}/css/lecture_theme.css">
 
 
 		<!-- Theme used for syntax highlighting of code -->
-		<link rel="stylesheet" href="{{site.baseurl}}/js/reveal.js/lib/css/zenburn.css">
+		<link rel="stylesheet" href="{{site.baseurl}}/js/reveal.js-3.6.0/lib/css/zenburn.css">
 
 		<!-- Printing and PDF exports -->
 		<script>
 			var link = document.createElement( 'link' );
 			link.rel = 'stylesheet';
 			link.type = 'text/css';
-			link.href = window.location.search.match( /print-pdf/gi ) ? '{{site.baseurl}}/js/reveal.js/css/print/pdf.css' : '{{site.baseurl}}/js/reveal.js/css/print/paper.css';
+			link.href = window.location.search.match( /print-pdf/gi ) ? '{{site.baseurl}}/js/reveal.js-3.6.0/css/print/pdf.css' : '{{site.baseurl}}/js/reveal.js-3.6.0/css/print/paper.css';
 			document.getElementsByTagName( 'head' )[0].appendChild( link );
 		</script>
 
@@ -39,7 +39,7 @@
         <script src="{{site.baseurl}}/js/jquery-3.2.0.min.js"></script>
 
         <!-- Plotly -->
-        <script src="{{site.baseurl}}/js/plotly-latest.min.js"></script>
+        <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
 
         <!-- Processing -->
         <script src="{{site.baseurl}}/js/processing.min.js"></script>
@@ -102,8 +102,8 @@
 			</div>
 		</div>
 
-		<script src="{{site.baseurl}}/js/reveal.js/lib/js/head.min.js"></script>
-		<script src="{{site.baseurl}}/js/reveal.js/js/reveal.js"></script>
+		<script src="{{site.baseurl}}/js/reveal.js-3.6.0/lib/js/head.min.js"></script>
+		<script src="{{site.baseurl}}/js/reveal.js-3.6.0/js/reveal.js"></script>
 
 		<script>
 			// More info https://github.com/hakimel/reveal.js#configuration
@@ -114,7 +114,6 @@
                 center: {{page.reveal.center}},
                 mouseWheel: {{page.reveal.mouseWheel}},
                 slideNumber: {{page.reveal.slideNumber}},
-
                 transition: '{{page.reveal.transition}}',
 
                 math: {
@@ -124,11 +123,11 @@
 
 				// More info https://github.com/hakimel/reveal.js#dependencies
 				dependencies: [
-					{ src: '{{site.baseurl}}/js/reveal.js/plugin/markdown/marked.js' },
-					{ src: '{{site.baseurl}}/js/reveal.js/plugin/markdown/markdown.js' },
-					{ src: '{{site.baseurl}}/js/reveal.js/plugin/notes/notes.js', async: true },
-					{ src: '{{site.baseurl}}/js/reveal.js/plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } },
-                    { src: '{{site.baseurl}}/js/reveal.js/plugin/math/math.js', async: true }
+					{ src: '{{site.baseurl}}/js/reveal.js-3.6.0/plugin/markdown/marked.js' },
+					{ src: '{{site.baseurl}}/js/reveal.js-3.6.0/plugin/markdown/markdown.js' },
+					{ src: '{{site.baseurl}}/js/reveal.js-3.6.0/plugin/notes/notes.js', async: true },
+					{ src: '{{site.baseurl}}/js/reveal.js-3.6.0/plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } },
+                    { src: '{{site.baseurl}}/js/reveal.js-3.6.0/plugin/math/math.js', async: true }
 				]
 			});
 
