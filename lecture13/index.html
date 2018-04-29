@@ -366,7 +366,6 @@ $(document).ready(function() {
     </p>
 </section>
 
-
 <section>
     <h2>Expected time to coalesce</h2>
 
@@ -430,6 +429,21 @@ $(document).ready(function() {
 </section>
 
 <section>
+    <h2>Structured coalescent prior</h2>
+
+    <div class="figure" style="float:right;width:60%">
+        <img data-src="NumberMigrations_2demes_30tips.png">
+    </div>
+    
+<p>As we have just seen, the structured coalescent density can be expressed as a product of terms over time intervals from the tips to the root of the ancestral genealogy.</p>
+
+<p>In the standard panmictic coalescent, the number of intervals is known, but in the structured coalescent it's an unknown random variable.</p>
+
+<p>Two the right is the prior distribution of the number of migration events in the two deme, 30 sample example.</p>
+
+</section>
+
+<section>
     <h2>Example of structured coalescent inference</h2>
         
     <div class="figure" style="display:inline-block;height:600px">
@@ -438,6 +452,16 @@ $(document).ready(function() {
 
 </section>
 
+<section>
+    <h2>New MCMC operators</h2>
+        
+    <div class="figure" style="display:inline-block;height:500px">
+        <img data-src="F2_large.jpg">
+    </div>
+    
+    <p> Vaughan et al (2014) </p>
+
+</section>
 
 <section>
     <h2>Comparison to mugration model</h2>
