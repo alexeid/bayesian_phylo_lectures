@@ -2,7 +2,7 @@
 lecture_num: 13
 ---
 
-<section>
+<!--<section>
     <h2>Master equations</h2>
 
     <ul>
@@ -26,9 +26,11 @@ lecture_num: 13
     </blockquote>
 
     For $x'\neq x$, the quantity $\Delta W(x'|x)$ is the probability of the system transitioning from state $x$ to state $x'$ in the time interval $\Delta$. (The <b>transition rate</b>.)
+    -->
+
 </section>
 
-<section>
+<!--<section>
     <h2>Birth-death master equations</h2>
 
     <p>Suppose $\vec{X}(t)$ describes the state of a system composed of distinct sub-populations $i$ each containing $X_i(t)$ individuals evolving under a continuous-time Markov process. Call this a birth-death process if these counts can only increase or decrease by finite amounts in a given event.</p>
@@ -51,7 +53,7 @@ lecture_num: 13
     and the mean dynamics are
     $$\partial_t\langle \vec{X}(t)\rangle = \sum_k \vec{v}_k\langle T_k(\vec{X}(t))\rangle
     \simeq \sum_k\vec{v}_k T_k(\langle\vec{X}(t)\rangle)$$
-</section>
+</section>-->
 
 <section>
     <h2>Chemical master equations</h2>
@@ -341,6 +343,31 @@ $(document).ready(function() {
 </section>
 
 <section>
+    <h2>Two-deme structured coalescent trees</h2>
+        
+    <div class="figure" style="display:inline-block;height:500px">
+        <img data-src="twoDemeStructuredCoalescentTrees1.png">
+    </div>
+
+     <p>
+     $N_1 = N_2 = 1000$, $m_{12} = m_{21} = 0.0008$. There are 15 samples from each deme, all sampled at the same time.
+     <p>
+</section>
+
+<section>
+    <h2>Two-deme structured coalescent trees</h2>
+        
+    <div class="figure" style="display:inline-block;height:500px">
+        <img data-src="twoDemeStructuredCoalescentTrees2.png">
+    </div>
+    
+    <p>
+    A standard phylogenetic inference method would infer just the tree. Here we show the true trees, tips annotated with known demes.
+    </p>
+</section>
+
+
+<section>
     <h2>Expected time to coalesce</h2>
 
     <p>For a symmetric 2 deme model ($N_1=N_2=N$ and $m_{12}=m_{21}=m$) we can derive the expected time to coalescence of two lineages:</p>
@@ -403,7 +430,17 @@ $(document).ready(function() {
 </section>
 
 <section>
-    <h2>Comparisson to mugration model</h2>
+    <h2>Example of structured coalescent inference</h2>
+        
+    <div class="figure" style="display:inline-block;height:600px">
+        <img data-src="F5_large.jpg">
+    </div>
+
+</section>
+
+
+<section>
+    <h2>Comparison to mugration model</h2>
 
     <ul>
         <li>Alternative framework for phylogeographic inference.</li>
@@ -442,6 +479,7 @@ $(document).ready(function() {
         <li>Ewing sampler <a class="cite" href="http://www.genetics.org/content/168/4/2407.full-text.pdf%2Bhtml">(Ewing et al., 2004)</a></li>
         <li>MultiTypeTree (BEAST 2, <a class="cite" href="https://academic.oup.com/bioinformatics/article/doi/10.1093/bioinformatics/btu201/2748160/Efficient-Bayesian-inference-under-the-structured">Vaughan et al., 2014)</a></li>
         <li>BASTA (approximate, BEAST 2, <a class="cite" href="http://dx.doi.org/10.1371/journal.pgen.1005421">De Maio et al., 2015</a>)</li>
+        <li>MASCOT (better approximation, BEAST 2, <a class="cite" href="https://doi.org/10.1101/188516">Mueller et al., 2017</a>)</li>
     </ul>
 </section>
 
