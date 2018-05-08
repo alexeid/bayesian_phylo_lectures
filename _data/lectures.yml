@@ -2,54 +2,51 @@
   title: Introduction - Developing Darwin's Computer
   folder: lecture_intro
   lecturer: Alexei Drummond
-  date: 2017-03-19
+-
+  title: Phylogenetics
+  folder: lecture5
+  lecturer: Alexei Drummond
+-
+  title: Parsimony
+  folder: lecture6
+  lecturer: Alexei Drummond
 - 
   title: Model-based Phylogenetic Inference
   folder: lectureSubstitutionModels
   lecturer: Alexei Drummond
-  date: 2017-03-21
 -
   title: Bayesian Inference
   folder: lecture8
   lecturer: Alexei Drummond
-  date: 2017-03-26
 - 
   title: Bayesian Phylogenetic Inference
   folder: lecture9
   lecturer: Alexei Drummond
-  date: 2017-03-27
 - 
   title: The Coalescent
   folder: lecture10
   lecturer: Alexei Drummond
-  date: 2017-03-28
 - 
   title: Phylodynamics and the coalescent
   folder: lecture11
   lecturer: Alexei Drummond
-  date: 2017-04-02
 - 
   title: The multi-species coalescent
   folder: lecture12
   lecturer: Alexei Drummond
-  date: 2017-04-03
 - 
   title: Master Equations and The Structured Coalescent
   folder: lecture13
   lecturer: Alexei Drummond
-  date: 2017-04-04
 - 
   title: The Coalescent with Recombination
   folder: lecture14
-  lecturer: Nick Matzke
-  date: 2017-04-09
+  lecturer: Alexei Drummond
 - 
   title: Birth-death tree priors
   folder: lecture15
-  lecturer: Nick Matzke
-  date: 2017-04-10
+  lecturer: Alexei Drummond
 - 
   title: Sampled Ancestors, FBD
   folder: lecture_sa
-  lecturer: Nick Matzke
-  date: 2017-03-11
+  lecturer: Alexei Drummond

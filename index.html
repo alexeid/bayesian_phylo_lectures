@@ -27,8 +27,8 @@ layout: null
 
                     <h1>Bayesian phylogenetics lectures</h1>
 
-                    <p>This page contains links to a module of lectures on Bayesian phylogenetics
-                       prepared by Alexei Drummond and Tim Vaughan</p>
+                    <p>This page contains links to a module of lectures on phylogenetics and Bayesian phylogenetics
+                       prepared by Alexei Drummond and Tim Vaughan.</p>
                        
                     <ol>
                         {% assign lectureIdx = 0 %}
@@ -51,8 +51,10 @@ layout: null
                         {{lecture.title}}
                         {% endif %}
                         </b>
-
-                        ({{lecture.lecturer}}, {{lecture.date | date: "%-d %B %Y"}})
+                        {% if lecture.date %}
+                        ({{lecture.date | date: "%-d %B %Y"}})
+                        {% else %}
+                        {% endif %}
                         </li>
 
                         {% endfor %}
