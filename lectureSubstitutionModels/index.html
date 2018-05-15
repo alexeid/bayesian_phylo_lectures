@@ -289,8 +289,98 @@ lecture_num: 7
          
      </section>   
         
+    <section><h3>From rates to probabilities: matrix exponential</h3>
 
+<p>Transition probability matrix is the matrix exponential of the instantaneous rate matrix:</p> 
 
+<p>\[ P(t) = \exp(Q t)  = \sum_{k = 0}^{\infty}  \frac{ (Q t)^k}{k!} = \mathbf I  + tQ + \frac{(t \mathbf Q)^2}{2} + \frac{(t \mathbf Q)^3}{6} + \ldots\]</p>
+
+<p>Can sometimes calculate analytically</p>
+
+<p>For general \(Q\), use numerical methods from numerical libraries.</p>
+
+<p>The matrix exponential follows the rules we would hope for the exponential function. For example:</p>
+
+<ul>
+<li>\(\exp(\mathbf 0) = \mathbf I_n\)</li>
+<li>when \(\mathbf{AB} = \mathbf{BA}\), \(\exp(\mathbf{A+B}) =\exp(\mathbf{A})\exp(\mathbf{B})\)</li>
+<li>When \(\mathbf B\) is invertible, \(\exp(\mathbf{BAB}^{-1}) = \mathbf{B}\exp(\mathbf{A})\mathbf B^{-1}\)</li>
+<li>If \(\mathbf A = \mathrm{diag}(a_1,\ldots,a_n)\), then \(\exp(\mathbf A) = \mathrm{diag}(\exp(a_1),\ldots,\exp(a_n))\).</li>
+</ul>
+
+</section>
+
+<section><h3>Matrix exponential example</h3>
+
+<p>Suppose there are two states, 0 and 1.</p>
+
+<p>Let the rate matrix be</p>
+
+<p>\[Q = 
+\renewcommand{\arraystretch}{1.25}
+\left[  \begin{array}{cc}
+-1 &amp; 1 \\
+0.6 &amp; -0.6
+\end{array} \right].\]</p>
+
+<p>To get the probability matrix, use the matrix exponential:</p>
+
+<p>\[ P(1) = \exp(1.Q) = \mathbf I  + Q + \frac{ \mathbf Q^2}{2} + \frac{ \mathbf Q^3}{6} + \ldots  = \renewcommand{\arraystretch}{1.25}
+\left[  \begin{array}{cc}
+0.501 &amp; 0.499 \\
+0.299 &amp; 0.701
+\end{array} \right]  \]</p>
+
+<p>So if we started in state 1 at time 0, at time 1 there is a 29.9% chance of being in state 0 and a 70.1% chance of being in state 1.</p>
+
+</section>
+
+<section><h3>Matrix exponential example</h3>
+
+<p>By time 2, the preference for state 1 is obvious:</p>
+<p> \[ P(2) = \exp(2Q)  = \renewcommand{\arraystretch}{1.25}
+\left[  \begin{array}{cc}
+0.400 &amp; 0.600 \\
+0.360 &amp; 0.640
+\end{array} \right]  \]</p>
+
+<p>Remember, can calculate for any value of \(t\), not just integers:</p>
+
+<p>\[ P(0.234) = \exp(0.234 \times Q)  = \renewcommand{\arraystretch}{1.25}
+\left[  \begin{array}{cc}
+0.805 &amp; 0.195 \\
+0.117 &amp; 0.883
+\end{array} \right]  \]</p>
+
+</section>
+
+<section><h3>Matrix exponential example</h3>
+
+<p>If we ran it for an infinitely long period of time, get the same probabilities regardless of start state:</p>
+
+<p>\[ P(\infty ) =\renewcommand{\arraystretch}{1.25}
+\left[  \begin{array}{cc}
+0.375 &amp; 0.625 \\
+0.375 &amp; 0.625
+\end{array} \right]  \]</p>
+
+<p>Each row is a copy of the <strong>equilibrium distribution</strong> or <strong>stationary distribution</strong> for the process.</p>
+
+<p>Want this property of stationarity for models of DNA substitution so that</p>
+
+<p>\[ P(\infty ) =\renewcommand{\arraystretch}{1.25}
+\left[  \begin{array}{cccc}
+\pi_A &amp; \pi_C &amp; \pi_G &amp; \pi_T \\
+\pi_A &amp; \pi_C &amp; \pi_G &amp; \pi_T \\
+\pi_A &amp; \pi_C &amp; \pi_G &amp; \pi_T \\
+\pi_A &amp; \pi_C &amp; \pi_G &amp; \pi_T 
+\end{array} \right]  \]</p>
+
+<p>\(\pi = [\pi_A , \pi_C , \pi_G , \pi_T]\) is the stationary distribution of the bases.</p>
+
+</section>
+    
+    
     <section>
         <h3>Jukes-Cantor model of nucelotide substitution</h3>
 
