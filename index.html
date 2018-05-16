@@ -29,11 +29,13 @@ layout: null
 
                     <p>This page contains links to a module of lectures on phylogenetics and Bayesian phylogenetics
                        prepared by Alexei Drummond and Tim Vaughan.</p>
+                      
+                    <h3>Introduction to phylogenetics</h3> 
                        
-                    <ol>
+                    <ul>
                         {% assign lectureIdx = 0 %}
-                        {% for lecture in site.data.lectures %}
-                        {% assign lectureNum = forloop.index %}
+                        {% assign intro_lectures = site.data.lectures |  where:'section', "introduction" %}
+                        {% for lecture in intro_lectures %}
 
                         {% assign lectureURL = "/" |append: lecture.folder | append: "/" %}
 
@@ -58,7 +60,72 @@ layout: null
                         </li>
 
                         {% endfor %}
-                    </ol>
+                    </ul>
+                    
+                    <h3>Bayesian phylogenetics</h3> 
+
+                    <ul>
+                        {% assign lectureIdx = 0 %}
+                        {% assign bayes_lectures = site.data.lectures |  where:'section', "bayesian_phylo" %}
+                        {% for lecture in bayes_lectures %}
+
+                        {% assign lectureURL = "/" |append: lecture.folder | append: "/" %}
+
+                        {% assign found = false %}
+                        {% for page in site.pages %}
+                        {% if page.url == lectureURL %}
+                        {% assign found = true %}
+                        {% endif %}
+                        {% endfor %}
+
+                        <li><b>
+                        {% if found %}
+                        <a href="{{site.baseurl}}{{lectureURL}}">{{lecture.title}}</a>
+                        {% else %}
+                        {{lecture.title}}
+                        {% endif %}
+                        </b>
+                        {% if lecture.date %}
+                        ({{lecture.date | date: "%-d %B %Y"}})
+                        {% else %}
+                        {% endif %}
+                        </li>
+
+                        {% endfor %}
+                    </ul>
+
+                    <h3>Advanced topics in Bayesian phylogenetics</h3> 
+
+                    <ul>
+                        {% assign lectureIdx = 0 %}
+                        {% assign advanced_lectures = site.data.lectures |  where:'section', "advanced" %}
+                        {% for lecture in advanced_lectures %}
+
+                        {% assign lectureURL = "/" |append: lecture.folder | append: "/" %}
+
+                        {% assign found = false %}
+                        {% for page in site.pages %}
+                        {% if page.url == lectureURL %}
+                        {% assign found = true %}
+                        {% endif %}
+                        {% endfor %}
+
+                        <li><b>
+                        {% if found %}
+                        <a href="{{site.baseurl}}{{lectureURL}}">{{lecture.title}}</a>
+                        {% else %}
+                        {{lecture.title}}
+                        {% endif %}
+                        </b>
+                        {% if lecture.date %}
+                        ({{lecture.date | date: "%-d %B %Y"}})
+                        {% else %}
+                        {% endif %}
+                        </li>
+
+                        {% endfor %}
+                    </ul>
+
 
                 </div>
             </div>
