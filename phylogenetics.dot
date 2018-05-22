@@ -1,0 +1,82 @@
+digraph G {
+  graph [fontname = "arial"];
+  node [fontname = "arial"];
+  edge [fontname = "arial", arrowhead="vee"];
+
+  sequences [ label="DNA\nsequences"];
+  
+  sequence_alignment [ label="MSA\nalgorithm", shape=rect, style=filled, fillcolor="#ffff99" ];
+  
+  msa [ label="Multiple sequence\nalignment", style=filled, fillcolor="#ff9999"];
+  distances [ label="Pairwise\ngenetic\n\distance\nmatrix",style=filled, fillcolor="#ff9999"  ];
+  transition_probs [ label="Transition\nprobabilities,\nP(d)" ];
+  
+  felsenstein_pruning [ label="Felsenstein's\npruning\nalgorithm", shape=rectangle, style=filled, fillcolor="#ffff99" ];
+
+  substmodel [ label="CTMC\nSubstitution model"];
+  
+  maximum_likelihood [label="Maximum\nlikelihood\ntree", style=filled, fillcolor="#99ff99" ];
+  bayesian_inference [label="Bayesian\nMCMC\nalgorithm", shape="rect", style=filled, fillcolor="#ffff99" ];
+
+  bayesian_posterior [label="Posterior\ndistribution\non trees", style=filled, fillcolor="#99ff99" ];
+
+  
+  ls [label="Least-squares\ntree", style=filled, fillcolor="#99ff99" ];
+
+  p_distances [label="p-distances"]
+  
+  distance_correction [label="distance\ncorrection", shape=rect]
+
+  ls_objective [label="Least-squares-objective", shape=rect, style=filled, fillcolor="#9999ff"];
+
+  nj_algorithm [ label="Neighbour-joining\nalgorithm", shape=rectangle, style=filled, fillcolor="#ffff99"  ];
+  upgma_algorithm [ label="UPGMA\nalgorithm", shape=rectangle, style=filled, fillcolor="#ffff99"  ];
+  
+  fitchs_algorithm [ label="Fitch's\nparsimony\nalgorithm", shape=rectangle, style=filled, fillcolor="#ffff99"  ];
+  parsimony_objective [label="parsimony-objective", shape=rect, style=filled, fillcolor="#9999ff"];
+  maximum_parsimony [label="Maximum\nparsimony\ntree", style=filled, fillcolor="#99ff99" ];
+  ml_objective [label="likelihood-objective", shape=rect, style=filled, fillcolor="#9999ff"];
+    
+  nj_tree [ label="Neighbour-joining\ntree", style=filled, fillcolor="#99ff99" ];
+  upgma_tree [ label="UPGMA\ntree", style=filled, fillcolor="#99ff99" ];
+
+  substmodel -> distance_correction;
+  substmodel -> transition_probs;
+
+transition_probs -> felsenstein_pruning;
+
+felsenstein_pruning -> bayesian_inference; 
+
+felsenstein_pruning -> ml_objective; 
+ml_objective -> maximum_likelihood[label="heuristic\ntree\nsearch"];
+
+fitchs_algorithm -> parsimony_objective;
+parsimony_objective -> maximum_parsimony[label="heuristic\ntree\nsearch"];
+
+  sequences -> sequence_alignment
+
+  sequence_alignment -> msa [penwidth=1, color="#993333"]
+
+  msa -> p_distances;
+  
+  p_distances -> distance_correction;
+  
+  distance_correction -> distances[penwidth=1, color="#993333"]
+
+  msa -> fitchs_algorithm[penwidth=1 color="#993333"]
+  msa -> felsenstein_pruning[penwidth=1 color="#993333"]
+  msa -> bayesian_inference[penwidth=1 color="#993333"]
+  
+  bayesian_inference -> bayesian_posterior;
+
+  distances -> nj_algorithm
+  distances -> upgma_algorithm
+  distances -> ls_objective;
+  
+  ls_objective -> ls[label="heuristic\ntree\nsearch"];
+  
+  nj_algorithm -> nj_tree
+
+  upgma_algorithm -> upgma_tree
+
+}
