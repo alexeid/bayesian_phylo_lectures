@@ -1,0 +1,79 @@
+\documentclass{article}
+\usepackage[x11names, rgb]{xcolor}
+\usepackage[utf8]{inputenc}
+\usepackage{tikz}
+\usetikzlibrary{snakes,arrows,shapes}
+\usepackage{amsmath}
+%
+%
+
+\usepackage[active,tightpage]{preview}
+\PreviewEnvironment{tikzpicture}
+\setlength\PreviewBorder{10pt}%
+
+\tikzset{every text node part/.style={align=center}}%
+
+\begin{document}
+\pagestyle{empty}
+%
+%
+%
+
+\enlargethispage{100cm}
+% Start of code
+\begin{tikzpicture}[>=latex',line join=bevel,]
+\tikzstyle{model}=[draw=yellow!50, very thick, rectangle,fill=yellow!20], \tikzstyle{objective}=[draw=gray!50, very thick, rectangle,fill=gray!20], \tikzstyle{data}=[draw=red!50, very thick, fill=red!20], \tikzstyle{algo}=[draw=blue!50, very thick, fill=blue!20,ellipse], \tikzstyle{treestyle}=[draw=green!50, very thick, fill=green!20];%
+\node (distances) at (239.0bp,250.0bp) [data] {Genetic\\distance\\matrix\\($\hat d$: $n \times n$)};
+  \node (ml_objective) at (506.0bp,250.0bp) [objective] {Maximum\\likelihood\\objective};
+  \node (sequences) at (270.0bp,574.0bp) [data] {DNA\\sequences};
+  \node (nj_algorithm) at (322.0bp,132.0bp) [algo] {Neighbour-joining\\algorithm\\$O(n^3)$};
+  \node (felsenstein_pruning) at (476.0bp,326.0bp) [algo] {Felsenstein's\\pruning\\algorithm\\$\Pr(D|T,Q)$};
+  \node (sequence_alignment) at (270.0bp,516.0bp) [algo] {MSA\\algorithm};
+  \node (ls) at (218.0bp,20.0bp) [treestyle] {Least-squares\\tree};
+  \node (bayesian_inference) at (413.0bp,250.0bp) [algo] {Bayesian\\MCMC\\algorithm\\$f(T,Q,\theta|D)$};
+  \node (ls_objective) at (218.0bp,132.0bp) [objective] {Least-squares\\objective};
+  \node (bayesian_posterior) at (423.0bp,132.0bp) [treestyle] {Posterior\\distribution\\on trees};
+  \node (upgma_tree) at (108.0bp,20.0bp) [treestyle] {UPGMA\\tree\\(rooted, ultrametric)};
+  \node (matrix_exponentiation) at (472.0bp,446.0bp) [algo] {Matrix\\exponentiation\\$P(d)=\exp(Qd)$};
+  \node (treeprior) at (386.0bp,326.0bp) [model] {Model-based\\tree prior\\$f(T|\theta)$};
+  \node (parsimony_objective) at (153.0bp,250.0bp) [objective] {Maximum\\parsimony\\objective};
+  \node (substmodel) at (406.0bp,516.0bp) [model] {CTMC\\Substitution\\model ($Q$)};
+  \node (maximum_parsimony) at (26.0bp,132.0bp) [treestyle] {Maximum\\parsimony\\tree\\(unrooted)};
+  \node (maximum_likelihood) at (507.0bp,132.0bp) [treestyle] {Maximum\\likelihood\\tree};
+  \node (upgma_algorithm) at (119.0bp,132.0bp) [algo] {UPGMA\\algorithm\\$O(n^2)$ or $O(n^3)$};
+  \node (msa) at (270.0bp,446.0bp) [data] {Multiple\\sequence\\alignment\\($D$: $n \times L$)};
+  \node (nj_tree) at (322.0bp,20.0bp) [treestyle] {Neighbour-joining\\tree\\(unrooted)};
+  \node (parsimony_algorithm) at (170.0bp,326.0bp) [algo] {parsimony\\algorithm\\$O(nL)$};
+  \node (distance_correction) at (270.0bp,326.0bp) [algo] {distance\\correction\\$\hat d_{ij}=f_{corr}(p_{ij})$};
+  \draw [-stealth'] (matrix_exponentiation) -- node {Transition\\probabilities,\\$P(d)$} (felsenstein_pruning);
+  \draw [-stealth'] (distances) -- (nj_algorithm);
+  \draw [-stealth'] (substmodel) -- (matrix_exponentiation);
+  \draw [-stealth'] (msa) -- node {p-distances\\($p$: $n \times n$)} (distance_correction);
+  \draw [-stealth'] (upgma_algorithm) -- (upgma_tree);
+  \draw [-stealth'] (msa) -- (parsimony_algorithm);
+  \draw [-stealth'] (nj_algorithm) -- (nj_tree);
+  \draw [-stealth'] (distances) -- (ls_objective);
+  \draw [-stealth'] (parsimony_objective) -- node {heuristic\\tree\\search} (maximum_parsimony);
+  \draw [-stealth'] (parsimony_algorithm) -- (parsimony_objective);
+  \draw [-stealth'] (ml_objective) -- node {heuristic\\tree\\search} (maximum_likelihood);
+  \draw [-stealth'] (felsenstein_pruning) -- (bayesian_inference);
+  \draw [-stealth'] (msa) -- (felsenstein_pruning);
+  \draw [-stealth'] (bayesian_inference) -- (bayesian_posterior);
+  \draw [-stealth'] (sequence_alignment) -- (msa);
+  \draw [-stealth'] (sequences) -- (sequence_alignment);
+  \draw [-stealth'] (treeprior) -- (bayesian_inference);
+  \draw [-stealth'] (distances) -- (upgma_algorithm);
+  \draw [-stealth'] (ls_objective) -- node {heuristic\\tree\\search} (ls);
+  \draw [-stealth'] (substmodel) -- (distance_correction);
+  \draw [-stealth'] (felsenstein_pruning) -- (ml_objective);
+  \draw [-stealth'] (distance_correction) -- (distances);
+%
+\end{tikzpicture}
+% End of code
+
+%
+\end{document}
+%
+
+
+

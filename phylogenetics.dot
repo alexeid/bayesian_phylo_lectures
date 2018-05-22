@@ -1,75 +1,76 @@
 digraph G {
-  graph [fontname = "arial"];
+  d2toptions ="-ftikz --tikzedgelabels --styleonly --autosize -traw -c --straightedges";
+  
+  d2tfigpreamble = "\tikzstyle{model}=[draw=yellow!50, very thick, rectangle,fill=yellow!20], \tikzstyle{objective}=[draw=gray!50, very thick, rectangle,fill=gray!20], \tikzstyle{data}=[draw=red!50, very thick, fill=red!20], \tikzstyle{algo}=[draw=blue!50, very thick, fill=blue!20,ellipse], \tikzstyle{treestyle}=[draw=green!50, very thick, fill=green!20];";
+   
+  d2tdocpreamble = "\tikzset{every text node part/.style={align=center}}"
+   
+  mindist = 0.5;
+
+  graph [fontname = "arial", ranksep="0.3", nodesep="0.4"];
   node [fontname = "arial"];
   edge [fontname = "arial", arrowhead="vee"];
 
-  sequences [ label="DNA\nsequences"];
+  sequences [ label="DNA\\\\sequences", style=data];
   
-  sequence_alignment [ label="MSA\nalgorithm", shape=rect, style=filled, fillcolor="#ffff99" ];
+  sequence_alignment [ label="MSA\\\\algorithm", style=algo ];
   
-  msa [ label="Multiple sequence\nalignment\n(D)", style=filled, fillcolor="#ff9999"];
-  distances [ label="Pairwise\ngenetic\n\distance\nmatrix",style=filled, fillcolor="#ff9999"  ];
-  transition_probs [ label="Transition\nprobabilities,\nP(d)" ];
+  msa [ label="Multiple\\\\sequence\\\\alignment\\\\($D$: $n \times L$)", style=data];
+  distances [ label="Genetic\\\\distance\\\\matrix\\\\($\hat d$: $n \times n$)",style=data];
   
-  felsenstein_pruning [ label="Felsenstein's\npruning\nalgorithm\nP(D|T,Q)", shape=rectangle, style=filled, fillcolor="#ffff99" ];
+    felsenstein_pruning [ label="Felsenstein's\\\\pruning\\\\algorithm\\\\$\\Pr(D|T,Q)$", style="algo" ];
+    substmodel [ label="CTMC\\\\Substitution\\\\model ($Q$)", style=model];
+    treeprior [ label="Model-based\\\\tree prior\\\\$f(T|\\theta)$", style=model];
+    matrix_exponentiation [label="Matrix\\\\exponentiation\\\\$P(d)=\exp(Qd)$", style="algo"];
+  
+    maximum_likelihood [label="Maximum\\\\likelihood\\\\tree", style=treestyle ];
+  
+    bayesian_inference [label="Bayesian\\\\MCMC\\\\algorithm\\\\$f(T,Q,\theta|D)$", style=algo ];
 
-  substmodel [ label="CTMC\nSubstitution\nmodel (Q)"];
+    bayesian_posterior [label="Posterior\\\\distribution\\\\on trees", style=treestyle];
+    ml_objective [label="Maximum\\\\likelihood\\\\objective", shape=rect, style=objective];
   
-  matrix_exponentiation [label="Matrix\nexponentiation\nP(d)=exp(Qd)", shape="rect", style=filled, fillcolor="#ffff99" ];
-  
-  maximum_likelihood [label="Maximum\nlikelihood\ntree", style=filled, fillcolor="#99ff99" ];
-  bayesian_inference [label="Bayesian\nMCMC\nalgorithm\nP(T,Q|D)", shape="rect", style=filled, fillcolor="#ffff99" ];
+  ls [label="Least-squares\\\\tree", style=treestyle];
+ 
+  distance_correction [label="distance\\\\correction\\\\$\hat d_{ij}=f_{corr}(p_{ij})$", style=algo]
 
-  bayesian_posterior [label="Posterior\ndistribution\non trees", style=filled, fillcolor="#99ff99" ];
-  
-  ls [label="Least-squares\ntree", style=filled, fillcolor="#99ff99" ];
+  ls_objective [label="Least-squares\\\\objective", style=objective];
 
-  p_distances [label="p-distances"]
+  nj_algorithm [ label="Neighbour-joining\\\\algorithm\\\\$O(n^3)$", style=algo];
+  upgma_algorithm [ label="UPGMA\\\\algorithm\\\\$O(n^2)$ or $O(n^3)$", style=algo];
   
-  distance_correction [label="distance\ncorrection", shape=rect]
-
-  ls_objective [label="Least-squares-objective", shape=rect, style=filled, fillcolor="#9999ff"];
-
-  nj_algorithm [ label="Neighbour-joining\nalgorithm", shape=rectangle, style=filled, fillcolor="#ffff99"  ];
-  upgma_algorithm [ label="UPGMA\nalgorithm", shape=rectangle, style=filled, fillcolor="#ffff99"  ];
-  
-  fitchs_algorithm [ label="Fitch's\nparsimony\nalgorithm", shape=rectangle, style=filled, fillcolor="#ffff99"  ];
-  parsimony_objective [label="parsimony-objective", shape=rect, style=filled, fillcolor="#9999ff"];
-  maximum_parsimony [label="Maximum\nparsimony\ntree", style=filled, fillcolor="#99ff99" ];
-  ml_objective [label="likelihood-objective", shape=rect, style=filled, fillcolor="#9999ff"];
+  parsimony_algorithm [ label="parsimony\\\\algorithm\\\\$O(nL)$",style=algo];
+  parsimony_objective [label="Maximum\\\\parsimony\\\\objective", shape=rect, style=objective];
+  maximum_parsimony [label="Maximum\\\\parsimony\\\\tree\\\\(unrooted)", style=treestyle];
     
-  nj_tree [ label="Neighbour-joining\ntree", style=filled, fillcolor="#99ff99" ];
-  upgma_tree [ label="UPGMA\ntree", style=filled, fillcolor="#99ff99" ];
+  nj_tree [ label="Neighbour-joining\\\\tree\\\\(unrooted)", style=treestyle];
+  upgma_tree [ label="UPGMA\\\\tree\\\\(rooted, ultrametric)", style=treestyle];
 
-  substmodel -> distance_correction[label="d=f(p)"];
+  substmodel -> distance_correction;
 
   substmodel -> matrix_exponentiation; 
   
-  matrix_exponentiation -> transition_probs[label=""];
-
-transition_probs -> felsenstein_pruning;
+  matrix_exponentiation -> felsenstein_pruning[label="Transition\\\\probabilities,\\\\$P(d)$"];
 
 felsenstein_pruning -> bayesian_inference; 
+treeprior -> bayesian_inference[weight=2];
 
 felsenstein_pruning -> ml_objective; 
-ml_objective -> maximum_likelihood[label="heuristic\ntree\nsearch"];
+ml_objective -> maximum_likelihood[label="heuristic\\\\tree\\\\search"];
 
-fitchs_algorithm -> parsimony_objective;
-parsimony_objective -> maximum_parsimony[label="heuristic\ntree\nsearch"];
+parsimony_algorithm -> parsimony_objective;
+parsimony_objective -> maximum_parsimony[label="heuristic\\\\tree\\\\search"];
 
   sequences -> sequence_alignment
 
-  sequence_alignment -> msa [penwidth=1, color="#993333"]
+  sequence_alignment -> msa;
 
-  msa -> p_distances;
-  
-  p_distances -> distance_correction;
-  
-  distance_correction -> distances[penwidth=1, color="#993333"]
+  msa -> distance_correction[label="p-distances\\\\($p$: $n \times n$)"];
+    
+  distance_correction -> distances;
 
-  msa -> fitchs_algorithm[penwidth=1 color="#993333"]
-  msa -> felsenstein_pruning[penwidth=1 color="#993333"]
-  msa -> bayesian_inference[penwidth=1 color="#993333"]
+  msa -> parsimony_algorithm
+  msa -> felsenstein_pruning
   
   bayesian_inference -> bayesian_posterior;
 
@@ -77,7 +78,7 @@ parsimony_objective -> maximum_parsimony[label="heuristic\ntree\nsearch"];
   distances -> upgma_algorithm
   distances -> ls_objective;
   
-  ls_objective -> ls[label="heuristic\ntree\nsearch"];
+  ls_objective -> ls[label="heuristic\\\\tree\\\\search"];
   
   nj_algorithm -> nj_tree
 
