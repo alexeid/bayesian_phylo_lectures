@@ -6,11 +6,11 @@ lecture_num: 9
     <h2>The Phylogenetic Likelihood</h2>
 
     <blockquote style="font-size:2em;margin-top:10%">
-        $$P(A|T, \mu)$$
+        $$\Pr(D|T, \mu)$$
     </blockquote>
 
     <ul style="width:80%;margin-top:2em">
-        <li>$A$ is a multiple sequence alignment of $n$ sequences,</li>
+        <li>$D$ is a multiple sequence alignment of $n$ sequences,</li>
         <li>$T$ is a phylogenetic tree with $n$ leaves, and</li>
         <li>$\mu$ are the parameters of the chosen CTMC-based model of sequence evolution.</li>
         <li>Just a product of site pattern propabilities: note the obvious
@@ -25,7 +25,7 @@ lecture_num: 9
     <h2>The Phylogenetic Posterior</h2>
 
     <blockquote style="margin-top:10%;font-size:1em">
-        $$P(T,Q|A) = \frac{1}{P(A)}P(A|T,\mu)P(T|\theta)P(\mu,\theta)$$
+        $$P(T,Q|D) = \frac{1}{\Pr(D)}\Pr(D|T,\mu)P(T|\theta)P(\mu,\theta)$$
     </blockquote>
 
     <ul style="width:80%; margin-top:1em">
@@ -36,7 +36,7 @@ lecture_num: 9
     <div class="textbox" style="margin-top:2em;width:80%;text-align:center;margin-left:10%">
         <div class="title">Questions</div>
         <ul>
-            <li>What is $P(A)$?</li>
+            <li>What is $\Pr(D)$?</li>
             <li>Is the tree prior really a prior? (I.e. does it depend on the data?)</li>
         </ul>
     </div>
@@ -289,7 +289,7 @@ lecture_num: 9
     <p>Some software implementing special models:</p>
     <dl>
         <dt>MIGRATE</dt>
-        <dd>Performs inference under the Structured Coalescent. (I.e. subpopulation sizes, migration rates, ancestral locations.)</dd>
+        <dd>Performs inference under the Structured Coalescent. (i.e. subpopulation sizes, migration rates, ancestral locations.)</dd>
 
         <dt>ClonalFrame/ClonalOrigin</dt>
         <dd>Infer bacterial Ancestral Recombination Graphs (generalizations of trees when recombination is present).</dd>
