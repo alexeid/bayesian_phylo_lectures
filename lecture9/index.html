@@ -10,10 +10,11 @@ lecture_num: 9
     </blockquote>
 
     <ul style="width:80%;margin-top:2em">
+        <li>Computed by Felsenstein's pruning algorithm</li>
         <li>$D$ is a multiple sequence alignment of $n$ sequences,</li>
         <li>$T$ is a phylogenetic tree with $n$ leaves, and</li>
         <li>$\mu$ are the parameters of the chosen CTMC-based model of sequence evolution.</li>
-        <li>Just a product of site pattern propabilities: note the obvious
+        <li>Just a product of site pattern probabilities: note the obvious
         generalizations to multiple alignments that share a tree, or to phylogenetic networks that allow
         different sites to evolve under distinct "local" trees.</li>
     </ul>
@@ -24,8 +25,14 @@ lecture_num: 9
 <section>
     <h2>The Phylogenetic Posterior</h2>
 
-    <blockquote style="margin-top:10%;font-size:1em">
-        $$P(T,Q|D) = \frac{1}{\Pr(D)}\Pr(D|T,\mu)P(T|\theta)P(\mu,\theta)$$
+    <p>Standard application of Bayes theorem gives the posterior:</p>
+    
+        $$P(T,\mu,\theta|D) = \frac{\Pr(D|T,\mu, \theta)P(T,\mu,\theta)}{\Pr(D)}$$
+
+    <p>But most phylogenetic models assume that $\theta$ only effects the probability of the data via the tree $T$, and likewise that $\mu$ has no effect on the tree branching process, leading to:</p>
+
+    <blockquote style="font-size:1em">
+        $$P(T,\mu|D) = \frac{1}{\Pr(D)}\Pr(D|T,\mu)P(T|\theta)P(\mu,\theta)$$
     </blockquote>
 
     <ul style="width:80%; margin-top:1em">
@@ -37,7 +44,7 @@ lecture_num: 9
         <div class="title">Questions</div>
         <ul>
             <li>What is $\Pr(D)$?</li>
-            <li>Is the tree prior really a prior? (I.e. does it depend on the data?)</li>
+            <li>Is the tree prior really a prior? (i.e. does it depend on the data?)</li>
         </ul>
     </div>
 </section>
