@@ -7,19 +7,20 @@ digraph G {
   
   sequence_alignment [ label="MSA\nalgorithm", shape=rect, style=filled, fillcolor="#ffff99" ];
   
-  msa [ label="Multiple sequence\nalignment", style=filled, fillcolor="#ff9999"];
+  msa [ label="Multiple sequence\nalignment\n(D)", style=filled, fillcolor="#ff9999"];
   distances [ label="Pairwise\ngenetic\n\distance\nmatrix",style=filled, fillcolor="#ff9999"  ];
   transition_probs [ label="Transition\nprobabilities,\nP(d)" ];
   
-  felsenstein_pruning [ label="Felsenstein's\npruning\nalgorithm", shape=rectangle, style=filled, fillcolor="#ffff99" ];
+  felsenstein_pruning [ label="Felsenstein's\npruning\nalgorithm\nP(D|T,Q)", shape=rectangle, style=filled, fillcolor="#ffff99" ];
 
-  substmodel [ label="CTMC\nSubstitution model"];
+  substmodel [ label="CTMC\nSubstitution\nmodel (Q)"];
+  
+  matrix_exponentiation [label="Matrix\nexponentiation\nP(d)=exp(Qd)", shape="rect", style=filled, fillcolor="#ffff99" ];
   
   maximum_likelihood [label="Maximum\nlikelihood\ntree", style=filled, fillcolor="#99ff99" ];
-  bayesian_inference [label="Bayesian\nMCMC\nalgorithm", shape="rect", style=filled, fillcolor="#ffff99" ];
+  bayesian_inference [label="Bayesian\nMCMC\nalgorithm\nP(T,Q|D)", shape="rect", style=filled, fillcolor="#ffff99" ];
 
   bayesian_posterior [label="Posterior\ndistribution\non trees", style=filled, fillcolor="#99ff99" ];
-
   
   ls [label="Least-squares\ntree", style=filled, fillcolor="#99ff99" ];
 
@@ -40,8 +41,11 @@ digraph G {
   nj_tree [ label="Neighbour-joining\ntree", style=filled, fillcolor="#99ff99" ];
   upgma_tree [ label="UPGMA\ntree", style=filled, fillcolor="#99ff99" ];
 
-  substmodel -> distance_correction;
-  substmodel -> transition_probs;
+  substmodel -> distance_correction[label="d=f(p)"];
+
+  substmodel -> matrix_exponentiation; 
+  
+  matrix_exponentiation -> transition_probs[label=""];
 
 transition_probs -> felsenstein_pruning;
 
