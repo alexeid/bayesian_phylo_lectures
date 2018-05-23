@@ -29,6 +29,11 @@
   lecturer: Alexei Drummond
   section: bayesian_phylo
 - 
+  title: Time-trees and Relaxed phylogenetics
+  folder: lectureRelaxedPhylogenetics
+  lecturer: Alexei Drummond
+  section: bayesian_phylo
+- 
   title: The Coalescent
   folder: lecture10
   lecturer: Alexei Drummond
