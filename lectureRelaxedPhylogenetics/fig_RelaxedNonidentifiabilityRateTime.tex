@@ -12,17 +12,29 @@
 
 \begin{columns}
 \column{0.38\textwidth}
-\begin{tikzpicture}[yscale=-0.50,xscale=0.50]
-  \node[anchor=north, line width=1.25pt] at (236.66667pt, 116.66666pt) {B};
-  \node[anchor=north, line width=1.25pt] at (190pt, 132.22223pt) {A};
-  \draw[line width=1.25pt] (236.66667pt, 116.66667pt) -- node[auto] {\scriptsize{0.1}} (236.66667pt, 85.55556pt) -- (213.33333pt, 85.55556pt);
-  \draw[line width=1.25pt] (190pt, 132.22222pt) --  node[auto] {\scriptsize{0.15}} (190pt, 85.55556pt) -- (213.33333pt, 85.55556pt);
-  \node[anchor=north, line width=1.25pt] at (283.33334pt, 70pt) {C};
-  \draw[line width=1.25pt] (213.33333pt, 85.55556pt) -- node[auto] {\scriptsize{0.2}} (213.33333pt, 23.33333pt) -- (248.33333pt, 23.33333pt);
-  \draw[line width=1.25pt] (283.33333pt, 70pt) -- node[auto] {\scriptsize{0.15}} (283.33333pt, 23.33333pt) -- (248.33333pt, 23.33333pt);
-  \node[anchor=north, line width=1.25pt] at (330pt, 140pt) {D};
-  \draw[line width=1.25pt] (248.33333pt, 23.33333pt) -- node[auto] {\scriptsize{0.075}} (248.33333pt, 0pt) -- (289.16667pt, 0pt);
-  \draw[line width=1.25pt] (330pt, 140pt) -- node[auto] {\scriptsize{0.1}} (330pt, 0pt) -- (289.16667pt, 0pt);
+\begin{tikzpicture}[scale=0.5,rotate=-90]
+%  \node[anchor=north, line width=1.25pt] at (236.66667pt, 116.66666pt) {B};
+%  \node[anchor=north, line width=1.25pt] at (190pt, 132.22223pt) {A};
+%  \draw[line width=1.25pt] (236.66667pt, 116.66667pt) -- node[auto] {\scriptsize{0.1}} (236.66667pt, 85.55556pt) -- (213.33333pt, 85.55556pt);
+%  \draw[line width=1.25pt] (190pt, 132.22222pt) --  node[auto] {\scriptsize{0.15}} (190pt, 85.55556pt) -- (213.33333pt, 85.55556pt);
+%  \node[anchor=north, line width=1.25pt] at (283.33334pt, 70pt) {C};
+%  \draw[line width=1.25pt] (213.33333pt, 85.55556pt) -- node[auto] {\scriptsize{0.2}} (213.33333pt, 23.33333pt) -- (248.33333pt, 23.33333pt);
+%  \draw[line width=1.25pt] (283.33333pt, 70pt) -- node[auto] {\scriptsize{0.15}} (283.33333pt, 23.33333pt) -- (248.33333pt, 23.33333pt);
+%  \node[anchor=north, line width=1.25pt] at (330pt, 140pt) {D};
+%  \draw[line width=1.25pt] (248.33333pt, 23.33333pt) -- node[auto] {\scriptsize{0.075}} (248.33333pt, 0pt) -- (289.16667pt, 0pt);
+%  \draw[line width=1.25pt] (330pt, 140pt) -- node[auto] {\scriptsize{0.45}} (330pt, 0pt) -- (289.16667pt, 0pt);
+  
+   \draw[line width=1.25pt] (2,2)  -- node[auto] {\scriptsize{0.2}} (4,2);
+  \draw[line width=1.25pt] (2,2) -- node[auto] {\scriptsize{0.15}} (0.9393398,0.9393398);
+  \node[anchor=east, line width=1.25pt] at (0.9393398,0.9393398) {A};
+  \draw[line width=1.25pt] (2,2) -- node[auto,swap] {\scriptsize{0.1}} (1.292893,2.707107);
+  \node[anchor=west, line width=1.25pt] at (1.292893,2.707107) {B};
+
+  \draw[line width=1.25pt] (4,2) -- node[auto,swap] {\scriptsize{0.15}} (5.06066,0.9393398);
+  \node[anchor=east, line width=1.25pt] at (5.06066,0.9393398) {C};
+  \draw[line width=1.25pt] (4,2) -- node[auto] {\scriptsize{0.525}} (7.712311,5.712311);
+  \node[anchor=west, line width=1.25pt] at (7.712311,5.712311) {D};
+
   
 \end{tikzpicture}
 \column{0.24\textwidth}
