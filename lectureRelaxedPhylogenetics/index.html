@@ -153,21 +153,49 @@ tree, which is a one-dimensional subspace (parameter is the age of the root)
 
     <p>$$T = \color{darkgreen}{\mu} \times \color{red}{g}$$</p>
 
-    <p>$$P(\color{red}{g}, \color{darkgreen}{\mu}|D) = \frac{1}{\Pr(D)}\Pr(D|\color{darkgreen}{\mu} \times \color{red}{g})P(\color{red}{g}|\theta)P(\color{darkgreen}{\mu})P(\theta)$$</p>
+    <p>$$P(\color{red}{g}, \color{darkgreen}{\mu}, \theta|D) = \frac{1}{\Pr(D)}\Pr(D|T)P(\color{red}{g}|\theta)P(\color{darkgreen}{\mu})P(\theta)$$</p>
 
     <p>Relaxed molecular clock:</p>
 
     <p>$$T = \color{darkgreen}{\vec{\mu}} \star \color{red}{g}$$</p>
 
-    <p>$$P(\color{red}{g}, \color{darkgreen}{\vec{\mu}}|D) = \frac{1}{\Pr(D)}\Pr(D|\color{darkgreen}{\vec{\mu}} \star \color{red}{g})P(\color{red}{g}|\theta)P(\color{darkgreen}{\vec{\mu}})P(\theta)$$</p>
+    <p>$$P(\color{red}{g}, \color{darkgreen}{\vec{\mu}},\theta|D) = \frac{1}{\Pr(D)}\Pr(D|T)P(\color{red}{g}|\theta)P(\color{darkgreen}{\vec{\mu}})P(\theta)$$</p>
     
     <ul> 
-    <li>where $P(\color{darkgreen}{\vec{\mu}})$ is the model for how much rate variation you allow.
+    <li>where $P(\color{darkgreen}{\vec{\mu}})$ is the (model-based) prior for how much rate variation you allow.
     <li> The phylogenetic likelihood only depends on the substitution tree $T$: $\Pr(D|T)$.
     <li> The tree prior only depends on the time-tree $\color{red}{g}$: $P(\color{red}{g}|\theta)$.
-    <li> By fixing $\color{darkgreen}{\vec{\mu}} = 1$ we have an analysis in substitutions with no separation of rate and time.
+    <li> By fixing $\color{darkgreen}{\vec{\mu}} = 1$ we get a time-tree ($\color{red}{g}$) in units of substitutions (i.e. genetic distance).
     </ul>
 
+</section>
+
+<section>
+<h2>How many parameters are in each of these models?</h2>
+
+    <p>Unrooted tree, no molecular clock constraint</p>
+    
+    <ul>
+    <li>unrooted substitution tree $T$ has $2n-3$ random variables, one for each branch length</li>
+    </ul>
+
+    <p>Strict molecular clock:</p>
+
+    <ul>
+    <li>$\color{red}{g}$ has $n-1$ random variables, one for the age of each internal node.</li>
+    <li>$\color{darkgreen}{\mu}$ is a one-dimensional parameter</li>
+    <li>total of $n$ dimensions</li>
+    </ul>
+
+    <p>Relaxed molecular clock:</p>
+
+    <ul>
+    <li>$\color{red}{g}$ has $n-1$ random variables, one for the age of each internal node.</li>
+    <li>$\color{darkgreen}{\vec{\mu}}$ contains $2n-2$ rate parameters</li>
+    <li>total of $3n-3$ dimensions</li>
+    <li>Only identifiable by priors on rates and times: $P(\color{darkgreen}{\vec{\mu}})$, $P(\color{red}{g}|\theta)$
+    </ul>
+    
 </section>
 
 <section>
