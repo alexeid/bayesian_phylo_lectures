@@ -139,6 +139,114 @@ $$f(t_k)=\frac{1}{N}\exp\left(-\frac{ {k \choose 2}t_k}{N}\right)\,.$$
 
 </section>
 
+<section>
+
+<h2>The coalescent density with varying population size</h2>
+
+<p>The generalization of the coalescent for the case where the
+population size changes over time, $N = N(t)$ is given by Griffiths and Tavare (1994).</p>
+
+<p>They showed that the coalescent density for the first coalescence event being at time $t$ in the past given $n$ lineages is:
+
+<p>$$
+f(t) = {\frac{\binom{n}{2} }{N(t)} }  
+{\exp\left(-{\int \limits_0^t \frac{\binom{n}{2} }{N(x)} dx }\right)} 
+$$
+</p>
+
+<p> So as long as the coalescent intensity function $\frac{1}{N(t)}$ is integrable with respect to $t$, then the coalescent density of a tree can be computed for population size function $N(t)$. 
+
+</section>
+
+<section>
+
+	<div id="container">		
+		<div class="input-container" id="input-container">
+				
+			<div class="container-title" style="font-size:12pt"> Controls </div>
+				<div style="background-color: #ccccff;  text-align:center;">	
+
+					<button onclick="advance(1)">advance</button>
+					<button onclick="advance(1000)">advance 1000</button>
+                    			<button onclick="nextGeneration()">next generation</button><br>
+					<button onclick="run()">run</button>
+					<button onclick="stop()">stop</button>
+					<button onclick="clearCoalescentDensity();drawWrightFisher();">clear density</button>
+				</div>
+
+
+			<div class="container-title" style="font-size:12pt">Visualisation</div>
+				<div class="container-contents">	
+
+				<div class="form-element">
+						<div class="label" >Animation speed (gen/sec)</div><div class="input">
+                            <input name="animationSpeed" id="animationSpeed" type="number" min="1" max="50" value="15" /></div>
+					</div>
+					<div class="form-element">
+                        <div class="label" >mark individuals</div><div class="input">
+                            <input type='checkbox' checked="true" onclick='setPlotVertices(this);' ></div>
+					</div>
+					<div class="form-element">
+						<div class="label" >mark coalescent events</div><div class="input">
+                            <input type='checkbox' checked="true" onclick='setPlotCoalescence(this);' ></div>
+					</div>
+					<div class="form-element">
+						<div class="label" >show coalescent density</div><div class="input">
+                            <input type='checkbox' checked="true" onclick='setPlotCoalescenceDensity(this);' ></div>
+					</div>
+				</div>
+
+                <div class="container-title" style="font-size:12pt">Simulation parameters</div>
+				<div class="container-contents" >	
+					<div class="form-element">
+						<div class="label" for="sampleSize">sample size (n) = </div><div class="input">
+                            <input name="sampleSize" id="sampleSize" type="number" min="2" max="10" value="2"/></div>
+					</div>
+			
+					<div class="form-element">
+						<div class="label" for="G">number of generations (G) = </div><div class="input">
+                            <input name="G" id="G" type="number" min="2" max="99" value="64"/></div>
+					</div>
+
+				</div>
+				
+                <div class="container-title" style="font-size:12pt">Population size function parameters </div>
+				<div class="container-contents">	
+			
+					<div class="form-element">
+						<div class="label" for="N">population size (N) = </div><div class="input">
+                            <input name="N" id="N" type="number" min="2" max="99" value="32"/></div>
+					</div>
+			
+					<div class="form-element">
+						<div class="label" for="wavelength">Time between bottlenecks (wavelength) = </div><div class="input">
+                            <input name="wavelength" id="wavelength" type="number" min="2" max="99" value="16"/></div>
+					</div>
+
+					<div class="form-element">
+						<div class="label" for="N_bottleneck">Bottleneck population size (N_bottleneck) = </div><div class="input">
+                            <input name="N_bottleneck" id="N_bottleneck" type="number" min="1" max="99" value="8"/></div>
+					</div>
+
+                    <div class="form-element pf">
+                        <div class="label pf"> Population function: </div><div class="input pf">
+                            <input type="radio" name="popfunc" value="sinusoid" checked>Sinusoidal<br>
+                            <input type="radio" name="popfunc" value="squarewave">Square wave<br>
+                            <input type="radio" name="popfunc" value="sawtooth">Saw tooth<br>
+                            <input type="radio" name="popfunc" value="custom">Custom:<br>
+                            <textarea id="customPopFunc" rows="2" disabled>N-amp + Math.random()*amp</textarea>
+                        </div>
+                    </div>
+				</div>
+			</div>
+			<div id="canvas-container" style="margin:0 auto; overflow:hidden; height:100%; text-align:center;">
+				<canvas id="canvas" width="50%" height="600">
+					<script src="wrightFisher.js"></script>
+				</canvas>
+			</div>
+		<div style="clear:both;"></div>
+
+</section>
 
 <section>
     <canvas data-processing-sources="wrightFisher.pde"></canvas>

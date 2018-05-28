@@ -190,3 +190,62 @@ table.overview tr td {
 table.overview tr:nth-child(2n) {
     background-color: lightgrey;
 }
+
+.input-container {
+    max-width:67%;
+    float:left;
+    margin-left: 0.5em;
+}
+
+.container-title {
+    background-color: black;
+    text-align:center;
+    margin-top: 0.5em;
+    color: white;
+    font-weight: bold;
+    font-size: 12pt;
+}
+
+.container-contents {
+    background-color: #ccccff;
+    width:100%;
+    text-align:left;
+        overflow: hidden;
+}
+
+.form-element {
+    width: 100%;
+}
+
+.form-element > .label {
+    display:inline-block;
+    vertical-align: middle;
+    font-size: 9pt;
+    width:60%;
+    text-align:right;
+}
+.form-element > .input {
+    display:inline-block;
+    vertical-align:middle;
+    width: 39%;
+    font-size: 10pt;
+    text-align:left;
+}
+
+.form-element.pf {
+    margin-top:0.5em;
+}
+
+.form-element > .label.pf {
+    vertical-align: top;
+    width:30%;
+}
+
+.form-element > .input.pf {
+    font-size: 9pt;
+    width:69%;
+}
+
+.input.pf > textarea {
+    width:95%;
+}
