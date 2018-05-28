@@ -22,20 +22,123 @@ lecture_num: 10
 <section>
 	<h2>Theoretical population genetics</h2>
 	
-	<div align="left" style="margin-top:5%; margin-left:5%; width:85%">
+	<div style="float:right; width:35%">
+		<img data-src="wrightFisher.png" style="width:100%">
+</div>
+
+	<div style="float:left; margin-left:5%; width:55%">
+	<div align="left" style="margin-top:5%">
 	Most of theoretical population genetics is based on the idealized Wright-Fisher model of population which assumes
 	</div>
 
-	<ul class="spaced" style="margin-top:2%; width:80%">
+	<ul class="spaced" style="margin-top:2%">
 	<li>Constant population size N 	
 	<li>Discrete generations
 	<li>Complete mixing
 	</ul>	
 
-	<div align="left" style=" margin-left:5%; width:85%">
+	<div align="left" style="">
 	For the purposes of this presentation the population will be assumed to be haploid, as is the case for many pathogens.
 	</div>
+	</div>
+	
 </section>
+
+<section>
+	<h2>Kingman's n-coalescent</h2>
+	
+	<div style="float:right; width:35%">
+		<img data-src="wfCoalescent3.png" style="width:100%">
+</div>
+
+	<div style="float:left; margin-left:5%; width:55%">
+	<div align="left" style="margin-top:5%">
+<p>Consider tracing the ancestry of a sample of $k$ individuals from the present, back into the past.</p>
+
+<p>This process eventually coalesces to a single common ancestor (concestor) of the sample of individuals.</p>
+
+<p>Kingman’s n-coalescent describes the statistical properties of such an ancestry when $k$ is small compared to the total population size $N$.</p>
+	</div>
+
+</section>
+
+<section>
+	<h2>The coalescence of two ancestral lineages</h2>
+	
+	<div style="float:right; width:35%">
+		<img data-src="wfCoalescent2.png" style="width:100%">
+</div>
+
+	<div style="float:left; margin-left:5%; width:55%">
+	<div align="left" style="margin-top:5%">
+	<ul class="spaced">
+<li>First, consider two random members from a population of fixed size $N$.
+<li>By perfect mixing, the probability they share a concestor in the previous generation is $1/N$.
+<li> The probability the concestor is $t$ generations back is
+$$\Pr(t)= \frac{1}{N}(1−\frac{1}{N})^{t−1}.$$
+<li>  It follows that $g=t−1$,has a geometric distribution with a success rate of $\lambda = 1/N$, and so has mean $N$ and variance of $N^3/(N − 1)$.
+
+
+	</div>
+
+</section>
+
+
+<section>
+	<h2>The coalescence of k lineages</h2>
+	
+	<div style="float:right; width:35%">
+		<img data-src="wfCoalescent3.png" style="width:100%">
+</div>
+
+	<div style="float:left; margin-left:5%; width:55%">
+	<div align="left" style="margin-top:5%">
+<p>With $k$ lineages the time to the first coalescence is derived in the same way,
+only now there are $k \choose 2$ possible pairs that may coalesce, resulting in a success rate of $\lambda = {k \choose 2}/N$.</p>
+
+<p> The mean time to first coalescence ($t_k$) of is:
+       $$E[t_k] = \frac{N}{k \choose 2}.$$</p>
+<p>This implicitly assumes that $N$ is much larger than $O(k^2)$, so that the probability of two coalescent events in the same generation is small.</p>
+
+</section>
+
+<section>
+<h2>The coalescent is a <i>diffusion approximation</i></h2>
+
+	<div style="float:right; width:49.99%">
+		<img data-src="wrightFisherToTree.png" style="width:100%">
+</div>
+
+<div style="float:left; margin-left:0%; width:50%">
+<p>Kingman (1982) showed that as $N$ grows the coalescent process converges to a
+continuous-time Markov chain.</p>
+
+
+<p>$\lambda = \binom{k}{2}/N$ is the rate of coalescence, i.e. the probability of coalescing a pair from $k$ lineages on a short time
+interval $\Delta t$ is $O({\lambda\Delta t})$. Unsurprisingly the solution turns out to be the exponential distribution:</p>
+
+$$f(t_k)=\frac{ {k \choose 2} }{N}\exp\left(-\frac{ {k \choose 2}t_k}{N}\right)\,,$$
+
+<p>or more relevant to a tree hypothesis, for a <i>specific</i> pair of lineages:</p>
+
+$$f(t_k)=\frac{1}{N}\exp\left(-\frac{ {k \choose 2}t_k}{N}\right)\,.$$
+
+
+</div>
+</section>
+
+<section>
+	<h2>The coalescent density for a genealogy</h2>
+	
+	<p> For a genealogy $g$ with coalescent times $\mathbf{t} = \{t_2, t_3, \dots, t_n\}$ we can write the probability density of the genealogy:</p>
+	
+	<p>$$P(g|N)=\frac{1}{N^{n-1}}\prod_{k=2}^n\exp\left(-\frac{ {k \choose 2}t_k}{N}\right)\,.$$</p>
+	
+	
+	<img data-src="wrightFisherToTree.png" style="width:60%">
+
+</section>
+
 
 <section>
     <canvas data-processing-sources="wrightFisher.pde"></canvas>
