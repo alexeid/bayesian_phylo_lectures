@@ -166,6 +166,8 @@ var intervalId = null;
  
 function run() {
 	if (intervalId === null) {
+	      initCanvasAndContext();
+
 		intervalId = setInterval(nextGeneration, delayInMillis);
 	}
 }
@@ -176,8 +178,9 @@ function initCanvasAndContext() {
     var bbox = container.getBoundingClientRect();
 
 	canvas = document.getElementById("canvas"); // grabs the canvas element
-    canvas.setAttribute("width", bbox.width);
-    //canvas.setAttribute("height", bbox.height);
+        
+    	canvas.setAttribute("width", bbox.width);
+    	//canvas.setAttribute("height", bbox.height);
 
 	ctx = canvas.getContext("2d"); // returns the 2d context object
 }
