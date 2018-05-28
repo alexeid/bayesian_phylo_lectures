@@ -145,3 +145,44 @@ tree, which is a one-dimensional subspace (parameter is the age of the root)
     <img data-src="fig_RelaxedNonidentifiabilityRateTime.png" style="width:80%">
 
 </section>
+
+<section>
+<h2>Bayesian phylogenetic posterior with a molecular clock</h2>
+
+    <p>Strict molecular clock:</p>
+
+    <p>$$T = \color{darkgreen}{\mu} \times \color{red}{g}$$</p>
+
+    <p>$$P(\color{red}{g}, \color{darkgreen}{\mu}|D) = \frac{1}{\Pr(D)}\Pr(D|\color{darkgreen}{\mu} \times \color{red}{g})P(\color{red}{g}|\theta)P(\color{darkgreen}{\mu})P(\theta)$$</p>
+
+    <p>Relaxed molecular clock:</p>
+
+    <p>$$T = \color{darkgreen}{\vec{\mu}} \star \color{red}{g}$$</p>
+
+    <p>$$P(\color{red}{g}, \color{darkgreen}{\vec{\mu}}|D) = \frac{1}{\Pr(D)}\Pr(D|\color{darkgreen}{\vec{\mu}} \star \color{red}{g})P(\color{red}{g}|\theta)P(\color{darkgreen}{\vec{\mu}})P(\theta)$$</p>
+    
+    <ul> 
+    <li>where $P(\color{darkgreen}{\vec{\mu}})$ is the model for how much rate variation you allow.
+    <li> The phylogenetic likelihood only depends on the substitution tree $T$: $\Pr(D|T)$.
+    <li> The tree prior only depends on the time-tree $\color{red}{g}$: $P(\color{red}{g}|\theta)$.
+    <li> By fixing $\color{darkgreen}{\vec{\mu}} = 1$ we have an analysis in substitutions with no separation of rate and time.
+    </ul>
+
+</section>
+
+<section>
+<h2>What models of rate variation should we consider?</h2>
+
+    <p> <b>Autocorrelated models</b> of rate variation assume the rate evolves down the tree:</p>
+    
+    $$P(\color{darkgreen}{\vec{\mu}}) = \prod_i P(\mu_i | \mu_{\text{parent}(i)})$$
+    
+<p> e.g.     $\text{log}(\mu_i) \sim \text{Normal}(\text{log}(\mu_{\text{parent}(i)}), \sigma t_i)$, where $t_i$ is the length of time separating the $i$'th node and its parent in the time tree and $\sigma$ is the rate of evolution of the rate of evolution per unit time in log space.
+    <p> <b>Uncorrelated models</b> of rate variation assume each branch has a rate drawn independently from a distribution</p>
+
+    $$P(\color{darkgreen}{\vec{\mu}}) = \prod_i P(\mu_i | \nu)$$
+
+    <p> where $\nu$ are parameters of the distribution they are drawn from, e.g. $\text{log}(\mu_i) \sim \text{Normal}(M, S)$, where $M$ is the mean of the log rate and $S$ is the standard deviation of the log-rate.</p>
+    
+</section>
+
