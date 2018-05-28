@@ -214,3 +214,38 @@ tree, which is a one-dimensional subspace (parameter is the age of the root)
     
 </section>
 
+<section>
+<h2>Bayesian MCMC differences</h2>
+
+    <p> The main model in MrBayes samples unrooted trees with no molecular clock. </p>
+    <p><ul>
+    <li> Operator proposals have to be able to move from any unrooted tree to any other.
+    <li> Branch length proposals can propose any positive branch length for any branch.
+    </ul></p>
+    
+    <p> The main model in BEAST samples rooted time trees with a strict or relaxed molecular clock. </p>
+    <p><ul>
+    <li> Operators have to maintain constraints, so parameterise the tree on a time scale in which all leaves are fixed to their known age and all moves on tree topology and divergence times must maintain that constraint.
+    <li> Natural to operator on <i>divergence times </i> instead of <i>branch lengths</i>.
+    </ul></p>
+    
+    
+    <img data-src="ClockConstraint.png" style="width:80%">
+
+   
+</section>
+
+<section>
+<h2>Conclusions</h2>
+
+    <ul class="spaced" style="margin-top:5%; width:85%">
+<li>Relaxed molecular clocks have many benefits over unconstrained models for phylogenetic inference
+<ul>
+  <li> They appear to estimate the phylogenetic tree more accurately on real data sets
+  <li> They automatically provide estimates of a root position, without the need for an outgroup
+  <li> They automatically provide estimates of relative divergence dates, or absolute divergence dates when calibration information is available
+</ul>
+<li> Both leaf- and node-calibration can produce time-trees in calendar units, (and new methods that directly model the sampling process can also be used for calibration).
+<li> The geometry of (time-)trees is understudied and advances could lead to new phylogenetic inference methods and better posterior summaries.
+</ul>
+</section>
