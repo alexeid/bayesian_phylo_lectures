@@ -1,14 +1,76 @@
-* Three guest lectures will not be examined
-* Explain how gamma distribution can be incorporated into Felsenstein's phylogenetic likelihood
-* Show an animation of sampling tree space.
-* Remove differential description of substitution models
-* Continuous-time Markov chains (CTMCs) 
-   1. slide 2/7; Don't need to know the differential form - not examinable
-   2. Slide 2/20; Don't need to know the JC distance correction with site rate heterogeneity
-* Bayesian phylogenetics
-   1. slide 10; Don't need to be able to reproduce the stochastic trajectory formalism at the top of this slide; 
-   do need to know that the acceptance probability fulfils the requirement achieving the target distribution as the equilibrium.
+---
+layout: notes
+---
+<section>
+<h1> COMPSCI 369 final notes</h1>
+</section>
+
+<section>
+<h2> Assignment 3 </h2>
+
+<p>The coalescent likelihood should be:</p>
+
+$$ p(T|N_e) = \prod_{k=2}^{n} \left( \frac{1}{N_e} \exp\left(\color{red}{-}\frac{k (k-1) t_k}{ 2N_e}\right) \right)  $$
+
+<p>where $t_k$ is the time duration that the tree $T$ has $k$ lineages.</p>
+
+<p>You may find that you need to calculation this target distribution in log space to avoid numerical underflow:</p>
+
+$$ \ln p(T|N_e) = \sum_{k=2}^{n}  \left(-\ln(N_e) -\frac{k (k-1) t_k}{ 2N_e}\right)   $$
+
+<p> The acceptance probability ratio becomes $\alpha = \min(1, exp(\ln p(N_e'|T)-\ln p(N_e|T)))$</p>
+
+<p> Remember $p(N_e|T) \propto p(T|N_e)p(N_e)$.
+</section>
+
+<section>
+<h2> MCMC in tree space simulation</h2>
+
+<a href="https://walterxie.github.io/TreeSpace/"> Tree Space simulation </a>
+
+</section>
+
+<section>
+<h2> MCMC algorithm</h2>
+
+<p> Pseudocode for one dimensional problem on positive real parameter $\theta$: </p>
+
+<ul style="list-style-type:none;">
+<li> Set $i = 0, \theta = 1$, chain = array[$MAX\_STEPS$];
+<li> While ($i < MAX\_STEPS$) {
+  <ul style="list-style-type:none;">
+  <li> Generate a uniform random variate $U \sim \mbox{Uniform}\left(-10,10 \right)$; 
+  <li> Set $\theta' = \theta + U$
+  <li> if ($\theta' > 0$) {
+  <ul style="list-style-type:none;">
+    <li> Set $\alpha = \min(1, \pi(\theta')/\pi(\theta)$);
+    <li> Generate a unit uniform random variate $V \sim \mbox{Uniform}\left(0,1 \right)$;
+    <li> if ($\alpha > V$) then set $\theta = \theta'$;
+  </ul>
+  <li> }
+  <li> Set chain[i] = $\theta$;
+  <li> Set $i = i + 1$;
+  </ul>
+  <li> }
+</ul>
+
+</section>
+
+<section>
+<h2> What is not examinable</h2>
+
+<ul> 
+<li>Three guest lectures will not be examined
+<li> Continuous-time Markov chains (CTMCs) are examinable except for
+   <ol>
+   <li> slide 2/7; Don't need to know the differential form for CTMCs probability distribution
+   <li> Slide 2/20; Don't need to know the JC distance correction with site rate heterogeneity
+   </ol>
+<li> Bayesian phylogenetics is examinable except for
+   <ol>
+   <li> slide 10; Don't need to be able to reproduce the stochastic trajectory formalism at the top of this slide; 
+   <b>do need</b> to know that the Metropolis-Hastings acceptance probability achieves the target distribution as the equilibrium.
+   </ol>
+</ul>
+</section>
    
-* Assignment
-  1. You may need to calculation the posterior probability in log space. So a product of probabilities becomes a sum of log probabilities.
-  2. The acceptance probability ratio becomes a = min(1, exp(logP(x')-logP(x)))

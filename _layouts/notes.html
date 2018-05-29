@@ -1,0 +1,102 @@
+{% assign lectureIdx = 0 %}
+{% for lecturePrime in site.data.lectures %}
+{% assign lecturePrimeNum = forloop.index %}
+{% assign pgurl = "/" | append: lecturePrime.folder | append: "/" %}
+
+{% if pgurl == page.url %}
+{% assign lecture = lecturePrime %}
+{% assign lectureNum = lecturePrimeNum %}
+{% endif %}
+
+{% endfor %}
+
+<!doctype html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+        <title>{{page.title}}</title>
+
+        <link rel="stylesheet" href="{{site.baseurl}}/js/reveal.js/css/reveal.css">
+
+        <link rel="stylesheet" href="{{site.baseurl}}/css/lecture_theme.css">
+
+
+		<!-- Theme used for syntax highlighting of code -->
+		<link rel="stylesheet" href="{{site.baseurl}}/js/reveal.js/lib/css/zenburn.css">
+
+		<!-- Printing and PDF exports -->
+		<script>
+			var link = document.createElement( 'link' );
+			link.rel = 'stylesheet';
+			link.type = 'text/css';
+			link.href = window.location.search.match( /print-pdf/gi ) ? '{{site.baseurl}}/js/reveal.js/css/print/pdf.css' : '{{site.baseurl}}/js/reveal.js/css/print/paper.css';
+			document.getElementsByTagName( 'head' )[0].appendChild( link );
+		</script>
+
+        <!-- JQuery -->
+        <script src="{{site.baseurl}}/js/jquery-3.2.0.min.js"></script>
+
+        <!-- Plotly -->
+        <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+
+        <!-- Processing -->
+        <script src="{{site.baseurl}}/js/processing.min.js"></script>
+
+
+        <!-- Include lecture-specific JS -->
+        {% for file in site.static_files %}{% if file.path contains page.dir and file.extname == ".js"%}
+            <script src="{{site.baseurl}}{{file.path}}"></script>
+        {% endif %} {% endfor %}
+        {% for url in page.scripts %}
+            <script src="{{url}}"></script>
+        {% endfor %}
+	</head>
+
+	<body>
+		<div class="reveal">
+			<div class="slides">
+
+                {{content}}
+
+			</div>
+		</div>
+
+		<script src="{{site.baseurl}}/js/reveal.js/lib/js/head.min.js"></script>
+		<script src="{{site.baseurl}}/js/reveal.js/js/reveal.js"></script>
+
+		<script>
+			// More info https://github.com/hakimel/reveal.js#configuration
+			Reveal.initialize({
+                controls: {{page.reveal.controls}},
+                progress: {{page.reveal.progress}},
+                history: {{page.reveal.history}},
+                center: {{page.reveal.center}},
+                mouseWheel: {{page.reveal.mouseWheel}},
+                slideNumber: {{page.reveal.slideNumber}},
+                transition: '{{page.reveal.transition}}',
+
+                math: {
+                    mathjax: 'https://cdn.mathjax.org/mathjax/latest/MathJax.js',
+                    config: 'TeX-AMS_HTML-full'  // See http://docs.mathjax.org/en/latest/config-files.html
+                },
+
+				// More info https://github.com/hakimel/reveal.js#dependencies
+				dependencies: [
+					{ src: '{{site.baseurl}}/js/reveal.js/plugin/markdown/marked.js' },
+					{ src: '{{site.baseurl}}/js/reveal.js/plugin/markdown/markdown.js' },
+					{ src: '{{site.baseurl}}/js/reveal.js/plugin/notes/notes.js', async: true },
+					{ src: '{{site.baseurl}}/js/reveal.js/plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } },
+                    { src: '{{site.baseurl}}/js/reveal.js/plugin/math/math.js', async: true }
+				]
+			});
+
+            // Hide print button if these are already the print-friendly slides
+            if (window.location.search.match( /print-pdf/gi ) ) {
+                document.getElementById("print-button").style.display = "none";
+                console.log("hey!");
+            }
+		</script>
+	</body>
+</html>
