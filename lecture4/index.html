@@ -7,23 +7,6 @@ reveal:
 ---
 
 <section>
-    <h2>House-keeping</h2>
-
-    <ol class="spaced" style="margin-top:10%">
-        <li>Lab this Friday. Details to be announced.</li>
-        <li>Assignment 1 will be <b>available on Canvas this afternoon</b>.</li>
-        <li>My office is room 467 (fourth floor) of building 303S (in the CS department)</li>
-        <li>Office hours:
-            <ul>
-                <li>1-3pm, Wednesday</li>
-                <li>Almost any other time, but ...</li>
-                <li>Email <a href="mailto:tgvaughan@gmail.com">tgvaughan@gmail.com</a> to avoid dissapointment.</li>
-            </ul>
-        </li>
-    </ol>
-</section>
-
-<section>
     <section class="center">
         <h2>Hidden Markov Models (HMMs)</h2>
     </section>
@@ -32,7 +15,7 @@ reveal:
         <h3>Markov Chains</h3>
 
         <ul class="spaced" style="margin-top:2em">
-            <li class="fragment">Markov Chains are discrete stochastic processes which obey the Makov property:
+            <li class="fragment">Markov Chains are discrete stochastic processes which obey the Markov property:
 
                 <blockquote>
                     $$P(X_{i}|X_{i-1},X_{i-2},\ldots,X_0) = P(X_i|X_{i-1})$$
@@ -48,7 +31,7 @@ reveal:
             </li>
             <li class="fragment">This allows the vector $\vec{P}_i$ of probabilities at $i$ to be expressed as
                 $$\vec{P}_i=M\vec{P}_{i-1}=M^i\vec{P}_{0}$$
-                where $M$ is the matrix of <b>transition probailities</b>.</li>
+                where $M$ is the matrix of <b>transition probabilities</b>.</li>
         </ul>
 
     </section>
@@ -197,6 +180,7 @@ reveal:
         <div class="textbox" style="margin-top:20%">
             <div class="title"><a id="HMMviterbi" href="#" style="color:white">Run Viterbi Demo</a></div>
             <pre id="HMMviterbi_output">
+
 
 
             </pre>

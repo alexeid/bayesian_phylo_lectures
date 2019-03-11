@@ -8,9 +8,22 @@ $(document).ready(function() {
     $("#HMMviterbi").click(function(e) {
         e.preventDefault();
         var res = HMM.sim();
-        $("#HMMviterbi_output").text(HMM.getSimString(res[0], res[1])
+
+        var state_sequence = res[0];
+        var obs_sequence = res[1];
+        var viterbi_state_sequence = HMM.viterbi(obs_sequence);
+        
+        var simstr = HMM.getSimString(state_sequence, obs_sequence);
+        var vitstr = HMM.getViterbiString(viterbi_state_sequence);
+        
+        var count = 0;
+        for (i=1; i < state_sequence.length; i++) {
+          count += (viterbi_state_sequence[i] == state_sequence[i]) ? 1 : 0;  
+        }
+        
+        $("#HMMviterbi_output").text(simstr
                                 + "\n"
-                                + HMM.getViterbiString(HMM.viterbi(res[1])));
+                                + vitstr + "\n         " + count + "/" + state_sequence.length + " correct.");
     });
 
     $("#HMMforwardBackward").click(function(e) {
@@ -18,7 +31,7 @@ $(document).ready(function() {
         var res = HMM.sim();
         $("#HMMforwardBackwardOutput").text(HMM.getSimString(res[0], res[1]) + "\n"
                                 + HMM.getViterbiString(HMM.viterbi(res[1])) + "\n\n"
-                                + HMM.getPosteriorString(HMM.forwardBackward(res[1])));
+                                + HMM.getPosteriorString(HMM.forwardBackward(res[1])) );
     });
 
 });
@@ -68,8 +81,8 @@ HMM = (function() {
     }
 
     function getSimString(state_sequence, obs_sequence) {
-        var statesString = "States: ";
-        var obsString =    "   Obs: ";
+        var statesString = " States: ";
+        var obsString =    "    Obs: ";
         for (i=0; i<N; i++) {
             statesString += states[state_sequence[i]];
             obsString += obs[obs_sequence[i]];
@@ -78,10 +91,10 @@ HMM = (function() {
         return statesString + "\n" + obsString;
     }
 
-    function getViterbiString(obs_sequence) {
-        var obsString =    "Viterb: ";
+    function getViterbiString(hidden_sequence) {
+        var obsString =    "Viterbi: ";
         for (i=0; i<N; i++) {
-            obsString += states[obs_sequence[i]];
+            obsString += states[hidden_sequence[i]];
         }
 
         return obsString;
