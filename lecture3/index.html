@@ -154,9 +154,9 @@ reveal:
 
         <ul class="spaced" style="width:60%;margin-top:2em;">
             <li>$F$ consists of $\prod_{q=1}^{N}n_q$ terms:
-                <ul><li>$\sim O(n^N)$ space complexity.</li></ul></li>
+                <ul><li style="color: #ff0000;">$O(n^N)$ space complexity.</li></ul></li>
             <li class="fragment">Computing each element of $F$ requires maximizing over $2^N-1$ possibilities:
-                <ul><li>$\sim O(2^Nn^N)$ time complexity.</li>
+                <ul><li style="color: #ff0000;">$O(2^Nn^N)$ time complexity.</li>
                     <li>(traceback negligible cost in comparison)</li>
                 </ul>
             </li>
@@ -410,7 +410,17 @@ reveal:
             <li class="fragment">Encourages gaps to occur in same columns in subsequent alignments.</li>
         </ul>
     </section>
+    
+    <section>
+      <h3>Progressive mis-alignment</h3>
+       <img data-src="progressiveMisalignment-00.png" style="width:85%">
+    </section>
 
+    <section>
+      <h3>Progressive mis-alignment</h3>
+       <img data-src="progressiveMisalignment-01.png" style="width:85%">
+    </section>
+    
     <section>
         <h3>Profile alignment</h3>
 
