@@ -35,17 +35,17 @@ reveal:
 
     <section>
       <h3>Ring-tailed lemur beta globin</h3>
-       <img data-src="globins-lemur.png" style="width:85%">
+       <img data-src="globins-lemur.jpg" style="width:80%">
     </section>
 
     <section>
       <h3>Goldfish beta globin</h3>
-       <img data-src="globins-goldfish.png" style="width:85%">
+       <img data-src="globins-goldfish.jpg" style="width:80%">
     </section>
 
     <section>
       <h3>Soybean leghemoglobin</h3>
-       <img data-src="globins-soybeans.png" style="width:85%">
+       <img data-src="globins-soybeans.jpg" style="width:80%">
     </section>
 
 <section>
@@ -611,8 +611,8 @@ reveal:
                </td>
            </tr>
        </table>
-
        <p>Therefore,</p>
+       <div style="font-size:0.8em;margin-top:0.5em">
        \begin{align*}
        F(i,j) = \max\left\{\begin{array}{l}
        F(i-1,j-1) + s(x_i,y_j)\\
@@ -620,6 +620,7 @@ reveal:
        F(i-1,j) - d
        \end{array}\right.
        \end{align*}
+       </div>
    </section>
 
    <section>
@@ -652,7 +653,7 @@ reveal:
        <h3>Example</h3>
 
        <blockquote style="margin-top:20%">
-           <a href="http://experiments.mostafa.io/public/needleman-wunsch/index.html">Online interactive demo</a>
+           <a href="https://gtuckerkellogg.github.io/pairwise/demo/">Online interactive demo</a>
        </blockquote>
    </section>
 
@@ -792,9 +793,9 @@ reveal:
        F(i-1,j) - d\\
        0
        \end{array}\right.
+       
+       \implies F(i,0) = F(0,j) = 0
        \end{align*}
-
-       $$\implies F(i,0) = F(0,j) = 0$$
        </div>
    </section>
 
