@@ -83,3 +83,8 @@
   folder: lecture_sa
   lecturer: Alexei Drummond
   section: advanced
+-
+  title: Python Programming Primer
+  folder: lecturePython
+  lecturer: Alexei Drummond
+  section: programming
