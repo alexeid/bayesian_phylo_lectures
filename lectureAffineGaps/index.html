@@ -6,30 +6,101 @@ reveal:
 ---
 
 <section>
-    <h2>Global alignment using affine gap scores</h2>
+    <h2>Global alignment using general gap scores</h2>
 
         <ul class="spaced" style="width:80%">
         <li>We can also easily modify the <b>Needleman–Wunsch</b> algorithm
-           to compute optimal alignments with <b>affine gap scoring</b>.
+           to compute optimal alignments with <b>general gap scoring</b>.
         <li>Let $s(x_i , y_i)$ be the substitution score for characters $x_i$ and $y_i$. 
         <li> If $x_1, x_2, \dots , x_n$ and $y_1, y_2, \dots, y_m$ are two strings then we can
-           compute the best alignment $F(n,m)$ using:</p>
+           compute the best alignment $F(n,m)$ using:
+        </ul>
 
 	<div style="margin-top:1em">
        \begin{align*}
        F(i,j) = \max\left\{\begin{array}{l}
        F(i-1,j-1) + s(x_i,y_j)\\
-       F(i,k) + \gamma(j-k), \; k= 0,\dots,j-1\\
-       F(k,j) + \gamma(i-k), \; k= 0,\dots,i-1
+       F(i,j-k) + \gamma(k), \; k= 1,\dots,j\\
+       F(i-k,j) + \gamma(k), \; k= 1,\dots,i
        \end{array}\right.
        \end{align*}
        </div>
 
 	<div style="margin-top:1em">
-       $$F(k,0) = F(0,k) = \gamma(k) = -d - (k-1)e$$
+       $$F(k,0) = F(0,k) = \gamma(k)$$
        </div>
        
-       <p>But, the running time is now cubic: $\Theta((n + m)^3)$ !</p>
+       <p><center>But, the running time is now cubic: $\Theta(nm(n + m))$ !</center></p>
 </section>
 
+<section>
+    <h2>Global alignment using affine gap scores</h2>
+
+        Affine gap scores are a specific gap score function: $\gamma(k) = -d - (k-1)e$
+	
+        <img data-src="gap-score.png" style="width:70%;box-shadow:none">
+
+</section>
+
+<section>
+    <h2>Global alignment using affine gap scores</h2>
+    
+        <ul class="spaced" style="width:80%">
+        <li> Let $M(i,j)$ be the best score under the constraint that $x_i$ aligned to $y_j$.
+        <li> Let $I_x(i, j)$ be the best score with $x_i$ aligned to a gap.
+        <li> Let $I_y(i, j)$ be the best score with $y_j$ aligned to a gap.
+        </ul>
+        
+        <div style="display: grid; grid-template-columns: 2fr 1fr; grid-template-rows: 400px">
+        <div>
+        <img data-src="affine-tables.png">
+	</div>
+	<div style="margin-top:1em">
+	<p>We get a quadradic-time algorithm by introducing a constant factor more subproblems.</p>
+	<p>i.e, 3 tables of size $O(mn)$ $0 \le i \le n$ and $0 \le j \le m$.</p>
+	</div>
+	</div>
+
+</section>
+
+<section>
+    <h2>Global alignment using affine gap scores</h2>
+
+       <p>An efficient set of recursions to compute affine gap
+scores for strings $x_1,x_2,\dots,x_n$ and $y_1,y_2,\dots,y_m$ is now
+$\max\{M(n,m),I_x(n,m),I_y(n,m)\}$ where:</p>
+
+	<div style="margin-top:1em">
+       \begin{align*}
+       M(i,j) = \max\left\{\begin{array}{l}
+       M(i-1,j-1) + s(x_i,y_j)\\
+       I_x(i-1,j-1) + s(x_i,y_j)\\
+       I_y(i-1,j-1) + s(x_i,y_j)
+       \end{array}\right.
+       \end{align*}
+       </div>
+       
+       <div style="margin-top:1em">
+       \begin{align*}
+       I_x(i,j) = \max\left\{\begin{array}{l}
+       M(i-1,j) - d\\
+       I_x(i-1,j) - e
+       \end{array}\right.
+       \end{align*}
+       </div>
+
+       <div style="margin-top:1em">
+       \begin{align*}
+       I_y(i,j) = \max\left\{\begin{array}{l}
+       M(i,j-1) - d\\
+       I_y(i,j-1) - e
+       \end{array}\right.
+       \end{align*}
+       </div>
+
+	<div style="margin-top:1em">
+       $$I_x(k,0) = I_y(0,k) = \gamma(k) = -d - (k-1)e,\;\; k>0$$
+       </div>
+       
+</section>
 
