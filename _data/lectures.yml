@@ -14,6 +14,11 @@
   lecturer: Alexei Drummond
   section: introduction
 -
+  title: Affine gaps
+  folder: lectureAffineGaps
+  lecturer: Alexei Drummond
+  section: introduction
+-
   title: Hidden Markov Models
   folder: lecture4
   lecturer: Alexei Drummond

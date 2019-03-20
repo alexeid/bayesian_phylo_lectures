@@ -1,0 +1,35 @@
+---
+lecture_num: 7
+
+reveal:
+    history: true
+---
+
+<section>
+    <h2>Global alignment using affine gap scores</h2>
+
+        <ul class="spaced" style="width:80%">
+        <li>We can also easily modify the <b>Needleman–Wunsch</b> algorithm
+           to compute optimal alignments with <b>affine gap scoring</b>.
+        <li>Let $s(x_i , y_i)$ be the substitution score for characters $x_i$ and $y_i$. 
+        <li> If $x_1, x_2, \dots , x_n$ and $y_1, y_2, \dots, y_m$ are two strings then we can
+           compute the best alignment $F(n,m)$ using:</p>
+
+	<div style="margin-top:1em">
+       \begin{align*}
+       F(i,j) = \max\left\{\begin{array}{l}
+       F(i-1,j-1) + s(x_i,y_j)\\
+       F(i,k) + \gamma(j-k), \; k= 0,\dots,j-1\\
+       F(k,j) + \gamma(i-k), \; k= 0,\dots,i-1
+       \end{array}\right.
+       \end{align*}
+       </div>
+
+	<div style="margin-top:1em">
+       $$F(k,0) = F(0,k) = \gamma(k) = -d - (k-1)e$$
+       </div>
+       
+       <p>But, the running time is now cubic: $\Theta((n + m)^3)$ !</p>
+</section>
+
+
