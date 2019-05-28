@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generator: Adobe Illustrator 21.1.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 viewBox="0 0 550 202" style="enable-background:new 0 0 550 202;" xml:space="preserve">
+<style type="text/css">
+	.st0{fill:none;stroke:#000000;stroke-width:3;}
+	.st1{font-family:'ArialMT';}
+	.st2{font-size:18px;}
+	.st3{fill:none;stroke:#000000;stroke-width:3;stroke-miterlimit:10;}
+	.st4{font-size:24px;}
+</style>
+<circle class="st0" cx="50" cy="150" r="25"/>
+<text transform="matrix(1 0 0 1 38 155)" class="st1 st2">AT</text>
+<circle class="st0" cx="179" cy="150" r="25"/>
+<text transform="matrix(1 0 0 1 167 155)" class="st1 st2">TG</text>
+<circle class="st0" cx="365" cy="150" r="25"/>
+<text transform="matrix(1 0 0 1 353 155)" class="st1 st2">GC</text>
+<circle class="st0" cx="497" cy="150" r="25"/>
+<text transform="matrix(1 0 0 1 485 155)" class="st1 st2">CA</text>
+<circle class="st0" cx="179" cy="50" r="25"/>
+<text transform="matrix(1 0 0 1 167 55)" class="st1 st2">GT</text>
+<circle class="st0" cx="365" cy="50" r="25"/>
+<text transform="matrix(1 0 0 1 353 55)" class="st1 st2">CG</text>
+<g>
+	<g>
+		<line class="st3" x1="75" y1="150" x2="137.4" y2="150"/>
+		<g>
+			<polygon points="154,150 133.1,156.1 136.6,150 133.1,143.9 			"/>
+		</g>
+	</g>
+</g>
+<text transform="matrix(1 0 0 1 84 139)" class="st1 st4">ATG</text>
+<g>
+	<g>
+		<path class="st3" d="M194.1,169.9"/>
+	</g>
+</g>
+<g>
+	<g>
+		<line class="st3" x1="179" y1="75" x2="179" y2="114.4"/>
+		<g>
+			<polygon points="179,125 172.9,110.1 179,113.6 185.1,110.1 			"/>
+		</g>
+	</g>
+</g>
+<g>
+	<g>
+		<line class="st3" x1="340" y1="50" x2="214.6" y2="50"/>
+		<g>
+			<polygon points="204,50 218.9,43.9 215.4,50 218.9,56.1 			"/>
+		</g>
+	</g>
+</g>
+<g>
+	<g>
+		<line class="st3" x1="365" y1="125" x2="365" y2="85.6"/>
+		<g>
+			<polygon points="365,75 371.1,89.9 365,86.4 358.9,89.9 			"/>
+		</g>
+	</g>
+</g>
+<g>
+	<g>
+		<line class="st3" x1="204" y1="150" x2="329.4" y2="150"/>
+		<g>
+			<polygon points="340,150 325.1,156.1 328.6,150 325.1,143.9 			"/>
+		</g>
+	</g>
+</g>
+<g>
+	<g>
+		<line class="st3" x1="390" y1="150" x2="461.4" y2="150"/>
+		<g>
+			<polygon points="472,150 457.1,156.1 460.6,150 457.1,143.9 			"/>
+		</g>
+	</g>
+</g>
+<text transform="matrix(1 0 0 1 243 143.9)" class="st1 st4">TGC</text>
+<text transform="matrix(1 0 0 1 402.0002 139)" class="st1 st4">GCA</text>
+<text transform="matrix(1 0 0 1 243 82.45)" class="st1 st4">CGT</text>
+<text transform="matrix(1 0 0 1 190 109.95)" class="st1 st4">GTG</text>
+<text transform="matrix(1 0 0 1 304 109.9498)" class="st1 st4">GCG</text>
+<g>
+	<g>
+		<path class="st0" d="M342,31.6c-10.7-4.9-28.2-11.5-51.5-14.1c-34.7-3.9-63.4,3.2-79.6,8.6"/>
+		<g>
+			<polygon points="201,29.8 212.9,19 211.7,25.9 217.1,30.4 			"/>
+		</g>
+	</g>
+</g>
+<g>
+	<g>
+		<path class="st0" d="M198.8,171c10.9,4.5,28.7,10.4,52,12.1c34.8,2.6,63.2-5.6,79.2-11.6"/>
+		<g>
+			<polygon points="339.7,167.5 328.2,178.7 329.2,171.8 323.6,167.5 			"/>
+		</g>
+	</g>
+</g>
+<g>
+	<g>
+		<path class="st0" d="M385.4,130.7c6.2-5.9,14.6-15.8,18.5-29.3c5.3-18.3-0.2-34.4-5.7-44.6"/>
+		<g>
+			<polygon points="392.7,47.8 405.6,57.4 398.5,57.5 395.2,63.7 			"/>
+		</g>
+	</g>
+</g>
+<g>
+	<g>
+		<path class="st0" d="M150.1,42.7c-6.3,7.7-14.5,20.2-16.7,35.8c-3.1,22.1,7.6,39.2,16.2,49.2"/>
+		<g>
+			<polygon points="157.1,135.3 142.4,128.7 149.2,127.1 151.2,120.3 			"/>
+		</g>
+	</g>
+</g>
+</svg>

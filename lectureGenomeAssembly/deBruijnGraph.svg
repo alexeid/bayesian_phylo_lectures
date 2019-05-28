@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generator: Adobe Illustrator 21.1.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 viewBox="0 0 550 350" style="enable-background:new 0 0 550 350;" xml:space="preserve">
+<style type="text/css">
+	.st0{fill:none;stroke:#000000;stroke-width:3;}
+	.st1{font-family:'ArialMT';}
+	.st2{font-size:18px;}
+</style>
+<circle class="st0" cx="73" cy="150" r="25"/>
+<text transform="matrix(1 0 0 1 61 155)" class="st1 st2">AT</text>
+<circle class="st0" cx="173" cy="150" r="25"/>
+<text transform="matrix(1 0 0 1 161 155)" class="st1 st2">TG</text>
+<circle class="st0" cx="273" cy="250" r="25"/>
+<text transform="matrix(1 0 0 1 261 255)" class="st1 st2">GG</text>
+<circle class="st0" cx="373" cy="150" r="25"/>
+<text transform="matrix(1 0 0 1 361 155)" class="st1 st2">GC</text>
+<circle class="st0" cx="473" cy="150" r="25"/>
+<text transform="matrix(1 0 0 1 461 155)" class="st1 st2">CA</text>
+<circle class="st0" cx="173" cy="50" r="25"/>
+<text transform="matrix(1 0 0 1 161 55)" class="st1 st2">GT</text>
+<circle class="st0" cx="373" cy="50" r="25"/>
+<text transform="matrix(1 0 0 1 361 55)" class="st1 st2">CG</text>
+</svg>
