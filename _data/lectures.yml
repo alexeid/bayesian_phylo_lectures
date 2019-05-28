@@ -2,27 +2,27 @@
   title: Introduction - Developing Darwin's Computer
   folder: lecture_intro
   lecturer: Alexei Drummond
-  section: introduction
+  section: introductionSA
 -
   title: Homology and alignment
   folder: lecture2
   lecturer: Alexei Drummond
-  section: introduction
+  section: introductionSA
 -
   title: Multiple sequence alignment
   folder: lecture3
   lecturer: Alexei Drummond
-  section: introduction
+  section: introductionSA
 -
   title: General and affine gap penalties
   folder: lectureAffineGaps
   lecturer: Alexei Drummond
-  section: introduction
+  section: introductionSA
 -
   title: Hidden Markov Models
   folder: lecture4
   lecturer: Alexei Drummond
-  section: introduction
+  section: introductionSA
 -
   title: Phylogenetics
   folder: lecture5
@@ -95,7 +95,7 @@
   section: programming
   
 -
-  title: Genome Assembly - An Introduction
+  title: Introduction - Genome Assembly
   folder: lectureGenomeAssembly
   lecturer: Alexei Drummond
-  section: advanced
+  section: introductionSA

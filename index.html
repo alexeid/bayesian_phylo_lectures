@@ -31,7 +31,39 @@ layout: null
                        prepared by Alexei Drummond and Tim Vaughan.</p>
                       
                     <p>Overview figure: <a href="phylogenetics-flow.png">Phylogenetics flow diagram</a></p>
-                      
+                    
+                    <h3>Introduction to sequence analysis</h3> 
+                       
+                    <ul>
+                        {% assign lectureIdx = 0 %}
+                        {% assign intro_lectures = site.data.lectures |  where:'section', "introductionSA" %}
+                        {% for lecture in intro_lectures %}
+
+                        {% assign lectureURL = "/" |append: lecture.folder | append: "/" %}
+
+                        {% assign found = false %}
+                        {% for page in site.pages %}
+                        {% if page.url == lectureURL %}
+                        {% assign found = true %}
+                        {% endif %}
+                        {% endfor %}
+
+                        <li><b>
+                        {% if found %}
+                        <a href="{{site.baseurl}}{{lectureURL}}">{{lecture.title}}</a>
+                        {% else %}
+                        {{lecture.title}}
+                        {% endif %}
+                        </b>
+                        {% if lecture.date %}
+                        ({{lecture.date | date: "%-d %B %Y"}})
+                        {% else %}
+                        {% endif %}
+                        </li>
+
+                        {% endfor %}
+                    </ul>
+                    
                     <h3>Introduction to phylogenetics</h3> 
                        
                     <ul>
