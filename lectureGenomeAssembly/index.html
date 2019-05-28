@@ -74,8 +74,8 @@ Genome Assembly: An Introduction
 <section>
 	<h2>The greedy puzzle</h2>
 	
-	<div style="width:5%; margin-left:15%; width:85%">
-	<pre style="font-size:22px;box-shadow:none">
+	<div style="width:5%; margin-left:15%; width:90%">
+	<pre style="font-size:30px;box-shadow:none">
 	<font color="red">ATGCG</font>
 	<font color="green">GCGTG</font>
 	<font color="red">TGGCA</font>
@@ -103,9 +103,7 @@ Genome Assembly: An Introduction
 	</ul>
 	</div>
 	
-	<div style="float:left; margin-left:5%; width:80%">
-	<img data-src="greedy-alg2.svg">
-	</div>	
+	<img data-src="greedy-alg2.svg" style="width:100%">
 	
 	<div align="left" style="margin-left:15%; width:85%">
 	Greedy algorithm (find a solution incrementally): 
@@ -128,9 +126,7 @@ Genome Assembly: An Introduction
 	</ul>
 	</div>
 	
-	<div style="float:left; margin-left:5%; width:80%">
-	<img data-src="greedy-alg3.svg">
-	</div>	
+	<img data-src="greedy-alg3.svg" style="width:100%">
 	
 	<div align="left" style="margin-left:15%; width:85%">
 	Greedy algorithm (find a solution incrementally): 
@@ -154,9 +150,7 @@ Genome Assembly: An Introduction
 	</ul>
 	</div>
 	
-	<div style="float:left; margin-left:5%; width:80%">
-	<img data-src="greedy-alg-cross.svg">
-	</div>	
+	<img data-src="greedy-alg-cross.svg" style="width:100%">
 	
 	<div align="left" style="margin-left:15%; width:85%">
 	Greedy algorithm (find a solution incrementally): 
@@ -172,9 +166,7 @@ Genome Assembly: An Introduction
 <section>
 	<h2>Greedy algorithms are not a good solution : </h2>
 		
-	<div style="float:left; margin-left:5%; width:80%">
-	<img data-src="greedy-alg-cross.svg">
-	</div>	
+	<img data-src="greedy-alg-cross.svg" style="width:100%">
 	
 	<div align="left" style="margin-left:15%; width:85%">
 	Assumptions: 
@@ -199,9 +191,7 @@ Genome Assembly: An Introduction
 	</ul>
 	</div>
 	
-	<div style="float:left; margin-left:5%; width:80%">
-	<img data-src="greedy-alg.svg">
-	</div>	
+	<img data-src="greedy-alg.svg" style="width:100%">
 	
 </section>
 
@@ -744,7 +734,7 @@ Genome Assembly: An Introduction
 <section>
     <h2>More assumptions of graph-based genome assemblies</h2>
 
-    <ul class="spaced" style="margin-top:5%; width:85%">
+    <ul class="spaced" style="margin-top:5%; width:100%">
 		<li> Hidden assumptions that do <b>not</b> hold for short read sequencing. 
 		We took for granted that:</li>
 		<ol class="spaced" style="width:85%">
@@ -760,10 +750,10 @@ Genome Assembly: An Introduction
 <section>
     <h2>More assumptions of graph-based genome assemblies</h2>
 
-    <ul class="spaced" style="margin-top:5%; width:85%">
+    <ul class="spaced" style="width:100%">
 		<li> Hidden assumptions that do <b>not</b> hold for short read sequencing. 
 		We took for granted that:</li>
-		<ol class="spaced" style="width:85%">
+		<ol>
 		<li> We can generate all k-mers present in the genome</li>
 		<li> <b>All k-mers are error free</b></li>
 		<li> Each k-mer appears at most once in the genome </li>
@@ -774,19 +764,17 @@ Genome Assembly: An Introduction
 		<li> Also, errors:</li>
 	</ul>
 
-<div align="left" style="margin-left:15%; width:85%">
-<img data-src="kmers.svg">
-</div>
+<img data-src="kmers.svg" style="width:75%">
 
 </section>
 
 <section>
     <h2>More assumptions of graph-based genome assemblies</h2>
 
-    <ul class="spaced" style="margin-top:5%; width:85%">
+    <ul class="spaced" style="width:100%">
 		<li> Hidden assumptions that do <b>not</b> hold for short read sequencing. 
 		We took for granted that:</li>
-		<ol class="spaced" style="width:85%">
+		<ol>
 		<li> We can generate all k-mers present in the genome</li>
 		<li> All k-mers are error free</li>
 		<li> <b>Each k-mer appears at most once in the genome</b> </li>
@@ -799,13 +787,12 @@ Genome Assembly: An Introduction
 	</ul>
 
 <div align="left" style="margin-left:15%; width:85%">
-	k-mers:   ATG, GCA, TGC, <font color="green">TGC</font>, GTG, 
-	<font color="green">GTG</font>, GCG, <font color="green">GCG</font>, CGT, CGT
-<br><br>
-<b>Distinct (k-1)-mers:</b>    A<font color="red">TGCG</font><font color="orange">TGCG</font>TGCA 
-
-<img data-src="kmers-graph.svg">
+	<p>k-mers:   ATG, GCA, TGC, <font color="green">TGC</font>, GTG, 
+	             <font color="green">GTG</font>, GCG, <font color="green">GCG</font>, CGT, CGT </p>
+    <p><b>Distinct (k-1)-mers:</b>    A<font color="red">TGCG</font><font color="orange">TGCG</font>TGCA </p>
 </div>
+
+<img data-src="kmers-graph.svg" style="width:75%">
 
 </section>
 
@@ -813,18 +800,18 @@ Genome Assembly: An Introduction
 <section>
     <h2>Summary</h2>
 
-    <ul class="spaced" style="margin-top:5%; width:85%">
+    <ul class="spaced" style="margin-top:5%; width:100%">
 		<li> DNA sequence assembly problem</li>
-		<ul class="spaced" style="width:85%">
+		<ul class="spaced">
 		<li> Given millions of short sequences, join overlapping short sequence fragments 
 		into long pieces to recover a continuous sequence of the genome.</li>
 		</ul>
 		<li> Greedy assembly</li>
-		<ul class="spaced" style="width:85%">
+		<ul class="spaced" >
 		<li> Find the shortest common superstring by iteratively joining and merging overlapping reads until all reads have been merged.</li>
 		</ul>
 		<li> Graph-based assembly</li>
-		<ul class="spaced" style="width:85%">
+		<ul class="spaced">
 		<li> Pre-process sequence reads to determine the pair-wise overlap information of substrings and represent these binary relationships in a graph.</li>
 		<li> Search a consistent genome layout by finding an eulerian path (visit each edge once) through the graph satisfying certain criteria.</li>
 		</ul>		
@@ -834,9 +821,9 @@ Genome Assembly: An Introduction
 <section>
     <h2>Summary (2)</h2>
 
-    <ul class="spaced" style="margin-top:5%; width:85%">
+    <ul class="spaced" style="margin-top:5%; width:100%">
 		<li> Assumptions:</li>
-		<ul class="spaced" style="width:85%">
+		<ul class="spaced">
 		<li> If two sequence reads share a common overlapping substring, 
 		they are likely originating from the same chromosomal regions in the genome</li>
 		<li> Sequenced reads are 100% accurate (not true)</li>
