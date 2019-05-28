@@ -3,21 +3,31 @@
 <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
 	 viewBox="0 0 602.3 104" style="enable-background:new 0 0 602.3 104;" xml:space="preserve">
 <style type="text/css">
-	.st0{enable-background:new    ;}
-	.st1{font-family:'ArialMT';}
-	.st2{font-size:18px;}
-	.st3{fill:#FF2C12;}
-	.st4{font-size:14px;}
+	.st0{font-family:'ArialMT';}
+	.st1{font-size:18px;}
+	.st2{fill:#FF2C12;}
+	.st3{font-size:14px;}
+	.st4{enable-background:new    ;}
 	.st5{font-size:12px;}
 	.st6{fill:none;stroke:#000000;stroke-width:2;stroke-miterlimit:10;}
 </style>
-<text transform="matrix(1 0 0 1 10 60.0001)" class="st0"><tspan x="0" y="0" class="st1 st2">ATGGC</tspan><tspan x="64" y="0" class="st3 st1 st2">G</tspan><tspan x="78" y="0" class="st1 st2">TGCA</tspan></text>
-<text transform="matrix(1 0 0 1 144.444 35.6665)" class="st1 st4">k=3</text>
-<text transform="matrix(1 0 0 1 205.3333 35.6666)" class="st0"><tspan x="0" y="0" class="st1 st2">ATG  TGG  GGC  GC</tspan><tspan x="174" y="0" class="st3 st1 st2">G</tspan><tspan x="188" y="0" class="st1 st2">  C</tspan><tspan x="211" y="0" class="st3 st1 st2">G</tspan><tspan x="225" y="0" class="st1 st2">T  </tspan><tspan x="246" y="0" class="st3 st1 st2">G</tspan><tspan x="260" y="0" class="st1 st2">TG  TGC  GCA</tspan></text>
-<text transform="matrix(1 0 0 1 437.9999 55.3335)" class="st1 st5">Mostly unaffected k-mers</text>
-<text transform="matrix(1 0 0 1 144.444 78.6667)" class="st1 st4">k=10</text>
-<text transform="matrix(1 0 0 1 277.9999 91.6668)" class="st1 st5">100% affected k-mers</text>
-<text transform="matrix(1 0 0 1 205.3333 72.0001)" class="st0"><tspan x="0" y="0" class="st1 st2">ATGGC</tspan><tspan x="64" y="0" class="st3 st1 st2">G</tspan><tspan x="78" y="0" class="st1 st2">TGCA</tspan></text>
+<text transform="matrix(1 0 0 1 10 60)" class="st0 st1">ATGGC</text>
+<text transform="matrix(1 0 0 1 74 60)" class="st2 st0 st1">G</text>
+<text transform="matrix(1 0 0 1 88 60)" class="st0 st1">TGCA</text>
+<text transform="matrix(1 0 0 1 144 35)" class="st0 st3">k=3</text>
+<text transform="matrix(1 0 0 1 205 35)" class="st4"><tspan x="0" y="0" class="st0 st1">ATG  TGG  GGC  GC</tspan>
+                                                    <tspan x="174" y="0" class="st2 st0 st1">G</tspan></text>
+<text transform="matrix(1 0 0 1 393 35)" class="st0 st1">  C</text>
+<text transform="matrix(1 0 0 1 416 35)" class="st2 st0 st1">G</text>
+<text transform="matrix(1 0 0 1 430 35)" class="st0 st1">T  </text>
+<text transform="matrix(1 0 0 1 451 35)" class="st2 st0 st1">G</text>
+<text transform="matrix(1 0 0 1 465 35)" class="st0 st1">TG  TGC  GCA</text>
+<text transform="matrix(1 0 0 1 438 55)" class="st0 st5">Mostly unaffected k-mers</text>
+<text transform="matrix(1 0 0 1 144 78)" class="st0 st3">k=10</text>
+<text transform="matrix(1 0 0 1 278 91)" class="st0 st5">100% affected k-mers</text>
+<text transform="matrix(1 0 0 1 205 72)" class="st0 st1">ATGGC</text>
+<text transform="matrix(1 0 0 1 269 72)" class="st2 st0 st1">G</text>
+<text transform="matrix(1 0 0 1 283 72)" class="st0 st1">TGCA</text>
 <g>
 	<g>
 		<line class="st6" x1="139.7" y1="52" x2="191.7" y2="33.1"/>

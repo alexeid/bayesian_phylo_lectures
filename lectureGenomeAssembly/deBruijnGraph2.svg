@@ -7,8 +7,7 @@
 	.st1{font-family:'ArialMT';}
 	.st2{font-size:18px;}
 	.st3{fill:none;stroke:#000000;stroke-width:3;stroke-miterlimit:10;}
-	.st4{font-family:'MyriadPro-Regular';}
-	.st5{font-size:24px;}
+	.st4{font-size:24px;}
 </style>
 <circle class="st0" cx="73" cy="150" r="25"/>
 <text transform="matrix(1 0 0 1 61 155)" class="st1 st2">AT</text>
@@ -32,5 +31,11 @@
 		</g>
 	</g>
 </g>
-<text transform="matrix(1 0 0 1 101 130)" class="st4 st5">ATG</text>
+<text transform="matrix(1 0 0 1 101 130)" class="st1 st4">ATG</text>
+<g>
+	<g>
+		<path class="st3" d="M246.8,225.9"/>
+		<path class="st3" d="M188.1,169.9"/>
+	</g>
+</g>
 </svg>
