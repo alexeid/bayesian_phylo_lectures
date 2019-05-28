@@ -93,3 +93,9 @@
   folder: lecturePython
   lecturer: Alexei Drummond
   section: programming
+  
+-
+  title: Genome Assembly - An Introduction
+  folder: lectureGenomeAssembly
+  lecturer: Alexei Drummond
+  section: advanced
