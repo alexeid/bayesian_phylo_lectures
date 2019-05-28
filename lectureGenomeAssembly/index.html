@@ -64,7 +64,7 @@ Genome Assembly: An Introduction
 </div>
 	
 <div style="float:right; width:30%">
-	<img data-src="assembly.svg" style="height:250px;">
+	<img data-src="assembly.svg" style="height:250px">
 </div>
 </div>
 
@@ -74,18 +74,18 @@ Genome Assembly: An Introduction
 <section>
 	<h2>The greedy puzzle</h2>
 	
-	<pre style="font-size:22px;box-shadow:none;margin-bottom:0">
-	<div style="width:5%; margin-left:25%;">
+	<div style="width:5%; margin-left:15%; width:85%">
+	<pre style="font-size:22px;box-shadow:none">
 	<font color="red">ATGCG</font>
 	<font color="green">GCGTG</font>
 	<font color="red">TGGCA</font>
 	<font color="green">GTGGC</font>
-	</div>
 	</pre>
+	</div>
 	
 	<div align="left" style="margin-left:15%; width:85%">
 	Assumptions: 
-	<ul class="spaced" style="width:75%">
+	<ul class="spaced" style="margin-top:5%">
 	<li> If two sequence reads share a <i>common overlapping substring of letters</i>, 
 	then it is because they are likely to have originated from the same chromosomal regions in the genome</li>
 	</ul>
@@ -97,19 +97,19 @@ Genome Assembly: An Introduction
 	
 	<div align="left" style="margin-top:5%; margin-left:15%; width:85%">
 	Find a final string <i>“genome”</i> such that: 
-	<ul class="spaced" style="width:75%">
+	<ul class="spaced" style="margin-top:5%">
 	<li> all reads are substrings of <i>“genome”</i></li> 
 	<li> <i>“genome”</i> should be as short as possible</li>
 	</ul>
 	</div>
 	
-	<div style="float:left; margin-left:25%; width:80%">
+	<div style="float:left; margin-left:5%; width:80%">
 	<img data-src="greedy-alg2.svg">
 	</div>	
 	
 	<div align="left" style="margin-left:15%; width:85%">
 	Greedy algorithm (find a solution incrementally): 
-	<ol class="spaced" style="width:75%">
+	<ol class="spaced" style="margin-top:5%">
 	<li> Pick the highest scoring overlap.</li> 
 	<li> Merge the two overlapping fragments and add the resulting new sequence to the pool of sequences.</li>
 	<li> Repeat until no more merges can be carried out.</li> 
@@ -122,19 +122,19 @@ Genome Assembly: An Introduction
 	
 	<div align="left" style="margin-top:5%; margin-left:15%; width:85%">
 	Find a final string <i>“genome”</i> such that: 
-	<ul class="spaced" style="width:75%">
+	<ul class="spaced" style="margin-top:5%">
 	<li> all reads are substrings of <i>“genome”</i></li> 
 	<li> <i>“genome”</i> should be as short as possible</li>
 	</ul>
 	</div>
 	
-	<div style="float:left; margin-left:25%; width:80%">
+	<div style="float:left; margin-left:5%; width:80%">
 	<img data-src="greedy-alg3.svg">
 	</div>	
 	
 	<div align="left" style="margin-left:15%; width:85%">
 	Greedy algorithm (find a solution incrementally): 
-	<ol class="spaced" style="width:75%">
+	<ol class="spaced" style="margin-top:5%">
 	<li> Pick the highest scoring overlap.</li> 
 	<li> Merge the two overlapping fragments and add the resulting new sequence to the pool of sequences.</li>
 	<li> Repeat until no more merges can be carried out.</li> 
@@ -148,19 +148,19 @@ Genome Assembly: An Introduction
 	
 	<div align="left" style="margin-top:5%; margin-left:15%; width:85%">
 	Find a final string <i>“genome”</i> such that: 
-	<ul class="spaced" style="width:75%">
+	<ul class="spaced" style="margin-top:5%">
 	<li> all reads are substrings of <i>“genome”</i></li> 
 	<li> <i>“genome”</i> should be as short as possible</li>
 	</ul>
 	</div>
 	
-	<div style="float:left; margin-left:25%; width:80%">
+	<div style="float:left; margin-left:5%; width:80%">
 	<img data-src="greedy-alg-cross.svg">
 	</div>	
 	
 	<div align="left" style="margin-left:15%; width:85%">
 	Greedy algorithm (find a solution incrementally): 
-	<ol class="spaced" style="width:75%">
+	<ol class="spaced" style="margin-top:5%">
 	<li> Pick the highest scoring overlap.</li> 
 	<li> Merge the two overlapping fragments and add the resulting new sequence to the pool of sequences.</li>
 	<li> Repeat until no more merges can be carried out.</li> 
@@ -172,13 +172,13 @@ Genome Assembly: An Introduction
 <section>
 	<h2>Greedy algorithms are not a good solution : </h2>
 		
-	<div style="float:left; margin-left:25%; width:80%">
+	<div style="float:left; margin-left:5%; width:80%">
 	<img data-src="greedy-alg-cross.svg">
 	</div>	
 	
 	<div align="left" style="margin-left:15%; width:85%">
 	Assumptions: 
-	<ul class="spaced" style="width:75%">
+	<ul class="spaced" style="margin-top:5%">
 	<li> Reads are 100% accurate</li> 
 	<li> Identical reads must come from the same location on the genome</li>
 	<li> All substrings from the genome are represented in the set of sequenced reads</li> 
@@ -199,7 +199,7 @@ Genome Assembly: An Introduction
 	</ul>
 	</div>
 	
-	<div style="float:left; margin-left:25%; width:80%">
+	<div style="float:left; margin-left:5%; width:80%">
 	<img data-src="greedy-alg.svg">
 	</div>	
 	
@@ -282,15 +282,15 @@ Genome Assembly: An Introduction
 		
 	<img data-src="graph-assembly4.svg" style="width:100%">
 	
-	<div align="left" style="margin-top:5%; margin-left:15%; width:85%">
-	Assumption:  All substrings are represented
-	<ul class="spaced" style="margin-top:5%; width:75%">
-	<li> Even modern sequencers that generate 150nt+ reads do not cover all possible 150-mers present in the genome</li> 
+	<ul class="spaced" style="margin-top:5%; margin-left:15%; width:85%">
+	<li style="list-style-type:none"> <u>Assumption: all substrings are represented</u></li>
+	<ul class="spaced">
+	<li> Even modern sequencers that generate 150nt+ reads <b><u>do not</u></b> 
+	cover all possible 150-mers present in the genome</li> 
 	<li> Thus, people generally use substrings of certain length k (k-mers)</li> 
 	</ul>
-    &rarr; Here we use 3-mers by cutting the original reads into reads of length 3
-    </div>
-
+    <li style="list-style-type:none"> &rarr; Here we use 3-mers by cutting the original reads into reads of length 3</li> 
+    </ul>
 </section>
 
 
@@ -388,13 +388,11 @@ Genome Assembly: An Introduction
 	<ul class="spaced" style="margin-top:5%; width:85%">
 	<li> Find <b><u>Hamiltonian path</u></b>, that is, a path that visits every <u>vertex</u> exactly once</li>
 	<li> Record the First letter of each vertex + All letters of last vertex</li> 
-	</ul>
-
-    <div align="left" style="margin-left:15%; width:85%">
-	<b>UNFORTUNATELY:</b> <br>
-	&nbsp; &nbsp; &rarr; The Hamiltonian path problem is very difficult to solve (NP-complete)
-    </div>
-    
+	<li style="list-style-type:none"><b>UNFORTUNATELY:</b></li> 
+	     <ul class="spaced">
+	<li style="list-style-type:none">&rarr; The Hamiltonian path problem is very difficult to solve (NP-complete)</li> 
+         </ul>
+    </ul>
 </section>
 
 <section>
@@ -405,12 +403,11 @@ Genome Assembly: An Introduction
 	<ul class="spaced" style="width:85%">
 	<li> Find <b><u>Hamiltonian path</u></b>, that is, a path that visits every <u>vertex</u> exactly once</li>
 	<li> Record the First letter of each vertex + All letters of last vertex</li> 
-	</ul>
-
-    <div align="left" style="margin-left:15%; width:85%">
-	<b>UNFORTUNATELY:</b> <br>
-	&nbsp; &nbsp; &rarr; The Hamiltonian path problem is very difficult to solve (NP-complete)
-    </div>
+	<li style="list-style-type:none"><b>UNFORTUNATELY:</b></li> 
+	     <ul class="spaced">
+	<li style="list-style-type:none">&rarr; The Hamiltonian path problem is very difficult to solve (NP-complete)</li> 
+         </ul>
+    </ul>
 
 </section>
 
