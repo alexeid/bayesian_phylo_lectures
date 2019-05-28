@@ -737,10 +737,10 @@ Genome Assembly: An Introduction
     <ul class="spaced" style="margin-top:5%; width:100%">
 		<li> Hidden assumptions that do <b>not</b> hold for short read sequencing. 
 		We took for granted that:</li>
-		<ol class="spaced" style="width:85%">
-		<li> We can generate all k-mers present in the genome</li>
-		<li> All k-mers are error free</li>
-		<li> Each k-mer appears at most once in the genome </li>
+		<ol>
+			<li> We can generate all k-mers present in the genome</li>
+			<li> All k-mers are error free</li>
+			<li> Each k-mer appears at most once in the genome </li>
 		</ol>
 	</ul>
 
@@ -779,12 +779,17 @@ Genome Assembly: An Introduction
 		<li> All k-mers are error free</li>
 		<li> <b>Each k-mer appears at most once in the genome</b> </li>
 		<ul>
-		<li style="list-style-type:none"> <b>&rarr; Repeats </b> </li>
-		<li> This is most often not true</li>
-		<li> This is known as k-mer multiplicity</li>
+			<li style="list-style-type:none"> <b>&rarr; Repeats </b> </li>
+			<li> This is most often not true</li>
+			<li> This is known as k-mer multiplicity</li>
 		</ul>
 		</ol>
 	</ul>
+
+</section>
+
+<section>
+    <h2>More assumptions of graph-based genome assemblies</h2>
 
 <div align="left" style="margin-left:15%; width:85%">
 	<p>k-mers:   ATG, GCA, TGC, <font color="green">TGC</font>, GTG, 
@@ -792,7 +797,7 @@ Genome Assembly: An Introduction
     <p><b>Distinct (k-1)-mers:</b>    A<font color="red">TGCG</font><font color="orange">TGCG</font>TGCA </p>
 </div>
 
-<img data-src="kmers-graph.svg" style="width:75%">
+<img data-src="kmers-graph.svg" style="width:100%">
 
 </section>
 
@@ -821,17 +826,17 @@ Genome Assembly: An Introduction
 <section>
     <h2>Summary (2)</h2>
 
-    <ul class="spaced" style="margin-top:5%; width:100%">
+    <ul class="spaced" style="width:100%">
 		<li> Assumptions:</li>
-		<ul class="spaced">
-		<li> If two sequence reads share a common overlapping substring, 
-		they are likely originating from the same chromosomal regions in the genome</li>
-		<li> Sequenced reads are 100% accurate (not true)</li>
-		<li> Identical reads must come from the same location on the genome (mostly not true)</li>
-		<li> All substrings from the genome are represented in the set of sequenced reads (very likely not true)</li>
-		<li> All k-mers are error free (not true)</li>
-		<li> We can generate all k-mers present in the genome (very likely untrue)</li>
-		<li> Each k-mer appears at most once in the genome (likely untrue)</li>
+		<ul>
+			<li> If two sequence reads share a common overlapping substring, 
+			they are likely originating from the same chromosomal regions in the genome</li>
+			<li> Sequenced reads are 100% accurate (not true)</li>
+			<li> Identical reads must come from the same location on the genome (mostly not true)</li>
+			<li> All substrings from the genome are represented in the set of sequenced reads (very likely not true)</li>
+			<li> All k-mers are error free (not true)</li>
+			<li> We can generate all k-mers present in the genome (very likely untrue)</li>
+			<li> Each k-mer appears at most once in the genome (likely untrue)</li>
 		</ul>		
 	</ul>
 	
