@@ -227,9 +227,9 @@ Genome Assembly: An Introduction
 		
 	<img data-src="graph-assembly1.svg" style="width:80%">
 	
-	<div align="left" style="margin-left:15%; width:85%">
-	Preprocess the sequence reads to determine the pair-wise overlap information and represent these binary relationships 
-	</div>
+	<ul class="spaced" style="width:85%">
+	<li> Preprocess the sequence reads to determine the pair-wise overlap information and represent these binary relationships</li> 
+	</ul>
 </section>
 
 <section>
@@ -237,9 +237,10 @@ Genome Assembly: An Introduction
 		
 	<img data-src="graph-assembly2.svg" style="width:80%">
 	
-	<div align="left" style="margin-left:15%; width:85%">
-	Preprocess the sequence reads to determine the pair-wise overlap information and represent these binary relationships
-	</div>
+	<ul class="spaced" style="width:85%">
+	<li> Preprocess the sequence reads to determine the pair-wise overlap information and represent these binary relationships</li> 
+	</ul>
+
 </section>
 
 <section>
@@ -287,9 +288,9 @@ Genome Assembly: An Introduction
 <section>
 	<h2>Graph-based genome assembly</h2>
 		
-	<img data-src="graph-assembly6.svg" style="width:78%">
+	<img data-src="graph-assembly6.svg" style="width:80%">
 	
-	<ul class="spaced" style="width:85%">
+	<ul style="width:85%">
 	<li> Each k-mer is a vertex</li>
 	<li> Draw edge from x to y, where		</li> 
 		<ul>
@@ -305,7 +306,7 @@ Genome Assembly: An Introduction
 		
 	<img data-src="graph-assembly7.svg" style="width:80%">
 		
-	<ul class="spaced" style="width:85%">
+	<ul style="width:85%">
 	<li> Each k-mer is a vertex</li>
 	<li> Draw edge from x to y, where		</li> 
 		<ul>
@@ -320,7 +321,7 @@ Genome Assembly: An Introduction
 		
 	<img data-src="graph-assembly8.svg" style="width:80%">
 		
-	<ul class="spaced" style="width:85%">
+	<ul style="width:85%">
 	<li> Each k-mer is a vertex</li>
 	<li> Draw edge from x to y, where		</li> 
 		<ul>
@@ -336,7 +337,7 @@ Genome Assembly: An Introduction
 		
 	<img data-src="graph-assembly9.svg" style="width:80%">
 		
-	<ul class="spaced" style="width:85%">
+	<ul style="width:85%">
 	<li> Each k-mer is a vertex</li>
 	<li> Draw edge from x to y, where		</li> 
 		<ul>
@@ -366,12 +367,12 @@ Genome Assembly: An Introduction
 		
 	<img data-src="hamiltonian-path2.svg" style="width:80%">
 		
-	<ul class="spaced" style="width:85%">
+	<ul style="width:85%">
 	<li> Find <b><u>Hamiltonian path</u></b>, that is, a path that visits every <u>vertex</u> exactly once</li>
 	<li> Record the First letter of each vertex + All letters of last vertex</li> 
 	<li style="list-style-type:none"><b>UNFORTUNATELY:</b></li> 
-	     <ul class="spaced">
-	<li style="list-style-type:none">&rarr; The Hamiltonian path problem is very difficult to solve (NP-complete)</li> 
+	     <ul>
+			<li style="list-style-type:none">&rarr; The Hamiltonian path problem is very difficult to solve (NP-complete)</li> 
          </ul>
     </ul>
 
@@ -382,12 +383,12 @@ Genome Assembly: An Introduction
 		
 	<img data-src="hamiltonian-path3.svg" style="width:80%">
 		
-	<ul class="spaced" style="width:85%">
+	<ul style="width:85%">
 	<li> Find <b><u>Hamiltonian path</u></b>, that is, a path that visits every <u>vertex</u> exactly once</li>
 	<li> Record the First letter of each vertex + All letters of last vertex</li> 
 	<li style="list-style-type:none"><b>UNFORTUNATELY:</b></li> 
-	     <ul class="spaced">
-	<li style="list-style-type:none">&rarr; The Hamiltonian path problem is very difficult to solve (NP-complete)</li> 
+	     <ul>
+			<li style="list-style-type:none">&rarr; The Hamiltonian path problem is very difficult to solve (NP-complete)</li> 
          </ul>
     </ul>
 
@@ -449,91 +450,25 @@ Genome Assembly: An Introduction
 <section>
 	<h2>de Bruijn graph</h2>
 
-<div align="left" style="margin-left:5%; margin-top:5%; width:85%">
-    <p>We construct a <b> de Bruijn graph :</b> </p>
-    <ul class="spaced" style="margin-left:10%; width:85%">
-	<li> edges represent k-mers </li>
-	<li> vertices correspond to (k-1)-mers</li> 
-	</ul>
-	<ol class="spaced" style="margin-left:10%; width:85%">
-	<li> Form a node for every distinct prefix or suffix of a k-mer</li> 
-	<li> Connect vertex x to vertex y with a directed edge if some k-mer 
-	(e.g., ATG) has prefix x (e.g., AT) and suffix y (e.g., TG), and label the edge with this k-mer. </li> 
-	</ol> 
-</div>
-
-<div align="left" style="margin-left:15%; width:85%">
+<div align="left" style="margin-top:5%; margin-left:15%; width:85%">
 	<p>k-mers:&nbsp;&nbsp;&nbsp;&nbsp;<font color="red"><u>AT</u></font>G, TGG, TGC, GTG, GGC, GCA, GCG, CGT</p>
     <p><b>Distinct (k-1)-mers: </b> </p>
 </div>
 
-<div align="left" style="margin-left:15%; width:85%">
-<svg height="350" width="350">
-    <circle cx="50" cy="50" r="25"
-            stroke="black"
-            stroke-width="3"
-            fill="none"
-            />
-    <text x="50" y="55" 
-          text-anchor="middle"
-          stroke="black"
-          stroke-width="1px"
-          > AT
-    </text>
-</svg>
-</div>
+<img data-src="deBruijnNodes1.svg" style="width:75%">
     
 </section>
 
 <section>
 	<h2>de Bruijn graph</h2>
 
-<div align="left" style="margin-left:5%; margin-top:5%; width:85%">
-    <p>We construct a <b> de Bruijn graph :</b> </p>
-    <ul class="spaced" style="margin-left:10%; width:85%">
-	<li> edges represent k-mers </li>
-	<li> vertices correspond to (k-1)-mers</li> 
-	</ul>
-	<ol class="spaced" style="margin-left:10%; width:85%">
-	<li> Form a node for every distinct prefix or suffix of a k-mer</li> 
-	<li> Connect vertex x to vertex y with a directed edge if some k-mer 
-	(e.g., ATG) has prefix x (e.g., AT) and suffix y (e.g., TG), and label the edge with this k-mer. </li> 
-	</ol> 
-</div>
-
-<div align="left" style="margin-left:15%; width:85%">
+<div align="left" style="margin-top:5%; margin-left:15%; width:85%">
 	<p>k-mers:&nbsp;&nbsp;&nbsp;&nbsp;A<font color="red"><u>TG</u></font>, <font color="red"><u>TG</u></font>G, 
 	<font color="red"><u>TG</u></font>C, G<font color="red"><u>TG</u></font>, GGC, GCA, GCG, CGT</p>
     <p><b>Distinct (k-1)-mers: </b> </p>
 </div>
 
-<div align="left" style="margin-left:15%; width:85%">
-<svg height="350" width="350">
-    <circle cx="50" cy="50" r="25"
-            stroke="black"
-            stroke-width="3"
-            fill="none"
-            />
-    <text x="50" y="55" 
-          text-anchor="middle"
-          stroke="black"
-          stroke-width="1px"
-          > AT
-    </text>
-    <circle cx="150" cy="50" r="25"
-            stroke="black"
-            stroke-width="3"
-            fill="none"
-            />
-    <text x="150" y="55" 
-          text-anchor="middle"
-          stroke="black"
-          stroke-width="1px"
-          > TG
-    </text>
-
-</svg>
-</div>
+<img data-src="deBruijnNodes2.svg" style="width:75%">
     
 </section>
 
@@ -541,62 +476,13 @@ Genome Assembly: An Introduction
 <section>
 	<h2>de Bruijn graph</h2>
 
-<div align="left" style="margin-left:5%; margin-top:5%; width:85%">
-    <p>We construct a <b> de Bruijn graph :</b> </p>
-    <ul class="spaced" style="margin-left:10%; width:85%">
-	<li> edges represent k-mers </li>
-	<li> vertices correspond to (k-1)-mers</li> 
-	</ul>
-	<ol class="spaced" style="margin-left:10%; width:85%">
-	<li> Form a node for every distinct prefix or suffix of a k-mer</li> 
-	<li> Connect vertex x to vertex y with a directed edge if some k-mer 
-	(e.g., ATG) has prefix x (e.g., AT) and suffix y (e.g., TG), and label the edge with this k-mer. </li> 
-	</ol> 
-</div>
-
-<div align="left" style="margin-left:15%; width:85%">
+<div align="left" style="margin-top:5%; margin-left:15%; width:85%">
 	<p>k-mers:&nbsp;&nbsp;&nbsp;&nbsp;ATG, T<font color="red"><u>GG</u></font>, 
 	TGC, GTG, <font color="red"><u>GG</u></font>C, GCA, GCG, CGT</p>
     <p><b>Distinct (k-1)-mers: </b> </p>
 </div>
 
-<div align="left" style="margin-left:15%; width:85%">
-<svg height="350" width="350">
-    <circle cx="50" cy="50" r="25"
-            stroke="black"
-            stroke-width="3"
-            fill="none"
-            />
-    <text x="50" y="55" 
-          text-anchor="middle"
-          stroke="black"
-          stroke-width="1px"
-          > AT
-    </text>
-    <circle cx="150" cy="50" r="25"
-            stroke="black"
-            stroke-width="3"
-            fill="none"
-            />
-    <text x="150" y="55" 
-          text-anchor="middle"
-          stroke="black"
-          stroke-width="1px"
-          > TG
-    </text>
-    <circle cx="250" cy="100" r="25"
-            stroke="black"
-            stroke-width="3"
-            fill="none"
-            />
-    <text x="250" y="105" 
-          text-anchor="middle"
-          stroke="black"
-          stroke-width="1px"
-          > GG
-    </text>
-</svg>
-</div>
+<img data-src="deBruijnNodes3.svg" style="width:75%">
     
 </section>
 
@@ -653,7 +539,7 @@ Genome Assembly: An Introduction
 
 <div align="left" style="margin-left:5%; margin-top:5%; width:85%">
 <p>Can we find a DNA sequence containing all k-mers? </p>
-    <ul class="spaced" style="margin-top:5%; width:85%">
+    <ul class="spaced" style="margin-left:10%; margin-top:5%; width:85%">
 	<li> In a de Bruijn graph, can we find a path that visits every edge of the graph exactly once? </li>
 	<li> Eulerian path</li> 
 	</ul>
@@ -786,17 +672,17 @@ Genome Assembly: An Introduction
 <section>
     <h2>Summary</h2>
 
-    <ul class="spaced" style="margin-top:5%; width:85%">
+    <ul class="spaced" style="margin-top:1%; width:85%">
 		<li> DNA sequence assembly problem</li>
 		<ul>
 		<li> Given millions of short sequences, join overlapping short sequence fragments 
 		into long pieces to recover a continuous sequence of the genome.</li>
 		</ul>
-		<li> Greedy assembly</li>
+		<li style="margin-top:5%"> Greedy assembly</li>
 		<ul>
 		<li> Find the shortest common superstring by iteratively joining and merging overlapping reads until all reads have been merged.</li>
 		</ul>
-		<li> Graph-based assembly</li>
+		<li style="margin-top:5%"> Graph-based assembly</li>
 		<ul>
 		<li> Pre-process sequence reads to determine the pair-wise overlap information of substrings and represent these binary relationships in a graph.</li>
 		<li> Search a consistent genome layout by finding an eulerian path (visit each edge once) through the graph satisfying certain criteria.</li>
@@ -836,9 +722,10 @@ Comparing De Novo Genome Assembly: The Long and Short of It. Narzisi G, Mishra B
 
     <ul class="spaced" style="margin-top:5%; width:85%">
 		<li> The case of <u>directed graphs</u> is similar:</li>
-		<ul class="spaced">
+		<ul>
 		<li> A graph in which indegrees are equal to outdegrees for all nodes is called 'balanced'. </li>
-		<li> Euler's theorem states that <u>a connected directed graph has an Eulerian cycle if and only if it is balanced</u>. </li>
+		<li style="margin-top:2%"> Euler's theorem states that <u>a connected directed graph 
+		has an Eulerian cycle if and only if it is balanced</u>. </li>
 		</ul>		
 	</ul>
 
@@ -853,9 +740,7 @@ Comparing De Novo Genome Assembly: The Long and Short of It. Narzisi G, Mishra B
 		<li> Sequence Assembly. Lecture by Mark Craven (craven@biostat.wisc.edu). BMI/CS 576 (www.biostat.wisc.edu/bmi576/), Fall 2011 </li>
 		<li> Comparing De Novo Genome Assembly: The Long and Short of It. Narzisi G, Mishra B (2011) PLoS ONE6(4): e19175.</li>	
 	</ul>
-    <p>Sebastian Schmeier</p>
-    <p>s.schmeier@gmail.com</p>
-    <p>http://genomics.sschmeier.com</p>
+
 </section>
 
 

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!-- Generator: Adobe Illustrator 21.1.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
 <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
-	 viewBox="0 0 801 434" style="enable-background:new 0 0 801 434;" xml:space="preserve">
+	 viewBox="0 0 815 445" style="enable-background:new 0 0 815 445;" xml:space="preserve">
 <style type="text/css">
 	.st0{fill:#D42300;}
 	.st1{font-family:'ArialMT';}
@@ -123,8 +123,9 @@
 	<path class="st9" d="M113,357.3"/>
 </g>
 <g>
-	<text transform="matrix(1 0 0 1 119.5 384.29)" class="st1 st2">TGG</text>
-	<ellipse class="st9" cx="154.2" cy="372.4" rx="39.8" ry="27"/>
+	<text transform="matrix(1 0 0 1 123.5 384.29)" class="st1 st2">TG</text>
+	<text transform="matrix(1 0 0 1 165.2 384.29)" class="st1 st2">G</text>
+	<ellipse class="st9" cx="155.2" cy="372.4" rx="39.8" ry="27"/>
 </g>
 <g>
 	<path class="st9" d="M258.5,366.4"/>
@@ -167,8 +168,9 @@
 	<path class="st9" d="M22,282.3"/>
 </g>
 <g>
-	<text transform="matrix(1 0 0 1 31.5 309.29)" class="st1 st2">ATG</text>
-	<ellipse class="st9" cx="63.2" cy="297.4" rx="39.8" ry="27"/>
+	<text transform="matrix(1 0 0 1 33.5 309.29)" class="st1 st2">A</text>
+	<text transform="matrix(1 0 0 1 53.5 309.29)" class="st1 st2">TG</text>
+	<ellipse class="st9" cx="65.2" cy="297.4" rx="39.8" ry="27"/>
 </g>
 <g>
 	<path class="st9" d="M31,183.4"/>
@@ -189,7 +191,8 @@
 	<path class="st9" d="M31,183.4"/>
 </g>
 <g>
-	<text transform="matrix(1 0 0 1 37.5 210.41)" class="st1 st2">TGC</text>
+	<text transform="matrix(1 0 0 1 40.5 210.41)" class="st1 st2">TG</text>
+	<text transform="matrix(1 0 0 1 82.2 210.41)" class="st1 st2">C</text>
 	<ellipse class="st9" cx="72.2" cy="198.5" rx="39.8" ry="27"/>
 </g>
 </svg>
