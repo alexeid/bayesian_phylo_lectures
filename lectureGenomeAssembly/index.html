@@ -805,18 +805,18 @@ Genome Assembly: An Introduction
 <section>
     <h2>Summary</h2>
 
-    <ul class="spaced" style="margin-top:5%; width:100%">
+    <ul class="spaced" style="margin-top:5%; width:85%">
 		<li> DNA sequence assembly problem</li>
-		<ul class="spaced">
+		<ul>
 		<li> Given millions of short sequences, join overlapping short sequence fragments 
 		into long pieces to recover a continuous sequence of the genome.</li>
 		</ul>
 		<li> Greedy assembly</li>
-		<ul class="spaced" >
+		<ul>
 		<li> Find the shortest common superstring by iteratively joining and merging overlapping reads until all reads have been merged.</li>
 		</ul>
 		<li> Graph-based assembly</li>
-		<ul class="spaced">
+		<ul>
 		<li> Pre-process sequence reads to determine the pair-wise overlap information of substrings and represent these binary relationships in a graph.</li>
 		<li> Search a consistent genome layout by finding an eulerian path (visit each edge once) through the graph satisfying certain criteria.</li>
 		</ul>		
@@ -826,7 +826,7 @@ Genome Assembly: An Introduction
 <section>
     <h2>Summary (2)</h2>
 
-    <ul class="spaced" style="width:100%">
+    <ul class="spaced" style="margin-top:5%; width:95%">
 		<li> Assumptions:</li>
 		<ul>
 			<li> If two sequence reads share a common overlapping substring, 
@@ -840,7 +840,7 @@ Genome Assembly: An Introduction
 		</ul>		
 	</ul>
 	
-	<p style="font-size:10px;">
+	<p style="font-size:10px">
 	References: <br>
 How to apply de Bruijn graphs to genome assembly. Phillip E C Compeau, Pavel A Pevzner & Glenn Tesler (2011) . 
 Nature Biotechnology 29, 987–991 <br>
@@ -855,7 +855,7 @@ Comparing De Novo Genome Assembly: The Long and Short of It. Narzisi G, Mishra B
 
     <ul class="spaced" style="margin-top:5%; width:85%">
 		<li> The case of <u>directed graphs</u> is similar:</li>
-		<ul class="spaced" style="width:85%">
+		<ul>
 		<li> A graph in which indegrees are equal to outdegrees for all nodes is called 'balanced'. </li>
 		<li> Euler's theorem states that <u>a connected directed graph has an Eulerian cycle if and only if it is balanced</u>. </li>
 		</ul>		
