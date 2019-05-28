@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!-- Generator: Adobe Illustrator 21.1.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
 <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
-	 viewBox="0 0 704 296" style="enable-background:new 0 0 704 296;" xml:space="preserve">
+	 viewBox="0 0 720 296" style="enable-background:new 0 0 720 296;" xml:space="preserve">
 <style type="text/css">
 	.st0{clip-path:url(#SVGID_2_);fill:#FFFFFF;fill-opacity:0;}
 	.st1{clip-path:url(#SVGID_4_);}
@@ -21,23 +21,27 @@
 </style>
 <g>
 	<g>
-		<defs>
-			<rect id="SVGID_1_" x="21" y="16.9" width="331" height="260"/>
-		</defs>
-		<clipPath id="SVGID_2_">
-			<use xlink:href="#SVGID_1_"  style="overflow:visible;"/>
-		</clipPath>
-		<rect x="21" y="16.9" class="st0" width="331" height="260"/>
+		<g>
+			<defs>
+				<rect id="SVGID_1_" x="21" y="16.9" width="331" height="260"/>
+			</defs>
+			<clipPath id="SVGID_2_">
+				<use xlink:href="#SVGID_1_"  style="overflow:visible;"/>
+			</clipPath>
+			<rect x="21" y="16.9" class="st0" width="331" height="260"/>
+		</g>
 	</g>
 	<g>
-		<defs>
-			<rect id="SVGID_3_" x="21" y="16.9" width="331" height="260"/>
-		</defs>
-		<clipPath id="SVGID_4_">
-			<use xlink:href="#SVGID_3_"  style="overflow:visible;"/>
-		</clipPath>
-		<g class="st1">
-			<text transform="matrix(1 0 0 1 155.9502 40.6443)" class="st2 st3 st4">Vertex</text>
+		<g>
+			<defs>
+				<rect id="SVGID_3_" x="21" y="16.9" width="331" height="260"/>
+			</defs>
+			<clipPath id="SVGID_4_">
+				<use xlink:href="#SVGID_3_"  style="overflow:visible;"/>
+			</clipPath>
+			<g class="st1">
+				<text transform="matrix(1 0 0 1 155.9502 40.6443)" class="st2 st3 st4">Vertex</text>
+			</g>
 		</g>
 	</g>
 </g>
@@ -61,11 +65,11 @@
 <g>
 	<polygon class="st13" points="392.5,120.8 443.5,120.8 443.5,112.6 458.5,129 443.5,145.4 443.5,137.2 392.5,137.2 	"/>
 	<line class="st12" x1="499" y1="77.6" x2="499" y2="191"/>
-	<line class="st12" x1="655" y1="161.8" x2="655" y2="195.8"/>
+	<line class="st12" x1="691" y1="158.8" x2="691" y2="192.8"/>
 </g>
 <text transform="matrix(1 0 0 1 490 218.0001)" class="st14 st3 st6">ATGCGTGGCA    </text>
-<text transform="matrix(1 0 0 1 577 153.5435)" class="st7 st3 st6">TGGCA</text>
-<text transform="matrix(1 0 0 1 557 125.6758)" class="st8 st3 st6">GTGGC</text>
-<text transform="matrix(1 0 0 1 521 97.8079)" class="st9 st3 st6">GCGTG</text>
+<text transform="matrix(1 0 0 1 595 153.5435)" class="st7 st3 st6">TGGCA</text>
+<text transform="matrix(1 0 0 1 572 125.6758)" class="st8 st3 st6">GTGGC</text>
+<text transform="matrix(1 0 0 1 527 97.8079)" class="st9 st3 st6">GCGTG</text>
 <text transform="matrix(1 0 0 1 490 69.94)" class="st5 st3 st6">ATGCG</text>
 </svg>
