@@ -427,28 +427,30 @@ Genome Assembly: An Introduction
 <section>
 	<h2>de Bruijn graph</h2>
 
-<div align="left" style="margin-top:5%; margin-left:15%; width:85%">
+<div align="left" style="margin-top:5%; width:85%">
     <p>We construct a <b> de Bruijn graph :</b> </p>
     <ul class="spaced" style="width:85%">
 	<li> edges represent k-mers </li>
 	<li> vertices correspond to (k-1)-mers</li> 
 	</ul>
-	<ol class="spaced" style="width:75%">
+	<ol class="spaced" style="width:85%">
 	<li> Form a node for every distinct prefix or suffix of a k-mer</li> 
 	<li> Connect vertex x to vertex y with a directed edge if some k-mer 
 	(e.g., ATG) has prefix x (e.g., AT) and suffix y (e.g., TG), and label the edge with this k-mer. </li> 
 	</ol> 
-    <br>
-    Original reads:
+</div>
+    
+<div align="left" style="margin-left:15%; width:85%">
+    <p>
+    Original reads: &nbsp;&nbsp;&nbsp;&nbsp;
 <font color="red">ATGCG</font>&nbsp; &nbsp; 
 <font color="green">GCGTG</font>&nbsp; &nbsp; 
 <font color="blue">GTGGC</font>&nbsp; &nbsp; 
 <font color="orange">TGGCA</font>&nbsp; &nbsp; 
-
+    </p>
 	<p>k-mers:&nbsp;&nbsp;&nbsp;&nbsp;ATG, TGG, TGC, GTG, GGC, GCA, GCG, CGT</p>
-    <p><b>Distinct (k-1)-mers: </b> </p>
-
-    </div>
+<!--     <p><b>Distinct (k-1)-mers: </b> </p> -->
+</div>
 	
 </section>
 
@@ -456,17 +458,20 @@ Genome Assembly: An Introduction
 <section>
 	<h2>de Bruijn graph</h2>
 
-<div align="left" style="margin-top:5%; margin-left:15%; width:85%">
+<div align="left" style="margin-top:5%; width:85%">
     <p>We construct a <b> de Bruijn graph :</b> </p>
     <ul class="spaced" style="width:85%">
 	<li> edges represent k-mers </li>
 	<li> vertices correspond to (k-1)-mers</li> 
 	</ul>
-	<ol class="spaced" style="width:75%">
+	<ol class="spaced" style="width:85%">
 	<li> Form a node for every distinct prefix or suffix of a k-mer</li> 
 	<li> Connect vertex x to vertex y with a directed edge if some k-mer 
 	(e.g., ATG) has prefix x (e.g., AT) and suffix y (e.g., TG), and label the edge with this k-mer. </li> 
 	</ol> 
+</div>
+
+<div align="left" style="margin-left:15%; width:85%">
 	<p>k-mers:&nbsp;&nbsp;&nbsp;&nbsp;<font color="red"><u>AT</u></font>G, TGG, TGC, GTG, GGC, GCA, GCG, CGT</p>
     <p><b>Distinct (k-1)-mers: </b> </p>
 </div>
@@ -492,17 +497,20 @@ Genome Assembly: An Introduction
 <section>
 	<h2>de Bruijn graph</h2>
 
-<div align="left" style="margin-top:5%; margin-left:15%; width:85%">
+<div align="left" style="margin-top:5%; width:85%">
     <p>We construct a <b> de Bruijn graph :</b> </p>
     <ul class="spaced" style="width:85%">
 	<li> edges represent k-mers </li>
 	<li> vertices correspond to (k-1)-mers</li> 
 	</ul>
-	<ol class="spaced" style="width:75%">
+	<ol class="spaced" style="width:85%">
 	<li> Form a node for every distinct prefix or suffix of a k-mer</li> 
 	<li> Connect vertex x to vertex y with a directed edge if some k-mer 
 	(e.g., ATG) has prefix x (e.g., AT) and suffix y (e.g., TG), and label the edge with this k-mer. </li> 
 	</ol> 
+</div>
+
+<div align="left" style="margin-left:15%; width:85%">
 	<p>k-mers:&nbsp;&nbsp;&nbsp;&nbsp;A<font color="red"><u>TG</u></font>, <font color="red"><u>TG</u></font>G, 
 	<font color="red"><u>TG</u></font>C, G<font color="red"><u>TG</u></font>, GGC, GCA, GCG, CGT</p>
     <p><b>Distinct (k-1)-mers: </b> </p>
@@ -542,17 +550,20 @@ Genome Assembly: An Introduction
 <section>
 	<h2>de Bruijn graph</h2>
 
-<div align="left" style="margin-top:5%; margin-left:15%; width:85%">
+<div align="left" style="margin-top:5%;width:85%">
     <p>We construct a <b> de Bruijn graph :</b></p> 
-    <ul class="spaced" style="margin-top:5%; width:85%">
+    <ul class="spaced" style="width:85%">
 	<li> edges represent k-mers </li>
 	<li> vertices correspond to (k-1)-mers</li> 
 	</ul>
-	<ol class="spaced" style="margin-top:5%; width:75%">
+	<ol class="spaced" style="width:85%">
 	<li> Form a node for every distinct prefix or suffix of a k-mer</li> 
 	<li> Connect vertex x to vertex y with a directed edge if some k-mer 
 	(e.g., ATG) has prefix x (e.g., AT) and suffix y (e.g., TG), and label the edge with this k-mer. </li> 
 	</ol> 
+</div>
+
+<div align="left" style="margin-left:15%; width:85%">
 	<p>k-mers:&nbsp;&nbsp;&nbsp;&nbsp;ATG, T<font color="red"><u>GG</u></font>, 
 	TGC, GTG, <font color="red"><u>GG</u></font>C, GCA, GCG, CGT</p>
     <p><b>Distinct (k-1)-mers: </b> </p>
@@ -646,15 +657,24 @@ Genome Assembly: An Introduction
     
 </section>
 
-
 <section>
-	<h2>Find a DNA sequence containing all k-mers?</h2>
+	<h2>Eulerian path</h2>
 
-<div align="left" style="margin-top:5%; margin-left:15%; width:85%">
+<div align="left" style="margin-left:5%; margin-top:5%; width:85%">
+<p>Can we find a DNA sequence containing all k-mers? </p>
     <ul class="spaced" style="margin-top:5%; width:85%">
 	<li> In a de Bruijn graph, can we find a path that visits every edge of the graph exactly once? </li>
 	<li> Eulerian path</li> 
 	</ul>
+</div>
+
+</section>
+
+<!-- 
+<section>
+	<h2>Eulerian path</h2>
+
+<div align="left" style="margin-top:5%; margin-left:15%; width:85%">
 	<p>k-mers:&nbsp;&nbsp;&nbsp;&nbsp;ATG, TGG, TGC, GTG, GGC, GCA, GCG, CGT </p>
     <p><b>Distinct (k-1)-mers: </b> </p>
 </div>
@@ -662,15 +682,12 @@ Genome Assembly: An Introduction
 <img data-src="deBruijnGraph4.svg" style="width:75%">
     
 </section>
+ -->
 
 <section>
-	<h2>Find a DNA sequence containing all k-mers?</h2>
+	<h2>Eulerian path</h2>
 
 <div align="left" style="margin-top:5%; margin-left:15%; width:85%">
-    <ul class="spaced" style="margin-top:5%; width:85%">
-	<li> In a de Bruijn graph, can we find a path that visits every edge of the graph exactly once? </li>
-	<li> Eulerian path</li> 
-	</ul>
 	<p>k-mers:&nbsp;&nbsp;&nbsp;&nbsp;ATG, TGG, TGC, GTG, GGC, GCA, GCG, CGT </p>
     <p><b>Distinct (k-1)-mers: </b> </p>
 </div>
@@ -680,13 +697,9 @@ Genome Assembly: An Introduction
 </section>
 
 <section>
-	<h2>Find a DNA sequence containing all k-mers?</h2>
+	<h2>Eulerian path</h2>
 
 <div align="left" style="margin-top:5%; margin-left:15%; width:85%">
-    <ul class="spaced" style="margin-top:5%; width:85%">
-	<li> In a de Bruijn graph, can we find a path that visits every edge of the graph exactly once? </li>
-	<li> Eulerian path</li> 
-	</ul>
 	<p>k-mers:&nbsp;&nbsp;&nbsp;&nbsp;ATG, TGG, TGC, GTG, GGC, GCA, GCG, CGT </p>
     <p><b>Distinct (k-1)-mers: </b> </p>
 </div>
@@ -696,13 +709,9 @@ Genome Assembly: An Introduction
 </section>
 
 <section>
-	<h2>Find a DNA sequence containing all k-mers?</h2>
+	<h2>Eulerian path</h2>
 
-<div align="left" style="margin-top:5%; width:85%">
-    <ul class="spaced" style="margin-top:5%; width:85%">
-	<li> In a de Bruijn graph, can we find a path that visits every edge of the graph exactly once? </li>
-	<li> Eulerian path</li> 
-	</ul>
+<div align="left" style="margin-top:5%; margin-left:15%; width:85%">
 	<p>k-mers:&nbsp;&nbsp;&nbsp;&nbsp;ATG, TGG, TGC, GTG, GGC, GCA, GCG, CGT </p>
     <p><b>Distinct (k-1)-mers: </b> </p>
 </div>
