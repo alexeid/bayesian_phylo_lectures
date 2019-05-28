@@ -10,11 +10,12 @@ Genome Assembly: An Introduction
  -->
 
 <section>
-    <h2>Acknowledgement</h2>
+    <h2>Genome Assembly: An Introduction</h2>
     
-    <div style="font-size:27px; margin-top:25%; text-align:middle">
+    <div style="font-size:27px; margin-top:25%; margin-left:25%; text-align:left">
+    <h3>Acknowledgement:</h3>
     <p>Sebastian Schmeier</p>
-    <p></p>
+    <p>s.schmeier@gmail.com</p>
     <p>http://genomics.sschmeier.com</p>
     </div>
     
@@ -38,7 +39,6 @@ Genome Assembly: An Introduction
 
 <section>
     <h2>Learning objectives</h2>
-
 
     <ul class="spaced" style="margin-top:5%; width:85%">
 		<li> Be able to explain the DNA sequence assembly problem</li>
@@ -276,7 +276,7 @@ Genome Assembly: An Introduction
 	Represent relationships between entities 
 	</div>
 	
-	<div style="float:middle; width:50%">
+	<div style="float:left; margin-left:25%; width:60%">
 	<img data-src="graph.svg">
 	</div>
 </section>
@@ -288,7 +288,7 @@ Genome Assembly: An Introduction
 	Analyse connections e.g. find well–connected hubs in graphs
 	</div>
 	
-	<div style="float:middle; width:50%">
+	<div style="float:left; margin-left:25%; width:60%">
 	<img data-src="graph2.svg">
 	</div>
 </section>
@@ -300,7 +300,7 @@ Genome Assembly: An Introduction
 	Directed graph e.g. information flow 
 	</div>
 	
-	<div style="float:middle; width:50%">
+	<div style="float:left; margin-left:25%; width:60%">
 	<img data-src="graph3.svg">
 	</div>	
 </section>
@@ -619,5 +619,326 @@ Genome Assembly: An Introduction
 </section>
 
 
+<section>
+	<h2>de Bruijn graph</h2>
+
+<div align="left" style="margin-top:5%; margin-left:15%; width:85%">
+    We construct a <b> de Bruijn graph :</b> 
+    <ul class="spaced" style="margin-top:5%; width:85%">
+	<li> edges represent k-mers </li>
+	<li> vertices correspond to (k-1)-mers</li> 
+	</ul>
+	<ol class="spaced" style="margin-top:5%; width:75%">
+	<li> Form a node for every distinct prefix or suffix of a k-mer</li> 
+	<li> Connect vertex x to vertex y with a directed edge if some k-mer 
+	(e.g., ATG) has prefix x (e.g., AT) and suffix y (e.g., TG), and label the edge with this k-mer. </li> 
+	</ol> 
+	<br><br>
+	k-mers:   ATG, T<font color="red"><u>GG</u></font>, 
+	TGC, GTG, <font color="red"><u>GG</u></font>C, GCA, GCG, CGT
+<br><br>
+<b>Distinct (k-1)-mers: </b> 
+</div>
+
+<div align="left" style="margin-left:15%; width:85%">
+<svg height="350" width="350">
+    <circle cx="50" cy="50" r="25"
+            stroke="black"
+            stroke-width="3"
+            fill="none"
+            />
+    <text x="50" y="55" 
+          text-anchor="middle"
+          stroke="black"
+          stroke-width="1px"
+          > AT
+    </text>
+    <circle cx="150" cy="50" r="25"
+            stroke="black"
+            stroke-width="3"
+            fill="none"
+            />
+    <text x="150" y="55" 
+          text-anchor="middle"
+          stroke="black"
+          stroke-width="1px"
+          > TG
+    </text>
+    <circle cx="250" cy="100" r="25"
+            stroke="black"
+            stroke-width="3"
+            fill="none"
+            />
+    <text x="250" y="105" 
+          text-anchor="middle"
+          stroke="black"
+          stroke-width="1px"
+          > GG
+    </text>
+</svg>
+</div>
+    
+</section>
+
+<section>
+	<h2>de Bruijn graph</h2>
+
+<div align="left" style="margin-top:5%; margin-left:15%; width:85%">
+	k-mers:   ATG, TGG, TGC, GTG, GGC, GCA, GCG, CGT
+<br><br>
+<b>Distinct (k-1)-mers: </b> 
+</div>
+
+<img data-src="deBruijnGraph.svg" style="width:75%">
+    
+</section>
+
+<section>
+	<h2>de Bruijn graph</h2>
+
+<div align="left" style="margin-top:5%; margin-left:15%; width:85%">
+	k-mers:   ATG, TGG, TGC, GTG, GGC, GCA, GCG, CGT
+<br><br>
+<b>Distinct (k-1)-mers: </b> 
+</div>
+
+<img data-src="deBruijnGraph2.svg" style="width:75%">
+    
+</section>
+
+<section>
+	<h2>de Bruijn graph</h2>
+
+<div align="left" style="margin-top:5%; margin-left:15%; width:85%">
+	k-mers:   ATG, TGG, TGC, GTG, GGC, GCA, GCG, CGT
+<br><br>
+<b>Distinct (k-1)-mers: </b> 
+</div>
+
+<img data-src="deBruijnGraph3.svg" style="width:75%">
+    
+</section>
+
+<section>
+	<h2>de Bruijn graph</h2>
+
+<div align="left" style="margin-top:5%; margin-left:15%; width:85%">
+	k-mers:   ATG, TGG, TGC, GTG, GGC, GCA, GCG, CGT
+<br><br>
+<b>Distinct (k-1)-mers: </b> 
+</div>
+
+<img data-src="deBruijnGraph4.svg" style="width:75%">
+    
+</section>
+
+
+<section>
+	<h2>Can we find a DNA sequence containing all k-mers?</h2>
+
+<div align="left" style="margin-top:5%; margin-left:15%; width:85%">
+    <ul class="spaced" style="margin-top:5%; width:85%">
+	<li> In a de Bruijn graph, can we find a path that visits every edge of the graph exactly once? </li>
+	<li> Eulerian path</li> 
+	</ul>
+<br><br>
+	k-mers:   ATG, TGG, TGC, GTG, GGC, GCA, GCG, CGT
+<br><br>
+<b>Distinct (k-1)-mers: </b> 
+</div>
+
+<img data-src="deBruijnGraph4.svg" style="width:75%">
+    
+</section>
+
+<div align="left" style="margin-top:5%; margin-left:15%; width:85%">
+    <ul class="spaced" style="margin-top:5%; width:85%">
+	<li> In a de Bruijn graph, can we find a path that visits every edge of the graph exactly once? </li>
+	<li> Eulerian path</li> 
+	</ul>
+<br><br>
+	k-mers:   ATG, TGG, TGC, GTG, GGC, GCA, GCG, CGT
+<br><br>
+<b>Distinct (k-1)-mers: </b> 
+</div>
+
+<img data-src="deBruijnGraph5.svg" style="width:75%">
+    
+</section>
+
+<div align="left" style="margin-top:5%; margin-left:15%; width:85%">
+    <ul class="spaced" style="margin-top:5%; width:85%">
+	<li> In a de Bruijn graph, can we find a path that visits every edge of the graph exactly once? </li>
+	<li> Eulerian path</li> 
+	</ul>
+<br><br>
+	k-mers:   ATG, TGG, TGC, GTG, GGC, GCA, GCG, CGT
+<br><br>
+<b>Distinct (k-1)-mers: </b> 
+</div>
+
+<img data-src="deBruijnGraph6.svg" style="width:75%">
+    
+</section>
+
+<div align="left" style="margin-top:5%; margin-left:15%; width:85%">
+    <ul class="spaced" style="margin-top:5%; width:85%">
+	<li> In a de Bruijn graph, can we find a path that visits every edge of the graph exactly once? </li>
+	<li> Eulerian path</li> 
+	</ul>
+<br><br>
+	k-mers:   ATG, TGG, TGC, GTG, GGC, GCA, GCG, CGT
+<br><br>
+<b>Distinct (k-1)-mers: </b> 
+</div>
+
+<img data-src="deBruijnGraph7.svg" style="width:75%">
+    
+</section>
+
+
+<section>
+    <h2>More assumptions of graph-based genome assemblies</h2>
+
+    <ul class="spaced" style="margin-top:5%; width:85%">
+		<li> Hidden assumptions that do <b>not</b> hold for short read sequencing. 
+		We took for granted that:</li>
+		<ol class="spaced" style="margin-top:5%; width:85%">
+		<li> We can generate all k-mers present in the genome</li>
+		<li> All k-mers are error free</li>
+		<li> Each k-mer appears at most once in the genome </li>
+		</ol>
+	</ul>
+
+</section>
+
+
+<section>
+    <h2>More assumptions of graph-based genome assemblies</h2>
+
+    <ul class="spaced" style="margin-top:5%; width:85%">
+		<li> Hidden assumptions that do <b>not</b> hold for short read sequencing. 
+		We took for granted that:</li>
+		<ol class="spaced" style="margin-top:5%; width:85%">
+		<li> We can generate all k-mers present in the genome</li>
+		<li> <b>All k-mers are error free</b></li>
+		<li> Each k-mer appears at most once in the genome </li>
+		</ol>
+		
+		<li> Due to these reasons we do <b>NOT</b> choose the longest possible k-mer</li>
+		<li> The <b>smaller</b> the k-mer the higher the probability that we see <b>all</b> k-mers</li>
+		<li> Also, errors:</li>
+	</ul>
+
+<div align="left" style="margin-left:15%; width:85%">
+<img data-src="kmers.svg">
+</div>
+
+</section>
+
+<section>
+    <h2>More assumptions of graph-based genome assemblies</h2>
+
+    <ul class="spaced" style="margin-top:5%; width:85%">
+		<li> Hidden assumptions that do <b>not</b> hold for short read sequencing. 
+		We took for granted that:</li>
+		<ol class="spaced" style="margin-top:5%; width:85%">
+		<li> We can generate all k-mers present in the genome</li>
+		<li> All k-mers are error free</li>
+		<li> <b>Each k-mer appears at most once in the genome</b> </li>
+		<ul>
+		<li style="list-style-type:none"> <b>&rarr; Repeats </b> </li>
+		<li> This is most often not true</li>
+		<li> This is known as k-mer multiplicity</li>
+		</ul>
+		</ol>
+	</ul>
+
+<div align="left" style="margin-left:15%; width:85%">
+	k-mers:   ATG, GCA, TGC, <font color="green">TGC</font>, GTG, 
+	<font color="green">GTG</font>, GCG, <font color="green">GCG</font>, CGT, CGT
+<br><br>
+<b>Distinct (k-1)-mers:</b>    A<font color="red">TGCG</font><font color="orange">TGCG</font>TGCA 
+
+<img data-src="kmers-graph.svg">
+</div>
+
+</section>
+
+
+<section>
+    <h2>Summary</h2>
+
+    <ul class="spaced" style="margin-top:5%; width:85%">
+		<li> DNA sequence assembly problem</li>
+		<ul class="spaced" style="margin-top:5%; width:85%">
+		<li> Given millions of short sequences, join overlapping short sequence fragments 
+		into long pieces to recover a continuous sequence of the genome.</li>
+		</ul>
+		<li> Greedy assembly</li>
+		<ul class="spaced" style="margin-top:5%; width:85%">
+		<li> Find the shortest common superstring by iteratively joining and merging overlapping reads until all reads have been merged.</li>
+		</ul>
+		<li> Graph-based assembly</li>
+		<ul class="spaced" style="margin-top:5%; width:85%">
+		<li> Pre-process sequence reads to determine the pair-wise overlap information of substrings and represent these binary relationships in a graph.</li>
+		<li> Search a consistent genome layout by finding an eulerian path (visit each edge once) through the graph satisfying certain criteria.</li>
+		</ul>		
+	</ul>
+</section>
+
+<section>
+    <h2>Summary (2)</h2>
+
+    <ul class="spaced" style="margin-top:5%; width:85%">
+		<li> Assumptions:</li>
+		<ul class="spaced" style="margin-top:5%; width:85%">
+		<li> If two sequence reads share a common overlapping substring, 
+		they are likely originating from the same chromosomal regions in the genome</li>
+		<li> Sequenced reads are 100% accurate (not true)</li>
+		<li> Identical reads must come from the same location on the genome (mostly not true)</li>
+		<li> All substrings from the genome are represented in the set of sequenced reads (very likely not true)</li>
+		<li> All k-mers are error free (not true)</li>
+		<li> We can generate all k-mers present in the genome (very likely untrue)</li>
+		<li> Each k-mer appears at most once in the genome (likely untrue)</li>
+		</ul>		
+	</ul>
+	
+	<p style="font-size:10px;">
+	References: <br>
+How to apply de Bruijn graphs to genome assembly. Phillip E C Compeau, Pavel A Pevzner & Glenn Tesler (2011) . 
+Nature Biotechnology 29, 987–991 <br>
+Sequence Assembly. Lecture by Mark Craven (craven@biostat.wisc.edu). BMI/CS 576 (www.biostat.wisc.edu/bmi576/), Fall 2011<br>	
+Comparing De Novo Genome Assembly: The Long and Short of It. Narzisi G, Mishra B (2011) PLoS ONE6(4): e19175.<br> 
+</p>
+
+</section>
+
+<section>
+    <h2>Seven bridges of Königsberg II</h2>
+
+    <ul class="spaced" style="margin-top:5%; width:85%">
+		<li> The case of <u>directed graphs</u> is similar:</li>
+		<ul class="spaced" style="margin-top:5%; width:85%">
+		<li> A graph in which indegrees are equal to outdegrees for all nodes is called 'balanced'. </li>
+		<li> Euler's theorem states that <u>a connected directed graph has an Eulerian cycle if and only if it is balanced</u>. </li>
+		</ul>		
+	</ul>
+
+</section>
+
+<section>
+    <h2>References</h2>
+
+    <ul class="spaced" style="margin-top:5%; width:85%">
+		<li> How to apply de Bruijn graphs to genome assembly. Phillip E C Compeau, Pavel A Pevzner & Glenn Tesler. 
+		Nature Biotechnology 29, 987–991 (2011) doi:10.1038/nbt.2023 Published online 08 November 2011 </li>
+		<li> Sequence Assembly. Lecture by Mark Craven (craven@biostat.wisc.edu). BMI/CS 576 (www.biostat.wisc.edu/bmi576/), Fall 2011 </li>
+		<li> Comparing De Novo Genome Assembly: The Long and Short of It. Narzisi G, Mishra B (2011) PLoS ONE6(4): e19175.</li>	
+	</ul>
+    <p>Sebastian Schmeier</p>
+    <p>s.schmeier@gmail.com</p>
+    <p>http://genomics.sschmeier.com</p>
+</section>
 
 
