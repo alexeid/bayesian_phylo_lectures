@@ -12,9 +12,8 @@ lecture_num: 18
     
 </section>
 
-<section>
+<section class="center">
     <h2>What is Artificial Life?</h2>
-        
 </section>
 
 <section>
@@ -54,7 +53,7 @@ lecture_num: 18
 <p>Lots of work to be done here, and progress continues to be made. </p>
 </div>
 
-<div style="float:right; width:60%">
+<div style="float:right; margin-top:1%; width:60%">
 	<img data-src="ComplexSystems.png" style="height:500px;">
 </div>
 
@@ -145,12 +144,14 @@ but is enabled by the physical properties of the body and how it interacts with 
 </section>
 
 
-<section>
-	<h2>Boids</h2>
+<section class="center">
+	<h2>Boids - a case study</h2>
 	
-	<div style="font-size:200%; margin-top:25%; margin-left:25%; text-align:left">
+	<!-- 
+<div style="font-size:200%; margin-top:25%; margin-left:25%; text-align:left">
     <p>A Case Study</p>
     </div>
+ -->
 </section>
 
 <section>
@@ -326,7 +327,7 @@ and soldiers with dark, oval shaped heads scrambling to repair the hole.<br>
 </div>
 
 <div style="float:right; width:50%">
-	<img data-src="nest.svg" style="height:500px;">
+	<img data-src="nest.svg">
 </div>
 
 </section>
@@ -364,7 +365,7 @@ Computer animation and games</p>
 
 </section>
 
-<section>
+<section class="center">
 	<h2>Artificial Evolution</h2>
 </section>
 
@@ -434,7 +435,7 @@ that are increasingly capable of consistently producing offspring in that enviro
 <section>
 	<h2>Central Concepts</h2>
 	
-    <ul class="spaced" style="margin-top:5%; margin-left:25%; width:85%; text-align:left">
+    <ul class="spaced" style="font-size:120%; margin-top:5%; margin-left:15%; width:85%; text-align:left">
 	<li>Fitness</li>
 	<li>Genotype</li>
 	<li>Phenotype</li>
@@ -499,8 +500,7 @@ Passed down from one generation to the next, undergoes mutation and recombinatio
 	<li>e.g. the paper airplane</li>
 </ul>
 <p>We usually need both of these, because the thing that is easy to copy, 
-mutate and recombine is not the thing that is evaluated for fitness.
-</p>
+mutate and recombine is not the thing that is evaluated for fitness.</p>
 </div>
 
 <div style="float:right; margin-top:1%; width:50%">
@@ -514,6 +514,25 @@ mutate and recombine is not the thing that is evaluated for fitness.
 <section>
 	<h2>Pseudocode</h2>
 	
+    <div class="textbox" style="margin-top:1%">
+        <code>
+<p>$for$ $n$ times round generation loop,</p> 
+<p></p>       
+<p>&nbsp;&nbsp;<b>## evaluate the current generation</b></p>                
+<p>&nbsp;&nbsp;<b>## "fitness" = how well the individual performs the desired behaviour</b></p>                      
+<p>&nbsp;&nbsp;evaluate the fitness for every individual in the population (of size 30);</p>           
+<p></p>    
+<p>&nbsp;&nbsp;<b>## create the next generation</b></p>                      
+<p>&nbsp;&nbsp;$for$ 30 times,</p>           
+<p>&nbsp;&nbsp;&nbsp;&nbsp;pick 2 from parental pool (selecting preferentially the fitter ones);</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;recombine to make 1 offspring;</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;mutate the offspring;</p>
+<p>&nbsp;&nbsp;$end$;</p>  
+<p>&nbsp;&nbsp;throw away parental generation and replace it with offspring;</p>  
+<p></p>            
+<p>$end$ generation loop</p>
+        </code>
+    </div>
 
 </section>
 
