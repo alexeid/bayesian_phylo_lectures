@@ -539,9 +539,73 @@ mutate and recombine is not the thing that is evaluated for fitness.</p>
 </section>
 
 
+<section>
+<!-- 	<h2>Genotype / Phenotype</h2> -->
+	
+    <img data-src="ArtificialBrains.svg" style="height:500px;">
+	
+</section>
 
 
+<section>
+	<h2>Sort of engineering, sort of an art!</h2>
+	
+    <div class="textbox" style="font-size:80%;margin-top:1%">
+<p><b>for</b> $n$ times round generation loop,</p> 
 
+<p>
+&nbsp;&nbsp;&nbsp;&nbsp;<b>## evaluate the current generation</b><br>                
+&nbsp;&nbsp;&nbsp;&nbsp;<b>## "fitness" = how well the individual performs the desired behaviour</b><br>                      
+&nbsp;&nbsp;&nbsp;&nbsp;evaluate the fitness for every individual in the population (of size 30); 
+<font color="red">How?</font>
+</p>           
+
+<p>
+&nbsp;&nbsp;&nbsp;&nbsp;<b>## create the next generation</b><br>                      
+&nbsp;&nbsp;&nbsp;&nbsp;<b>for</b> 30 times,<br>       
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;pick 2 from parental pool (selecting preferentially the fitter ones);
+ <font color="red">How?</font><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;recombine to make 1 offspring; <font color="red">How?</font><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mutate the offspring; <font color="red">How?</font><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<b>end</b>;<br>  
+&nbsp;&nbsp;&nbsp;&nbsp;throw away parental generation and replace it with offspring; <font color="red">How?</font>
+</p>  
+
+<p><b>end</b> generation loop</p>
+    </div>
+
+</section>
+
+<section>
+	<h2>Science</h2>
+	
+<div style="float:left; margin-top:2%; width:60%">
+<p>By studying artificial evolution, we develop a better understanding of 
+some of the processes underlying natural evolution.</p>
+
+Is one form of mutation or recombination or selection pressure more effective than another?
+What is the best way for a genotype to encode a phenotype?
+How do learning and development affect evolution?
+Can organisms evolve to become more evolvable?
+Why in the fossil record do sudden changes occur rather than steady, gradual changes?
+etc.
+
+    <ul>
+	<li>Generate 20 random sequences of folding instructions</li>
+	<li>Fold each piece of paper according to instructions written on them</li>
+	<li>Throw them all out of the window</li>
+	<li>Pick up the ones that went furthest, look at the instructions</li>
+	<li>Produce 20 new pieces of paper, writing on each bits of sequences from parent pieces of paper 
+	(occasionally make a mistake while copying the instructions, “mutation”)</li>
+	<li>Repeat from (2) on.</li>
+	</ul>
+</div>
+
+<div style="float:right; margin-top:1%; width:40%">
+	<img data-src="Science.svg">
+</div>
+
+</section>
 
 
 
