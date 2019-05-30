@@ -514,24 +514,26 @@ mutate and recombine is not the thing that is evaluated for fitness.</p>
 <section>
 	<h2>Pseudocode</h2>
 	
-    <div class="textbox" style="margin-top:1%">
-        <code>
-<p>$for$ $n$ times round generation loop,</p> 
-<p></p>       
-<p>&nbsp;&nbsp;<b>## evaluate the current generation</b></p>                
-<p>&nbsp;&nbsp;<b>## "fitness" = how well the individual performs the desired behaviour</b></p>                      
-<p>&nbsp;&nbsp;evaluate the fitness for every individual in the population (of size 30);</p>           
-<p></p>    
-<p>&nbsp;&nbsp;<b>## create the next generation</b></p>                      
-<p>&nbsp;&nbsp;$for$ 30 times,</p>           
-<p>&nbsp;&nbsp;&nbsp;&nbsp;pick 2 from parental pool (selecting preferentially the fitter ones);</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;recombine to make 1 offspring;</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;mutate the offspring;</p>
-<p>&nbsp;&nbsp;$end$;</p>  
-<p>&nbsp;&nbsp;throw away parental generation and replace it with offspring;</p>  
-<p></p>            
-<p>$end$ generation loop</p>
-        </code>
+    <div class="textbox" style="font-size:80%;margin-top:1%">
+<p><b>for</b> $n$ times round generation loop,</p> 
+
+<p>
+&nbsp;&nbsp;&nbsp;&nbsp;<b>## evaluate the current generation</b><br>                
+&nbsp;&nbsp;&nbsp;&nbsp;<b>## "fitness" = how well the individual performs the desired behaviour</b><br>                      
+&nbsp;&nbsp;&nbsp;&nbsp;evaluate the fitness for every individual in the population (of size 30);
+</p>           
+
+<p>
+&nbsp;&nbsp;&nbsp;&nbsp;<b>## create the next generation</b><br>                      
+&nbsp;&nbsp;&nbsp;&nbsp;<b>for</b> 30 times,<br>       
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;pick 2 from parental pool (selecting preferentially the fitter ones);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;recombine to make 1 offspring;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mutate the offspring;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<b>end</b>;<br>  
+&nbsp;&nbsp;&nbsp;&nbsp;throw away parental generation and replace it with offspring;
+</p>  
+
+<p><b>end</b> generation loop</p>
     </div>
 
 </section>
