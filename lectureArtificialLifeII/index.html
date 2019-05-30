@@ -1,0 +1,105 @@
+---
+lecture_num: 19
+---
+
+<section>
+    <h2>Acknowledgement</h2>
+    
+    <div style="font-size:200%; margin-top:25%; margin-left:25%; text-align:left">
+    <p>Matthew Egbert</p>
+    <p>m.egbert@auckland.ac.nz</p>
+    </div>
+    
+</section>
+
+<section class="center">
+	<h2>Cellular Automata</h2>
+</section>
+
+<section>
+    <h2>Cellular Automata</h2>
+    
+<div style="float:left; margin-top:1%; width:50%">
+<p>Cellular automata are another classic area of artificial life research.</p>
+<p>A CA consists of a regular lattice of cells, where:</p>
+
+    <ul>
+	<li> Each cell is in one of a finite number of states (2 or more).</li>
+	<li> The state of each cell changes according to a set of rules that specify the next state of a cell, 
+	given its current state and the state of its neighbouring cells.</li>
+	</ul>
+<p><i>Usually</i>, the rules are the same for all cells in the lattice 
+and all of the cells are updated simultaneously and deterministically.</p>
+</div>
+
+<div style="float:right; margin-top:2%; width:50%">
+	<img data-src="CellularAutomata.svg" style="height:500px;">
+</div>
+    
+</section>
+
+<section>
+    <h2>Neighbourhoods</h2>
+
+<div style="float:left; margin-top:1%; width:50%">
+<p>Some CA use an eight-cell immediate neighbours, called its <b>Moore neighbourhood</b></p>
+
+<p>Other CAs, can use different neighbourhoods; e.g. the four neighbours of the <b>von Neumann neighbourhood</b></p>
+</div>
+
+<div style="float:right; margin-top:2%; width:50%">
+	<img data-src="Neighbourhoods.svg" style="height:500px;">
+</div>
+
+</section>
+
+<section>
+    <h2>Conway's "Game of Life"</h2>
+
+<div style="float:left; margin-top:1%; width:60%">
+<p>The best known CA is John Horton Conway's "Game of  Life". Invented 1970 in Cambridge.</p>
+
+<p>Objective: To make a 'game' as unpredictable as  possible with the simplest possible rules.</p>
+
+<p>Infinite 2-dimensional rectangular grid cells. Each cell is either "dead" (white) or "alive" (black).</p>
+</div>
+
+<div class="textbox" style="float:left; width:60%">
+<p><b>Rules</b></p>
+<ol>
+	<li>A dead cell with exactly three live neighbours becomes a live cell (birth).</li>
+	<li>A live cell with two or three live neighbours stays alive (survival).</li>
+	<li>In all other cases, a cell dies or remains dead (overcrowding or loneliness).</li>
+</ol>
+</div>
+
+<div style="float:right; margin-top:2%; width:40%">
+	<img data-src="t0.svg">
+</div>
+
+</section>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
