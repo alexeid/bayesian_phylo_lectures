@@ -192,6 +192,37 @@ layout: null
                         {% endfor %}
                     </ul>
 
+                    <h3>Artificial Life</h3> 
+                       
+                    <ul>
+                        {% assign lectureIdx = 0 %}
+                        {% assign programming_lectures = site.data.lectures |  where:'section', "artificiallife" %}
+                        {% for lecture in programming_lectures %}
+
+                        {% assign lectureURL = "/" | append: lecture.folder | append: "/" %}
+
+                        {% assign found = false %}
+                        {% for page in site.pages %}
+                        {% if page.url == lectureURL %}
+                        {% assign found = true %}
+                        {% endif %}
+                        {% endfor %}
+
+                        <li><b>
+                        {% if found %}
+                        <a href="{{site.baseurl}}{{lectureURL}}">{{lecture.title}}</a>
+                        {% else %}
+                        {{lecture.title}}
+                        {% endif %}
+                        </b>
+                        {% if lecture.date %}
+                        ({{lecture.date | date: "%-d %B %Y"}})
+                        {% else %}
+                        {% endif %}
+                        </li>
+
+                        {% endfor %}
+                    </ul>
 
                 </div>
             </div>
