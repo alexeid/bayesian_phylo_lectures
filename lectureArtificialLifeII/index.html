@@ -779,6 +779,196 @@ Is this <font color="orange">organized</font> or <font color="green">chaotic</fo
 </div>
 </section>
 
+<section>
+<h2>Wolfram's Classification Scheme</h2>
+
+<div style="float:left; margin-top:1%; width:50%">
+<p>Q: What does a given CA do when started from <font color="blue"><u>random</u></font> initial conditions?</p>
+<p>Each initial condition produces a different result, 
+but a given CA ruleset tends to produce dynamics that fall into one of four classes.</p>
+</div>
+
+<div style="float:right; margin-top:1%; width:50%">
+<div>
+<img data-src="class1.svg" style="width:23%">
+<img data-src="class2.svg" style="width:23%">
+</div>
+<div>
+<img data-src="class3.svg" style="width:23%">
+<img data-src="class4.svg" style="width:23%">
+</div>
+</div>
+</section>
+
+<section>
+<h2>Wolfram's Classification Scheme</h2>
+
+<div style="float:left; margin-top:1%; width:50%">
+<img data-src="class1.svg" style="width:45%">
+
+<p><b>Class 1: "Homogenous"</b><br>
+Behavior is very simple and almost all initial conditions lead to exactly the same uniform final state.</p>
+
+<p style="font-size:75%">paraphrased following Wolfram <b>A New Kind of Science</b> (2002), p 231</p>
+</div>
+
+<div style="float:right; margin-top:1%; width:50%">
+<img data-src="class2.svg" style="width:45%">
+
+<p><b>Class 2: "Regular"</b><br>
+There are many different possible final states, 
+but all of them consist just of a certain set of simple structures 
+that either remain the same forever or repeat every few steps.</p>
+</div>
+</section>
+
+<section>
+<h2>Wolfram's Classification Scheme</h2>
+
+<div style="float:left; margin-top:1%; width:50%">
+<img data-src="class3.svg" style="width:45%">
+
+<p><b>Class 3: "Chaotic"</b><br>
+The behaviour is more complicated and seems in many respects random, 
+although triangles and other small-scale structures are essentially always at some level seen.</p>
+</div>
+
+<div style="float:right; margin-top:1%; width:50%">
+<img data-src="class4.svg" style="width:45%">
+
+<p><b>Class 4: "Complex"</b><br>
+A mixture of order and randomness; localized structures are produced which on their own are fairly simple, 
+but these structures move around and interact with each other in very complicated ways.</p>
+</div>
+</section>
+
+<section>
+    <h2>Notes</h2>
+    
+<div style="float:left; margin-top:1%; width:85%">
+<p>NOTE: Not always possible to easily classify a rule. Sometimes there are "borderline cases" 
+where a given rule set demonstrates, e.g. some Class 2 and some Class 4 behaviour.</p>
+<p>NOTE: Wolfram suggests all Class 4 CA are Universal ("effectively capable of emulating any other system")? But this is not proven.</p>
+</div>
+    
+</section>
+
+<section class="center">
+	<h2>Back to Life (Reality) </h2>
+</section>
+
+<section>
+    <h2>Notes</h2>
+    
+<div style="float:left; margin-top:1%; width:85%">
+
+<img data-src="shells.svg" style="width:45%">
+
+<p>Which of these shells is real?</p>
+<p style="font-size:50%">Meinhardt, H. (1995). The Algorithmic Beauty of Sea Shells. Springer Verlag. (p. 179, 180)</p>
+</div>
+    
+</section>
+
+
+<section>
+<h2>Reaction / Diffusion Systems and Turing Patterns</h2>
+
+<div style="float:left; margin-top:1%; width:50%">
+<p>Simple model of two chemicals, U and V, that diffuse, react and decay.</p>
+<p>One chemical reaction: U + 2V &rarr; 3V</p>
+<p>Parameters: How quickly the reaction takes place compared to diffusion, how quickly U and V decay. etc.</p>
+<p>Simple rules can produce complex and life-like collective behaviour!</p>
+
+<ul style="font-size:50%">
+	<li> Turing, A. M. (1952). <b>The Chemical Basis of Morphogenesis.</b> 
+Philosophical Transactions of the Royal Society of London B 237 (641): 37–72.</li>
+	<li><a href="http://mrob.com/pub/comp/xmorphia/" target="_blank">http://mrob.com/pub/comp/xmorphia/</a></li>
+</ul>
+
+<!-- <img data-src="Turing.svg" style="width:20%"> -->
+</div>
+
+<div style="float:right; margin-top:1%; width:50%">
+<img data-src="turing-patterns.svg">
+
+<p style="font-size:50%">http://www.wired.com/2011/02/turing-patterns/</p>
+</div>
+</section>
+
+
+<section>
+<h2>Complexity "at the edge of chaos"</h2>
+
+<div style="float:left; margin-top:1%; width:50%">
+<p>We can define a value &lambda; that corresponds to the proportion of rules that produce a particular state.</p>
+<p>$&lambda; = (K^{N} - n) / K^{N}$</p>
+
+<ul style="font-size:50%">
+	<li> K = number of states = 2</li>
+	<li> N = number of neighbours = 3</li>
+	<li> n = number of rules that result in an arbitrarily   selected "quiescent" state (we'll pick white)</li>
+</ul>
+
+<p style="font-size:50%">Christopher G. Langton (1990). <b>Computation at the edge of chaos.</b> 
+Physica D 42. doi:10.1016/0167-2789(90)90064-V.</p>
+</div>
+
+<div style="float:right; margin-top:1%; width:50%">
+<img data-src="RuleLambda.svg">
+</div>
+</section>
+
+<section>
+<h2>Complexity is rare?</h2>
+
+<div style="float:left; margin-top:1%; width:40%">
+<p>Most rules produce non-complex results.</p>
+<p>Only when the system is "tuned" to have precisely the right set of rules do we see the interesting behaviour.</p>
+
+<p><b>Self-organized criticality</b><br>
+Could any natural processes "self-tune" or "self-organize" so as to autonomously approach complexity?</p>
+</div>
+
+<div style="float:right; margin-top:1%; width:60%">
+<img data-src="Complexity.svg">
+</div>
+</section>
+
+
+<section>
+<h2>What is artificial life (again)?</h2>
+
+<div style="float:left; margin-top:1%; width:60%">
+<p>t involves the creation of artificial things.</p>
+<p>These things serve multiple purposes:</p>
+
+<ol>
+	<li> They allow us to test hypotheses and explore the implications of theories in contexts 
+	that are much more simple than those found in Nature.</li>
+	<li> They also call into question some of the limitations of science as currently practiced. 
+	(If we can't predict even the statistics of CA rule 110, 
+	Can we expect to be able to formulate some nice theoretical description of how the brain works? 
+	Or of how organisms develop?) </li>
+	<li> They provide target systems to try to apply new methods of analysis and description.</li>
+</ol>
+
+</div>
+
+<div style="float:right; margin-top:1%; width:40%">
+<p>Developing and studying artificial systems can be helpful in trying to understand the world around us.</p>
+
+<ul>
+	<li> thought experiments</li>
+	<li> sufficiency proof </li>
+	<li> intuition pump</li>
+	<li> creativity pump</li>
+</ul>
+
+</div>
+</section>
+
+
 
 
 
