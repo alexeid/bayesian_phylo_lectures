@@ -1,0 +1,513 @@
+---
+lecture_num: 36
+---
+
+    <section>
+        <h3>Scoring Alignments</h3>
+
+        <ul style="margin-top:0.5em">
+            <li>Numeric score associated with each column.</li>
+            <li>Total score given by sum of column scores.</li>
+            <li>Column types:
+                <ul>
+                    <li style="color:red">Identical (+ve score)</li>
+                    <li style="color:green">Conservative (+ve score)</li>
+                    <li style="color:purple">Non-conservative (-ve score)</li>
+                    <li style="color:blue">Gap (-ve score)</li>
+                </ul>
+        </ul>
+
+        <div class="textbox" style="margin-top:1em">
+            <div class="title">Alignment</div>
+            <pre style="font-size:35px;box-shadow:none;margin-bottom:0">
+            x' = <font color="red">a</font> <font color="blue">- c</font> <font color="red">g</font> <font color="purple">g</font> <font color="blue">-</font> <font color="red">t</font> <font color="green">s</font>
+            y' = <font color="red">a</font> <font color="blue">w -</font> <font color="red">g</font> <font color="purple">c</font> <font color="blue">c</font> <font color="red">t</font> <font color="green">t</font>
+            </pre>
+        </div>
+
+        <p>The <b>score matrix</b> (or substitution matrix) $s$ contains the column
+        scores of every possible pair.  A column with the character pair
+        $a,b$ is given by the matrix entry $s(a,b)$.</p>
+    </section>
+
+   <section>
+       <h3>Dynamic Programming recurrences</h3>
+
+       <table>
+           <tr>
+               <td>Optimal alignment</td>
+               <td>
+                   <div style="border:solid 1px black;background-color:lime;width:97%">
+                       $y_1, y_2, y_3, \ldots, y_j$
+                   </div>
+                   <div style="border:solid 1px black;background-color:lime;margin-top:5px;width:97%">
+                       $x_1, x_2, x_3, \ldots, x_i$
+                   </div>
+               </td>
+               <td>
+                   $F(i,j)$
+               </td>
+           </tr>
+
+           <tr>
+               <td> Comes from...  </td>
+               <td style="width:35%">
+                   <div style="border:solid 1px black;background-color:lime;display:inline-block;width:85%">
+                       $y_1, y_2, y_3, \ldots, y_{j-1}$
+                   </div><div style="border:solid 1px black; background-color:red;display:inline-block;width:12%">
+                       $y_j$
+                   </div><br>
+                   <div style="border:solid 1px black;background-color:lime;margin-top:5px;display:inline-block;width:85%">
+                       $x_1, x_2, x_3, \ldots, x_{i-1}$
+                   </div><div style="border:solid 1px black; background-color:red;display:inline-block;width:12%">
+                       $x_i$
+                   </div>
+               </td>
+               <td>
+                   $F(i-1,j-1) + s(x_i,y_j)$
+               </td>
+           </tr>
+           <tr>
+               <td> Or...  </td>
+               <td>
+                   <div style="border:solid 1px black;background-color:lime;display:inline-block;width:85%">
+                       $y_1, y_2, y_3, \ldots, y_{j-1}$
+                   </div><div style="border:solid 1px black; background-color:red;display:inline-block;width:12%">
+                       $y_j$
+                   </div><br>
+                   <div style="border:solid 1px black;background-color:lime;margin-top:5px;display:inline-block;width:85%">
+                       $x_1, x_2, x_3, \ldots, x_{i}$
+                   </div><div style="border:solid 1px black; background-color:red;display:inline-block;width:12%">
+                       $\phantom{x_i}$
+                   </div>
+               </td>
+               <td>
+                   $F(i,j-1) - d$
+               </td>
+           </tr>
+           <tr>
+               <td> Or...  </td>
+               <td>
+                   <div style="border:solid 1px black;background-color:lime;display:inline-block;width:85%">
+                       $y_1, y_2, y_3, \ldots, y_{j}$
+                   </div><div style="border:solid 1px black; background-color:red;display:inline-block;width:12%">
+                       $\phantom{y_j}$
+                   </div><br>
+                   <div style="border:solid 1px black;background-color:lime;margin-top:5px;display:inline-block;width:85%">
+                       $x_1, x_2, x_3, \ldots, x_{i-1}$
+                   </div><div style="border:solid 1px black; background-color:red;display:inline-block;width:12%">
+                       $x_i$
+                   </div>
+               </td>
+               <td>
+                   $F(i-1,j) - d$
+               </td>
+           </tr>
+       </table>
+       <p>Therefore,</p>
+       <div style="font-size:0.8em;margin-top:0.5em">
+       \begin{align*}
+       F(i,j) = \max\left\{\begin{array}{l}
+       F(i-1,j-1) + s(x_i,y_j)\\
+       F(i,j-1) - d\\
+       F(i-1,j) - d
+       \end{array}\right.
+       \end{align*}
+       </div>
+   </section>
+   
+   <section>
+       <h3>Dynamic Programming recurrences</h3>
+
+       <table style="font-size:0.8em">
+           <tr>
+               <td>Optimal alignment</td>
+               <td>
+                   <div style="border:solid 1px black;background-color:lime;width:97%">
+                       $y_s, y_{s+1}, y_{s+2}, \ldots, y_j$
+                   </div>
+                   <div style="border:solid 1px black;background-color:lime;margin-top:5px;width:97%">
+                       $x_r, x_{r+1}, x_{r+2}, \ldots, x_i$
+                   </div>
+               </td>
+               <td>
+                   $F(i,j)$
+               </td>
+           </tr>
+
+           <tr>
+               <td> Comes from...  </td>
+               <td style="width:35%">
+                   <div style="border:solid 1px black;background-color:lime;display:inline-block;width:85%">
+                       $y_s, y_{s+1}, \ldots, y_{j-1}$
+                   </div><div style="border:solid 1px black; background-color:red;display:inline-block;width:12%">
+                       $y_j$
+                   </div><br>
+                   <div style="border:solid 1px black;background-color:lime;margin-top:5px;display:inline-block;width:85%">
+                       $x_r, x_{r+1}, \ldots, x_{i-1}$
+                   </div><div style="border:solid 1px black; background-color:red;display:inline-block;width:12%">
+                       $x_i$
+                   </div>
+               </td>
+               <td>
+                   $F(i-1,j-1) + s(x_i,y_j)$
+               </td>
+           </tr>
+           <tr>
+               <td> Or...  </td>
+               <td>
+                   <div style="border:solid 1px black;background-color:lime;display:inline-block;width:85%">
+                       $y_s, y_{s+1}, \ldots, y_{j-1}$
+                   </div><div style="border:solid 1px black; background-color:red;display:inline-block;width:12%">
+                       $y_j$
+                   </div><br>
+                   <div style="border:solid 1px black;background-color:lime;margin-top:5px;display:inline-block;width:85%">
+                       $x_r, x_{r+1}, \ldots, x_{i}$
+                   </div><div style="border:solid 1px black; background-color:red;display:inline-block;width:12%">
+                       $\phantom{x_i}$
+                   </div>
+               </td>
+               <td>
+                   $F(i,j-1) - d$
+               </td>
+           </tr>
+           <tr>
+               <td> Or...  </td>
+               <td>
+                   <div style="border:solid 1px black;background-color:lime;display:inline-block;width:85%">
+                       $y_s, y_{s+1}, \ldots, y_{j}$
+                   </div><div style="border:solid 1px black; background-color:red;display:inline-block;width:12%">
+                       $\phantom{y_j}$
+                   </div><br>
+                   <div style="border:solid 1px black;background-color:lime;margin-top:5px;display:inline-block;width:85%">
+                       $x_r, x_{r+1}, \ldots, x_{i-1}$
+                   </div><div style="border:solid 1px black; background-color:red;display:inline-block;width:12%">
+                       $x_i$
+                   </div>
+               </td>
+               <td>
+                   $F(i-1,j) - d$
+               </td>
+           </tr>
+           <tr>
+               <td> Or...  </td>
+               <td>
+                   <div style="border:solid 1px black;border-right:solid 0.5em blue;display:inline-block;width:97%">
+                       $y_s, y_{s+1}, y_{s+2}, \ldots, y_{j}$
+                   </div><br>
+                   <div style="border:solid 1px black;border-right:solid 0.5em blue;margin-top:5px;display:inline-block;width:97%">
+                       $x_r, x_{r+1}, x_{r+2}, \ldots, x_{i}$
+                   </div>
+               </td>
+               <td>
+                   $0$
+               </td>
+           </tr>
+       </table>
+
+       <div style="font-size:0.8em;margin-top:0.5em">
+       \begin{align*}
+       F(i,j) = \max\left\{\begin{array}{l}
+       F(i-1,j-1) + s(x_i,y_j)\\
+       F(i,j-1) - d\\
+       F(i-1,j) - d\\
+       0
+       \end{array}\right.
+       
+       \implies F(i,0) = F(0,j) = 0
+       \end{align*}
+       </div>
+   </section>
+
+   <section>
+       <h3>Example</h3>
+
+       <div class="figure">
+           <img data-src="../lecture2/smith_waterman_example.png" style="width:80%"><br>
+           <a href="http://librarysearch.auckland.ac.nz/primo_library/libweb/action/dlDisplay.do?vid=UOA2_A&search_scope=Combined_Local&docId=uoa_alma21156401750002091&fn=permalink" class="cite">Durbin, Eddy, Krogh, Mitchison, "Biological sequence analysis", Cambridge Uni Press, 1998</a>
+       </div>
+
+   </section>
+   
+   <section>
+	<h2>UPGMA example</h2>
+	
+	<div style="float:left; width:50%;">
+	
+	Distances<br>
+	<table class="noborders" style="margin: 0 auto; ">
+	<tr style="border-bottom: solid 1px;"><td style="border-right: solid 1px;"></td><td>ABC</td><td>D</td></tr>
+	<tr><td style="border-right: solid 1px;">ABC</td><td>0</td><td></td></tr>
+	<tr><td style="border-right: solid 1px;">D</td><td><font color="red"><b>12.33</b></font></td><td>0</td></tr>
+	</table>
+	</div>
+
+	<div style="float:right; width:50%">
+		<img data-src="../lecture5/upgma3.svg" style="height:200px;">
+	</div>
+	
+	<div style="margin-left:15%; margin-top:30%; width:70%; text-align:left">
+	UPGMA produces a <font color="red">ultrametric rooted tree</font> and assumes that evolution is <font color="red">clock-like</font>, 
+	i.e. it assumes that the rate of substitution is the same on all branches of the tree.
+	
+	</div>
+	<div style="margin-left:15%; margin-top:5%; width:70%; text-align:left">
+	A tree is <font color="red">ultrametric</font> when all leaves have the same age/height. 
+	</div>
+</section>
+	
+
+<section>
+	<h2>UPGMA weaknesses</h2>
+	
+	<div style="float:left; width:50%;">
+	
+	Distances<br>
+	<table class="noborders" style="margin: 0 auto; ">
+	<tr style="border-bottom: solid 1px;"><td style="border-right: solid 1px;"></td><td>A</td><td>B</td><td>C</td><td>D</td></tr>
+	<tr><td style="border-right: solid 1px;">A</td><td>0</td><td></td><td></td><td></td></tr>
+	<tr><td style="border-right: solid 1px;">B</td><td>8</td><td>0</td><td></td><td></td></tr>
+	<tr><td style="border-right: solid 1px;">C</td><td>7</td><td>9</td><td>0</td><td></td></tr>
+	<tr><td style="border-right: solid 1px;">D</td><td>12</td><td>14</td><td>11</td><td>0</td></tr>
+	</table>
+	</div>
+
+	<div style="float:right; width:50%">
+		<img data-src="../lecture5/non-upgma-tree.svg" style="height:250px;">
+	</div>
+	
+	<div style="margin-top:35%; margin-left:15%; width:70%; text-align:left">
+	There is a (non clock-like) tree <font color="red">with a different topology</font> that fits the distance matrix <font color="red">perfectly</font>!	
+	</div>
+</section>
+
+<section>
+	<h2>Neighbour-joining algorithm<br> (Saitou and Nei, 1987)</h2>
+	
+	 <ul class="spaced" style="margin-top:5%; width:70%">
+	 <li>Most widely-used distance-based method for phylogenetic reconstruction
+	 <li>UPGMA illustrated that it is not enough to pick the closest neighbors (at least when there is rate heterogeneity across branches)
+	 <li>Idea: take into account averaged distances to other leaves as well
+	 <li>Produces an unrooted tree
+	 </ul>
+</section>
+
+<section>
+	<h2>When do characters support the correct tree?</h2>
+	
+	<img data-src="../lecture6/CharactersSupportTree.png" style="width:100%">
+
+</section>
+
+<section>
+<h2>Parsimony informative sites</h2>
+
+	<ul class="spaced" style="margin-top:5%; width:85%">
+<li>Some sites (columns) have the same score on every tree.
+<li>For example, a site with all bases the same will always score zero, regardless of the tree.
+<li>Or a site with all bases the same except one will always score one.
+<li>To get different scores on different trees, need at least two characters each of which appear in at least 2 taxa.
+</ul>
+</section>
+
+<section>
+<h2> Problems with parsimony </h2>
+
+    <img data-src="../lecture6/Parsimony.png" style="width:60%">
+
+    <ul class="spaced" style="margin-top:1em;width:70%">
+        <li> "Large parsimony problem" is computationally expensive
+            <ul>
+                <li>Address using heuristic search algorithms.</li>
+            </ul>
+        </li>
+
+        <li> Gives point estimates: no acknowledgment of uncertainty.</li>
+
+        <li>Questionable biological basis</li>
+        
+        <li>Not model-based, so no ability to do formal hypothesis testing or model comparison.
+
+        <li>Other hidden problems (such as those <i>ad hoc</i>ery always gives rise to!)</li>
+    </ul>
+</section>
+
+<section>
+        <h3>Bayes' theorem</h3>
+
+        In answering this question we have accidentally used Bayes' theorem:
+        <blockquote class="fragment">
+            $$\color{cyan}{P(\theta_M|D,M)} = \frac{\color{orange}{P(D|\theta_M,M)}\color{red}{P(\theta|M)}}{\color{lime}{P(D|M)}}$$
+        </blockquote>
+        <p class="fragment">Here $\theta_M$ are parameters of some model $M$ and $D$ is data assumed to be generated by that model.</p>
+
+        <p class="fragment">The components of the equation even have names:
+        <ul>
+            <li class="fragment">The <span style="color:darkcyan">posterior</span> of $\theta$: $P(\theta|D)$,</li>
+            <li class="fragment">the <span style="color:orange">likelihood</span> of $\theta$: $P(D|\theta)$, and</li>
+            <li class="fragment">the <span style="color:red">prior</span> of $\theta$: $P(\theta)$</li>
+            <li class="fragment">the <span style="color:green">marginal likelihood</span> or <span style="color:green">evidence</span> for $M$: $P(D|M)$</li>
+        </ul>
+        </p>
+    </section>
+
+ <section>
+        <h3>What is a prior probability?</h3>
+
+        A prior probability is:
+        <blockquote class="fragment" style="margin-top:50px"> A probability!</blockquote>
+
+        <blockquote class="fragment" style="margin-top:50px;margin-bottom:50px">The probability of whatever you're interested in but
+            in the absence of possibly relevant data.</blockquote>
+
+        <p class="fragment">In principle, any two (rational) people with access to the same information should
+        specify exactly the same prior.</p>
+
+        <p class="fragment" style="text-align:center;color:red">In practice this often isn't true.</p>
+    </section>
+
+    <section>
+        <h3>Prior probabilities are necessary</h3>
+
+        Isn't the need for priors a problem with the Bayesian approach?
+
+        <div class="fragment" style="text-align:center"><p style="font-size:2em;font-weight:bold">NO!</p></div>
+
+        <blockquote class="fragment">
+            <ul>
+                <li>It is not possible to do inference without making assumptions.</li>
+                <li class="fragment">Priors allow previous knowledge to be incorporated.</li>
+                <li class="fragment">Frequentist (and Likelihoodist) methods also use priors: it's just not clear what they are!</li>
+            </ul>
+
+        </blockquote>
+    </section>
+    
+<section>
+        <h3>The Metropolis-Hastings algorithm</h3>
+
+        This algorithm produces samples from a distribution $f(x)$ by generating a
+        random walk over possible values of $x$.
+
+        <div style="width:800px;height:400px;position:relative;margin:0 auto">
+            <img class="fragment" data-src="../lecture8/MCMC1.svg"
+                                                  style="position:absolute;top:0;left:0">
+            <img class="fragment" data-src="../lecture8/MCMC2.svg"
+                                                  style="position:absolute;top:0;left:0;background-color:white">
+            <img class="fragment" data-src="../lecture8/MCMC3.svg"
+                                                  style="position:absolute;top:0;left:0;background-color:white">
+            <img class="fragment" data-src="../lecture8/MCMC4.svg"
+                                                  style="position:absolute;top:0;left:0;background-color:white">
+            <img class="fragment" data-src="../lecture8/MCMC5.svg"
+                                                  style="position:absolute;top:0;left:0;background-color:white">
+            <img class="fragment" data-src="../lecture8/MCMC6.svg"
+                                  style="position:absolute;top:0;left:0;background-color:white">
+        </div>
+
+        <ol class="fragment">
+            <li> walk explores mostly high probability areas</li>
+            <li>algorithm <b>does not require normalized $f(x)$</b></li>
+        </ol>
+    </section>
+    
+<section>
+    <h2>The Phylogenetic Posterior</h2>
+
+    <p>Standard application of Bayes theorem gives the posterior:</p>
+    
+        $$P(T,\mu,\theta|D) = \frac{\Pr(D|T,\mu, \theta)P(T,\mu,\theta)}{\Pr(D)}$$
+
+    <p>But most phylogenetic models assume that $\theta$ only effects the probability of the data via the tree $T$, and likewise that $\mu$ has no effect on the tree branching process, leading to:</p>
+
+    <blockquote style="font-size:1em">
+        $$P(T,\mu,\theta|D) = \frac{1}{\Pr(D)}\Pr(D|T,\mu)P(T|\theta)P(\mu,\theta)$$
+    </blockquote>
+
+    <ul style="width:80%; margin-top:1em">
+        <li>$P(T|\theta)$ is the "tree prior" parameterized by $\theta$.</li>
+        <li>$P(\mu,\theta)$ are the parameter priors.</li>
+    </ul>
+
+    <div class="textbox" style="margin-top:2em;width:80%;text-align:center;margin-left:10%">
+        <div class="title">Questions</div>
+        <ul>
+            <li>What is $\Pr(D)$?</li>
+            <li>Is the tree prior really a prior? (i.e. does it depend on the data?)</li>
+        </ul>
+    </div>
+</section>
+
+<section>
+	<h2>The coalescent density for a genealogy</h2>
+	
+	<p> For a genealogy $g$ with coalescent times $\mathbf{t} = \{t_2, t_3, \dots, t_n\}$ we can write the probability density of the genealogy:</p>
+	
+	<p>$$P(g|N)=\frac{1}{N^{n-1}}\prod_{k=2}^n\exp\left(-\frac{ {k \choose 2}t_k}{N}\right)\,.$$</p>
+	
+	
+	<img data-src="../lecture10/wrightFisherToTree.png" style="width:60%">
+
+</section>
+
+<section>
+    <h2>Example of structured coalescent inference</h2>
+        
+    <div class="figure" style="display:inline-block;height:600px">
+        <img data-src="../lecture13/F5_large.jpg">
+    </div>
+
+</section>
+
+    
+<section>
+<h2>Genetic distance = rate $\times$ time</h2>
+
+<p> The relaxed molecular clock parameterization </p>
+
+
+    <img data-src="../lectureRelaxedPhylogenetics/fig_RelaxedClockParam.png" style="width:90%">
+
+<p> The "substitution tree" is in units of expected substitutions, i.e. genetic distances.</p>
+
+</section>
+
+<section>
+
+<h2>Genetic distance = rate $\times$ time</h2>
+
+<p> The relaxed molecular clock parameterization </p>
+
+
+    <img data-src="../lectureRelaxedPhylogenetics/fig_RelaxedClockParam2.png" style="width:90%">
+
+<p> The "substitution tree" is in units of expected substitutions, i.e. genetic distances.</p>
+
+</section>
+
+<section>
+	<h2>Graph-based genome assembly</h2>
+		
+	<img data-src="../lectureGenomeAssembly/graph-assembly9.svg" style="width:80%">
+		
+	<ul style="width:85%">
+	<li> Each k-mer is a vertex</li>
+	<li> Draw edge from x to y, where		</li> 
+		<ul>
+		<li> <u>suffix</u> from x overlaps <u>prefix</u> from y</li> 
+		</ul> 
+	</ul>
+
+</section>
+
+<section>
+	<h2>de Bruijn graph</h2>
+
+<div align="left" style="margin-top:5%; margin-left:15%; width:85%">
+	<p>k-mers:&nbsp;&nbsp;&nbsp;&nbsp;ATG, TGG, TGC, GTG, GGC, GCA, GCG, CGT </p>
+    <p><b>Distinct (k-1)-mers: </b> </p>
+</div>
+
+<img data-src="../lectureGenomeAssembly/deBruijnGraph4.svg" style="width:75%">
+    
+</section>
+
