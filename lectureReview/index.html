@@ -333,6 +333,96 @@ lecture_num: 36
 </section>
 
 <section>
+        <h3>Modelling genetic change</h3>
+
+        <img data-src="../lectureSubstitutionModels/pdist.svg" style="width:80%;margin-top:2em">
+    </section>
+    
+<section>
+        <h3>Time-reversible CTMCs and detailed balance</h3>
+
+	<p>A CTMC is time-reversible if and only if it satisfies the property:
+	\begin{equation}
+	\pi_iQ_{ij} = \pi_jQ_{ji},
+	\end{equation}</p>
+	<p> or equivalently the <a href="https://en.wikipedia.org/wiki/Detailed_balance">detailed balance</a> property: $$\pi_iP_{ij}(t) = \pi_jP_{ji}(t).$$</p>
+
+        <p>From this it can be shown that a CTMC is time-reversible iff there exists a row-vector of state probabilities $\Pi$ such that: \begin{equation} \Pi Q = 0 \end{equation}</p>
+
+        <p>Consider again a system with two states (0 and 1) and a transition rate matrix:
+        $$Q = \left[\begin{array}{cc}
+        -2 &amp; 2 \\
+        1 &amp; -1
+        \end{array}\right]$$
+         </p>
+
+	<p>Then it is easy to show that $\Pi = [\frac{1}{3}, \frac{2}{3}]$ is a solution, so that this CTMC is time-reversible and $\Pi$ is the equilibrium distribution over states.</p>
+         
+     </section>   
+     
+       <section>
+        <h3>Jukes-Cantor model of nucleotide substitution</h3>
+
+        <div style="width:100%">
+        <img data-src="../lectureSubstitutionModels/JC.svg" style="width:30%;vertical-align:middle">
+        <div style="display:inline-block;width:50%">
+        $$
+        Q = \mu\left[\begin{array}{cccc}
+        -1 &amp; \frac{1}{3} &amp; \frac{1}{3} &amp; \frac{1}{3}\\
+        \frac{1}{3} &amp; -1 &amp; \frac{1}{3} &amp; \frac{1}{3}\\
+        \frac{1}{3} &amp; \frac{1}{3} &amp; -1 &amp; \frac{1}{3}\\
+        \frac{1}{3} &amp; \frac{1}{3} &amp; \frac{1}{3} &amp;-1
+        \end{array}\right]
+        $$
+        </div>
+        </div>
+
+        <div style="margin-top:2em">
+            \begin{align*}
+            P(X(t)=j|X(0)=i) = P_{ij}(t) &amp;= \left[e^{Qt}\right]_{ij}\\
+            &amp;=\left\{\begin{array}{ll}
+            \frac{1}{4}+\frac{3}{4}e^{-\frac{4}{3}\mu t} &amp; \text{for } i=j\\
+            \frac{1}{4}-\frac{1}{4}e^{-\frac{4}{3}\mu t} &amp; \text{for } i\neq j
+            \end{array}\right.
+            \end{align*}
+        </div>
+    </section>
+
+<section>
+    <h2> What is the likelihood of a tree?</h2>
+    <img data-src="../lectureSubstitutionModels/treeLikelihood.svg" style="width:40%">
+
+    <ul>
+        <li>$$L(T|A)\equiv P(A|T) = \sum_x\sum_w P(x)P(A|x)P(w|x)P(G|w)P(G|w)$$</li>
+        <li>For $n$ taxa there are $4^{n-1}$ possible internal node states!</li>
+        <li>Solve using Dynamic Programming!</li>
+    </li>
+</section>
+
+<section>
+    <h2> Felsenstein's Pruning Algorithm</h2>
+    <div>
+        <div style="width:50%;display:inline-block;vertical-align:middle">
+            <ul>
+                <li>Introduced by Joseph Felsenstein, 1973.</li>
+                <li>Recursion based on the conditional likelihood of a subtree below node $k$ having state $s$: $L_k(s)$.</li>
+                <li>For leaves, $L_k(s)=\delta_{s,l}$ where $l$ is the leaf state.</li>
+            </ul>
+        </div>
+        <div style="width:45%;display:inline-block;vertical-align:middle">
+            <img data-src="../lectureSubstitutionModels/treeLikelihood.svg" style="width:60%">
+        </div>
+
+        <p> For internal nodes,
+        $$L_k(s) = \left(\sum_xP(x|s)L_{c_l}(x)\right)\left(\sum_yP(y|s)L_{c_r}(y)\right)$$</p>
+
+        <blockquote>
+            Time complexity for $m$ sites: $m(n-1)4^2$.  This is the workhorse of computational phylogenetics.
+        </blockquote>
+    </div>
+</section>
+
+<section>
         <h3>Bayes' theorem</h3>
 
         In answering this question we have accidentally used Bayes' theorem:
@@ -509,5 +599,121 @@ lecture_num: 36
 
 <img data-src="../lectureGenomeAssembly/deBruijnGraph4.svg" style="width:75%">
     
+</section>
+
+<section>
+	<h2>Rule 1: Separation</h2>
+	
+<div style="float:left; margin-top:1%; width:50%">
+<p>Steer to avoid being too close to flock-mates -- collision avoidance.</p>
+<p>Accelerate away from each flock-mate at rate inversely proportional to proximity. 
+i.e. the closer you are to a flock-mate, the more you accelerate away from that flock-mate.</p>
+	
+	<p style="font-size:50%">Images taken from Craig Reynold's website. http://www.red3d.com/cwr/boids/</p>
+</div>
+
+<div style="float:right; margin-top:2%; width:50%">
+	<img data-src="../lectureArtificialLife/separation.gif" style="height:250px;">
+</div>
+
+</section>
+
+<section>
+	<h2>Rule 2: Alignment</h2>
+	
+<div style="float:left; margin-top:1%; width:50%">
+<p>Steer toward the average heading of local flock-mates.</p>
+<p>Calculate the mean velocity of all flock-mates. Update velocity to be a little bit more similar to that value.</p>
+	
+	<p style="font-size:50%">Images taken from Craig Reynold's website. http://www.red3d.com/cwr/boids/</p>
+</div>
+
+<div style="float:right; margin-top:2%; width:50%">
+	<img data-src="../lectureArtificialLife/alignment.gif" style="height:250px;">
+</div>
+
+</section>
+
+<section>
+	<h2>Rule 3: Cohesion</h2>
+	
+<div style="float:left; margin-top:1%; width:50%">
+<p>Move toward the average position of local flock-mates.</p>
+<p>Calculate the mean position of flock-mates and accelerate toward that position.</p>
+	
+	<p>DEMO:</p>
+	
+	<p><a href="http://www.emergentmind.com/" target="_blank">http://www.emergentmind.com/</a></p>
+	
+	<p style="font-size:50%">Images taken from Craig Reynold's website. http://www.red3d.com/cwr/boids/</p>
+</div>
+
+<div style="float:right; margin-top:2%; width:50%">
+	<img data-src="../lectureArtificialLife/cohesion.gif" style="height:250px;">
+</div>
+
+</section>
+
+<section>
+<h2>Rule 254</h2>
+
+<div style="float:left; margin-top:1%; width:60%">
+<p>Neighbourhood is </p>
+<ul>
+	<li>current cell</li>
+	<li>neighbour on left</li>
+	<li>neighbour on right</li>
+</ul>
+<p>There are $2^{3} = 8$ possible previous states ("inputs"). 
+And for a given rule set the output for each of those possibilities will be either on or off.</p>
+
+<img data-src="../lectureArtificialLifeII/Rule254.svg">
+</div>
+
+<div style="float:right; margin-top:1%; width:40%">
+<img data-src="../lectureArtificialLifeII/Wolfram.svg" style="height:500px;">
+</div>
+</section>
+
+<section>
+<h2>Wolfram's Classification Scheme</h2>
+
+<div style="float:left; margin-top:1%; width:50%">
+<img data-src="../lectureArtificialLifeII/class1.svg" style="width:60%">
+
+<p><b>Class 1: "Homogenous"</b><br>
+Behavior is very simple and almost all initial conditions lead to exactly the same uniform final state.</p>
+
+<p style="font-size:75%">paraphrased following Wolfram <b>A New Kind of Science</b> (2002), p 231</p>
+</div>
+
+<div style="float:right; margin-top:1%; width:50%">
+<img data-src="../lectureArtificialLifeII/class2.svg" style="width:60%">
+
+<p><b>Class 2: "Regular"</b><br>
+There are many different possible final states, 
+but all of them consist just of a certain set of simple structures 
+that either remain the same forever or repeat every few steps.</p>
+</div>
+</section>
+
+<section>
+<h2>Wolfram's Classification Scheme</h2>
+
+<div style="float:left; margin-top:1%; width:50%">
+<img data-src="../lectureArtificialLifeII/class3.svg" style="width:60%">
+
+<p><b>Class 3: "Chaotic"</b><br>
+The behaviour is more complicated and seems in many respects random, 
+although triangles and other small-scale structures are essentially always at some level seen.</p>
+</div>
+
+<div style="float:right; margin-top:1%; width:50%">
+<img data-src="../lectureArtificialLifeII/class4.svg" style="width:60%">
+
+<p><b>Class 4: "Complex"</b><br>
+A mixture of order and randomness; localized structures are produced which on their own are fairly simple, 
+but these structures move around and interact with each other in very complicated ways.</p>
+</div>
 </section>
 
