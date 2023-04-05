@@ -1,0 +1,39 @@
+\begin{frame}[plain]
+\frametitle{How many trees are there?}
+
+For $n$ species there are
+
+\medskip{}
+
+\begin{centering}
+
+$T_n = 1 \times 3 \times 5 \times \dots \times (2n - 3) = \frac{(2n-3)!}{(n-2)!2^{n-2}}$ 
+
+\end{centering}
+
+\medskip{}
+
+rooted, tip-labelled binary trees:
+
+\medskip{}
+
+\small{
+
+\begin{tabular}{ccp{0.7\textwidth}} \hline
+$n$ & \#trees & \\ \hline
+4& 15 &enumerable by hand\\
+5& 105 &enumerable by hand on a rainy day\\
+6& 945 &enumerable by computer\\
+7& 10395 &still searchable very quickly on computer\\
+8& 135135 & about the number of hairs on your head\\
+9& 2027025 & greater than the population of Auckland\\
+10& 34459425 & $\approx$ upper limit for exhaustive search\\
+20& $8.20 \times 10^{21}$ & $\approx$ upper limit of branch-and-bound searching\\
+48& $3.21 \times 10^{70}$ & $\approx$ the number of particles in the Universe\\
+136& $2.11 \times 10^{267}$ & number of trees to choose from in the ``Out of Africa'' data (Vigilant \textit{et al}. 1991)\\
+\hline
+\end{tabular}
+
+}
+
+\end{frame}

@@ -1,0 +1,206 @@
+%%%%%%%%%%%%%%%%%%%%
+% STATISTICAL PHYLOGEOGRAPHY
+%%%%%%%%%%%%%%%%%%%%
+
+% INTRODUCTION TO STATISTICAL PHYLOGEOGRAPHY
+\begin{frame}
+\frametitle{Statistical phylogeography of infectious diseases}
+
+What can the geographical distribution of genetically-typed infectious diseases tell us?
+
+\begin{itemize}
+\item Infectious diseases as genetic markers of their host?
+\item Geographical origin of infectious disease outbreaks
+\item Geographical and habitat features relevant to spread and colonization
+\item Identification of major migration/transmission routes
+\end{itemize}
+
+\end{frame}
+
+% INTRODUCTION TO STATISTICAL PHYLOGEOGRAPHY
+\begin{frame}
+\frametitle{Models for statistical phylogeography}
+
+\begin{itemize}
+\item Continuous-time Markov processes on discrete locations - e.g. Lemey {\it et al} (2009)
+\item Structured Coalescent on discrete locations - e.g. Ewing {\it et al} (2004), Beerli and Felsenstein (2001)
+\item Stochastic spatial epidemic models - later in this talk - Kuehnert, Drummond, {\it et al}
+\item Independent Contrasts type models on continuous field - e.g. Biek {\it et al} (2006)
+\item Inhomogeneous diffusions on high-resolution maps - e.g. Bouckaert, Drummond {\it et al} (in prep)
+\end{itemize}
+
+\end{frame}
+
+\begin{frame}
+\frametitle{Statistical phylogeography}
+
+\begin{itemize}
+\item Post-tree reconstruction analysis
+\begin{itemize}
+\item Discrete geographic locations
+\item Less computationally intensive
+\item Outcome of analysis depends on input tree
+\item Migration route inferred by maximum parsimony (Maddison and Maddison, 2005; Wallace et al., 2007)
+\item Can’t quantify uncertainty
+\end{itemize}
+\item Jointly estimates the phylogeny and phylogeographic parameters of interest.
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\frametitle{Mugration models}
+
+\begin{itemize}
+\item Mutation model used to analyse migration process (Lemey 2009)
+\begin{itemize}
+\item Geographic movement modelled by Markov process
+\item Facilitates the migration rates between pairs of locations
+\item Use BVS to infer dominant migration routes and average over uncertainty in the connectivity between different locations
+\item Applied to find the origin and the path of the global spread of H5N1 and H1N1 2009
+\item Denser sampling of locations provides improved phylogeographic estimates
+\end{itemize}
+\item Denser sampling increases the state space and hence computationally more intensive
+\begin{itemize}
+\item Solution: parallel computing on large numbers of GPU cores
+\end{itemize}
+\end{itemize}
+
+\end{frame}
+
+% SLIDE ON INFLUENZA A
+\begin{frame}
+\frametitle{Phylogeography of Influenza A in East Asian cities}
+\framesubtitle{Stochastic variable selection of dominant migration routes}
+\begin{centering}%
+\includegraphics[width=\textwidth]{../images/phylogeography/influenza1}%
+\par%
+\end{centering}%
+\end{frame}
+
+\begin{frame}
+\frametitle{The structured coalescent}
+
+\begin{itemize}
+\item Accommodates subdivision (demes) in the population
+\item First described by Hudson (1990)
+\item Available in Migrate (Beerli and Felsenstein, 2001)
+\begin{itemize}
+\item Estimates subpopulation sizes and migration rates in both ML and Bayesian framework
+\end{itemize}
+\item Extensions
+\begin{itemize}
+\item Serial sampling of data (Ewing et al., 2004)
+\item Number demes change over time (Ewing and Rodrigo, 2006)
+\item Ghost demes – demes that are hidden/not sampled (but you know they are there; Beerli, 2004; Ewing and Rodrigo, 2006b)
+\end{itemize}
+\end{itemize}
+
+\end{frame}
+
+\begin{frame}
+\frametitle{Modeling phylogeography on a spatial continuum}
+
+\begin{itemize}
+\item Phylogeography of wildlife host population
+\begin{itemize}
+\item Modelled in spatial continuum by diffusion models
+\item Tend to be poorly modelled by a small number of discrete demes
+\item E.g. expansion of geographic range in eastern United States of the raccoon-specific rabies virus (Biek et al., 2007; Lemey et al., 2010).
+\end{itemize}
+\end{itemize}
+
+\end{frame}
+
+% SLIDE 1 ON RABIES IN EASTERN USA
+\begin{frame}
+\frametitle{Spatial Expansion of Epizootic Rabies in Raccoons}
+\framesubtitle{Biek {\it et al} (2007) {\it PNAS}, {\bf 104}:7993-7998 }
+
+\begin{centering}%
+\includegraphics[width=0.6\textwidth]{../images/phylogeography/Biek2007_Figure3}%
+\par%
+\end{centering}%
+\end{frame}
+
+% SLIDE 2 ON RABIES IN EASTERN USA
+\begin{frame}
+\frametitle{Spatial Expansion of Epizootic Rabies in Raccoons}
+\framesubtitle{Biek {\it et al} (2007) {\it PNAS}, {\bf 104}:7993-7998 }
+
+\begin{centering}%
+\includegraphics[width=0.9\textwidth]{../images/phylogeography/Biek2007_Figure2}%
+\par%
+\end{centering}%
+\end{frame}
+
+\begin{frame}
+\frametitle{Model phylogeography by Brownian diffusion}
+
+\begin{itemize}
+\item Via comparative method (Felsenstein, 1985; Harvey and Pagel, 1991)
+\item Example of Brownian diffusion application
+\begin{itemize}
+\item Applied to model the phylogeography of Feline Immunodeficiency Virus collected from cougar (Puma concolor) population around western Montana (Biek, 2006)
+\item Virus is predominantly vertically transmitted
+\item Therefore the phylogeographic results of the virus was used as a proxy of the host population structure and history.
+\end{itemize}
+\end{itemize}
+
+\end{frame}
+
+% SLIDE ON COUGARS
+\begin{frame}
+\frametitle{A Virus Reveals Population Dynamics of its Carnivore Host}
+\framesubtitle{Biek {\it et al} (2006) {\it Science}, {\bf 311}:538-541}
+
+\begin{centering}%
+\includegraphics[width=\textwidth]{../images/phylogeography/311_538_F2}%
+\par%
+\end{centering}%
+\end{frame}
+
+\begin{frame}
+\frametitle{Relaxed random walk}
+
+\begin{itemize}
+\item Brownian diffusion assumes rate of dispersal is the same across all branches
+\begin{itemize}
+\item Extend the concept of relaxed clock model (Drummond, 2006) to diffusion process (Lemey, 2010)
+\item Has better coverage and statistical efficiency, when the underlying process of spatial movement resembles a over-dispersed random walk
+\end{itemize}
+\end{itemize}
+
+\end{frame}
+
+\begin{frame}[plain]
+
+\begin{centering}
+
+\includegraphics[height=\textheight]{../images/phylogeography/relaxed1}
+
+\end{centering}
+
+\end{frame}
+
+\begin{frame}[plain]
+
+\begin{columns}
+\column{0.5\textwidth}
+
+\includegraphics[width=\textwidth]{../images/phylogeography/relaxed2}
+
+\column{0.5\textwidth}
+
+\includegraphics[width=\textwidth]{../images/phylogeography/relaxed3}
+
+\end{columns}
+
+\end{frame}
+
+\begin{frame}[plain]
+
+\begin{centering}
+\includegraphics[width=\textwidth]{../images/phylogeography/relaxed4}
+\end{centering}
+
+\end{frame}
