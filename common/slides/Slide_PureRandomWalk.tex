@@ -1,0 +1,36 @@
+% PURE RANDOM WALK
+\begin{frame}
+\frametitle{Pure Random Walk}
+\framesubtitle{[courtesy of Paul O Lewis]}
+
+\begin{columns}
+
+\column{0.67\textwidth}
+
+\includegraphics[width=\textwidth]{../images/PureRandomWalk}
+
+\column{0.33\textwidth}
+
+\scriptsize{
+Proposal scheme: 
+
+\begin{itemize}
+\item random direction
+\item gamma-distributed step length (mean 45 pixels, s.d. 40 pixels)
+\item reflection at edges
+\end{itemize}
+
+Target distribution:
+
+\begin{itemize}
+\item equal mixture of 3 bivariate normal “hills”
+\item inner contours: $50\%$
+\item outer contours: $95\%$
+\end{itemize}
+
+In this case the robot is accepting every step and 5000 steps are shown}
+
+\end{columns}
+
+\end{frame}
+
