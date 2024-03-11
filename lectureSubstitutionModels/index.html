@@ -48,7 +48,7 @@ lecture_num: 7
         <h3>Modelling genetic change</h3>
 
         <ul class="spaced" style="width:80%;margin-top:5%">
-            <li>Given two or more aligned nucleoide or amino acid sequences,
+            <li>Given two or more aligned nucleotide or amino acid sequences,
                 usually the first goal is to calculate some measure of sequence
                 similarity (or conversely distance).</li>
 
@@ -150,9 +150,11 @@ lecture_num: 7
             <li>Obey the <a href="https://en.wikipedia.org/wiki/Chapman–Kolmogorov_equation">Chapman-Kolmogorov equation</a>:
                 $$p(x_1,t_1|x_0,t_0)=\sum_{x_i}p(x_1,t_1|x_i,t_i)p(x_i,t_i|x_0,t_0)$$
                 where $p(x_1,t_1)\equiv P(X(t_1)=x_1)$ and $t_0&lt;t_i&lt;t_1$.
-            </li> Informally: you can find the probability of going from state $x_0$ to $x_1$ by averaging over all
-                 intermediate states $x_i$ at intermediate time $t_i$.
+            </li> <b>Informally: you can find the probability of going from state $x_0$ to $x_1$ by averaging over all
+                 intermediate states $x_i$ at intermediate time $t_i$.</b>
         </ul>
+        
+        <p>For those interested:</p>
             
 	<ul class="spaced" style="width:80%">
  
@@ -168,7 +170,41 @@ lecture_num: 7
             <a href="https://en.wikipedia.org/wiki/Kolmogorov_equations_(Markov_jump_process)">Kolmogorov forward equation</a>. Linear, so solution is "simply" $\vec{p}(t)=\exp[Qt]\vec{p}(0)$.</li>
         </ul>
     </section>
+    
+    <section>
+       <h3>Relationship between Q and P in Continuous-time Markov models</h3>
 
+    <p>Instantaneous Rate Matrix Q</p>
+    <ul>
+        <li>Describes rates of character changes in an infinitesimal time interval</li>
+        <li>Characters can be nucleotides or amino acids</li>
+        <li>Diagonal elements are defined such that the sum of each row is zero</li>
+    </ul>
+    
+    <p>Transition Probability Matrix P(t)</p>
+    <ul>
+        <li>Describes probabilities of character changes over time interval t</li>
+        <li>Elements are probabilities of observing a specific character at time t, given the starting character at time 0</li>
+    </ul>
+   </section>
+    
+
+    <section> 
+        <h3>Relationship between $Q$ and $P(t)$</h3>
+        
+    <p>$P(t) = exp(Qt)$, where $exp(Qt)$ is the matrix exponential of the product of $Q$ and $t$</p>
+    <ul>
+        <li>If you know the instantaneous rates (Q), you can calculate the probabilities over any time interval $t$ using the matrix exponential</li>
+        <li>Matrix exponential can be calculated using eigenvalue decomposition or Taylor series expansion</li>
+    </ul>
+
+    <p>Stationary Distribution</p>
+      <ul>
+        <li>As $t$ approaches infinity, $P(t)$ converges to the stationary distribution</li>
+        <li>Represents long-term probabilities of observing each character, independent of the starting character</li>
+      </ul>
+    </section>
+    
     <section>
         <h3>CTMC example</h3>
 
@@ -384,7 +420,7 @@ lecture_num: 7
     
     
     <section>
-        <h3>Jukes-Cantor model of nucelotide substitution</h3>
+        <h3>Jukes-Cantor model of nucleotide substitution</h3>
 
         <div style="width:100%">
         <img data-src="JC.svg" style="width:30%;vertical-align:middle">
