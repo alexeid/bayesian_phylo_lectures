@@ -145,13 +145,12 @@ lecture_num: 7
         <h3>Continuous-time Markov chains (CTMCs)</h3>
 
         <ul class="spaced" style="width:80%">
-            <li>CTMCs are the continuous-time generalization of Markov chains: state $X(t)$ is
-            a function of a continuous time parameter.</li>
+            <li>CTMCs are the continuous-time generalization of Markov chains</li>
+            <li> state $X(t)$ is a function of a continuous time parameter.</li>
             <li>Obey the <a href="https://en.wikipedia.org/wiki/Chapman–Kolmogorov_equation">Chapman-Kolmogorov equation</a>:
-                $$p(x_1,t_1|x_0,t_0)=\sum_{x_i}p(x_1,t_1|x_i,t_i)p(x_i,t_i|x_0,t_0)$$
-                where $p(x_1,t_1)\equiv P(X(t_1)=x_1)$ and $t_0&lt;t_i&lt;t_1$.
-            </li> <b>Informally: you can find the probability of going from state $x_0$ to $x_1$ by averaging over all
-                 intermediate states $x_i$ at intermediate time $t_i$.</b>
+                $$P(X(t_1)|X(t_0))=\sum_{x_i}P(X(t_1)|P(X(t_i))p(X(t_i)|P(X(t_0)))$$
+            </li> <b>Informally: you can find the probability of going from state $X(t_0)$ to $X(t_1)$ by averaging over all
+                 intermediate states $X(t_i)$ at intermediate time $t_i$.</b>
         </ul>
     </section>
     
@@ -160,7 +159,6 @@ lecture_num: 7
 
     <p><i>This section is intended for mathematically-inclined individuals.</i></p>
 
-                    
 	<ul class="spaced" style="width:80%">
  
             <li>Can be written in the following differential form:
@@ -177,7 +175,7 @@ lecture_num: 7
     </section>
     
     <section>
-       <h3>Relationship between Q and P in Continuous-time Markov models</h3>
+       <h3>Relationship between Q and P in CTMCs</h3>
 
     <p>Instantaneous Rate Matrix Q</p>
     <ul>
