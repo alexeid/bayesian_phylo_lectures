@@ -19,7 +19,7 @@ description: descr
 baseurl: "/bayesian_phylo_lectures" # the subpath of your site, e.g. /blog
 #url: "" # the base hostname & protocol for your site, e.g. http://example.com
 
-course: BIOINF 702
+course: BIOSCI 700
 
 # Build settings
 markdown: kramdown

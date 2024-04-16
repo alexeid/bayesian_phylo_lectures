@@ -1,0 +1,139 @@
+---
+lecture_num: 11
+---
+
+
+<section>
+  <h2>Virus Phylodynamics</h2>
+  <img src="virusPhylodynamics.png" style="width:80%; display:block; margin:auto">
+</section>
+
+<section>
+  <h2>"Skyline" coalescent model</h2>
+  <img src="skylineModel.jpg" style="width:70%; display:block; margin:auto">
+</section>
+
+<section>
+  <h2>The generalized skyline plot</h2>
+
+  <p>Introduced by Pybus and Strimmer (2001).</p>
+
+  <ul>
+    <li>Visual framework for exploring the demographic history of sampled DNA sequences</li>
+    <li>Input: a single estimated ancestral genealogy (a tree)</li>
+    <li>Output: nonparametric plot of the population size through time</li>
+    <li>Groups adjacent coalescent intervals</li>
+    <li>Converts information within these intervals to estimates of population size</li>
+  </ul>
+
+  <div style="display:flex; justify-content:space-between; margin-top:20px">
+    <div style="width:48%">
+      <p>for a single coalescent interval:</p>
+      <p>\[\hat{N}_k = \binom{k}{2}t_k\]</p>
+    </div>
+    <div style="width:48%">  
+      <p>for \(j\) adjacent intervals:</p>
+      <p>\[\hat{N}_{k,j} = \frac{k(k-j)}{2j}\sum_{i=k-j+1}^k{t_i}\]</p>
+    </div>
+  </div>
+</section>
+
+<section>
+  <h2>The generalized skyline plot - simulated data</h2>
+
+  <div style="display:flex; justify-content:space-between">
+    <div style="width:48%">Constant population size, \(N(t)=N_0\)</div>
+    <div style="width:48%">Exponential growth, \(N(t) = N_0 e^{-rt}\)</div>
+  </div>
+
+  <div style="display:flex; justify-content:space-between; align-items:flex-end; margin-top:20px">
+    <img src="genSkylineConstant.png" style="width:48%">
+    <img src="genSkylineExponential.png" style="width:48%">  
+  </div>
+</section>
+
+<section>
+  <h2>The generalized skyline plot - HIV-1 group M</h2>
+
+  <p>The tree used here was estimated in Yusim et al (2001) Phil. Trans. Roy. Soc. Lond. B 356:855-866.</p>
+
+  <p>The black curve is a parametric coalescent estimate obtained from the same data under the expansion model, \(N(t) = (N_0-N_A)e^{-rt}+N_A\)</p>
+
+  <div style="display:flex; justify-content:space-between; align-items:flex-end; margin-top:30px">
+    <img src="skylinePlotHIV.png" style="width:48%">
+    <img src="skylineTreeHIV.png" style="width:48%">
+  </div>
+</section>
+
+<section>
+  <h2>The Bayesian skyline plot</h2>
+  <div style="display:flex; justify-content:space-between">
+  <div style="width:33%">
+      <p>The Bayesian skyline plot  (Drummond et al, 2005) estimates a demographic function that has a certain fixed number of steps (in this example 15) and then integrates over all possible positions of the break points, and population sizes within each epoch.</p>
+    </div>
+    <div style="width:65%">
+      <img src="dengueBSPLog.png" style="width:75%">
+      <img src="dengueBSP.png" style="width:75%">  
+    </div>
+  </div>
+</section>
+
+<section>
+  <h2>Detecting evolutionary bottlenecks using BSP</h2>
+  <p style="text-align:center">480 contemporaneous samples from a single locus</p>
+  <img src="EBSP_detectingBottlenecks1.png" style="width:60%; display:block; margin:auto">
+</section>
+
+<section>  
+  <h2>Detecting evolutionary bottlenecks using BSP</h2>
+  <p style="text-align:center">16 contemporaneous samples from each of 32 loci</p>
+  <img src="EBSP_detectingBottlenecks2.png" style="width:55%; display:block; margin:auto">
+</section>
+
+<section>
+  <h2>Detecting evolutionary bottlenecks using BSP</h2>
+  <p style="text-align:center">480 samples sampled through time from a single locus</p>
+  <img src="EBSP_detectingBottlenecks3.png" style="width:50%; display:block; margin:auto"> 
+</section>
+
+<section>
+  <h2>The population dynamics of genetic diversity in Influenza A</h2>
+  <img src="Rambaut2008_Figure1.png" style="width:70%; display:block; margin:auto">
+  <p style="text-align:right"> Rambaut et al (2008) Nature 453:615-620</p>
+</section>
+
+<section>
+  <h2>Validating the Bayesian skyline plot</h2>
+  <img src="validatingBSP.png" style="width:105%; display:block; margin:auto">  
+</section>
+
+<section>
+  <h2>BSP versus parametric coalescent model</h2>
+  <p>Hepatitis C in Egypt</p>
+  <img src="HCV_parametricVersusBSP.png" style="width:70%; display:block; margin:auto">
+</section>
+
+<section>
+  <h2>Modeling complex demographic history</h2>
+  <p>Dengue 4 in Puerto Rico</p>
+  <img src="dengue4_isolatesByYear.png" style="width:100%; display:block; margin:auto">
+
+  <ul>
+    <li>N(t) = N<sub>0</sub>exp(-rt)
+      <ul>
+        <li>log marginal likelihood = -10566.421</li>
+      </ul>
+    </li>
+    <li>N(t) = scaled-translated case data
+      <ul>
+        <li>log marginal likelihood = -10478.572</li>  
+      </ul>
+    </li>
+  </ul>
+</section>
+
+<section>
+  <h2>Comparing BSP to incidence data</h2>
+  <p>Dengue 4 in Puerto Rico</p> 
+  <img src="dengue4_BSP.png" style="width:100%; display:block; margin:auto">
+</section>
