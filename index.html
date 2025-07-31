@@ -3,237 +3,638 @@ layout: null
 ---
 <!doctype html>
 <html lang="en">
-    <head>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Phylogenetics</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    
+    <style>
+        :root {
+            --primary-color: #2563eb;
+            --secondary-color: #1e40af;
+            --accent-color: #3b82f6;
+            --text-primary: #1f2937;
+            --text-secondary: #6b7280;
+            --bg-primary: #ffffff;
+            --bg-secondary: #f9fafb;
+            --bg-tertiary: #f3f4f6;
+            --border-color: #e5e7eb;
+            --success-color: #10b981;
+            --warning-color: #f59e0b;
+            --error-color: #ef4444;
+        }
 
-        <!-- Latest compiled and minified CSS -->
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
-        integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
-        crossorigin="anonymous">
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-        <!-- Latest compiled and minified JavaScript -->
-        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
-        integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
-        crossorigin="anonymous"></script>
+        body {
+            font-family: 'Inter', sans-serif;
+            color: var(--text-primary);
+            background-color: var(--bg-secondary);
+            line-height: 1.6;
+        }
 
-        <title>Talks</title>
-    </head>
+        /* Header */
+        .header {
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+            color: white;
+            padding: 4rem 2rem;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
 
-    <body>
-        <div class="container">
-            <div class="row">
-                <div class="col-xs-12 col-md-8 col-md-offset-2">
+        .header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.05'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+        }
 
-                    <h1>Computational biology lectures</h1>
+        .header h1 {
+            font-size: 3rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            position: relative;
+            z-index: 1;
+        }
 
-                    <p>This page contains links to series of modules on computational biology, with a focus on phylogenetics and Bayesian phylogenetics.
-                       Most of these slides were prepared by Alexei Drummond and Tim Vaughan. Other authors of some of the material are acknowledged within the relevant slide decks.</p>
-                      
-                    <p>Overview figure: <a href="phylogenetics-flow.png">Phylogenetics flow diagram</a></p>
-                    
-                    <h3>Introduction to sequence analysis</h3> 
-                       
-                    <ul>
-                        {% assign lectureIdx = 0 %}
-                        {% assign intro_lectures = site.data.lectures |  where:'section', "introductionSA" %}
-                        {% for lecture in intro_lectures %}
+        .header p {
+            font-size: 1.25rem;
+            opacity: 0.9;
+            max-width: 800px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
 
-                        {% assign lectureURL = "/" |append: lecture.folder | append: "/" %}
+        /* Container */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 3rem 2rem;
+        }
 
-                        {% assign found = false %}
-                        {% for page in site.pages %}
+        /* Overview Card */
+        .overview-card {
+            background-color: var(--bg-primary);
+            border-radius: 12px;
+            padding: 2rem;
+            margin-bottom: 3rem;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+            text-align: center;
+        }
+
+        .overview-card a {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 1.125rem;
+            transition: all 0.2s;
+        }
+
+        .overview-card a:hover {
+            gap: 0.75rem;
+        }
+
+        /* Section Cards */
+        .section-card {
+            background-color: var(--bg-primary);
+            border-radius: 12px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+            border: 1px solid var(--border-color);
+            transition: all 0.2s;
+        }
+
+        .section-card:hover {
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            transform: translateY(-2px);
+        }
+
+        .section-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.75rem;
+            border-bottom: 2px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .section-icon {
+            width: 32px;
+            height: 32px;
+            background-color: var(--bg-tertiary);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary-color);
+        }
+
+        /* Lecture List */
+        .lecture-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .lecture-item {
+            padding: 0.75rem 0;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: background-color 0.2s;
+        }
+
+        .lecture-item:last-child {
+            border-bottom: none;
+        }
+
+        .lecture-item:hover {
+            background-color: var(--bg-tertiary);
+            margin: 0 -1rem;
+            padding-left: 1rem;
+            padding-right: 1rem;
+            border-radius: 8px;
+        }
+
+        .lecture-title {
+            font-weight: 500;
+            color: var(--text-primary);
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+
+        .lecture-title:hover {
+            color: var(--primary-color);
+        }
+
+        .lecture-unavailable {
+            color: var(--text-secondary);
+            font-weight: 500;
+        }
+
+        .lecture-meta {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            font-size: 0.875rem;
+        }
+
+        .lecture-links {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .lecture-link {
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            transition: all 0.2s;
+        }
+
+        .slides-link {
+            background-color: #dbeafe;
+            color: var(--primary-color);
+        }
+
+        .slides-link:hover {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        .notes-link {
+            background-color: #d1fae5;
+            color: var(--success-color);
+        }
+
+        .notes-link:hover {
+            background-color: var(--success-color);
+            color: white;
+        }
+
+        .lecture-date {
+            color: var(--text-secondary);
+        }
+
+        /* Flow Diagram */
+        .flow-diagram {
+            margin-top: 4rem;
+            text-align: center;
+        }
+
+        .flow-diagram img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            transition: transform 0.2s;
+        }
+
+        .flow-diagram img:hover {
+            transform: scale(1.02);
+        }
+
+        /* Footer */
+        .footer {
+            text-align: center;
+            padding: 2rem;
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+            border-top: 1px solid var(--border-color);
+            margin-top: 4rem;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2rem;
+            }
+            
+            .header p {
+                font-size: 1rem;
+            }
+            
+            .container {
+                padding: 2rem 1rem;
+            }
+            
+            .lecture-item {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 0.5rem;
+            }
+            
+            .lecture-meta {
+                width: 100%;
+            }
+        }
+
+        /* Grid Layout for Sections */
+        @media (min-width: 768px) {
+            .sections-grid {
+                display: grid;
+                grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
+                gap: 2rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <header class="header">
+        <h1>Phylogenetics</h1>
+        <p>A series of modules on computational biology, with a focus on phylogenetics and Bayesian phylogenetics</p>
+    </header>
+
+    <div class="container">
+        <div class="overview-card">
+            <a href="phylogenetics-flow.png">
+                <i class="fas fa-diagram-project"></i>
+                View Phylogenetics Flow Diagram
+            </a>
+        </div>
+
+        <div class="sections-grid">
+            <!-- Introduction to Sequence Analysis -->
+            <div class="section-card">
+                <h2 class="section-title">
+                    <div class="section-icon">
+                        <i class="fas fa-dna"></i>
+                    </div>
+                    Introduction to Sequence Analysis
+                </h2>
+                <ul class="lecture-list">
+                    {% assign intro_lectures = site.data.lectures | where:'section', "introductionSA" %}
+                    {% for lecture in intro_lectures %}
+                    {% assign lectureURL = "/" | append: lecture.folder | append: "/" %}
+                    {% assign notesURL = "/" | append: lecture.notes_folder | append: "/" %}
+                    {% assign found = false %}
+                    {% for page in site.pages %}
                         {% if page.url == lectureURL %}
-                        {% assign found = true %}
+                            {% assign found = true %}
                         {% endif %}
-                        {% endfor %}
-
-                        <li><b>
-                        {% if found %}
-                        <a href="{{site.baseurl}}{{lectureURL}}">{{lecture.title}}</a>
-                        {% else %}
-                        {{lecture.title}}
-                        {% endif %}
-                        </b>
-                        {% if lecture.date %}
-                        ({{lecture.date | date: "%-d %B %Y"}})
-                        {% else %}
-                        {% endif %}
-                        </li>
-
-                        {% endfor %}
-                    </ul>
-                    
-                    <h3>Introduction to phylogenetics</h3> 
-                       
-                    <ul>
-                        {% assign lectureIdx = 0 %}
-                        {% assign intro_lectures = site.data.lectures |  where:'section', "introduction" %}
-                        {% for lecture in intro_lectures %}
-
-                        {% assign lectureURL = "/" |append: lecture.folder | append: "/" %}
-
-                        {% assign found = false %}
+                    {% endfor %}
+                    {% assign notes_found = false %}
+                    {% if lecture.notes_folder %}
                         {% for page in site.pages %}
+                            {% if page.url == notesURL %}
+                                {% assign notes_found = true %}
+                            {% endif %}
+                        {% endfor %}
+                    {% endif %}
+                    <li class="lecture-item">
+                        <div>
+                            {% if found %}
+                            <a href="{{site.baseurl}}{{lectureURL}}" class="lecture-title">{{lecture.title}}</a>
+                            {% else %}
+                            <span class="lecture-unavailable">{{lecture.title}}</span>
+                            {% endif %}
+                        </div>
+                        <div class="lecture-meta">
+                            {% if found or notes_found %}
+                            <div class="lecture-links">
+                                {% if found %}<a href="{{site.baseurl}}{{lectureURL}}" class="lecture-link slides-link">Slides</a>{% endif %}
+                                {% if notes_found %}<a href="{{site.baseurl}}{{notesURL}}" class="lecture-link notes-link">Notes</a>{% endif %}
+                            </div>
+                            {% endif %}
+                            {% if lecture.date %}
+                            <span class="lecture-date">{{lecture.date | date: "%-d %b %Y"}}</span>
+                            {% endif %}
+                        </div>
+                    </li>
+                    {% endfor %}
+                </ul>
+            </div>
+
+            <!-- Introduction to Phylogenetics -->
+            <div class="section-card">
+                <h2 class="section-title">
+                    <div class="section-icon">
+                        <i class="fas fa-tree"></i>
+                    </div>
+                    Introduction to Phylogenetics
+                </h2>
+                <ul class="lecture-list">
+                    {% assign intro_lectures = site.data.lectures | where:'section', "introduction" %}
+                    {% for lecture in intro_lectures %}
+                    {% assign lectureURL = "/" | append: lecture.folder | append: "/" %}
+                    {% assign notesURL = "/" | append: lecture.notes_folder | append: "/" %}
+                    {% assign found = false %}
+                    {% for page in site.pages %}
                         {% if page.url == lectureURL %}
-                        {% assign found = true %}
+                            {% assign found = true %}
                         {% endif %}
-                        {% endfor %}
-
-                        <li><b>
-                        {% if found %}
-                        <a href="{{site.baseurl}}{{lectureURL}}">{{lecture.title}}</a>
-                        {% else %}
-                        {{lecture.title}}
-                        {% endif %}
-                        </b>
-                        {% if lecture.date %}
-                        ({{lecture.date | date: "%-d %B %Y"}})
-                        {% else %}
-                        {% endif %}
-                        </li>
-
-                        {% endfor %}
-                    </ul>
-                    
-                    <h3>Bayesian phylogenetics</h3> 
-
-                    <ul>
-                        {% assign lectureIdx = 0 %}
-                        {% assign bayes_lectures = site.data.lectures |  where:'section', "bayesian_phylo" %}
-                        {% for lecture in bayes_lectures %}
-
-                        {% assign lectureURL = "/" |append: lecture.folder | append: "/" %}
-
-                        {% assign found = false %}
+                    {% endfor %}
+                    {% assign notes_found = false %}
+                    {% if lecture.notes_folder %}
                         {% for page in site.pages %}
+                            {% if page.url == notesURL %}
+                                {% assign notes_found = true %}
+                            {% endif %}
+                        {% endfor %}
+                    {% endif %}
+                    <li class="lecture-item">
+                        <div>
+                            {% if found %}
+                            <a href="{{site.baseurl}}{{lectureURL}}" class="lecture-title">{{lecture.title}}</a>
+                            {% else %}
+                            <span class="lecture-unavailable">{{lecture.title}}</span>
+                            {% endif %}
+                        </div>
+                        <div class="lecture-meta">
+                            {% if found or notes_found %}
+                            <div class="lecture-links">
+                                {% if found %}<a href="{{site.baseurl}}{{lectureURL}}" class="lecture-link slides-link">Slides</a>{% endif %}
+                                {% if notes_found %}<a href="{{site.baseurl}}{{notesURL}}" class="lecture-link notes-link">Notes</a>{% endif %}
+                            </div>
+                            {% endif %}
+                            {% if lecture.date %}
+                            <span class="lecture-date">{{lecture.date | date: "%-d %b %Y"}}</span>
+                            {% endif %}
+                        </div>
+                    </li>
+                    {% endfor %}
+                </ul>
+            </div>
+
+            <!-- Bayesian Phylogenetics -->
+            <div class="section-card">
+                <h2 class="section-title">
+                    <div class="section-icon">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                    Bayesian Phylogenetics
+                </h2>
+                <ul class="lecture-list">
+                    {% assign bayes_lectures = site.data.lectures | where:'section', "bayesian_phylo" %}
+                    {% for lecture in bayes_lectures %}
+                    {% assign lectureURL = "/" | append: lecture.folder | append: "/" %}
+                    {% assign notesURL = "/" | append: lecture.notes_folder | append: "/" %}
+                    {% assign found = false %}
+                    {% for page in site.pages %}
                         {% if page.url == lectureURL %}
-                        {% assign found = true %}
+                            {% assign found = true %}
                         {% endif %}
-                        {% endfor %}
-
-                        <li><b>
-                        {% if found %}
-                        <a href="{{site.baseurl}}{{lectureURL}}">{{lecture.title}}</a>
-                        {% else %}
-                        {{lecture.title}}
-                        {% endif %}
-                        </b>
-                        {% if lecture.date %}
-                        ({{lecture.date | date: "%-d %B %Y"}})
-                        {% else %}
-                        {% endif %}
-                        </li>
-
-                        {% endfor %}
-                    </ul>
-
-                    <h3>Advanced topics in Bayesian phylogenetics</h3> 
-
-                    <ul>
-                        {% assign lectureIdx = 0 %}
-                        {% assign advanced_lectures = site.data.lectures |  where:'section', "advanced" %}
-                        {% for lecture in advanced_lectures %}
-
-                        {% assign lectureURL = "/" |append: lecture.folder | append: "/" %}
-
-                        {% assign found = false %}
+                    {% endfor %}
+                    {% assign notes_found = false %}
+                    {% if lecture.notes_folder %}
                         {% for page in site.pages %}
+                            {% if page.url == notesURL %}
+                                {% assign notes_found = true %}
+                            {% endif %}
+                        {% endfor %}
+                    {% endif %}
+                    <li class="lecture-item">
+                        <div>
+                            {% if found %}
+                            <a href="{{site.baseurl}}{{lectureURL}}" class="lecture-title">{{lecture.title}}</a>
+                            {% else %}
+                            <span class="lecture-unavailable">{{lecture.title}}</span>
+                            {% endif %}
+                        </div>
+                        <div class="lecture-meta">
+                            {% if found or notes_found %}
+                            <div class="lecture-links">
+                                {% if found %}<a href="{{site.baseurl}}{{lectureURL}}" class="lecture-link slides-link">Slides</a>{% endif %}
+                                {% if notes_found %}<a href="{{site.baseurl}}{{notesURL}}" class="lecture-link notes-link">Notes</a>{% endif %}
+                            </div>
+                            {% endif %}
+                            {% if lecture.date %}
+                            <span class="lecture-date">{{lecture.date | date: "%-d %b %Y"}}</span>
+                            {% endif %}
+                        </div>
+                    </li>
+                    {% endfor %}
+                </ul>
+            </div>
+
+            <!-- Advanced Topics -->
+            <div class="section-card">
+                <h2 class="section-title">
+                    <div class="section-icon">
+                        <i class="fas fa-microscope"></i>
+                    </div>
+                    Advanced Topics in Bayesian Phylogenetics
+                </h2>
+                <ul class="lecture-list">
+                    {% assign advanced_lectures = site.data.lectures | where:'section', "advanced" %}
+                    {% for lecture in advanced_lectures %}
+                    {% assign lectureURL = "/" | append: lecture.folder | append: "/" %}
+                    {% assign notesURL = "/" | append: lecture.notes_folder | append: "/" %}
+                    {% assign found = false %}
+                    {% for page in site.pages %}
                         {% if page.url == lectureURL %}
-                        {% assign found = true %}
+                            {% assign found = true %}
                         {% endif %}
-                        {% endfor %}
-
-                        <li><b>
-                        {% if found %}
-                        <a href="{{site.baseurl}}{{lectureURL}}">{{lecture.title}}</a>
-                        {% else %}
-                        {{lecture.title}}
-                        {% endif %}
-                        </b>
-                        {% if lecture.date %}
-                        ({{lecture.date | date: "%-d %B %Y"}})
-                        {% else %}
-                        {% endif %}
-                        </li>
-
-                        {% endfor %}
-                    </ul>
-                    
-                    <h3>Programming</h3> 
-                       
-                    <ul>
-                        {% assign lectureIdx = 0 %}
-                        {% assign programming_lectures = site.data.lectures |  where:'section', "programming" %}
-                        {% for lecture in programming_lectures %}
-
-                        {% assign lectureURL = "/" | append: lecture.folder | append: "/" %}
-
-                        {% assign found = false %}
+                    {% endfor %}
+                    {% assign notes_found = false %}
+                    {% if lecture.notes_folder %}
                         {% for page in site.pages %}
+                            {% if page.url == notesURL %}
+                                {% assign notes_found = true %}
+                            {% endif %}
+                        {% endfor %}
+                    {% endif %}
+                    <li class="lecture-item">
+                        <div>
+                            {% if found %}
+                            <a href="{{site.baseurl}}{{lectureURL}}" class="lecture-title">{{lecture.title}}</a>
+                            {% else %}
+                            <span class="lecture-unavailable">{{lecture.title}}</span>
+                            {% endif %}
+                        </div>
+                        <div class="lecture-meta">
+                            {% if found or notes_found %}
+                            <div class="lecture-links">
+                                {% if found %}<a href="{{site.baseurl}}{{lectureURL}}" class="lecture-link slides-link">Slides</a>{% endif %}
+                                {% if notes_found %}<a href="{{site.baseurl}}{{notesURL}}" class="lecture-link notes-link">Notes</a>{% endif %}
+                            </div>
+                            {% endif %}
+                            {% if lecture.date %}
+                            <span class="lecture-date">{{lecture.date | date: "%-d %b %Y"}}</span>
+                            {% endif %}
+                        </div>
+                    </li>
+                    {% endfor %}
+                </ul>
+            </div>
+
+            <!-- Programming -->
+            <div class="section-card">
+                <h2 class="section-title">
+                    <div class="section-icon">
+                        <i class="fas fa-code"></i>
+                    </div>
+                    Programming
+                </h2>
+                <ul class="lecture-list">
+                    {% assign programming_lectures = site.data.lectures | where:'section', "programming" %}
+                    {% for lecture in programming_lectures %}
+                    {% assign lectureURL = "/" | append: lecture.folder | append: "/" %}
+                    {% assign notesURL = "/" | append: lecture.notes_folder | append: "/" %}
+                    {% assign found = false %}
+                    {% for page in site.pages %}
                         {% if page.url == lectureURL %}
-                        {% assign found = true %}
+                            {% assign found = true %}
                         {% endif %}
-                        {% endfor %}
-
-                        <li><b>
-                        {% if found %}
-                        <a href="{{site.baseurl}}{{lectureURL}}">{{lecture.title}}</a>
-                        {% else %}
-                        {{lecture.title}}
-                        {% endif %}
-                        </b>
-                        {% if lecture.date %}
-                        ({{lecture.date | date: "%-d %B %Y"}})
-                        {% else %}
-                        {% endif %}
-                        </li>
-
-                        {% endfor %}
-                    </ul>
-
-                    <h3>Artificial Life</h3> 
-                       
-                    <ul>
-                        {% assign lectureIdx = 0 %}
-                        {% assign programming_lectures = site.data.lectures |  where:'section', "artificiallife" %}
-                        {% for lecture in programming_lectures %}
-
-                        {% assign lectureURL = "/" | append: lecture.folder | append: "/" %}
-
-                        {% assign found = false %}
+                    {% endfor %}
+                    {% assign notes_found = false %}
+                    {% if lecture.notes_folder %}
                         {% for page in site.pages %}
+                            {% if page.url == notesURL %}
+                                {% assign notes_found = true %}
+                            {% endif %}
+                        {% endfor %}
+                    {% endif %}
+                    <li class="lecture-item">
+                        <div>
+                            {% if found %}
+                            <a href="{{site.baseurl}}{{lectureURL}}" class="lecture-title">{{lecture.title}}</a>
+                            {% else %}
+                            <span class="lecture-unavailable">{{lecture.title}}</span>
+                            {% endif %}
+                        </div>
+                        <div class="lecture-meta">
+                            {% if found or notes_found %}
+                            <div class="lecture-links">
+                                {% if found %}<a href="{{site.baseurl}}{{lectureURL}}" class="lecture-link slides-link">Slides</a>{% endif %}
+                                {% if notes_found %}<a href="{{site.baseurl}}{{notesURL}}" class="lecture-link notes-link">Notes</a>{% endif %}
+                            </div>
+                            {% endif %}
+                            {% if lecture.date %}
+                            <span class="lecture-date">{{lecture.date | date: "%-d %b %Y"}}</span>
+                            {% endif %}
+                        </div>
+                    </li>
+                    {% endfor %}
+                </ul>
+            </div>
+
+            <!-- Artificial Life -->
+            <div class="section-card">
+                <h2 class="section-title">
+                    <div class="section-icon">
+                        <i class="fas fa-robot"></i>
+                    </div>
+                    Artificial Life
+                </h2>
+                <ul class="lecture-list">
+                    {% assign programming_lectures = site.data.lectures | where:'section', "artificiallife" %}
+                    {% for lecture in programming_lectures %}
+                    {% assign lectureURL = "/" | append: lecture.folder | append: "/" %}
+                    {% assign notesURL = "/" | append: lecture.notes_folder | append: "/" %}
+                    {% assign found = false %}
+                    {% for page in site.pages %}
                         {% if page.url == lectureURL %}
-                        {% assign found = true %}
+                            {% assign found = true %}
                         {% endif %}
+                    {% endfor %}
+                    {% assign notes_found = false %}
+                    {% if lecture.notes_folder %}
+                        {% for page in site.pages %}
+                            {% if page.url == notesURL %}
+                                {% assign notes_found = true %}
+                            {% endif %}
                         {% endfor %}
-
-                        <li><b>
-                        {% if found %}
-                        <a href="{{site.baseurl}}{{lectureURL}}">{{lecture.title}}</a>
-                        {% else %}
-                        {{lecture.title}}
-                        {% endif %}
-                        </b>
-                        {% if lecture.date %}
-                        ({{lecture.date | date: "%-d %B %Y"}})
-                        {% else %}
-                        {% endif %}
-                        </li>
-
-                        {% endfor %}
-                    </ul>
-
-                </div>
+                    {% endif %}
+                    <li class="lecture-item">
+                        <div>
+                            {% if found %}
+                            <a href="{{site.baseurl}}{{lectureURL}}" class="lecture-title">{{lecture.title}}</a>
+                            {% else %}
+                            <span class="lecture-unavailable">{{lecture.title}}</span>
+                            {% endif %}
+                        </div>
+                        <div class="lecture-meta">
+                            {% if found or notes_found %}
+                            <div class="lecture-links">
+                                {% if found %}<a href="{{site.baseurl}}{{lectureURL}}" class="lecture-link slides-link">Slides</a>{% endif %}
+                                {% if notes_found %}<a href="{{site.baseurl}}{{notesURL}}" class="lecture-link notes-link">Notes</a>{% endif %}
+                            </div>
+                            {% endif %}
+                            {% if lecture.date %}
+                            <span class="lecture-date">{{lecture.date | date: "%-d %b %Y"}}</span>
+                            {% endif %}
+                        </div>
+                    </li>
+                    {% endfor %}
+                </ul>
             </div>
         </div>
 
-	<a href="phylogenetics-flow.png"><img src="phylogenetics-flow.png" style="display: block;
-    margin-left: auto;
-    margin-right: auto;
-    width: 80%;
-"></a>
+        <div class="flow-diagram">
+            <a href="phylogenetics-flow.png">
+                <img src="phylogenetics-flow.png" alt="Phylogenetics Flow Diagram">
+            </a>
+        </div>
+    </div>
 
-        
-    </body>
+    <footer class="footer">
+        <p>Most of these slides were prepared by Alexei Drummond and Tim Vaughan.<br>
+        Other authors of some of the material are acknowledged within the relevant slide decks.</p>
+    </footer>
+</body>
 </html>

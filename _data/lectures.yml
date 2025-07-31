@@ -6,11 +6,13 @@
 -
   title: Homology and alignment
   folder: lecture2
+  notes_folder: lecture2_homology_notes
   lecturer: Alexei Drummond
   section: introductionSA
 -
   title: Multiple sequence alignment
   folder: lecture3
+  notes_folder: lecture3_msa_notes
   lecturer: Alexei Drummond
   section: introductionSA
 -
