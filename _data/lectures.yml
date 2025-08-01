@@ -40,6 +40,7 @@
 - 
   title: Model-based Phylogenetic Inference
   folder: lectureSubstitutionModels
+  notes_folder: lecture_substmodel_notes
   lecturer: Alexei Drummond
   section: introduction
 -

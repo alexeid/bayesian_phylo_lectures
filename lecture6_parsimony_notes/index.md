@@ -5,7 +5,7 @@ lecture_num: 6
 section: introduction
 section_name: "Introduction to Phylogenetics"
 previous_lecture: lecture5_phylogenetics_notes
-next_lecture: lecture7_likelihood
+next_lecture: lecture_substmodel_notes
 ---
 
 <div class="lecture-header">
