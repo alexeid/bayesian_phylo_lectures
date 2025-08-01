@@ -5,7 +5,7 @@ lecture_num: 7
 section: introduction
 section_name: "Introduction to Phylogenetics"
 previous_lecture: lecture6_parsimony_notes
-next_lecture: lecture8_bayesian_inference
+next_lecture: lecture8_bayesian_inference_notes
 ---
 
 <div class="lecture-header">

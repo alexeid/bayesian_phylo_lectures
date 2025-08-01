@@ -393,6 +393,46 @@
         .mismatch { color: #8b5cf6; font-weight: 500; }
         .gap { color: var(--accent-color); font-weight: 500; }
 
+        /* Logic and syllogism boxes */
+        .logic-box {
+            display: flex;
+            gap: 2rem;
+            justify-content: center;
+            margin: 2rem 0;
+            flex-wrap: wrap;
+        }
+
+        .syllogism {
+            background-color: var(--bg-tertiary);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 1.5rem;
+            min-width: 250px;
+            max-width: 350px;
+            text-align: center;
+        }
+
+        .syllogism.weak {
+            border-color: var(--warning-color);
+            background-color: #fef3c7;
+        }
+
+        .syllogism .premise {
+            margin: 0.5rem 0;
+            font-style: italic;
+        }
+
+        .syllogism hr {
+            margin: 1rem 0;
+            border: none;
+            border-top: 2px solid var(--border-color);
+        }
+
+        .syllogism .conclusion {
+            font-weight: 600;
+            color: var(--primary-color);
+        }
+
         /* Progress indicator */
         .progress-bar {
             position: fixed;
