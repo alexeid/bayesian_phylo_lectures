@@ -37,7 +37,12 @@ next_lecture: lecture12_model_selection_notes
     <ul>
         <li>Each tree topology defines a subspace</li>
         <li>For time trees with $n$ taxa, each subspace is $(n-1)$-dimensional</li>
-        <li>The dimensions correspond to node heights or inter-coalescent intervals</li>
+        <li>The dimensions can be parameterized as:
+            <ul>
+                <li><strong>Inter-coalescent intervals:</strong> Forms a hypercube (all intervals independent)</li>
+                <li><strong>Node heights:</strong> Forms a simplex (heights must respect temporal ordering)</li>
+            </ul>
+        </li>
         <li>Trees can be averaged within a subspace (arithmetic mean shown)</li>
         <li>Distances between trees can be computed (Euclidean distance shown as dashed lines)</li>
     </ul>
@@ -69,7 +74,14 @@ next_lecture: lecture12_model_selection_notes
 
 <div class="figure">
     <img src="{{ site.baseurl }}/lectureRelaxedPhylogenetics/tSpace2d.svg" alt="Alternative tree space visualization" style="width: 70%;">
-    <div class="figure-caption">Another representation of tip-labeled time-tree space showing the geometric relationships</div>
+    <div class="figure-caption">Tree space using node height parameterization, where temporal constraints create simplices (triangular regions) rather than hypercubes</div>
+</div>
+
+<div class="alert alert-info">
+    <i class="fas fa-info-circle"></i>
+    <div>
+        <strong>Parameterization matters:</strong> When using node heights as parameters, the constraint that parent nodes must be older than child nodes creates simplices. In contrast, inter-coalescent intervals are independent, creating hypercubes.
+    </div>
 </div>
 
 <h3>Higher-Dimensional Tree Spaces</h3>
@@ -85,11 +97,17 @@ next_lecture: lecture12_model_selection_notes
     <h4>Tree Space Complexity</h4>
     <p>As the number of taxa increases:</p>
     <ul>
-        <li>3 taxa: 3 topologies, 2D subspaces</li>
-        <li>4 taxa: 18 topologies (3 unrooted × 6 rootings), 3D subspaces</li>
-        <li>5 taxa: 180 topologies, 4D subspaces</li>
-        <li>n taxa: $(2n-3)!!$ rooted topologies, $(n-1)$D subspaces</li>
+        <li>3 taxa: 3 ranked topologies, 2D subspaces</li>
+        <li>4 taxa: 18 ranked topologies, 3D subspaces</li>
+        <li>5 taxa: 180 ranked topologies, 4D subspaces</li>
     </ul>
+    <p><strong>For 4 taxa:</strong> There are 15 rooted topologies total. Of these:</p>
+    <ul>
+        <li>12 are "caterpillar" trees (fully pectinate) - each has only 1 ranking</li>
+        <li>3 are balanced trees - each has 2 possible rankings of the two internal nodes on the same side of the root</li>
+        <li>Total: 12 × 1 + 3 × 2 = 18 ranked topologies</li>
+    </ul>
+    <p><strong>Note:</strong> Each subspace corresponds to a <em>ranked topology</em> where the temporal order of all coalescence events is specified. When parameterized by inter-coalescent intervals, each subspace forms a hypercube (all intervals can vary independently). When parameterized by node heights, the subspaces form simplices due to temporal ordering constraints.</p>
 </div>
 
 <h3>Implications for Phylogenetic Inference</h3>
@@ -291,7 +309,7 @@ next_lecture: lecture12_model_selection_notes
         <strong>Key observations:</strong>
         <ul>
             <li>The phylogenetic likelihood only depends on the substitution tree $T$: $\Pr(D|T)$</li>
-            <li>The tree prior only depends on the time tree $\textcolor{red}{g}$: $P({\textcolor{red}{g}}|\theta)$</li>
+            <li>The tree prior only depends on the time tree $\textcolor{red}{g}$: $P(\textcolor{red}{g}|\theta)$</li>
             <li>By fixing $\textcolor{darkgreen}{\vec{\mu}} = 1$, we get a time tree in units of substitutions</li>
         </ul>
     </div>
