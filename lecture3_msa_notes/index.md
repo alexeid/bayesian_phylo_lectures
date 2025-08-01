@@ -5,7 +5,7 @@ lecture_num: 3
 section: introductionSA
 section_name: "Introduction to Sequence Analysis"
 previous_lecture: lecture2_homology_notes
-next_lecture: lecture4_phylogenetic_trees
+next_lecture: lecture5_phylogenetics_notes
 ---
 
 <div class="lecture-header">

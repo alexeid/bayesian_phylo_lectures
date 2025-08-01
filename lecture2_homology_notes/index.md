@@ -4,8 +4,7 @@ title: "Sequence Homology"
 lecture_num: 2
 section: introductionSA
 section_name: "Introduction to Sequence Analysis"
-previous_lecture: lecture1_introduction
-next_lecture: lecture3_multiple_alignment
+next_lecture: lecture3_msa_notes
 ---
 
 <div class="lecture-header">

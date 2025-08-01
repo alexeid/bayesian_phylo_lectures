@@ -4,8 +4,8 @@ title: "Introduction to Phylogenetics"
 lecture_num: 5
 section: introduction
 section_name: "Introduction to Phylogenetics"
-previous_lecture: lecture4_substitution_models
-next_lecture: lecture6_parsimony
+previous_lecture: lecture3_msa_notes
+next_lecture: lecture6_parsimony_notes
 ---
 
 <div class="lecture-header">
