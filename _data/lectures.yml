@@ -58,6 +58,7 @@
 - 
   title: Time-trees and Relaxed phylogenetics
   folder: lectureRelaxedPhylogenetics
+  notes_folder: lecture_timetree_clocks_notes
   lecturer: Alexei Drummond
   section: bayesian_phylo
 - 
