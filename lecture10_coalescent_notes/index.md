@@ -130,7 +130,7 @@ next_lecture: lecture11_molecular_clock_notes
         <li>By perfect mixing, the probability they share a common ancestor in the previous generation is $1/N$</li>
         <li>The probability the common ancestor is $t$ generations back is:
             <div class="math-block">
-            $$\Pr(t) = \frac{1}{N}\left(1-\frac{1}{N}\right)^{t-1}$$
+            $$P(t) = \frac{1}{N}\left(1-\frac{1}{N}\right)^{t-1}$$
             </div>
         </li>
         <li>This is a geometric distribution with success rate $\lambda = 1/N$</li>

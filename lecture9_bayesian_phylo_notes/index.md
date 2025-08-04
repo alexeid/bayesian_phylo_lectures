@@ -24,7 +24,7 @@ next_lecture: lecture10_molecular_clock_notes
 <p>At the heart of Bayesian phylogenetic inference is the phylogenetic likelihood:</p>
 
 <div class="math-block">
-$$\Pr(D|T, \mu)$$
+$$P(D|T, \mu)$$
 </div>
 
 <p>Where:</p>
@@ -63,7 +63,7 @@ $$\Pr(D|T, \mu)$$
 <p>Standard application of Bayes' theorem gives the posterior:</p>
 
 <div class="math-block">
-$$P(T,\mu,\theta|D) = \frac{\Pr(D|T,\mu, \theta)P(T,\mu,\theta)}{\Pr(D)}$$
+$$P(T,\mu,\theta|D) = \frac{P(D|T,\mu, \theta)P(T,\mu,\theta)}{P(D)}$$
 </div>
 
 <h3>Factorizing the Posterior</h3>
@@ -79,20 +79,20 @@ $$P(T,\mu,\theta|D) = \frac{\Pr(D|T,\mu, \theta)P(T,\mu,\theta)}{\Pr(D)}$$
 <div class="theorem-box">
     <h4>Phylogenetic Posterior</h4>
     <div class="math-block">
-    $$P(T,\mu,\theta|D) = \frac{1}{\Pr(D)}\Pr(D|T,\mu)P(T|\theta)P(\mu,\theta)$$
+    $$P(T,\mu,\theta|D) = \frac{1}{P(D)}P(D|T,\mu)P(T|\theta)P(\mu,\theta)$$
     </div>
     <p>Where:</p>
     <ul>
         <li>$P(T|\theta)$ is the "tree prior" parameterized by $\theta$</li>
         <li>$P(\mu,\theta)$ are the parameter priors</li>
-        <li>$\Pr(D)$ is the marginal likelihood (evidence)</li>
+        <li>$P(D)$ is the marginal likelihood (evidence)</li>
     </ul>
 </div>
 
 <div class="practice-box">
     <h4>Questions to Consider</h4>
     <ul>
-        <li>What is $\Pr(D)$ and why is it difficult to compute?</li>
+        <li>What is $P(D)$ and why is it difficult to compute?</li>
         <li>Is the tree prior really a prior? (i.e., does it depend on the data?)</li>
     </ul>
 </div>
