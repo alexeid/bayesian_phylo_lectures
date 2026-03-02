@@ -40,424 +40,416 @@ reveal:
     </div>
 </section>
 
-<section>
-    <section class="center">
-        <h2>Scoring Multiple Sequence Alignments</h2>
-    </section>
-
-    <section>
-        <h3>Scoring function: Sum of pairs (SP)</h3>
-
-        <dl class="spaced">
-            <dt>Column score:</dt>
-            <dd>$$S(A_i) = \sum_{j=1}^N\sum_{k=j+1}^N s(a_i^{(j)},a_i^{(k)})$$</dd>
-        </dl>
-
-        <pre style="font-size:2em;padding-bottom:0px;width:50%;padding">
-     A-CTCAT
-     A-GTC-T
-     ACGTC-T</pre>
-
-        <dl class="spaced">
-            <dt>Column 3 score:</dt>
-            <dd>$s(C,G) + s(C,G) + s(G,G) = \text{match}+2\times\text{mismatch}$</dd>
-
-            <dt>Column 6 score:</dt>
-            <dd>$s(A,-) + s(A,-) + s(-,-) = -2\times\text{gap} + s(-,-) = -2\times\text{gap}$</dd>
-        </dl>
-    </section>
-
-    <section>
-        <h3>Problems with SP scoring of MSAs</h3>
-
-        <ul class="spaced" style="margin-top:10%;width:60%">
-            <li class="fragment">Substitution scores derived as log-odds scores for <b>pairwise</b> comparisons.</li>
-            <li class="fragment">The "right thing" would be to construct log-odds scores for triples, quadruples, etc. (depending on the number of rows in the alignment). E.g.
-                \begin{align*}
-                s(a,b,c) &amp; = \log\frac{p_{abc}}{f_af_bf_c}\\
-                &amp; \neq \log\frac{p_{ab}}{f_af_b}
-                         + \log\frac{p_{ac}}{f_af_c}
-                         + \log\frac{p_{bc}}{f_bf_c}
-                \end{align*}
-            </li>
-
-            <li class="fragment">No probabilistic justification!</li>
-        </ul>
-    </section>
-
-
-    <section>
-        <h3>Another way to think about the problem</h3>
-
-        <img data-src="tree_vs_SP.svg" style="width:100%">
-    </section>
-
-    <section>
-        <h3>Tree-based scores</h3>
-        
-        <p style="margin-top:10%">Thought to be the most biologically appropriate, but</p>
-        <ul class="spaced" style="width:60%">
-            <li class="fragment">We don't know the tree.</li>
-            <li class="fragment">We need to infer the characters on internal nodes to identify
-            most parsimonious history.</li>
-            <li class="fragment">There may be different trees for different parts of the alignment (recombination!)</li>
-        </ul>
-
-        <blockquote class="fragment">
-            Sum of pairs is almost always used in practice.
-        </blockquote>
-
-    </section>
+<section class="center">
+    <h2>Scoring Multiple Sequence Alignments</h2>
 </section>
 
 <section>
-    <section class="center">
-        <h2>Multidimensional Dynamic Programming</h2>
-    </section>
+    <h3>Scoring function: Sum of pairs (SP)</h3>
 
-    <section>
-        <h3>Na&iuml;ve approach</h3>
+    <dl class="spaced">
+        <dt>Column score:</dt>
+        <dd>$$S(A_i) = \sum_{j=1}^N\sum_{k=j+1}^N s(a_i^{(j)},a_i^{(k)})$$</dd>
+    </dl>
 
-        <p>Define $F(i_1,i_2,\ldots,i_N)$ to be the score of the best alignment up to
-        the subsequences ending in $x^{(1)}_{i_1}, x^{(2)}_{i_2}, \ldots, x^{(N)}_{i_N}$.</p>
+    <pre style="font-size:2em;padding-bottom:0px;width:50%;padding">
+ A-CTCAT
+ A-GTC-T
+ ACGTC-T</pre>
 
-        <p class="fragment">We can then find the following recurrence relation:</p>
+    <dl class="spaced">
+        <dt>Column 3 score:</dt>
+        <dd>$s(C,G) + s(C,G) + s(G,G) = \text{match}+2\times\text{mismatch}$</dd>
 
-        <div class="fragment" style="font-size:0.75em">
-        \begin{align*}
-        F(i_1,i_2,\ldots,i_N)=\max\left\{\begin{array}{lcl}
-        F(i_1-1,i_2-1,\ldots,i_N-1) &amp; + &amp; S(x^{(1)}_{i_1},x^{(2)}_{i_2},\ldots,x^{(N)}_{i_N})\\
-        F(i_1, i_2-1, \ldots,i_N-1) &amp; + &amp; S(-,x^{(2)}_{i_2},\ldots,x^{(N)}_{i_N})\\
-        F(i_1-1, i_2, i_3-1, \ldots,i_N-1) &amp; + &amp; S(x^{(1)}_{i_1},-,\ldots,x^{(N)}_{i_N}) \\
-        &amp; \vdots &amp;\\
-        F(i_1-1, i_2-1, \ldots,i_N) &amp; + &amp; S(x^{(1)}_{i_1},x^{(2)}_{i_2},\ldots,-)\\
-        F(i_1, i_2, i_3-1, \ldots,i_N) &amp; + &amp; S(-,-,\ldots,x^{(N)}_{i_N})\\
-        &amp; \vdots &amp;\\
-        F(i_1, i_2-1, \ldots, i_{N-1}-1, i_N) &amp; + &amp; S(-,x^{(2)}_{i_2},\ldots,-)\\
-        &amp; \vdots &amp;
-        \end{array}\right.
-        \end{align*}
-        </div>
-    </section>
+        <dt>Column 6 score:</dt>
+        <dd>$s(A,-) + s(A,-) + s(-,-) = -2\times\text{gap} + s(-,-) = -2\times\text{gap}$</dd>
+    </dl>
+</section>
 
-    <section>
-        <h3>Na&iuml;ve approach</h3>
+<section>
+    <h3>Problems with SP scoring of MSAs</h3>
 
-        <div style="width:80%;height:400px;position:relative;top:2em;left:10%">
-        <img data-src="MDP.svg" style="width:100%;position:absolute;left:0;top:0">
-        <img class="fragment" data-src="MDP2.svg" style="width:100%;position:absolute;left:0;top:0;background-color:white">
-        </div>
-    </section>
+    <ul class="spaced" style="margin-top:10%;width:60%">
+        <li class="fragment">Substitution scores derived as log-odds scores for <b>pairwise</b> comparisons.</li>
+        <li class="fragment">The "right thing" would be to construct log-odds scores for triples, quadruples, etc. (depending on the number of rows in the alignment). E.g.
+            \begin{align*}
+            s(a,b,c) &amp; = \log\frac{p_{abc}}{f_af_bf_c}\\
+            &amp; \neq \log\frac{p_{ab}}{f_af_b}
+                     + \log\frac{p_{ac}}{f_af_c}
+                     + \log\frac{p_{bc}}{f_bf_c}
+            \end{align*}
+        </li>
 
-    <section>
-        <h3>Computational burden of na&iuml;ve DP approach</h3>
-
-        <ul class="spaced" style="width:60%;margin-top:2em;">
-            <li>$F$ consists of $\prod_{q=1}^{N}n_q$ terms:
-                <ul><li style="color: #ff0000;">$O(n^N)$ space complexity.</li></ul></li>
-            <li class="fragment">Computing each element of $F$ requires maximizing over $2^N-1$ possibilities:
-                <ul><li style="color: #ff0000;">$O(2^Nn^N)$ time complexity.</li>
-                    <li>(traceback negligible cost in comparison)</li>
-                </ul>
-            </li>
-        </ul>
-
-        <blockquote class="fragment" style="margin-top:2em">
-            Even aside from the time cost, the space requirement for this
-            algorithm is prohibitive.  Storing $F$ for an alignment of 5$\times$100
-            character sequences requires $101^5\simeq 10^{10}$ numbers.  Assuming 32 bit
-            integers, this equates to $\sim$39 Gb of memory!
-        </blockquote>
-    </section>
-
-    <section>
-        <h3>Improved DP algorithm</h3>
-
-        <ul>
-            <li class="fragment"><a href="">Carrillo &amp; Lipman (1988)</a> presented an
-                algorithm implemented by the program MSA <a href="">(Lipman,
-                    Altschul &amp; Kececioglu, 1989)</a> with improved scaling
-                properties.</li>
-            <li class="fragment">Implements constraints on pairwise alignment scores that can be
-                part of the optimal multiple sequence alignment.</li>
-        </ul>
-
-        <img class="fragment" data-src="MDP_MSA.svg" style="width:70%">
-
-        <p class="fragment">A big improvement, but still impractical for most alignment problems.</p>
-    </section>
-
-    <section>
-        <h3>Multiple Alignment Software</h3>
-
-        <blockquote class="fragment" style="margin-top:2em">Really need approximation methods.</blockquote>
-
-        <p class="fragment" style="margin-top:1em">Different techniques:</p>
-        <ol class="spaced" style="width:80%">
-            <li class="fragment">Progressive global alignment of sequence starting with an
-                alignment of the most similar sequences and then building a
-                full alignment by adding more sequences.</li>
-            <li class="fragment">Iterative methods that make an initial alignment of groups of
-                sequences and then iteratively refine the alignment to achieve
-                a better result. (Barton-Sternberg, Simulated annealing,
-                stochastic hill climbing, genetic algorithms.)</li>
-            <li class="fragment">Use of probabilistic models of the indel and substitution
-                process to do statistical inference of alignment. ("Statistical
-                alignment.")</li>
-        </ol>
-    </section>
+        <li class="fragment">No probabilistic justification!</li>
+    </ul>
 </section>
 
 
 <section>
-    <section class="center">
-        <h2>Progressive alignment</h2>
-    </section>
+    <h3>Another way to think about the problem</h3>
 
-    <section>
-        <h3>General idea</h3>
+    <img data-src="tree_vs_SP.svg" style="width:100%">
+</section>
 
-        <img data-src="progressive.svg" style="width:80&">
+<section>
+    <h3>Tree-based scores</h3>
 
-        <p class="fragment">Decisions:</p>
-        <ol>
-            <li class="fragment">Order of alignments.</li>
-            <li class="fragment">Alignment of sequence to group only, or allow group to group.</li>
-            <li class="fragment">Method of alignment, scoring function.</li>
-        </ol>
-    </section>
+    <p style="margin-top:10%">Thought to be the most biologically appropriate, but</p>
+    <ul class="spaced" style="width:60%">
+        <li class="fragment">We don't know the tree.</li>
+        <li class="fragment">We need to infer the characters on internal nodes to identify
+        most parsimonious history.</li>
+        <li class="fragment">There may be different trees for different parts of the alignment (recombination!)</li>
+    </ul>
 
-    <section>
-        <h3>Guide trees</h3>
+    <blockquote class="fragment">
+        Sum of pairs is almost always used in practice.
+    </blockquote>
 
-        <img data-src="guide_tree.svg" style="width:80%">
+</section>
 
-        <ul class="spaced" style="margin-top:1em">
-            <li class="fragment">Progressive alignment algorithms employ "guide trees" to guide the order
-                in which sequences are progressively aligned.</li>
-            <li class="fragment">In practice these are very rough phylogenetic trees (cheap to
-                compute), unsuitable for serious phylogenetic inference but
-                used instead simply to bootstrap the alignment process.</li>
-        </ul>
-    </section>
+<section class="center">
+    <h2>Multidimensional Dynamic Programming</h2>
+</section>
 
-    <section>
-        <h3>The UPGMA tree-building algorithm</h3>
+<section>
+    <h3>Na&iuml;ve approach</h3>
 
-        <ul>
-            <li class="fragment">Clustering algorithm based on pairwise distances.</li>
-            <li class="fragment">Requires some distance  $d(k,l)$ for every pair of items.</li>
-        </ul>
+    <p>Define $F(i_1,i_2,\ldots,i_N)$ to be the score of the best alignment up to
+    the subsequences ending in $x^{(1)}_{i_1}, x^{(2)}_{i_2}, \ldots, x^{(N)}_{i_N}$.</p>
 
-        <div style="position:relative;width:100%;height:400px">
-            <div class="fragment" style="position:absolute;left:0;top:0;width:100%;height:400px;background-color:white">
-                <img data-src="UPGMA6.svg" style="position:absolute;left:0;top:0;width:50%">
-                <div style="position:absolute;right:0;top:2em;width:50%">
-                    <p>Distance matrix:</p>
+    <p class="fragment">We can then find the following recurrence relation:</p>
 
-                    \begin{equation*}
-                        d = \begin{array}{cccc}
-                          & A & B & C & D \\
-                        A & - & 4 & 8 & 8 \\
-                        B &   & - & 8 & 8 \\
-                        C &   &   & - & 6 \\
-                        D &   &   &   & -
-                        \end{array}
-                    \end{equation*}
-                </div>
+    <div class="fragment" style="font-size:0.75em">
+    \begin{align*}
+    F(i_1,i_2,\ldots,i_N)=\max\left\{\begin{array}{lcl}
+    F(i_1-1,i_2-1,\ldots,i_N-1) &amp; + &amp; S(x^{(1)}_{i_1},x^{(2)}_{i_2},\ldots,x^{(N)}_{i_N})\\
+    F(i_1, i_2-1, \ldots,i_N-1) &amp; + &amp; S(-,x^{(2)}_{i_2},\ldots,x^{(N)}_{i_N})\\
+    F(i_1-1, i_2, i_3-1, \ldots,i_N-1) &amp; + &amp; S(x^{(1)}_{i_1},-,\ldots,x^{(N)}_{i_N}) \\
+    &amp; \vdots &amp;\\
+    F(i_1-1, i_2-1, \ldots,i_N) &amp; + &amp; S(x^{(1)}_{i_1},x^{(2)}_{i_2},\ldots,-)\\
+    F(i_1, i_2, i_3-1, \ldots,i_N) &amp; + &amp; S(-,-,\ldots,x^{(N)}_{i_N})\\
+    &amp; \vdots &amp;\\
+    F(i_1, i_2-1, \ldots, i_{N-1}-1, i_N) &amp; + &amp; S(-,x^{(2)}_{i_2},\ldots,-)\\
+    &amp; \vdots &amp;
+    \end{array}\right.
+    \end{align*}
+    </div>
+</section>
+
+<section>
+    <h3>Na&iuml;ve approach</h3>
+
+    <div style="width:80%;height:400px;position:relative;top:2em;left:10%">
+    <img data-src="MDP.svg" style="width:100%;position:absolute;left:0;top:0">
+    <img class="fragment" data-src="MDP2.svg" style="width:100%;position:absolute;left:0;top:0;background-color:white">
+    </div>
+</section>
+
+<section>
+    <h3>Computational burden of na&iuml;ve DP approach</h3>
+
+    <ul class="spaced" style="width:60%;margin-top:2em;">
+        <li>$F$ consists of $\prod_{q=1}^{N}n_q$ terms:
+            <ul><li style="color: #ff0000;">$O(n^N)$ space complexity.</li></ul></li>
+        <li class="fragment">Computing each element of $F$ requires maximizing over $2^N-1$ possibilities:
+            <ul><li style="color: #ff0000;">$O(2^Nn^N)$ time complexity.</li>
+                <li>(traceback negligible cost in comparison)</li>
+            </ul>
+        </li>
+    </ul>
+
+    <blockquote class="fragment" style="margin-top:2em">
+        Even aside from the time cost, the space requirement for this
+        algorithm is prohibitive.  Storing $F$ for an alignment of 5$\times$100
+        character sequences requires $101^5\simeq 10^{10}$ numbers.  Assuming 32 bit
+        integers, this equates to $\sim$39 Gb of memory!
+    </blockquote>
+</section>
+
+<section>
+    <h3>Improved DP algorithm</h3>
+
+    <ul>
+        <li class="fragment"><a href="">Carrillo &amp; Lipman (1988)</a> presented an
+            algorithm implemented by the program MSA <a href="">(Lipman,
+                Altschul &amp; Kececioglu, 1989)</a> with improved scaling
+            properties.</li>
+        <li class="fragment">Implements constraints on pairwise alignment scores that can be
+            part of the optimal multiple sequence alignment.</li>
+    </ul>
+
+    <img class="fragment" data-src="MDP_MSA.svg" style="width:70%">
+
+    <p class="fragment">A big improvement, but still impractical for most alignment problems.</p>
+</section>
+
+<section>
+    <h3>Multiple Alignment Software</h3>
+
+    <blockquote class="fragment" style="margin-top:2em">Really need approximation methods.</blockquote>
+
+    <p class="fragment" style="margin-top:1em">Different techniques:</p>
+    <ol class="spaced" style="width:80%">
+        <li class="fragment">Progressive global alignment of sequence starting with an
+            alignment of the most similar sequences and then building a
+            full alignment by adding more sequences.</li>
+        <li class="fragment">Iterative methods that make an initial alignment of groups of
+            sequences and then iteratively refine the alignment to achieve
+            a better result. (Barton-Sternberg, Simulated annealing,
+            stochastic hill climbing, genetic algorithms.)</li>
+        <li class="fragment">Use of probabilistic models of the indel and substitution
+            process to do statistical inference of alignment. ("Statistical
+            alignment.")</li>
+    </ol>
+</section>
+
+<section class="center">
+    <h2>Progressive alignment</h2>
+</section>
+
+<section>
+    <h3>General idea</h3>
+
+    <img data-src="progressive.svg" style="width:80&">
+
+    <p class="fragment">Decisions:</p>
+    <ol>
+        <li class="fragment">Order of alignments.</li>
+        <li class="fragment">Alignment of sequence to group only, or allow group to group.</li>
+        <li class="fragment">Method of alignment, scoring function.</li>
+    </ol>
+</section>
+
+<section>
+    <h3>Guide trees</h3>
+
+    <img data-src="guide_tree.svg" style="width:80%">
+
+    <ul class="spaced" style="margin-top:1em">
+        <li class="fragment">Progressive alignment algorithms employ "guide trees" to guide the order
+            in which sequences are progressively aligned.</li>
+        <li class="fragment">In practice these are very rough phylogenetic trees (cheap to
+            compute), unsuitable for serious phylogenetic inference but
+            used instead simply to bootstrap the alignment process.</li>
+    </ul>
+</section>
+
+<section>
+    <h3>The UPGMA tree-building algorithm</h3>
+
+    <ul>
+        <li class="fragment">Clustering algorithm based on pairwise distances.</li>
+        <li class="fragment">Requires some distance  $d(k,l)$ for every pair of items.</li>
+    </ul>
+
+    <div style="position:relative;width:100%;height:400px">
+        <div class="fragment" style="position:absolute;left:0;top:0;width:100%;height:400px;background-color:white">
+            <img data-src="UPGMA6.svg" style="position:absolute;left:0;top:0;width:50%">
+            <div style="position:absolute;right:0;top:2em;width:50%">
+                <p>Distance matrix:</p>
+
+                \begin{equation*}
+                    d = \begin{array}{cccc}
+                      & A & B & C & D \\
+                    A & - & 4 & 8 & 8 \\
+                    B &   & - & 8 & 8 \\
+                    C &   &   & - & 6 \\
+                    D &   &   &   & -
+                    \end{array}
+                \end{equation*}
             </div>
-
-            <div class="fragment"
-                style="position:absolute;left:0;top:0;width:100%;height:400px;background-color:white">
-                <img data-src="UPGMA5.svg" style="position:absolute;left:0;top:0;width:50%">
-                <div style="position:absolute;right:0;top:2em;width:50%">
-                    <p>Distance matrix:</p>
-                    \begin{equation*}
-                        d = \begin{array}{cccc}
-                          & A & B & C & D \\
-                        A & - & 4 & 8 & 8 \\
-                        B &   & - & 8 & 8 \\
-                        C &   &   & - & 6 \\
-                        D &   &   &   & -
-                        \end{array}
-                    \end{equation*}
-                </div>
-            </div>
-
-            <div class="fragment"
-                style="position:absolute;left:0;top:0;width:100%;height:400px;background-color:white">
-                <img data-src="UPGMA4.svg" style="position:absolute;left:0;top:0;width:50%">
-                <div style="position:absolute;right:0;top:2em;width:50%">
-                    <p>Distance matrix:</p>
-                    \begin{equation*}
-                        d = \begin{array}{cccc}
-                          & E & C & D \\
-                        E & - & 8 & 8 \\
-                        C &   & - & 6 \\
-                        D &   &   & -
-                        \end{array}
-                    \end{equation*}
-                </div>
-            </div>
-
-            <div class="fragment"
-                style="position:absolute;left:0;top:0;width:100%;height:400px;background-color:white">
-                <img data-src="UPGMA3.svg" style="position:absolute;left:0;top:0;width:50%">
-                <div style="position:absolute;right:0;top:2em;width:50%">
-                    <p>Distance matrix:</p>
-                    \begin{equation*}
-                        d = \begin{array}{cccc}
-                          & E & C & D \\
-                        E & - & 8 & 8 \\
-                        C &   & - & 6 \\
-                        D &   &   & -
-                        \end{array}
-                    \end{equation*}
-                </div>
-            </div>
-
-            <div class="fragment"
-                style="position:absolute;left:0;top:0;width:100%;height:400px;background-color:white">
-                <img data-src="UPGMA2.svg" style="position:absolute;left:0;top:0;width:50%">
-                <div style="position:absolute;right:0;top:2em;width:50%">
-                    <p>Distance matrix:</p>
-                    \begin{equation*}
-                        d = \begin{array}{cccc}
-                          & E & F \\
-                        E & - & 8 \\
-                        F &   & -
-                        \end{array}
-                    \end{equation*}
-                </div>
-            </div>
-
-            <div class="fragment"
-                style="position:absolute;left:0;top:0;width:100%;height:400px;background-color:white">
-                <img data-src="UPGMA1.svg" style="position:absolute;left:0;top:0;width:50%">
-                <div style="position:absolute;right:0;top:2em;width:50%">
-                    <p>Distance matrix:</p>
-                    \begin{equation*}
-                        d = \begin{array}{cccc}
-                          & E & F \\
-                        E & - & 8 \\
-                        F &   & -
-                        \end{array}
-                    \end{equation*}
-                </div>
-            </div>
-
-
         </div>
-    </section>
 
-    <section>
-        <h3>Feng-Doolittle: Overview</h3>
-
-        <p>Progressive alignment algorithm published in 1987 (<a class="cite"
-                    href="http://dx.doi.org/10.1007/BF02603120">Feng and
-                    Doolittle, J. Mol Evol</a>).</p>
-
-        <ol class="spaced" style="width:80%">
-                <li class="fragment">Calculate diagonal matrix of $\binom{N}{2}$ distances between
-                all pairs of $N$ sequences by standard pairwise alignment,
-                converting raw alignment scores to approximate pairwise
-                "distances":
-                \[
-                d(k,l) = -\log\frac{S(A^{(k)},A^{(l)})-S_{\text{rand}}}{S_{\text{max}}-S_{\text{rand}}}
-                \]
-            </li class="fragment">
-            <li class="fragment">Construct guide tree using UPGMA or some other clustering
-                algorithm.</li>
-            <li class="fragment">Starting from the first internal node added to the tree, align
-                the child nodes (which may be two sequences, a sequence and an
-                alignment, or two alignments). Repeat for all other nodes in
-                the order that they were added to the tree, until all sequences
-                have been aligned.</li>
-        </ol>
-    </section>
-
-    <section>
-        <h3>Feng-Doolittle: Sequence$\leftrightarrow$Group alignment</h3>
-
-        <div style="width:100%;height:500px;position:relative;top:2em;">
-            <img data-src="FD_seq_to_group.svg" style="width:100%;position:absolute;left:0;top:0">
-            <img class="fragment" data-src="FD_seq_to_group2.svg" style="width:100%;position:absolute;left:0;top:0;background-color:white">
-            <img class="fragment" data-src="FD_seq_to_group3.svg" style="width:100%;position:absolute;left:0;top:0;background-color:white">
-            <img class="fragment" data-src="FD_seq_to_group4.svg" style="width:100%;position:absolute;left:0;top:0;background-color:white">
-            <img class="fragment" data-src="FD_seq_to_group5.svg" style="width:100%;position:absolute;left:0;top:0;background-color:white">
+        <div class="fragment"
+            style="position:absolute;left:0;top:0;width:100%;height:400px;background-color:white">
+            <img data-src="UPGMA5.svg" style="position:absolute;left:0;top:0;width:50%">
+            <div style="position:absolute;right:0;top:2em;width:50%">
+                <p>Distance matrix:</p>
+                \begin{equation*}
+                    d = \begin{array}{cccc}
+                      & A & B & C & D \\
+                    A & - & 4 & 8 & 8 \\
+                    B &   & - & 8 & 8 \\
+                    C &   &   & - & 6 \\
+                    D &   &   &   & -
+                    \end{array}
+                \end{equation*}
+            </div>
         </div>
-    </section>
 
-    <section>
-        <h3>Feng-Doolittle: Group$\leftrightarrow$Group alignment</h3>
-
-        <div style="width:100%;height:500px;position:relative;top:1em;">
-            <img data-src="FD_group_to_group.svg" style="width:100%;position:absolute;left:0;top:0">
-            <img class="fragment" data-src="FD_group_to_group2.svg" style="width:100%;position:absolute;left:0;top:0;background-color:white">
-            <img class="fragment" data-src="FD_group_to_group3.svg" style="width:100%;position:absolute;left:0;top:0;background-color:white">
-            <img class="fragment" data-src="FD_group_to_group4.svg" style="width:100%;position:absolute;left:0;top:0;background-color:white">
-            <img class="fragment" data-src="FD_group_to_group5.svg" style="width:100%;position:absolute;left:0;top:0;background-color:white">
-            <img class="fragment" data-src="FD_group_to_group6.svg" style="width:100%;position:absolute;left:0;top:0;background-color:white">
+        <div class="fragment"
+            style="position:absolute;left:0;top:0;width:100%;height:400px;background-color:white">
+            <img data-src="UPGMA4.svg" style="position:absolute;left:0;top:0;width:50%">
+            <div style="position:absolute;right:0;top:2em;width:50%">
+                <p>Distance matrix:</p>
+                \begin{equation*}
+                    d = \begin{array}{cccc}
+                      & E & C & D \\
+                    E & - & 8 & 8 \\
+                    C &   & - & 6 \\
+                    D &   &   & -
+                    \end{array}
+                \end{equation*}
+            </div>
         </div>
-    </section>
 
-    <section>
-        <h3>Feng-Doolittle</h3>
+        <div class="fragment"
+            style="position:absolute;left:0;top:0;width:100%;height:400px;background-color:white">
+            <img data-src="UPGMA3.svg" style="position:absolute;left:0;top:0;width:50%">
+            <div style="position:absolute;right:0;top:2em;width:50%">
+                <p>Distance matrix:</p>
+                \begin{equation*}
+                    d = \begin{array}{cccc}
+                      & E & C & D \\
+                    E & - & 8 & 8 \\
+                    C &   & - & 6 \\
+                    D &   &   & -
+                    \end{array}
+                \end{equation*}
+            </div>
+        </div>
 
-        <ul class="spaced" style="margin-top:10%">
-            <li>After alignment is completed, gap symbols replaced by neutral "X" character.</li>
-            <li class="fragment">Feng and Doolittle call this the rule of "once a gap, always a gap".</li>
-            <li class="fragment">Encourages gaps to occur in same columns in subsequent alignments.</li>
-        </ul>
-    </section>
-    
-    <section>
-      <h3>Progressive mis-alignment</h3>
-       <img data-src="progressiveMisalignment-00.png" style="width:81%">
-    </section>
+        <div class="fragment"
+            style="position:absolute;left:0;top:0;width:100%;height:400px;background-color:white">
+            <img data-src="UPGMA2.svg" style="position:absolute;left:0;top:0;width:50%">
+            <div style="position:absolute;right:0;top:2em;width:50%">
+                <p>Distance matrix:</p>
+                \begin{equation*}
+                    d = \begin{array}{cccc}
+                      & E & F \\
+                    E & - & 8 \\
+                    F &   & -
+                    \end{array}
+                \end{equation*}
+            </div>
+        </div>
 
-    <section>
-      <h3>Progressive mis-alignment</h3>
-       <img data-src="progressiveMisalignment-01.png" style="width:81%">
-    </section>
-    
-    <section>
-        <h3>Profile alignment</h3>
+        <div class="fragment"
+            style="position:absolute;left:0;top:0;width:100%;height:400px;background-color:white">
+            <img data-src="UPGMA1.svg" style="position:absolute;left:0;top:0;width:50%">
+            <div style="position:absolute;right:0;top:2em;width:50%">
+                <p>Distance matrix:</p>
+                \begin{equation*}
+                    d = \begin{array}{cccc}
+                      & E & F \\
+                    E & - & 8 \\
+                    F &   & -
+                    \end{array}
+                \end{equation*}
+            </div>
+        </div>
 
-        <img data-src="profile_align.svg" style="width:70%;">
 
-        <br>
+    </div>
+</section>
 
-        Total alignment score: $S(A) + S(B) + S(A\times B)$
-    </section>
+<section>
+    <h3>Feng-Doolittle: Overview</h3>
 
-    <section>
-        <h3>CLUSTALW</h3>
+    <p>Progressive alignment algorithm published in 1987 (<a class="cite"
+                href="http://dx.doi.org/10.1007/BF02603120">Feng and
+                Doolittle, J. Mol Evol</a>).</p>
 
-        <ul class="spaced" style="margin-top:2em;">
-            <li><a href="https://doi.org/10.1093/nar/22.22.4673">Thompson, Higgins, Gibson (1994)</a> (55k citations!)</li>
-        <li class="fragment">Widely used implementation of profile-based progressive multiple alignment</li>
-        <li class="fragment">Essentially Feng-Doolittle, but uses profile alignment.</li>
-        </ul>
+    <ol class="spaced" style="width:80%">
+            <li class="fragment">Calculate diagonal matrix of $\binom{N}{2}$ distances between
+            all pairs of $N$ sequences by standard pairwise alignment,
+            converting raw alignment scores to approximate pairwise
+            "distances":
+            \[
+            d(k,l) = -\log\frac{S(A^{(k)},A^{(l)})-S_{\text{rand}}}{S_{\text{max}}-S_{\text{rand}}}
+            \]
+        </li class="fragment">
+        <li class="fragment">Construct guide tree using UPGMA or some other clustering
+            algorithm.</li>
+        <li class="fragment">Starting from the first internal node added to the tree, align
+            the child nodes (which may be two sequences, a sequence and an
+            alignment, or two alignments). Repeat for all other nodes in
+            the order that they were added to the tree, until all sequences
+            have been aligned.</li>
+    </ol>
+</section>
 
-        <br>
+<section>
+    <h3>Feng-Doolittle: Sequence$\leftrightarrow$Group alignment</h3>
 
-        <p class="fragment">Overview:</p>
-        <ol>
-            <li class="fragment">Calculate matrix of $\binom{N}{2}$ distances between all pairs
-                of $N$ sequences.</li>
-            <li class="fragment">Construct a guide tree using a clustering algorithm such as
-                UPGMA or neighbour-joining.</li>
-            <li class="fragment">Progressively align at internal nodes in order of decreasing
-            similarity using sequence-sequence, sequence-profile and
-            profile-profile alignment.</li>
-        </ol>
+    <div style="width:100%;height:500px;position:relative;top:2em;">
+        <img data-src="FD_seq_to_group.svg" style="width:100%;position:absolute;left:0;top:0">
+        <img class="fragment" data-src="FD_seq_to_group2.svg" style="width:100%;position:absolute;left:0;top:0;background-color:white">
+        <img class="fragment" data-src="FD_seq_to_group3.svg" style="width:100%;position:absolute;left:0;top:0;background-color:white">
+        <img class="fragment" data-src="FD_seq_to_group4.svg" style="width:100%;position:absolute;left:0;top:0;background-color:white">
+        <img class="fragment" data-src="FD_seq_to_group5.svg" style="width:100%;position:absolute;left:0;top:0;background-color:white">
+    </div>
+</section>
 
-        <br>
+<section>
+    <h3>Feng-Doolittle: Group$\leftrightarrow$Group alignment</h3>
 
-        <p class="fragment">Employs many other heuristics.</p>
-    </section>
+    <div style="width:100%;height:500px;position:relative;top:1em;">
+        <img data-src="FD_group_to_group.svg" style="width:100%;position:absolute;left:0;top:0">
+        <img class="fragment" data-src="FD_group_to_group2.svg" style="width:100%;position:absolute;left:0;top:0;background-color:white">
+        <img class="fragment" data-src="FD_group_to_group3.svg" style="width:100%;position:absolute;left:0;top:0;background-color:white">
+        <img class="fragment" data-src="FD_group_to_group4.svg" style="width:100%;position:absolute;left:0;top:0;background-color:white">
+        <img class="fragment" data-src="FD_group_to_group5.svg" style="width:100%;position:absolute;left:0;top:0;background-color:white">
+        <img class="fragment" data-src="FD_group_to_group6.svg" style="width:100%;position:absolute;left:0;top:0;background-color:white">
+    </div>
+</section>
 
+<section>
+    <h3>Feng-Doolittle</h3>
+
+    <ul class="spaced" style="margin-top:10%">
+        <li>After alignment is completed, gap symbols replaced by neutral "X" character.</li>
+        <li class="fragment">Feng and Doolittle call this the rule of "once a gap, always a gap".</li>
+        <li class="fragment">Encourages gaps to occur in same columns in subsequent alignments.</li>
+    </ul>
+</section>
+
+<section>
+  <h3>Progressive mis-alignment</h3>
+   <img data-src="progressiveMisalignment-00.png" style="width:81%">
+</section>
+
+<section>
+  <h3>Progressive mis-alignment</h3>
+   <img data-src="progressiveMisalignment-01.png" style="width:81%">
+</section>
+
+<section>
+    <h3>Profile alignment</h3>
+
+    <img data-src="profile_align.svg" style="width:70%;">
+
+    <br>
+
+    Total alignment score: $S(A) + S(B) + S(A\times B)$
+</section>
+
+<section>
+    <h3>CLUSTALW</h3>
+
+    <ul class="spaced" style="margin-top:2em;">
+        <li><a href="https://doi.org/10.1093/nar/22.22.4673">Thompson, Higgins, Gibson (1994)</a> (55k citations!)</li>
+    <li class="fragment">Widely used implementation of profile-based progressive multiple alignment</li>
+    <li class="fragment">Essentially Feng-Doolittle, but uses profile alignment.</li>
+    </ul>
+
+    <br>
+
+    <p class="fragment">Overview:</p>
+    <ol>
+        <li class="fragment">Calculate matrix of $\binom{N}{2}$ distances between all pairs
+            of $N$ sequences.</li>
+        <li class="fragment">Construct a guide tree using a clustering algorithm such as
+            UPGMA or neighbour-joining.</li>
+        <li class="fragment">Progressively align at internal nodes in order of decreasing
+        similarity using sequence-sequence, sequence-profile and
+        profile-profile alignment.</li>
+    </ol>
+
+    <br>
+
+    <p class="fragment">Employs many other heuristics.</p>
 </section>
 
 <section>
@@ -555,9 +547,24 @@ reveal:
 </section>
 
 <section>
-    <h2>Recommended reading</h2>
+    <h3>Recommended Reading</h3>
 
-    <ul class="spaced" style="margin-top:20%">
-        <li>Chapter 6 of "Biological Sequence Analysis", Durbin et al., CUP, 1998.</li>
-    </ul>
+    <div class="textbox" style="width: 80%; margin-left:10%; margin-top:2em">
+        <div class="title"><a href="https://decodinggenomes.org/" style="color:inherit; text-decoration:underline">Decoding Genomes</a> (Stadler et al., 2024)</div>
+        <ul class="spaced" style="margin-top:1em; margin-left:1em">
+            <li><b>Chapter 3.2</b>: Multiple sequence alignments
+                <ul>
+                    <li>3.2.1 Heuristic multiple sequence alignment methods</li>
+                </ul>
+            </li>
+            <li><b>Chapter 3.3</b>: From sequencing reads to genome sequences</li>
+        </ul>
+    </div>
+
+    <div class="textbox" style="width: 80%; margin-left:10%; margin-top:1em">
+        <div class="title">Optional: for more algorithmic detail</div>
+        <ul style="margin-top:0.5em; margin-left:1em; margin-bottom:0.5em">
+            <li>Chapter 6 of "Biological Sequence Analysis", Durbin, Eddy, Krogh, Mitchison, CUP, 1998.</li>
+        </ul>
+    </div>
 </section>

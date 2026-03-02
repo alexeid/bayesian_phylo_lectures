@@ -56,6 +56,8 @@
 
 	<body>
 		<div class="reveal">
+			<a href="{{site.baseurl}}/" id="home-button" title="Back to lectures"
+			   style="position:fixed; bottom:12px; left:12px; z-index:30; font-size:24px; color:rgba(100,100,100,0.5); text-decoration:none;">&#x1F3E0;</a>
 			<div class="slides">
 
                 <section class="titlepage center">
@@ -134,7 +136,7 @@
             // Hide print button if these are already the print-friendly slides
             if (window.location.search.match( /print-pdf/gi ) ) {
                 document.getElementById("print-button").style.display = "none";
-                console.log("hey!");
+                document.getElementById("home-button").style.display = "none";
             }
 		</script>
 	</body>

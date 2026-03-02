@@ -33,900 +33,912 @@ reveal:
 
 </section>
 
-    <section>
-      <h3>Ring-tailed lemur beta globin</h3>
-       <img data-src="globins-lemur.jpg" style="width:80%">
-    </section>
-
-    <section>
-      <h3>Goldfish beta globin</h3>
-       <img data-src="globins-goldfish.jpg" style="width:80%">
-    </section>
-
-    <section>
-      <h3>Soybean leghemoglobin</h3>
-       <img data-src="globins-soybeans.jpg" style="width:80%">
-    </section>
+<section>
+    <h3>Ring-tailed lemur beta globin</h3>
+    <img data-src="globins-lemur.jpg" style="width:80%">
+</section>
 
 <section>
-    <section class="center">
-        <h2>Pairwise Alignment</h2>
-    </section>
-
-    <section>
-        <h3>The goal of pairwise alignment</h3>
-
-        <blockquote style="margin-top:10%">
-            Aligning one sequence with another allows us to assess the homology between the two sequences.
-        </blockquote>
-
-        <blockquote style="margin-top:2em">Alignment allows us to break down the question of sequence
-            similarity into a large number of smaller questions about character
-            similarity.</blockquote>
-
-        <blockquote style="margin-top:2em">Pairwise alignment is the basis of
-        multiple sequence alignment which itself forms the basis for
-        phylogenetic reconstruction from molecular data.</blockquote>
-    </section>
-
-    <section>
-        <h3>Dot Plots</h3>
-
-        <p>A simple means of assessing pairwise homology visually.</p>
-
-        <p>Consider the following pair of sequences:</o>
-        <ol>
-            <li>decided to build three ships, three Arks in space</li>
-            <li>decided to build three Arks in space</li>
-        </ol>
-        <div class="figure">
-            <img data-src="dotplot.png">
-            <div class="cite"><a class="cite" href="https://www.jwhitham.org/magrathea/adiff.html">https://www.jwhitham.org/magrathea/adiff.html</a></div>
-        </div>
-
-        <ul style="margin-top:1em;">
-            <li>Each row corresponds to a position on seq 1, each column to a position on seq 2.</li>
-            <li>Pixel $(i,j)$ is coloured if the characters at site $i$ on seq 1 and $j$ on seq 2 match.</li>
-            <li>Diagonal lines indicate runs of matching sites.</li>
-        </ul>
-    </section>
-
-    <section>
-        <h3>Dynamic Programming</h3>
-
-        <br>
-        <br>
-
-        <ul class="spaced">
-            <li>Method for solving combinatorial optimization problems.</li>
-            <li>Guaranteed to give optimal solution.</li>
-            <li>Generalization of "divide-and-conquer".</li>
-            <li>Relies on <b>principle of optimality</b>:</li>
-        </ul>
-        <blockquote>
-            Sub-optimal solution of a sub-problem cannot be part of the optimal solution of the full problem.
-        </blockquote>
-
-        <br>
-
-        <div>
-            Problems suitable for solution by dynamic programming are said to have<br>
-            <b>optimal substructure</b>.
-        </div>
-
-    </section>
-
-    <section>
-        <h3>Principle of Optimality</h3>
-
-        <div style="width:1000px; height:600px; position:relative;left:0; top:2em">
-            <img data-src="optimality1.svg"
-                style="position:absolute;left:0;top:0;width:1000px;box-shadow:none">
-            <img data-src="optimality2.svg" class="fragment"
-                style="position:absolute;left:0;top:0;width:1000px;background-color:white;box-shadow:none">
-        </div>
-    </section>
-
-    <section>
-        <h3>Keys to efficiency</h3>
-
-        <ul class="spaced" style="margin-top:5%; width:70%">
-            <li>Computation is carried out from the bottom-up.</li>
-            <li>Store all solutions to sub-problems in a table.</li>
-            <li>All possible sub-problems solved exactly once, beginning with
-            smallest sub-problems.</li>
-            <li>Work up to original problem instance.</li>
-            <li>Only optimal solutions to sub-problems are used to compute
-                solution to problem at next level.</li>
-            <li>Don't carry out computation in recursive, top-down manner
-                <ul>
-                    <li>same sub-problems would be solved many times.</li>
-                </ul>
-            </li>
-        </ul>
-    </section>
-
-    <section>
-        <h3>Pairwise amino acid alignment</h3>
-
-        <div class="textbox" style="margin-top:10%">
-            <div class="title">Sequences</div>
-            <pre style="font-size:35px;box-shadow:none;margin-bottom:0">
-            x = a c g g t s
-            y = a w g c c t t
-            </pre>
-        </div>
-
-        <div class="textbox" style="margin-top:2em">
-            <div class="title">Alignment</div>
-            <pre style="font-size:35px;box-shadow:none;margin-bottom:0">
-            x' = a - c g g - t s
-            y' = a w - g c c t t
-            </pre>
-        </div>
-    </section>
-
-    <section>
-        <h3>Scoring Alignments</h3>
-
-        <ul style="margin-top:0.5em">
-            <li>Numeric score associated with each column.</li>
-            <li>Total score given by sum of column scores.</li>
-            <li>Column types:
-                <ul>
-                    <li style="color:red">Identical (+ve score)</li>
-                    <li style="color:green">Conservative (+ve score)</li>
-                    <li style="color:purple">Non-conservative (-ve score)</li>
-                    <li style="color:blue">Gap (-ve score)</li>
-                </ul>
-        </ul>
-
-        <div class="textbox" style="margin-top:1em">
-            <div class="title">Alignment</div>
-            <pre style="font-size:35px;box-shadow:none;margin-bottom:0">
-            x' = <font color="red">a</font> <font color="blue">- c</font> <font color="red">g</font> <font color="purple">g</font> <font color="blue">-</font> <font color="red">t</font> <font color="green">s</font>
-            y' = <font color="red">a</font> <font color="blue">w -</font> <font color="red">g</font> <font color="purple">c</font> <font color="blue">c</font> <font color="red">t</font> <font color="green">t</font>
-            </pre>
-        </div>
-
-        <p>The <b>score matrix</b> (or substitution matrix) $s$ contains the column
-        scores of every possible pair.  A column with the character pair
-        $a,b$ is given by the matrix entry $s(a,b)$.</p>
-    </section>
-
-    <section>
-        <h3>Scoring methods</h3>
-
-        <ul style="margin-top:2em">
-            <li>Model-based
-                <ul>
-                    <li>Log-odds scoring</li>
-                </ul>
-            </li>
-
-            <li style="margin-top:1em">Empirical
-                <ul>
-                    <li>Often used for amino acid alignments</li>
-                    <li>PAM matrices</li>
-                    <li>BLOSUM matrices</li>
-                    <li>JTT</li>
-                    <li>WAG</li>
-                </ul>
-            </li>
-
-            <li style="margin-top:1em">Different matrices used depending on the
-                level of similarity of the sequences.
-                <ul>
-                    <li>How do you know the similarity before constructing an alignment?</li>
-                </ul>
-            </li>
-
-        </ul>
-
-    </section>
-
-    <section>
-        <h3>Log-odds matrices</h3>
-
-        <blockquote style="font-style:italic;margin-top:10%">
-            What we want to know is whether two sequences are homologous
-            (evolutionarily related) or not, so we want an alignment score that
-            reflects that. Theory says that if you want to compare two
-            hypotheses, a good score is the log-odds score: the logarithm of
-            the ratio of the likelihoods of your two hypotheses. If we assume
-            that each aligned residue pair is statistically independent of the
-            others (biologically dubious, but mathematically convenient), the
-            alignment score is the sum of the individual log-odds score for
-            each aligned residue pair.
-        </blockquote>
-        <a href="http://profs.scienze.univr.it/~liptak/ALBioinfo/2012_2013/2011_2012/files/nbt0804-1035.pdf" class="cite">Sean R Eddy, Nature Biotechnology, 2004</a>
-
-    </section>
-
-    <section>
-        <h3>Log-odds matrices</h3>
-
-        <div style="margin-top:10%;border:1px solid black; padding: 1em">
-        \begin{equation*}
-        s(a,b) = \frac{1}{\lambda}\log \frac{p_{a,b}}{f_a f_b}
-        \end{equation*}
-        </div>
-
-        <blockquote style="font-style:italic;margin-top:2em">
-            The numerator ($p_{ab}$) is the likelihood of the hypothesis we want to
-            test: that these two residues are correlated because they’re
-            homologous. Thus, $p_{ab}$ are the target frequencies: the probability
-            that we expect to observe residues a and b alignment in homologous
-            sequence alignments. The denominator is the likelihood of a null
-            hypothesis: that these two residues are uncorrelated and unrelated,
-            occurring independently.
-        </blockquote>
-        <a href="http://profs.scienze.univr.it/~liptak/ALBioinfo/2012_2013/2011_2012/files/nbt0804-1035.pdf" class="cite">Sean R Eddy, Nature Biotechnology, 2004</a>
-    </section>
-
-    <section>
-        <h3>Evolutionary interpretation of match/mismatch scores</h3>
-
-        <div class="figure inline">
-            $a,b$ homologous<br>
-        <svg width="300" height="200" viewbox="-50,0,250,220" style="margin-top:0.5em">
-            <defs>
-            <marker id="startarrow" markerWidth="10" markerHeight="7" refX="0" refY="3.5" orient="auto" markerUnits="strokeWidth">
-            <polygon points="10 0, 10 7, 0 3.5" fill="gray"/>
-            </marker>
-
-            <marker id="endarrow" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto" markerUnits="strokeWidth">
-            <polygon points="0 0, 10 3.5, 0 7" fill="gray"/>
-            </marker>
-
-            </defs>
-            <path d="M0 200 L100 0 L200 200" fill="none" stroke="black" stroke-width="2"/>
-            <path d="M-50 0 L250 0 M-50 200 L250 200" fill="none" stroke="gray" stroke-width="2"/>
-            <line x1="-25" y1="200" x2="-25" y2="0" fill="none" stroke="gray" stroke-width="2"
-            marker-end="url(#endarrow)" marker-start="url(#startarrow)"/>
-
-            <text x="-10" y="220">a</text>
-            <text x="190" y="220">b</text>
-
-            <text x="-25" y="100">t/2</text>
-        </svg>
-        </div>
-
-        <div class="figure inline">
-        <svg width="400" height="150">
-            <line x1="50" y1="100" x2="350" y2="100" fill="none" stroke="black" stroke-width="2"/>
-            <text x="30" y="110">a</text>
-            <text x="360" y="110">b</text>
-
-            <line x1="50" y1="50" x2="350" y2="50" fill="none" stroke="gray" stroke-width="2"
-            marker-end="url(#endarrow)" marker-start="url(#startarrow)"/>
-            <text x="170" y="40">d = &mu;t</text>
-        </svg><br>
-        <ul style="font-size:0.8em">
-            <li>$d=0.1$ is roughly 90% similarity</li>
-            <li>$d$ is average number of changes per site</li>
-        </ul>
-        </div>
-
-        <br>
-
-        <hr style="margin-top:1em; border-top: 2px dashed black">
-
-        <br>
-
-        <div class="figure inline">
-            $a,b$ non-homologous<br>
-        <svg width="300" height="200" viewbox="-50,0,250,200" style="margin-top:0.5em">
-            <path d="M0 200 L0 0 M200 200 L200 0" fill="none" stroke="black" stroke-width="2"/>
-            <path d="M-50 0 L250 0 M-50 200 L250 200" fill="none" stroke="gray" stroke-width="2"/>
-            <line x1="-25" y1="200" x2="-25" y2="0" fill="none" stroke="gray" stroke-width="2"
-            marker-end="url(#endarrow)" marker-start="url(#startarrow)"/>
-        </svg>
-        </div>
-
-        <div class="figure inline">
-        <svg width="400" height="200">
-            <line x1="50" y1="100" x2="350" y2="100" fill="none" stroke="black" stroke-width="2"/>
-            <polygon points="195 110, 195 90, 205 90, 205 110" fill="white"/>
-
-            <line x1="195" y1="110" x2="195" y2="90" fill="none" stroke="black" stroke-width="2"/>
-            <line x1="205" y1="110" x2="205" y2="90" fill="none" stroke="black" stroke-width="2"/>
-            <text x="30" y="110">a</text>
-            <text x="360" y="110">b</text>
-
-            <line x1="50" y1="50" x2="350" y2="50" fill="none" stroke="gray" stroke-width="2"
-            marker-end="url(#endarrow)" marker-start="url(#startarrow)"/>
-            <text x="170" y="40">d = &infin;</text>
-        </svg>
-        </div>
-
-    </section>
-
-    <section>
-        <h3>Jukes-Cantor substitution model</h3>
-
-        <ul class="spaced" style="margin-top:10%">
-            <li>All mutations equally likely
-                <ul>
-                    <li>$a\leftrightarrow b$ occur at the same rate for all character states $a$ and $b$.</li>
-                    <li>$a,b \in {A,C,G,T}$ for DNA</li>
-                    <li>$a,b \in {A,R,N,D,\ldots,W,Y,V}$ for amino acids</li>
-                </ul>
-            </li>
-
-            <li>All characters equally likely (equal base frequencies)
-                <ul>
-                    <li> ${0.25, 0.25, 0.25, 0.25}$ for DNA</li>
-                    <li> ${0.05, \ldots, 0.05}$ for proteins</li>
-                </ul>
-            </li>
-        </ul>
-    </section>
-
-    <section>
-        <h3>Interpretation of match/mismatch scores (DNA)</h3>
-
-        <div style="display:inline-block; width:400px">
-                $P_{a=b}=\frac{1}{4} + \frac{3}{4}e^{-\frac{3}{4}d}$
-
-                <br>
-
-                \begin{align*}
-                P_{a\neq b} = & 1-P_{a=b}\\
-                & \frac{3}{4} - \frac{3}{4}e^{-\frac{3}{4}d}
-                \end{align*}
-
-                <br>
-        </div>
-        <div class="figure inline">
-        <svg width="400" height="150">
-            <line x1="50" y1="100" x2="350" y2="100" fill="none" stroke="black" stroke-width="2"/>
-            <text x="30" y="110">a</text>
-            <text x="360" y="110">b</text>
-
-            <line x1="50" y1="50" x2="350" y2="50" fill="none" stroke="gray" stroke-width="2"
-            marker-end="url(#endarrow)" marker-start="url(#startarrow)"/>
-            <text x="170" y="40">d = &mu;t</text>
-        </svg><br>
-        <ul style="font-size:0.8em">
-            <li>$d=0.1$ is roughly 90% similarity</li>
-            <li>$d$ is average number of changes per site</li>
-        </ul>
-        </div>
-
-        <hr style="margin-top:1em; border-top: 2px dashed black">
-
-        <div style="display:inline-block; width:400px">
-            $\lim_{d\rightarrow\infty}P_{a=b}(d)=\frac{1}{4}$
-
-                <br>
-                <br>
-
-            $\lim_{d\rightarrow\infty}P_{a\neq b}(d)=\frac{3}{4}$
-
-                <br>
-                <br>
-        </div>
-        <div class="figure inline">
-        <svg width="400" height="150">
-            <line x1="50" y1="100" x2="350" y2="100" fill="none" stroke="black" stroke-width="2"/>
-            <polygon points="195 110, 195 90, 205 90, 205 110" fill="white"/>
-
-            <line x1="195" y1="110" x2="195" y2="90" fill="none" stroke="black" stroke-width="2"/>
-            <line x1="205" y1="110" x2="205" y2="90" fill="none" stroke="black" stroke-width="2"/>
-            <text x="30" y="110">a</text>
-            <text x="360" y="110">b</text>
-
-            <line x1="50" y1="50" x2="350" y2="50" fill="none" stroke="gray" stroke-width="2"
-            marker-end="url(#endarrow)" marker-start="url(#startarrow)"/>
-            <text x="170" y="40">d = &infin;</text>
-        </svg>
-        </div>
-
-    </section>
-
-    <section>
-        <h3>Log-odds match score</h3>
-
-        <br>
-        <br>
-
-        <div style="font-size:2em">
-        \begin{align*}
-        s(a,a) &= \frac{1}{\lambda}\log\frac{P_{aa}(d)}{\lim_{d\rightarrow\infty}P_{aa}}\\
-        &=\frac{1}{\lambda}\log\frac{P_{aa}(d)}{1/4}
-        \end{align*}
-        </div>
-    </section>
-
-    <section>
-        <h3>Log-odds mismatch score</h3>
- 
-        <br>
-        <br>
-
-        <div style="font-size:2em">
-        \begin{align*}
-        s(a,b) &= \frac{1}{\lambda}\log\frac{P_{ab}(d)}{\lim_{d\rightarrow\infty}P_{ab}}\\
-        &=\frac{1}{\lambda}\log\frac{P_{ab}(d)}{3/4}
-        \end{align*}
-        </div>
-   </section>
-
-   <section>
-       <h3>Variation of match/mismatch probs with $d$</h3>
-
-       <div class="figure">
-           <img data-src="match_probs.png">
-       </div>
-   </section>
-   <section>
-       <h3>Variation of match/mismatch scores with $d$</h3>
-
-       <div class="figure">
-           <img data-src="match_scores.png">
-       </div>
-   </section>
-
-   <section>
-       <h3>What about gaps?</h3>
-
-       <div class="figure">
-           <img data-src="gap_penalty.svg" style="box-shadow:none">
-       </div>
-
-       <p>Two main approaches:</p>
-       <ol class="spaced">
-           <li><b>Linear</b> score:
-               $$\gamma(g) = -gd$$
-               where $d$ is the <b>gap penalty</b></li>
-
-           <li><b>Affine</b> score:
-               $$\gamma(g) = -d - (g-1)e$$
-               where $e$ is the <b>gap extension penalty</b>
-       </ol>
-
-   </section>
+    <h3>Goldfish beta globin</h3>
+    <img data-src="globins-goldfish.jpg" style="width:80%">
+</section>
+
+<section>
+    <h3>Soybean leghemoglobin</h3>
+    <img data-src="globins-soybeans.jpg" style="width:80%">
+</section>
+
+<section class="center">
+    <h2>Pairwise Alignment</h2>
+</section>
+
+<section>
+    <h3>The goal of pairwise alignment</h3>
+
+    <blockquote style="margin-top:10%">
+        Aligning one sequence with another allows us to assess the homology between the two sequences.
+    </blockquote>
+
+    <blockquote style="margin-top:2em">Alignment allows us to break down the question of sequence
+        similarity into a large number of smaller questions about character
+        similarity.</blockquote>
+
+    <blockquote style="margin-top:2em">Pairwise alignment is the basis of
+    multiple sequence alignment which itself forms the basis for
+    phylogenetic reconstruction from molecular data.</blockquote>
+</section>
+
+<section>
+    <h3>Dot Plots</h3>
+
+    <p>A simple means of assessing pairwise homology visually.</p>
+
+    <p>Consider the following pair of sequences:</o>
+    <ol>
+        <li>decided to build three ships, three Arks in space</li>
+        <li>decided to build three Arks in space</li>
+    </ol>
+    <div class="figure">
+        <img data-src="dotplot.png">
+        <div class="cite"><a class="cite" href="https://www.jwhitham.org/magrathea/adiff.html">https://www.jwhitham.org/magrathea/adiff.html</a></div>
+    </div>
+
+    <ul style="margin-top:1em;">
+        <li>Each row corresponds to a position on seq 1, each column to a position on seq 2.</li>
+        <li>Pixel $(i,j)$ is coloured if the characters at site $i$ on seq 1 and $j$ on seq 2 match.</li>
+        <li>Diagonal lines indicate runs of matching sites.</li>
+    </ul>
+</section>
+
+<section>
+    <h3>Dynamic Programming</h3>
+
+    <br>
+    <br>
+
+    <ul class="spaced">
+        <li>Method for solving combinatorial optimization problems.</li>
+        <li>Guaranteed to give optimal solution.</li>
+        <li>Generalization of "divide-and-conquer".</li>
+        <li>Relies on <b>principle of optimality</b>:</li>
+    </ul>
+    <blockquote>
+        Sub-optimal solution of a sub-problem cannot be part of the optimal solution of the full problem.
+    </blockquote>
+
+    <br>
+
+    <div>
+        Problems suitable for solution by dynamic programming are said to have<br>
+        <b>optimal substructure</b>.
+    </div>
 
 </section>
+
 <section>
-    <section class="center">
-        <h2>Pairwise Alignment Algorithms</h2>
-    </section>
-
-   <section>
-       <h3>Needleman &amp; Wunsch algorithm</h3>
-
-       <ul>
-           <li>Dynamic programming algorithm for global alignment.</li>
-           <li>Needleman &amp; Wunsch (1970), modified by Gotoh (1982)</li>
-       </ul>
-
-           <br>
-           <br>
-
-       <div class="textbox" style="width:40%;margin-left:30%">
-           <div class="title">Assumptions</div>
-           <ul>
-               <li>Linear gap penalty $d$</li>
-               <li>Symmetric scoring matrix $s$:
-                   $$s(a,b)=s(b,a)$$
-                   $$s(a,-)=s(-,a) = -d$$
-           </ul>
-       </div>
-   </section>
-
-   <section>
-       <h3>Principle of Optimality</h3>
-
-       <br>
-       <br>
-
-       <p>Given sequences:</p>
-       \begin{align*}
-       X &amp;= (x_1, x_2, \ldots, x_m)\\
-       Y &amp;= (y_1, y_2, \ldots, y_n)
-       \end{align*}
-
-       <br>
-
-       <p>Define $F(i,j)$ to be the score of the <b>best</b> alignment between</p>
-       \begin{align*}
-       &amp;(x_1, x_2, \ldots, x_i)\\
-       &amp;(y_1, y_2, \ldots, y_j)\\
-       \end{align*}
-   </section>
-
-   <section>
-       <h3>Dynamic Programming recurrences</h3>
-
-       <table>
-           <tr>
-               <td>Optimal alignment</td>
-               <td>
-                   <div style="border:solid 1px black;background-color:lime;width:97%">
-                       $y_1, y_2, y_3, \ldots, y_j$
-                   </div>
-                   <div style="border:solid 1px black;background-color:lime;margin-top:5px;width:97%">
-                       $x_1, x_2, x_3, \ldots, x_i$
-                   </div>
-               </td>
-               <td>
-                   $F(i,j)$
-               </td>
-           </tr>
-
-           <tr>
-               <td> Comes from...  </td>
-               <td style="width:35%">
-                   <div style="border:solid 1px black;background-color:lime;display:inline-block;width:85%">
-                       $y_1, y_2, y_3, \ldots, y_{j-1}$
-                   </div><div style="border:solid 1px black; background-color:red;display:inline-block;width:12%">
-                       $y_j$
-                   </div><br>
-                   <div style="border:solid 1px black;background-color:lime;margin-top:5px;display:inline-block;width:85%">
-                       $x_1, x_2, x_3, \ldots, x_{i-1}$
-                   </div><div style="border:solid 1px black; background-color:red;display:inline-block;width:12%">
-                       $x_i$
-                   </div>
-               </td>
-               <td>
-                   $F(i-1,j-1) + s(x_i,y_j)$
-               </td>
-           </tr>
-           <tr>
-               <td> Or...  </td>
-               <td>
-                   <div style="border:solid 1px black;background-color:lime;display:inline-block;width:85%">
-                       $y_1, y_2, y_3, \ldots, y_{j-1}$
-                   </div><div style="border:solid 1px black; background-color:red;display:inline-block;width:12%">
-                       $y_j$
-                   </div><br>
-                   <div style="border:solid 1px black;background-color:lime;margin-top:5px;display:inline-block;width:85%">
-                       $x_1, x_2, x_3, \ldots, x_{i}$
-                   </div><div style="border:solid 1px black; background-color:red;display:inline-block;width:12%">
-                       $\phantom{x_i}$
-                   </div>
-               </td>
-               <td>
-                   $F(i,j-1) - d$
-               </td>
-           </tr>
-           <tr>
-               <td> Or...  </td>
-               <td>
-                   <div style="border:solid 1px black;background-color:lime;display:inline-block;width:85%">
-                       $y_1, y_2, y_3, \ldots, y_{j}$
-                   </div><div style="border:solid 1px black; background-color:red;display:inline-block;width:12%">
-                       $\phantom{y_j}$
-                   </div><br>
-                   <div style="border:solid 1px black;background-color:lime;margin-top:5px;display:inline-block;width:85%">
-                       $x_1, x_2, x_3, \ldots, x_{i-1}$
-                   </div><div style="border:solid 1px black; background-color:red;display:inline-block;width:12%">
-                       $x_i$
-                   </div>
-               </td>
-               <td>
-                   $F(i-1,j) - d$
-               </td>
-           </tr>
-       </table>
-       <p>Therefore,</p>
-       <div style="font-size:0.8em;margin-top:0.5em">
-       \begin{align*}
-       F(i,j) = \max\left\{\begin{array}{l}
-       F(i-1,j-1) + s(x_i,y_j)\\
-       F(i,j-1) - d\\
-       F(i-1,j) - d
-       \end{array}\right.
-       \end{align*}
-       </div>
-   </section>
-
-   <section>
-       <h3>Basis</h3>
-
-       <ul class="spaced" style="margin-top:10%">
-           <li>$F(0,0) = 0$
-
-           </li>
-           <li>$F(i,0) = F(i-1,0) + s(x_i,-)$
-               <div style="border:solid 1px black;background-color:lime;width:200px">
-                   &mdash;, &mdash;, &mdash;, $\ldots$, &mdash;
-               </div>
-               <div style="border:solid 1px black;background-color:lime;margin-top:5px;width:200px">
-                   $x_1, x_2, x_3, \ldots, x_i$
-               </div>
-           </li>
-           <li>$F(0,j) = F(0,j-1) + s(-,y_j)$
-               <div style="border:solid 1px black;background-color:lime;margin-top:5px;width:200px">
-                   $y_1, y_2, y_3, \ldots, y_j$
-               </div>
-               <div style="border:solid 1px black;background-color:lime;width:200px">
-                   &mdash;, &mdash;, &mdash;, $\ldots$, &mdash;
-               </div>
-           </li>
-       </ul>
-   </section>
-
-   <section>
-       <h3>Example</h3>
-
-       <blockquote style="margin-top:20%">
-           <a href="https://gtuckerkellogg.github.io/pairwise/demo/">Online interactive demo</a>
-       </blockquote>
-   </section>
-
-   <section>
-       <h3>Smith-Waterman algorithm</h3>
-
-       <ul class="spaced" style="margin-top:5%">
-           <li>Computes <b>local alignment</b></li>
-           <li>Looks for best alignment of subsequences of X and Y, ignoring scores of regions on either side.</li>
-       </ul>
-
-       <div class="figure">
-           <img data-src="smith_waterman.svg" style="width:80%;box-shadow:none">
-       </div>
-   </section>
-
-   <section>
-       <h2>Principle of Optimality</h2>
-
-       <br>
-
-       <p>Given sequences:</p>
-       \begin{align*}
-       Y &amp;= (y_1, y_2, \ldots, y_n)\\
-       X &amp;= (x_1, x_2, \ldots, x_m)
-       \end{align*}
-
-       <br>
-
-       <p>Define $F(i,j)$ to be the score of the best <b>suffix</b> alignment between</p>
-
-       $(y_r, y_{r+1}, \ldots, y_j)$ where $r\leq j$
-
-       <p>and</p>
-
-       $(x_s, y_{s+1}, \ldots, x_i)$ where $s\leq i$
-
-       <blockquote>
-           Includes empty alignment with score $0$.
-       </blockquote>
-   </section>
-
-   <section>
-       <h3>Dynamic Programming recurrences</h3>
-
-       <table style="font-size:0.8em">
-           <tr>
-               <td>Optimal alignment</td>
-               <td>
-                   <div style="border:solid 1px black;background-color:lime;width:97%">
-                       $y_s, y_{s+1}, y_{s+2}, \ldots, y_j$
-                   </div>
-                   <div style="border:solid 1px black;background-color:lime;margin-top:5px;width:97%">
-                       $x_r, x_{r+1}, x_{r+2}, \ldots, x_i$
-                   </div>
-               </td>
-               <td>
-                   $F(i,j)$
-               </td>
-           </tr>
-
-           <tr>
-               <td> Comes from...  </td>
-               <td style="width:35%">
-                   <div style="border:solid 1px black;background-color:lime;display:inline-block;width:85%">
-                       $y_s, y_{s+1}, \ldots, y_{j-1}$
-                   </div><div style="border:solid 1px black; background-color:red;display:inline-block;width:12%">
-                       $y_j$
-                   </div><br>
-                   <div style="border:solid 1px black;background-color:lime;margin-top:5px;display:inline-block;width:85%">
-                       $x_r, x_{r+1}, \ldots, x_{i-1}$
-                   </div><div style="border:solid 1px black; background-color:red;display:inline-block;width:12%">
-                       $x_i$
-                   </div>
-               </td>
-               <td>
-                   $F(i-1,j-1) + s(x_i,y_j)$
-               </td>
-           </tr>
-           <tr>
-               <td> Or...  </td>
-               <td>
-                   <div style="border:solid 1px black;background-color:lime;display:inline-block;width:85%">
-                       $y_s, y_{s+1}, \ldots, y_{j-1}$
-                   </div><div style="border:solid 1px black; background-color:red;display:inline-block;width:12%">
-                       $y_j$
-                   </div><br>
-                   <div style="border:solid 1px black;background-color:lime;margin-top:5px;display:inline-block;width:85%">
-                       $x_r, x_{r+1}, \ldots, x_{i}$
-                   </div><div style="border:solid 1px black; background-color:red;display:inline-block;width:12%">
-                       $\phantom{x_i}$
-                   </div>
-               </td>
-               <td>
-                   $F(i,j-1) - d$
-               </td>
-           </tr>
-           <tr>
-               <td> Or...  </td>
-               <td>
-                   <div style="border:solid 1px black;background-color:lime;display:inline-block;width:85%">
-                       $y_s, y_{s+1}, \ldots, y_{j}$
-                   </div><div style="border:solid 1px black; background-color:red;display:inline-block;width:12%">
-                       $\phantom{y_j}$
-                   </div><br>
-                   <div style="border:solid 1px black;background-color:lime;margin-top:5px;display:inline-block;width:85%">
-                       $x_r, x_{r+1}, \ldots, x_{i-1}$
-                   </div><div style="border:solid 1px black; background-color:red;display:inline-block;width:12%">
-                       $x_i$
-                   </div>
-               </td>
-               <td>
-                   $F(i-1,j) - d$
-               </td>
-           </tr>
-           <tr>
-               <td> Or...  </td>
-               <td>
-                   <div style="border:solid 1px black;border-right:solid 0.5em blue;display:inline-block;width:97%">
-                       $y_s, y_{s+1}, y_{s+2}, \ldots, y_{j}$
-                   </div><br>
-                   <div style="border:solid 1px black;border-right:solid 0.5em blue;margin-top:5px;display:inline-block;width:97%">
-                       $x_r, x_{r+1}, x_{r+2}, \ldots, x_{i}$
-                   </div>
-               </td>
-               <td>
-                   $0$
-               </td>
-           </tr>
-       </table>
-
-       <div style="font-size:0.8em;margin-top:0.5em">
-       \begin{align*}
-       F(i,j) = \max\left\{\begin{array}{l}
-       F(i-1,j-1) + s(x_i,y_j)\\
-       F(i,j-1) - d\\
-       F(i-1,j) - d\\
-       0
-       \end{array}\right.
-       
-       \implies F(i,0) = F(0,j) = 0
-       \end{align*}
-       </div>
-   </section>
-
-   <section>
-       <h3>Example</h3>
-
-       <div class="figure">
-           <img data-src="smith_waterman_example.png" style="width:80%"><br>
-           <a href="http://librarysearch.auckland.ac.nz/primo_library/libweb/action/dlDisplay.do?vid=UOA2_A&search_scope=Combined_Local&docId=uoa_alma21156401750002091&fn=permalink" class="cite">Durbin, Eddy, Krogh, Mitchison, "Biological sequence analysis", Cambridge Uni Press, 1998</a>
-       </div>
-
-   </section>
-
-   <section>
-       <h3>Repeated matches</h3>
-
-       <ul style="margin-top:10%">
-           <li>For long sequences we may be interested in <b>all local alignments</b><br>
-               with significant score ($&gt;$ threshold $T$)</li>
-           <li>e.g. copies of a repeated domain or motif in a protein.</li>
-       </ul>
-
-       <p style="text-align:center">$X$ is the (short) sequence containing the motif</p>
-       <p style="text-align:center">$Y$ is the (long) target sequence</p>
-
-       <ul>
-           <li>Method is <b>asymmetric</b>.</li>
-       </ul>
-   </section>
-
-   <section>
-       <h3>Principle of Optimality</h3>
-
-       <br>
-
-       <p>Given sequences:</p>
-       \begin{align*}
-       Y &amp;= (y_1, y_2, \ldots, y_n)\\
-       X &amp;= (x_1, x_2, \ldots, x_m)
-       \end{align*}
-
-       <p>Define $F(i,j)$ (for $i\geq 1$) to be the best sum of match scores in</p>
-
-       $(y_1, y_2, y_3, \ldots, y_j)$
-
-       <p>and</p>
-
-       $(x_1, x_2, x_3, \ldots, x_i)$
-
-       <p>assuming $y_j$ is <b>in a matched region</b> and match ends in $x_i$ or $y_j$.</p>
-
-       <blockquote>
-           $F(i,j)$ has a different meaning here!
-       </blockquote>
-   </section>
-
-   <section>
-       <h3>Ends of matches</h3>
-
-       <ul style="margin-top:10%">
-           <li>$F(0,0) = 0$</li>
-           <li>$F(0,j)$ is the best sum of completed match scores to $(y_1,
-               y_2,\ldots, y_j)$ assuming that $y_j$ is <b>not in a matched
-                   region</b>.</li>
-       </ul>
-
-       <div style="margin-top:1em">
-       \begin{align*}
-       F(0,j) = \max\left\{\begin{array}{l}
-       F(0,j-1)\\
-       F(i,j-1) - T,~~i=1,\ldots,n
-       \end{array}\right.
-       \end{align*}
-       </div>
-
-       <br>
-
-       <p>Row $0$ therefore marks unmatched regions and ends of matches in $Y$.</p>
-   </section>
-
-   <section>
-       <h3>General recurrence</h3>
-
-       <div style="margin-top:10%">
-       \begin{align*}
-       F(i,j) = \max\left\{\begin{array}{l}
-       F(0,j)\\
-       F(i-1,j-1) + s(x_i, y_j)\\
-       F(i,j-1) - d\\
-       F(i-1,j) - d
-       \end{array}\right.
-       \end{align*}
-       </div>
-   </section>
-
-   <section>
-       <h3>Example</h3>
-
-       <div class="figure">
-           <img data-src="repeated_match_example.png" style="width:80%"><br>
-           <a href="http://librarysearch.auckland.ac.nz/primo_library/libweb/action/dlDisplay.do?vid=UOA2_A&search_scope=Combined_Local&docId=uoa_alma21156401750002091&fn=permalink" class="cite">Durbin, Eddy, Krogh, Mitchison, "Biological sequence analysis", Cambridge Uni Press, 1998</a>
-       </div>
-   </section>
-
-   <section>
-       <h3>Overlap matches</h3>
-
-       <p style="margin-top:5%">Don't penalize overhanging ends: $F(i,0)=F(0,j)=0$.</p>
-
-       <p style="margin-top:1em">Otherwise,</p>
-
-       <div style="margin-top:1em">
-       \begin{align*}
-       F(i,j) = \max\left\{\begin{array}{l}
-       F(i-1,j-1) + s(x_i,y_j)\\
-       F(i,j-1)-d\\
-       F(i-1,j)-d
-       \end{array}\right.
-       \end{align*}
-       </div>
-
-   </section>
-
-   <section>
-       <h3>Example</h3>
-
-       <div class="figure">
-           <img data-src="overlap_match_example.png" style="width:80%"><br>
-           <a href="http://librarysearch.auckland.ac.nz/primo_library/libweb/action/dlDisplay.do?vid=UOA2_A&search_scope=Combined_Local&docId=uoa_alma21156401750002091&fn=permalink" class="cite">Durbin, Eddy, Krogh, Mitchison, "Biological sequence analysis", Cambridge Uni Press, 1998</a>
-       </div>
-       </div>
-   </section>
-
+    <h3>Principle of Optimality</h3>
+
+    <div style="width:1000px; height:600px; position:relative;left:0; top:2em">
+        <img data-src="optimality1.svg"
+            style="position:absolute;left:0;top:0;width:1000px;box-shadow:none">
+        <img data-src="optimality2.svg" class="fragment"
+            style="position:absolute;left:0;top:0;width:1000px;background-color:white;box-shadow:none">
+    </div>
+</section>
+
+<section>
+    <h3>Keys to efficiency</h3>
+
+    <ul class="spaced" style="margin-top:5%; width:70%">
+        <li>Computation is carried out from the bottom-up.</li>
+        <li>Store all solutions to sub-problems in a table.</li>
+        <li>All possible sub-problems solved exactly once, beginning with
+        smallest sub-problems.</li>
+        <li>Work up to original problem instance.</li>
+        <li>Only optimal solutions to sub-problems are used to compute
+            solution to problem at next level.</li>
+        <li>Don't carry out computation in recursive, top-down manner
+            <ul>
+                <li>same sub-problems would be solved many times.</li>
+            </ul>
+        </li>
+    </ul>
+</section>
+
+<section>
+    <h3>Pairwise amino acid alignment</h3>
+
+    <div class="textbox" style="margin-top:10%">
+        <div class="title">Sequences</div>
+        <pre style="font-size:35px;box-shadow:none;margin-bottom:0">
+        x = a c g g t s
+        y = a w g c c t t
+        </pre>
+    </div>
+
+    <div class="textbox" style="margin-top:2em">
+        <div class="title">Alignment</div>
+        <pre style="font-size:35px;box-shadow:none;margin-bottom:0">
+        x' = a - c g g - t s
+        y' = a w - g c c t t
+        </pre>
+    </div>
+</section>
+
+<section>
+    <h3>Scoring Alignments</h3>
+
+    <ul style="margin-top:0.5em">
+        <li>Numeric score associated with each column.</li>
+        <li>Total score given by sum of column scores.</li>
+        <li>Column types:
+            <ul>
+                <li style="color:red">Identical (+ve score)</li>
+                <li style="color:green">Conservative (+ve score)</li>
+                <li style="color:purple">Non-conservative (-ve score)</li>
+                <li style="color:blue">Gap (-ve score)</li>
+            </ul>
+    </ul>
+
+    <div class="textbox" style="margin-top:1em">
+        <div class="title">Alignment</div>
+        <pre style="font-size:35px;box-shadow:none;margin-bottom:0">
+        x' = <font color="red">a</font> <font color="blue">- c</font> <font color="red">g</font> <font color="purple">g</font> <font color="blue">-</font> <font color="red">t</font> <font color="green">s</font>
+        y' = <font color="red">a</font> <font color="blue">w -</font> <font color="red">g</font> <font color="purple">c</font> <font color="blue">c</font> <font color="red">t</font> <font color="green">t</font>
+        </pre>
+    </div>
+
+    <p>The <b>score matrix</b> (or substitution matrix) $s$ contains the column
+    scores of every possible pair.  A column with the character pair
+    $a,b$ is given by the matrix entry $s(a,b)$.</p>
+</section>
+
+<section>
+    <h3>Scoring methods</h3>
+
+    <ul style="margin-top:2em">
+        <li>Model-based
+            <ul>
+                <li>Log-odds scoring</li>
+            </ul>
+        </li>
+
+        <li style="margin-top:1em">Empirical
+            <ul>
+                <li>Often used for amino acid alignments</li>
+                <li>PAM matrices</li>
+                <li>BLOSUM matrices</li>
+                <li>JTT</li>
+                <li>WAG</li>
+            </ul>
+        </li>
+
+        <li style="margin-top:1em">Different matrices used depending on the
+            level of similarity of the sequences.
+            <ul>
+                <li>How do you know the similarity before constructing an alignment?</li>
+            </ul>
+        </li>
+
+    </ul>
+
+</section>
+
+<section>
+    <h3>Log-odds matrices</h3>
+
+    <blockquote style="font-style:italic;margin-top:10%">
+        What we want to know is whether two sequences are homologous
+        (evolutionarily related) or not, so we want an alignment score that
+        reflects that. Theory says that if you want to compare two
+        hypotheses, a good score is the log-odds score: the logarithm of
+        the ratio of the likelihoods of your two hypotheses. If we assume
+        that each aligned residue pair is statistically independent of the
+        others (biologically dubious, but mathematically convenient), the
+        alignment score is the sum of the individual log-odds score for
+        each aligned residue pair.
+    </blockquote>
+    <a href="http://profs.scienze.univr.it/~liptak/ALBioinfo/2012_2013/2011_2012/files/nbt0804-1035.pdf" class="cite">Sean R Eddy, Nature Biotechnology, 2004</a>
+
+</section>
+
+<section>
+    <h3>Log-odds matrices</h3>
+
+    <div style="margin-top:10%;border:1px solid black; padding: 1em">
+    \begin{equation*}
+    s(a,b) = \frac{1}{\lambda}\log \frac{p_{a,b}}{f_a f_b}
+    \end{equation*}
+    </div>
+
+    <blockquote style="font-style:italic;margin-top:2em">
+        The numerator ($p_{ab}$) is the likelihood of the hypothesis we want to
+        test: that these two residues are correlated because they're
+        homologous. Thus, $p_{ab}$ are the target frequencies: the probability
+        that we expect to observe residues a and b alignment in homologous
+        sequence alignments. The denominator is the likelihood of a null
+        hypothesis: that these two residues are uncorrelated and unrelated,
+        occurring independently.
+    </blockquote>
+    <a href="http://profs.scienze.univr.it/~liptak/ALBioinfo/2012_2013/2011_2012/files/nbt0804-1035.pdf" class="cite">Sean R Eddy, Nature Biotechnology, 2004</a>
+</section>
+
+<section>
+    <h3>Evolutionary interpretation of match/mismatch scores</h3>
+
+    <div class="figure inline">
+        $a,b$ homologous<br>
+    <svg width="300" height="200" viewbox="-50,0,250,220" style="margin-top:0.5em">
+        <defs>
+        <marker id="startarrow" markerWidth="10" markerHeight="7" refX="0" refY="3.5" orient="auto" markerUnits="strokeWidth">
+        <polygon points="10 0, 10 7, 0 3.5" fill="gray"/>
+        </marker>
+
+        <marker id="endarrow" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto" markerUnits="strokeWidth">
+        <polygon points="0 0, 10 3.5, 0 7" fill="gray"/>
+        </marker>
+
+        </defs>
+        <path d="M0 200 L100 0 L200 200" fill="none" stroke="black" stroke-width="2"/>
+        <path d="M-50 0 L250 0 M-50 200 L250 200" fill="none" stroke="gray" stroke-width="2"/>
+        <line x1="-25" y1="200" x2="-25" y2="0" fill="none" stroke="gray" stroke-width="2"
+        marker-end="url(#endarrow)" marker-start="url(#startarrow)"/>
+
+        <text x="-10" y="220">a</text>
+        <text x="190" y="220">b</text>
+
+        <text x="-25" y="100">t/2</text>
+    </svg>
+    </div>
+
+    <div class="figure inline">
+    <svg width="400" height="150">
+        <line x1="50" y1="100" x2="350" y2="100" fill="none" stroke="black" stroke-width="2"/>
+        <text x="30" y="110">a</text>
+        <text x="360" y="110">b</text>
+
+        <line x1="50" y1="50" x2="350" y2="50" fill="none" stroke="gray" stroke-width="2"
+        marker-end="url(#endarrow)" marker-start="url(#startarrow)"/>
+        <text x="170" y="40">d = &mu;t</text>
+    </svg><br>
+    <ul style="font-size:0.8em">
+        <li>$d=0.1$ is roughly 90% similarity</li>
+        <li>$d$ is average number of changes per site</li>
+    </ul>
+    </div>
+
+    <br>
+
+    <hr style="margin-top:1em; border-top: 2px dashed black">
+
+    <br>
+
+    <div class="figure inline">
+        $a,b$ non-homologous<br>
+    <svg width="300" height="200" viewbox="-50,0,250,200" style="margin-top:0.5em">
+        <path d="M0 200 L0 0 M200 200 L200 0" fill="none" stroke="black" stroke-width="2"/>
+        <path d="M-50 0 L250 0 M-50 200 L250 200" fill="none" stroke="gray" stroke-width="2"/>
+        <line x1="-25" y1="200" x2="-25" y2="0" fill="none" stroke="gray" stroke-width="2"
+        marker-end="url(#endarrow)" marker-start="url(#startarrow)"/>
+    </svg>
+    </div>
+
+    <div class="figure inline">
+    <svg width="400" height="200">
+        <line x1="50" y1="100" x2="350" y2="100" fill="none" stroke="black" stroke-width="2"/>
+        <polygon points="195 110, 195 90, 205 90, 205 110" fill="white"/>
+
+        <line x1="195" y1="110" x2="195" y2="90" fill="none" stroke="black" stroke-width="2"/>
+        <line x1="205" y1="110" x2="205" y2="90" fill="none" stroke="black" stroke-width="2"/>
+        <text x="30" y="110">a</text>
+        <text x="360" y="110">b</text>
+
+        <line x1="50" y1="50" x2="350" y2="50" fill="none" stroke="gray" stroke-width="2"
+        marker-end="url(#endarrow)" marker-start="url(#startarrow)"/>
+        <text x="170" y="40">d = &infin;</text>
+    </svg>
+    </div>
+
+</section>
+
+<section>
+    <h3>Jukes-Cantor substitution model</h3>
+
+    <ul class="spaced" style="margin-top:10%">
+        <li>All mutations equally likely
+            <ul>
+                <li>$a\leftrightarrow b$ occur at the same rate for all character states $a$ and $b$.</li>
+                <li>$a,b \in {A,C,G,T}$ for DNA</li>
+                <li>$a,b \in {A,R,N,D,\ldots,W,Y,V}$ for amino acids</li>
+            </ul>
+        </li>
+
+        <li>All characters equally likely (equal base frequencies)
+            <ul>
+                <li> ${0.25, 0.25, 0.25, 0.25}$ for DNA</li>
+                <li> ${0.05, \ldots, 0.05}$ for proteins</li>
+            </ul>
+        </li>
+    </ul>
+</section>
+
+<section>
+    <h3>Interpretation of match/mismatch scores (DNA)</h3>
+
+    <div style="display:inline-block; width:400px">
+            $P_{a=b}=\frac{1}{4} + \frac{3}{4}e^{-\frac{3}{4}d}$
+
+            <br>
+
+            \begin{align*}
+            P_{a\neq b} = & 1-P_{a=b}\\
+            & \frac{3}{4} - \frac{3}{4}e^{-\frac{3}{4}d}
+            \end{align*}
+
+            <br>
+    </div>
+    <div class="figure inline">
+    <svg width="400" height="150">
+        <line x1="50" y1="100" x2="350" y2="100" fill="none" stroke="black" stroke-width="2"/>
+        <text x="30" y="110">a</text>
+        <text x="360" y="110">b</text>
+
+        <line x1="50" y1="50" x2="350" y2="50" fill="none" stroke="gray" stroke-width="2"
+        marker-end="url(#endarrow)" marker-start="url(#startarrow)"/>
+        <text x="170" y="40">d = &mu;t</text>
+    </svg><br>
+    <ul style="font-size:0.8em">
+        <li>$d=0.1$ is roughly 90% similarity</li>
+        <li>$d$ is average number of changes per site</li>
+    </ul>
+    </div>
+
+    <hr style="margin-top:1em; border-top: 2px dashed black">
+
+    <div style="display:inline-block; width:400px">
+        $\lim_{d\rightarrow\infty}P_{a=b}(d)=\frac{1}{4}$
+
+            <br>
+            <br>
+
+        $\lim_{d\rightarrow\infty}P_{a\neq b}(d)=\frac{3}{4}$
+
+            <br>
+            <br>
+    </div>
+    <div class="figure inline">
+    <svg width="400" height="150">
+        <line x1="50" y1="100" x2="350" y2="100" fill="none" stroke="black" stroke-width="2"/>
+        <polygon points="195 110, 195 90, 205 90, 205 110" fill="white"/>
+
+        <line x1="195" y1="110" x2="195" y2="90" fill="none" stroke="black" stroke-width="2"/>
+        <line x1="205" y1="110" x2="205" y2="90" fill="none" stroke="black" stroke-width="2"/>
+        <text x="30" y="110">a</text>
+        <text x="360" y="110">b</text>
+
+        <line x1="50" y1="50" x2="350" y2="50" fill="none" stroke="gray" stroke-width="2"
+        marker-end="url(#endarrow)" marker-start="url(#startarrow)"/>
+        <text x="170" y="40">d = &infin;</text>
+    </svg>
+    </div>
+
+</section>
+
+<section>
+    <h3>Log-odds match score</h3>
+
+    <br>
+    <br>
+
+    <div style="font-size:2em">
+    \begin{align*}
+    s(a,a) &= \frac{1}{\lambda}\log\frac{P_{aa}(d)}{\lim_{d\rightarrow\infty}P_{aa}}\\
+    &=\frac{1}{\lambda}\log\frac{P_{aa}(d)}{1/4}
+    \end{align*}
+    </div>
+</section>
+
+<section>
+    <h3>Log-odds mismatch score</h3>
+
+    <br>
+    <br>
+
+    <div style="font-size:2em">
+    \begin{align*}
+    s(a,b) &= \frac{1}{\lambda}\log\frac{P_{ab}(d)}{\lim_{d\rightarrow\infty}P_{ab}}\\
+    &=\frac{1}{\lambda}\log\frac{P_{ab}(d)}{3/4}
+    \end{align*}
+    </div>
+</section>
+
+<section>
+    <h3>Variation of match/mismatch probs with $d$</h3>
+
+    <div class="figure">
+        <img data-src="match_probs.png">
+    </div>
+</section>
+
+<section>
+    <h3>Variation of match/mismatch scores with $d$</h3>
+
+    <div class="figure">
+        <img data-src="match_scores.png">
+    </div>
+</section>
+
+<section>
+    <h3>What about gaps?</h3>
+
+    <div class="figure">
+        <img data-src="gap_penalty.svg" style="box-shadow:none">
+    </div>
+
+    <p>Two main approaches:</p>
+    <ol class="spaced">
+        <li><b>Linear</b> score:
+            $$\gamma(g) = -gd$$
+            where $d$ is the <b>gap penalty</b></li>
+
+        <li><b>Affine</b> score:
+            $$\gamma(g) = -d - (g-1)e$$
+            where $e$ is the <b>gap extension penalty</b>
+    </ol>
+
+</section>
+
+<section class="center">
+    <h2>Pairwise Alignment Algorithms</h2>
+</section>
+
+<section>
+    <h3>Needleman &amp; Wunsch algorithm</h3>
+
+    <ul>
+        <li>Dynamic programming algorithm for global alignment.</li>
+        <li>Needleman &amp; Wunsch (1970), modified by Gotoh (1982)</li>
+    </ul>
+
+        <br>
+        <br>
+
+    <div class="textbox" style="width:40%;margin-left:30%">
+        <div class="title">Assumptions</div>
+        <ul>
+            <li>Linear gap penalty $d$</li>
+            <li>Symmetric scoring matrix $s$:
+                $$s(a,b)=s(b,a)$$
+                $$s(a,-)=s(-,a) = -d$$
+        </ul>
+    </div>
+</section>
+
+<section>
+    <h3>Principle of Optimality</h3>
+
+    <br>
+    <br>
+
+    <p>Given sequences:</p>
+    \begin{align*}
+    X &amp;= (x_1, x_2, \ldots, x_m)\\
+    Y &amp;= (y_1, y_2, \ldots, y_n)
+    \end{align*}
+
+    <br>
+
+    <p>Define $F(i,j)$ to be the score of the <b>best</b> alignment between</p>
+    \begin{align*}
+    &amp;(x_1, x_2, \ldots, x_i)\\
+    &amp;(y_1, y_2, \ldots, y_j)\\
+    \end{align*}
+</section>
+
+<section>
+    <h3>Dynamic Programming recurrences</h3>
+
+    <table>
+        <tr>
+            <td>Optimal alignment</td>
+            <td>
+                <div style="border:solid 1px black;background-color:lime;width:97%">
+                    $y_1, y_2, y_3, \ldots, y_j$
+                </div>
+                <div style="border:solid 1px black;background-color:lime;margin-top:5px;width:97%">
+                    $x_1, x_2, x_3, \ldots, x_i$
+                </div>
+            </td>
+            <td>
+                $F(i,j)$
+            </td>
+        </tr>
+
+        <tr>
+            <td> Comes from...  </td>
+            <td style="width:35%">
+                <div style="border:solid 1px black;background-color:lime;display:inline-block;width:85%">
+                    $y_1, y_2, y_3, \ldots, y_{j-1}$
+                </div><div style="border:solid 1px black; background-color:red;display:inline-block;width:12%">
+                    $y_j$
+                </div><br>
+                <div style="border:solid 1px black;background-color:lime;margin-top:5px;display:inline-block;width:85%">
+                    $x_1, x_2, x_3, \ldots, x_{i-1}$
+                </div><div style="border:solid 1px black; background-color:red;display:inline-block;width:12%">
+                    $x_i$
+                </div>
+            </td>
+            <td>
+                $F(i-1,j-1) + s(x_i,y_j)$
+            </td>
+        </tr>
+        <tr>
+            <td> Or...  </td>
+            <td>
+                <div style="border:solid 1px black;background-color:lime;display:inline-block;width:85%">
+                    $y_1, y_2, y_3, \ldots, y_{j-1}$
+                </div><div style="border:solid 1px black; background-color:red;display:inline-block;width:12%">
+                    $y_j$
+                </div><br>
+                <div style="border:solid 1px black;background-color:lime;margin-top:5px;display:inline-block;width:85%">
+                    $x_1, x_2, x_3, \ldots, x_{i}$
+                </div><div style="border:solid 1px black; background-color:red;display:inline-block;width:12%">
+                    $\phantom{x_i}$
+                </div>
+            </td>
+            <td>
+                $F(i,j-1) - d$
+            </td>
+        </tr>
+        <tr>
+            <td> Or...  </td>
+            <td>
+                <div style="border:solid 1px black;background-color:lime;display:inline-block;width:85%">
+                    $y_1, y_2, y_3, \ldots, y_{j}$
+                </div><div style="border:solid 1px black; background-color:red;display:inline-block;width:12%">
+                    $\phantom{y_j}$
+                </div><br>
+                <div style="border:solid 1px black;background-color:lime;margin-top:5px;display:inline-block;width:85%">
+                    $x_1, x_2, x_3, \ldots, x_{i-1}$
+                </div><div style="border:solid 1px black; background-color:red;display:inline-block;width:12%">
+                    $x_i$
+                </div>
+            </td>
+            <td>
+                $F(i-1,j) - d$
+            </td>
+        </tr>
+    </table>
+    <p>Therefore,</p>
+    <div style="font-size:0.8em;margin-top:0.5em">
+    \begin{align*}
+    F(i,j) = \max\left\{\begin{array}{l}
+    F(i-1,j-1) + s(x_i,y_j)\\
+    F(i,j-1) - d\\
+    F(i-1,j) - d
+    \end{array}\right.
+    \end{align*}
+    </div>
+</section>
+
+<section>
+    <h3>Basis</h3>
+
+    <ul class="spaced" style="margin-top:10%">
+        <li>$F(0,0) = 0$
+
+        </li>
+        <li>$F(i,0) = F(i-1,0) + s(x_i,-)$
+            <div style="border:solid 1px black;background-color:lime;width:200px">
+                &mdash;, &mdash;, &mdash;, $\ldots$, &mdash;
+            </div>
+            <div style="border:solid 1px black;background-color:lime;margin-top:5px;width:200px">
+                $x_1, x_2, x_3, \ldots, x_i$
+            </div>
+        </li>
+        <li>$F(0,j) = F(0,j-1) + s(-,y_j)$
+            <div style="border:solid 1px black;background-color:lime;margin-top:5px;width:200px">
+                $y_1, y_2, y_3, \ldots, y_j$
+            </div>
+            <div style="border:solid 1px black;background-color:lime;width:200px">
+                &mdash;, &mdash;, &mdash;, $\ldots$, &mdash;
+            </div>
+        </li>
+    </ul>
+</section>
+
+<section>
+    <h3>Example</h3>
+
+    <blockquote style="margin-top:20%">
+        <a href="https://gtuckerkellogg.github.io/pairwise/demo/">Online interactive demo</a>
+    </blockquote>
+</section>
+
+<section>
+    <h3>Smith-Waterman algorithm</h3>
+
+    <ul class="spaced" style="margin-top:5%">
+        <li>Computes <b>local alignment</b></li>
+        <li>Looks for best alignment of subsequences of X and Y, ignoring scores of regions on either side.</li>
+    </ul>
+
+    <div class="figure">
+        <img data-src="smith_waterman.svg" style="width:80%;box-shadow:none">
+    </div>
+</section>
+
+<section>
+    <h2>Principle of Optimality</h2>
+
+    <br>
+
+    <p>Given sequences:</p>
+    \begin{align*}
+    Y &amp;= (y_1, y_2, \ldots, y_n)\\
+    X &amp;= (x_1, x_2, \ldots, x_m)
+    \end{align*}
+
+    <br>
+
+    <p>Define $F(i,j)$ to be the score of the best <b>suffix</b> alignment between</p>
+
+    $(y_r, y_{r+1}, \ldots, y_j)$ where $r\leq j$
+
+    <p>and</p>
+
+    $(x_s, y_{s+1}, \ldots, x_i)$ where $s\leq i$
+
+    <blockquote>
+        Includes empty alignment with score $0$.
+    </blockquote>
+</section>
+
+<section>
+    <h3>Dynamic Programming recurrences</h3>
+
+    <table style="font-size:0.8em">
+        <tr>
+            <td>Optimal alignment</td>
+            <td>
+                <div style="border:solid 1px black;background-color:lime;width:97%">
+                    $y_s, y_{s+1}, y_{s+2}, \ldots, y_j$
+                </div>
+                <div style="border:solid 1px black;background-color:lime;margin-top:5px;width:97%">
+                    $x_r, x_{r+1}, x_{r+2}, \ldots, x_i$
+                </div>
+            </td>
+            <td>
+                $F(i,j)$
+            </td>
+        </tr>
+
+        <tr>
+            <td> Comes from...  </td>
+            <td style="width:35%">
+                <div style="border:solid 1px black;background-color:lime;display:inline-block;width:85%">
+                    $y_s, y_{s+1}, \ldots, y_{j-1}$
+                </div><div style="border:solid 1px black; background-color:red;display:inline-block;width:12%">
+                    $y_j$
+                </div><br>
+                <div style="border:solid 1px black;background-color:lime;margin-top:5px;display:inline-block;width:85%">
+                    $x_r, x_{r+1}, \ldots, x_{i-1}$
+                </div><div style="border:solid 1px black; background-color:red;display:inline-block;width:12%">
+                    $x_i$
+                </div>
+            </td>
+            <td>
+                $F(i-1,j-1) + s(x_i,y_j)$
+            </td>
+        </tr>
+        <tr>
+            <td> Or...  </td>
+            <td>
+                <div style="border:solid 1px black;background-color:lime;display:inline-block;width:85%">
+                    $y_s, y_{s+1}, \ldots, y_{j-1}$
+                </div><div style="border:solid 1px black; background-color:red;display:inline-block;width:12%">
+                    $y_j$
+                </div><br>
+                <div style="border:solid 1px black;background-color:lime;margin-top:5px;display:inline-block;width:85%">
+                    $x_r, x_{r+1}, \ldots, x_{i}$
+                </div><div style="border:solid 1px black; background-color:red;display:inline-block;width:12%">
+                    $\phantom{x_i}$
+                </div>
+            </td>
+            <td>
+                $F(i,j-1) - d$
+            </td>
+        </tr>
+        <tr>
+            <td> Or...  </td>
+            <td>
+                <div style="border:solid 1px black;background-color:lime;display:inline-block;width:85%">
+                    $y_s, y_{s+1}, \ldots, y_{j}$
+                </div><div style="border:solid 1px black; background-color:red;display:inline-block;width:12%">
+                    $\phantom{y_j}$
+                </div><br>
+                <div style="border:solid 1px black;background-color:lime;margin-top:5px;display:inline-block;width:85%">
+                    $x_r, x_{r+1}, \ldots, x_{i-1}$
+                </div><div style="border:solid 1px black; background-color:red;display:inline-block;width:12%">
+                    $x_i$
+                </div>
+            </td>
+            <td>
+                $F(i-1,j) - d$
+            </td>
+        </tr>
+        <tr>
+            <td> Or...  </td>
+            <td>
+                <div style="border:solid 1px black;border-right:solid 0.5em blue;display:inline-block;width:97%">
+                    $y_s, y_{s+1}, y_{s+2}, \ldots, y_{j}$
+                </div><br>
+                <div style="border:solid 1px black;border-right:solid 0.5em blue;margin-top:5px;display:inline-block;width:97%">
+                    $x_r, x_{r+1}, x_{r+2}, \ldots, x_{i}$
+                </div>
+            </td>
+            <td>
+                $0$
+            </td>
+        </tr>
+    </table>
+
+    <div style="font-size:0.8em;margin-top:0.5em">
+    \begin{align*}
+    F(i,j) = \max\left\{\begin{array}{l}
+    F(i-1,j-1) + s(x_i,y_j)\\
+    F(i,j-1) - d\\
+    F(i-1,j) - d\\
+    0
+    \end{array}\right.
+
+    \implies F(i,0) = F(0,j) = 0
+    \end{align*}
+    </div>
+</section>
+
+<section>
+    <h3>Example</h3>
+
+    <div class="figure">
+        <img data-src="smith_waterman_example.png" style="width:80%"><br>
+        <a href="http://librarysearch.auckland.ac.nz/primo_library/libweb/action/dlDisplay.do?vid=UOA2_A&search_scope=Combined_Local&docId=uoa_alma21156401750002091&fn=permalink" class="cite">Durbin, Eddy, Krogh, Mitchison, "Biological sequence analysis", Cambridge Uni Press, 1998</a>
+    </div>
+
+</section>
+
+<section>
+    <h3>Repeated matches</h3>
+
+    <ul style="margin-top:10%">
+        <li>For long sequences we may be interested in <b>all local alignments</b><br>
+            with significant score ($&gt;$ threshold $T$)</li>
+        <li>e.g. copies of a repeated domain or motif in a protein.</li>
+    </ul>
+
+    <p style="text-align:center">$X$ is the (short) sequence containing the motif</p>
+    <p style="text-align:center">$Y$ is the (long) target sequence</p>
+
+    <ul>
+        <li>Method is <b>asymmetric</b>.</li>
+    </ul>
+</section>
+
+<section>
+    <h3>Principle of Optimality</h3>
+
+    <br>
+
+    <p>Given sequences:</p>
+    \begin{align*}
+    Y &amp;= (y_1, y_2, \ldots, y_n)\\
+    X &amp;= (x_1, x_2, \ldots, x_m)
+    \end{align*}
+
+    <p>Define $F(i,j)$ (for $i\geq 1$) to be the best sum of match scores in</p>
+
+    $(y_1, y_2, y_3, \ldots, y_j)$
+
+    <p>and</p>
+
+    $(x_1, x_2, x_3, \ldots, x_i)$
+
+    <p>assuming $y_j$ is <b>in a matched region</b> and match ends in $x_i$ or $y_j$.</p>
+
+    <blockquote>
+        $F(i,j)$ has a different meaning here!
+    </blockquote>
+</section>
+
+<section>
+    <h3>Ends of matches</h3>
+
+    <ul style="margin-top:10%">
+        <li>$F(0,0) = 0$</li>
+        <li>$F(0,j)$ is the best sum of completed match scores to $(y_1,
+            y_2,\ldots, y_j)$ assuming that $y_j$ is <b>not in a matched
+                region</b>.</li>
+    </ul>
+
+    <div style="margin-top:1em">
+    \begin{align*}
+    F(0,j) = \max\left\{\begin{array}{l}
+    F(0,j-1)\\
+    F(i,j-1) - T,~~i=1,\ldots,n
+    \end{array}\right.
+    \end{align*}
+    </div>
+
+    <br>
+
+    <p>Row $0$ therefore marks unmatched regions and ends of matches in $Y$.</p>
+</section>
+
+<section>
+    <h3>General recurrence</h3>
+
+    <div style="margin-top:10%">
+    \begin{align*}
+    F(i,j) = \max\left\{\begin{array}{l}
+    F(0,j)\\
+    F(i-1,j-1) + s(x_i, y_j)\\
+    F(i,j-1) - d\\
+    F(i-1,j) - d
+    \end{array}\right.
+    \end{align*}
+    </div>
+</section>
+
+<section>
+    <h3>Example</h3>
+
+    <div class="figure">
+        <img data-src="repeated_match_example.png" style="width:80%"><br>
+        <a href="http://librarysearch.auckland.ac.nz/primo_library/libweb/action/dlDisplay.do?vid=UOA2_A&search_scope=Combined_Local&docId=uoa_alma21156401750002091&fn=permalink" class="cite">Durbin, Eddy, Krogh, Mitchison, "Biological sequence analysis", Cambridge Uni Press, 1998</a>
+    </div>
+</section>
+
+<section>
+    <h3>Overlap matches</h3>
+
+    <p style="margin-top:5%">Don't penalize overhanging ends: $F(i,0)=F(0,j)=0$.</p>
+
+    <p style="margin-top:1em">Otherwise,</p>
+
+    <div style="margin-top:1em">
+    \begin{align*}
+    F(i,j) = \max\left\{\begin{array}{l}
+    F(i-1,j-1) + s(x_i,y_j)\\
+    F(i,j-1)-d\\
+    F(i-1,j)-d
+    \end{array}\right.
+    \end{align*}
+    </div>
+
+</section>
+
+<section>
+    <h3>Example</h3>
+
+    <div class="figure">
+        <img data-src="overlap_match_example.png" style="width:80%"><br>
+        <a href="http://librarysearch.auckland.ac.nz/primo_library/libweb/action/dlDisplay.do?vid=UOA2_A&search_scope=Combined_Local&docId=uoa_alma21156401750002091&fn=permalink" class="cite">Durbin, Eddy, Krogh, Mitchison, "Biological sequence analysis", Cambridge Uni Press, 1998</a>
+    </div>
+</section>
+
+<section>
+    <h3>Recommended Reading</h3>
+
+    <div class="textbox" style="width: 80%; margin-left:10%; margin-top:2em">
+        <div class="title"><a href="https://decodinggenomes.org/" style="color:inherit; text-decoration:underline">Decoding Genomes</a> (Stadler et al., 2024)</div>
+        <ul class="spaced" style="margin-top:1em; margin-left:1em">
+            <li><b>Chapter 3</b>: Sequence Alignments
+                <ul>
+                    <li>3.1 Pairwise alignments (dot-matrix, scoring schemes, dynamic algorithms)</li>
+                    <li>3.1.5 Heuristic alignments: BLAST</li>
+                </ul>
+            </li>
+            <li><b>Chapter 5.3.1</b>: JC69 model (background for log-odds scoring)</li>
+        </ul>
+    </div>
 </section>
