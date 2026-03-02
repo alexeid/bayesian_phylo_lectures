@@ -1,0 +1,925 @@
+---
+layout: null
+---
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>BIOSCI 700: Phylogenetics — Semester 1, 2026</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+
+    <style>
+        :root {
+            --primary-color: #2563eb;
+            --secondary-color: #1e40af;
+            --accent-color: #3b82f6;
+            --text-primary: #1f2937;
+            --text-secondary: #6b7280;
+            --bg-primary: #ffffff;
+            --bg-secondary: #f9fafb;
+            --bg-tertiary: #f3f4f6;
+            --border-color: #e5e7eb;
+            --success-color: #10b981;
+            --warning-color: #f59e0b;
+            --error-color: #ef4444;
+            --guest-color: #8b5cf6;
+            --lab-color: #f97316;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            color: var(--text-primary);
+            background-color: var(--bg-secondary);
+            line-height: 1.6;
+        }
+
+        /* Header */
+        .header {
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+            color: white;
+            padding: 3rem 2rem 2rem;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.05'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .header .subtitle {
+            font-size: 1.25rem;
+            opacity: 0.9;
+            position: relative;
+            z-index: 1;
+            margin-bottom: 0.25rem;
+        }
+
+        .header .semester {
+            font-size: 1rem;
+            opacity: 0.75;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Nav link back to all lectures */
+        .nav-bar {
+            background-color: var(--bg-primary);
+            border-bottom: 1px solid var(--border-color);
+            padding: 0.75rem 2rem;
+        }
+
+        .nav-bar a {
+            color: var(--primary-color);
+            text-decoration: none;
+            font-size: 0.875rem;
+            font-weight: 500;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .nav-bar a:hover {
+            text-decoration: underline;
+        }
+
+        /* Container */
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        /* Course Info Card */
+        .info-card {
+            background-color: var(--bg-primary);
+            border-radius: 12px;
+            padding: 1.5rem 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+            border: 1px solid var(--border-color);
+        }
+
+        .info-card h2 {
+            font-size: 1.125rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 0.75rem;
+        }
+
+        .info-item {
+            display: flex;
+            align-items: baseline;
+            gap: 0.5rem;
+            font-size: 0.9375rem;
+        }
+
+        .info-item i {
+            color: var(--primary-color);
+            width: 1.25rem;
+            text-align: center;
+            flex-shrink: 0;
+            position: relative;
+            top: 1px;
+        }
+
+        .info-item a {
+            color: var(--primary-color);
+            text-decoration: none;
+        }
+
+        .info-item a:hover {
+            text-decoration: underline;
+        }
+
+        .info-label {
+            color: var(--text-secondary);
+            font-weight: 500;
+        }
+
+        /* Week Card */
+        .week-card {
+            background-color: var(--bg-primary);
+            border-radius: 12px;
+            padding: 1.5rem 2rem;
+            margin-bottom: 1rem;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+            border: 1px solid var(--border-color);
+            transition: all 0.2s;
+        }
+
+        .week-card:hover {
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        .week-card.break {
+            background-color: var(--bg-tertiary);
+            border-style: dashed;
+            text-align: center;
+            color: var(--text-secondary);
+            padding: 1rem 2rem;
+        }
+
+        .week-card.break .week-header {
+            justify-content: center;
+        }
+
+        .week-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 0.75rem;
+        }
+
+        .week-badge {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            font-size: 0.75rem;
+            font-weight: 600;
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            white-space: nowrap;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .week-badge.break-badge {
+            background: var(--text-secondary);
+        }
+
+        .week-badge.exam-badge {
+            background: linear-gradient(135deg, var(--error-color), #dc2626);
+        }
+
+        .week-date {
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+        }
+
+        .week-content {
+            padding-left: 0.25rem;
+        }
+
+        /* Session items */
+        .session {
+            padding: 0.5rem 0;
+        }
+
+        .session + .session {
+            border-top: 1px solid var(--border-color);
+        }
+
+        .session-time {
+            font-size: 0.8125rem;
+            font-weight: 600;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 0.375rem;
+        }
+
+        .session-items {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .session-item {
+            padding: 0.375rem 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .lecture-title {
+            font-weight: 500;
+            color: var(--text-primary);
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+
+        .lecture-title:hover {
+            color: var(--primary-color);
+        }
+
+        .lecture-unavailable {
+            color: var(--text-secondary);
+            font-weight: 500;
+        }
+
+        .lecture-num {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.8125rem;
+            color: var(--text-secondary);
+            margin-right: 0.5rem;
+        }
+
+        .lecture-links {
+            display: flex;
+            gap: 0.375rem;
+            flex-shrink: 0;
+        }
+
+        .lecture-link {
+            padding: 0.1875rem 0.625rem;
+            border-radius: 20px;
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.6875rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            transition: all 0.2s;
+        }
+
+        .slides-link {
+            background-color: #dbeafe;
+            color: var(--primary-color);
+        }
+
+        .slides-link:hover {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        .notes-link {
+            background-color: #d1fae5;
+            color: var(--success-color);
+        }
+
+        .notes-link:hover {
+            background-color: var(--success-color);
+            color: white;
+        }
+
+        /* Reading item */
+        .reading-item {
+            font-size: 0.9375rem;
+            color: var(--text-secondary);
+            padding: 0.25rem 0;
+        }
+
+        .reading-item a {
+            color: var(--primary-color);
+            text-decoration: none;
+        }
+
+        .reading-item a:hover {
+            text-decoration: underline;
+        }
+
+        .reading-item i {
+            margin-right: 0.375rem;
+        }
+
+        /* Guest lecture */
+        .guest-lecture {
+            padding: 0.5rem 0;
+        }
+
+        .guest-tag {
+            display: inline-block;
+            background-color: #ede9fe;
+            color: var(--guest-color);
+            font-size: 0.6875rem;
+            font-weight: 600;
+            padding: 0.125rem 0.5rem;
+            border-radius: 20px;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 0.25rem;
+        }
+
+        .guest-title {
+            font-weight: 500;
+            font-size: 1rem;
+        }
+
+        .guest-speaker {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+        }
+
+        /* Lab tag */
+        .lab-tag {
+            display: inline-block;
+            background-color: #fff7ed;
+            color: var(--lab-color);
+            font-size: 0.6875rem;
+            font-weight: 600;
+            padding: 0.125rem 0.5rem;
+            border-radius: 20px;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-right: 0.375rem;
+        }
+
+        /* Assessment */
+        .assessment-note {
+            margin-top: 0.5rem;
+            font-size: 0.8125rem;
+            color: var(--warning-color);
+            font-weight: 500;
+        }
+
+        .assessment-note i {
+            margin-right: 0.25rem;
+        }
+
+        /* Instructors */
+        .instructors {
+            margin-top: 0.75rem;
+            padding-top: 0.75rem;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .instructors h3 {
+            font-size: 0.9375rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .instructor-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            font-size: 0.9375rem;
+        }
+
+        .instructor-list li {
+            padding: 0.25rem 0;
+        }
+
+        .instructor-list li a {
+            color: var(--primary-color);
+            text-decoration: none;
+        }
+
+        .instructor-list li a:hover {
+            text-decoration: underline;
+        }
+
+        /* Footer */
+        .footer {
+            text-align: center;
+            padding: 2rem;
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+            border-top: 1px solid var(--border-color);
+            margin-top: 2rem;
+        }
+
+        .footer a {
+            color: var(--primary-color);
+            text-decoration: none;
+        }
+
+        .footer a:hover {
+            text-decoration: underline;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 1.75rem;
+            }
+
+            .container {
+                padding: 1.5rem 1rem;
+            }
+
+            .session-item {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 0.25rem;
+            }
+
+            .info-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <header class="header">
+        <h1>BIOSCI 700: Phylogenetics</h1>
+        <p class="subtitle">Semester 1, 2026</p>
+        <p class="semester">The University of Auckland</p>
+    </header>
+
+    <nav class="nav-bar">
+        <a href="{{site.baseurl}}/"><i class="fas fa-arrow-left"></i> All lecture modules</a>
+    </nav>
+
+    <div class="container">
+
+        <!-- Course Information -->
+        <div class="info-card">
+            <h2><i class="fas fa-circle-info"></i> Course Information</h2>
+            <div class="info-grid">
+                <div class="info-item">
+                    <i class="fas fa-calendar"></i>
+                    <span><span class="info-label">Lectures:</span> Tuesdays, 1&ndash;3pm</span>
+                </div>
+                <div class="info-item">
+                    <i class="fas fa-flask"></i>
+                    <span><span class="info-label">Labs:</span> Even-week Thursdays, 9am&ndash;12pm</span>
+                </div>
+                <div class="info-item">
+                    <i class="fas fa-location-dot"></i>
+                    <span><span class="info-label">Location:</span> MAC1 (Building 106, Room 112)</span>
+                </div>
+                <div class="info-item">
+                    <i class="fas fa-book"></i>
+                    <span><span class="info-label">Textbook:</span> <a href="https://decodinggenomes.org/" target="_blank">Decoding Genomes</a> (Stadler et al, 2024)</span>
+                </div>
+            </div>
+            <div class="instructors">
+                <h3>Instructors</h3>
+                <ul class="instructor-list">
+                    <li><strong>Weeks 1&ndash;5, 9&ndash;12:</strong> Alexei Drummond (<a href="mailto:a.drummond@auckland.ac.nz">a.drummond@auckland.ac.nz</a>)</li>
+                    <li><strong>Week 6:</strong> David Welch (Guest)</li>
+                    <li><strong>Week 7:</strong> Simon Greenhill (Guest)</li>
+                    <li><strong>Week 8:</strong> Caroline Puente-Lelievre (Guest)</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Week 1 -->
+        <div class="week-card">
+            <div class="week-header">
+                <span class="week-badge">Week 1</span>
+                <span class="week-date">Begins 2 March</span>
+            </div>
+            <div class="week-content">
+                <div class="reading-item">
+                    <i class="fas fa-book-open"></i>
+                    Required Reading: <a href="https://decodinggenomes.org/" target="_blank">Decoding Genomes</a> &mdash; Chapter 1
+                </div>
+                <div class="reading-item">
+                    <i class="fas fa-bookmark"></i>
+                    Recommended additional reading: <a href="{{site.baseurl}}/lecture-bayesian-inference/Drummond2004.pdf">Six impossible things before breakfast</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Week 2 -->
+        <div class="week-card">
+            <div class="week-header">
+                <span class="week-badge">Week 2</span>
+                <span class="week-date">Begins 9 March</span>
+            </div>
+            <div class="week-content">
+                <div class="session">
+                    <div class="session-time"><i class="fas fa-chalkboard-teacher"></i> Tuesday 1&ndash;3pm</div>
+                    <ul class="session-items">
+                        <li class="session-item">
+                            <div>
+                                <span class="lecture-num">L1</span>
+                                {% assign found_l1 = false %}
+                                {% for page in site.pages %}{% if page.url == "/lecture-darwins-computer/" %}{% assign found_l1 = true %}{% endif %}{% endfor %}
+                                {% if found_l1 %}<a href="{{site.baseurl}}/lecture-darwins-computer/" class="lecture-title">Darwin's Computer</a>{% else %}<span class="lecture-unavailable">Darwin's Computer</span>{% endif %}
+                            </div>
+                            <div class="lecture-links">
+                                {% if found_l1 %}<a href="{{site.baseurl}}/lecture-darwins-computer/" class="lecture-link slides-link">Slides</a>{% endif %}
+                            </div>
+                        </li>
+                        <li class="session-item">
+                            <div>
+                                <span class="lecture-num">L2</span>
+                                {% assign found_l2 = false %}
+                                {% for page in site.pages %}{% if page.url == "/lecture-homology/" %}{% assign found_l2 = true %}{% endif %}{% endfor %}
+                                {% if found_l2 %}<a href="{{site.baseurl}}/lecture-homology/" class="lecture-title">Homology and Alignment</a>{% else %}<span class="lecture-unavailable">Homology and Alignment</span>{% endif %}
+                            </div>
+                            <div class="lecture-links">
+                                {% if found_l2 %}<a href="{{site.baseurl}}/lecture-homology/" class="lecture-link slides-link">Slides</a>{% endif %}
+                                {% assign found_l2n = false %}
+                                {% for page in site.pages %}{% if page.url == "/lecture-homology/notes/" %}{% assign found_l2n = true %}{% endif %}{% endfor %}
+                                {% if found_l2n %}<a href="{{site.baseurl}}/lecture-homology/notes/" class="lecture-link notes-link">Notes</a>{% endif %}
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+                <div class="session">
+                    <div class="session-time"><i class="fas fa-laptop-code"></i> Thursday 10am&ndash;12pm</div>
+                    <ul class="session-items">
+                        <li class="session-item">
+                            <span class="lecture-unavailable"><span class="lab-tag">Lab</span> (available for catch-up)</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Week 3 -->
+        <div class="week-card">
+            <div class="week-header">
+                <span class="week-badge">Week 3</span>
+                <span class="week-date">Begins 16 March</span>
+            </div>
+            <div class="week-content">
+                <div class="session">
+                    <div class="session-time"><i class="fas fa-chalkboard-teacher"></i> Tuesday 1&ndash;3pm</div>
+                    <ul class="session-items">
+                        <li class="session-item">
+                            <div>
+                                <span class="lecture-num">L3</span>
+                                {% assign found_l3 = false %}
+                                {% for page in site.pages %}{% if page.url == "/lecture-msa/" %}{% assign found_l3 = true %}{% endif %}{% endfor %}
+                                {% if found_l3 %}<a href="{{site.baseurl}}/lecture-msa/" class="lecture-title">Multiple Sequence Alignment</a>{% else %}<span class="lecture-unavailable">Multiple Sequence Alignment</span>{% endif %}
+                            </div>
+                            <div class="lecture-links">
+                                {% if found_l3 %}<a href="{{site.baseurl}}/lecture-msa/" class="lecture-link slides-link">Slides</a>{% endif %}
+                                {% assign found_l3n = false %}
+                                {% for page in site.pages %}{% if page.url == "/lecture-msa/notes/" %}{% assign found_l3n = true %}{% endif %}{% endfor %}
+                                {% if found_l3n %}<a href="{{site.baseurl}}/lecture-msa/notes/" class="lecture-link notes-link">Notes</a>{% endif %}
+                            </div>
+                        </li>
+                        <li class="session-item">
+                            <div>
+                                <span class="lecture-num">L4</span>
+                                {% assign found_l4 = false %}
+                                {% for page in site.pages %}{% if page.url == "/lecture-phylogenetics/" %}{% assign found_l4 = true %}{% endif %}{% endfor %}
+                                {% if found_l4 %}<a href="{{site.baseurl}}/lecture-phylogenetics/" class="lecture-title">Phylogenetics</a>{% else %}<span class="lecture-unavailable">Phylogenetics</span>{% endif %}
+                            </div>
+                            <div class="lecture-links">
+                                {% if found_l4 %}<a href="{{site.baseurl}}/lecture-phylogenetics/" class="lecture-link slides-link">Slides</a>{% endif %}
+                                {% assign found_l4n = false %}
+                                {% for page in site.pages %}{% if page.url == "/lecture-phylogenetics/notes/" %}{% assign found_l4n = true %}{% endif %}{% endfor %}
+                                {% if found_l4n %}<a href="{{site.baseurl}}/lecture-phylogenetics/notes/" class="lecture-link notes-link">Notes</a>{% endif %}
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+                <div class="session">
+                    <div class="session-time"><i class="fas fa-laptop-code"></i> Thursday 9am&ndash;12pm</div>
+                    <ul class="session-items">
+                        <li class="session-item">
+                            <span class="lecture-unavailable"><span class="lab-tag">Lab 1</span> Alignment and Phylogenetic Reconstruction</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Week 4 -->
+        <div class="week-card">
+            <div class="week-header">
+                <span class="week-badge">Week 4</span>
+                <span class="week-date">Begins 23 March</span>
+            </div>
+            <div class="week-content">
+                <div class="session">
+                    <div class="session-time"><i class="fas fa-chalkboard-teacher"></i> Tuesday 1&ndash;3pm</div>
+                    <ul class="session-items">
+                        <li class="session-item">
+                            <div>
+                                <span class="lecture-num">L5</span>
+                                {% assign found_l5 = false %}
+                                {% for page in site.pages %}{% if page.url == "/lecture-parsimony/" %}{% assign found_l5 = true %}{% endif %}{% endfor %}
+                                {% if found_l5 %}<a href="{{site.baseurl}}/lecture-parsimony/" class="lecture-title">Parsimony</a>{% else %}<span class="lecture-unavailable">Parsimony</span>{% endif %}
+                            </div>
+                            <div class="lecture-links">
+                                {% if found_l5 %}<a href="{{site.baseurl}}/lecture-parsimony/" class="lecture-link slides-link">Slides</a>{% endif %}
+                                {% assign found_l5n = false %}
+                                {% for page in site.pages %}{% if page.url == "/lecture-parsimony/notes/" %}{% assign found_l5n = true %}{% endif %}{% endfor %}
+                                {% if found_l5n %}<a href="{{site.baseurl}}/lecture-parsimony/notes/" class="lecture-link notes-link">Notes</a>{% endif %}
+                            </div>
+                        </li>
+                        <li class="session-item">
+                            <div>
+                                <span class="lecture-num">L6</span>
+                                {% assign found_l6 = false %}
+                                {% for page in site.pages %}{% if page.url == "/lecture-substitution-models/" %}{% assign found_l6 = true %}{% endif %}{% endfor %}
+                                {% if found_l6 %}<a href="{{site.baseurl}}/lecture-substitution-models/" class="lecture-title">Model-based Phylogenetic Inference</a>{% else %}<span class="lecture-unavailable">Model-based Phylogenetic Inference</span>{% endif %}
+                            </div>
+                            <div class="lecture-links">
+                                {% if found_l6 %}<a href="{{site.baseurl}}/lecture-substitution-models/" class="lecture-link slides-link">Slides</a>{% endif %}
+                                {% assign found_l6n = false %}
+                                {% for page in site.pages %}{% if page.url == "/lecture-substitution-models/notes/" %}{% assign found_l6n = true %}{% endif %}{% endfor %}
+                                {% if found_l6n %}<a href="{{site.baseurl}}/lecture-substitution-models/notes/" class="lecture-link notes-link">Notes</a>{% endif %}
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Week 5 -->
+        <div class="week-card">
+            <div class="week-header">
+                <span class="week-badge">Week 5</span>
+                <span class="week-date">Begins 30 March</span>
+            </div>
+            <div class="week-content">
+                <div class="session">
+                    <div class="session-time"><i class="fas fa-chalkboard-teacher"></i> Tuesday 1&ndash;3pm</div>
+                    <ul class="session-items">
+                        <li class="session-item">
+                            <div>
+                                <span class="lecture-num">L7</span>
+                                {% assign found_l7 = false %}
+                                {% for page in site.pages %}{% if page.url == "/lecture-bayesian-inference/" %}{% assign found_l7 = true %}{% endif %}{% endfor %}
+                                {% if found_l7 %}<a href="{{site.baseurl}}/lecture-bayesian-inference/" class="lecture-title">Bayesian Inference</a>{% else %}<span class="lecture-unavailable">Bayesian Inference</span>{% endif %}
+                            </div>
+                            <div class="lecture-links">
+                                {% if found_l7 %}<a href="{{site.baseurl}}/lecture-bayesian-inference/" class="lecture-link slides-link">Slides</a>{% endif %}
+                                {% assign found_l7n = false %}
+                                {% for page in site.pages %}{% if page.url == "/lecture-bayesian-inference/notes/" %}{% assign found_l7n = true %}{% endif %}{% endfor %}
+                                {% if found_l7n %}<a href="{{site.baseurl}}/lecture-bayesian-inference/notes/" class="lecture-link notes-link">Notes</a>{% endif %}
+                            </div>
+                        </li>
+                        <li class="session-item">
+                            <div>
+                                <span class="lecture-num">L8</span>
+                                {% assign found_l8 = false %}
+                                {% for page in site.pages %}{% if page.url == "/lecture-bayesian-phylogenetics/" %}{% assign found_l8 = true %}{% endif %}{% endfor %}
+                                {% if found_l8 %}<a href="{{site.baseurl}}/lecture-bayesian-phylogenetics/" class="lecture-title">Bayesian Phylogenetic Inference</a>{% else %}<span class="lecture-unavailable">Bayesian Phylogenetic Inference</span>{% endif %}
+                            </div>
+                            <div class="lecture-links">
+                                {% if found_l8 %}<a href="{{site.baseurl}}/lecture-bayesian-phylogenetics/" class="lecture-link slides-link">Slides</a>{% endif %}
+                                {% assign found_l8n = false %}
+                                {% for page in site.pages %}{% if page.url == "/lecture-bayesian-phylogenetics/notes/" %}{% assign found_l8n = true %}{% endif %}{% endfor %}
+                                {% if found_l8n %}<a href="{{site.baseurl}}/lecture-bayesian-phylogenetics/notes/" class="lecture-link notes-link">Notes</a>{% endif %}
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+                <div class="session">
+                    <div class="session-time"><i class="fas fa-laptop-code"></i> Thursday 9am&ndash;12pm</div>
+                    <ul class="session-items">
+                        <li class="session-item">
+                            <span class="lecture-unavailable"><span class="lab-tag">Lab 2</span> Phylogenetic inference with BEAST2</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mid-Semester Break -->
+        <div class="week-card break">
+            <div class="week-header">
+                <span class="week-badge break-badge">Break</span>
+                <span class="week-date">3 April &ndash; 17 April</span>
+            </div>
+            <div class="week-content">
+                Mid-Semester Break
+            </div>
+        </div>
+
+        <!-- Week 6 -->
+        <div class="week-card">
+            <div class="week-header">
+                <span class="week-badge">Week 6</span>
+                <span class="week-date">Begins 20 April</span>
+            </div>
+            <div class="week-content">
+                <div class="guest-lecture">
+                    <span class="guest-tag">Guest Lecture</span>
+                    <div class="guest-title">"Phylodynamics with application to epidemics in NZ"</div>
+                    <div class="guest-speaker">David Welch</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Week 7 -->
+        <div class="week-card">
+            <div class="week-header">
+                <span class="week-badge">Week 7</span>
+                <span class="week-date">Begins 27 April</span>
+            </div>
+            <div class="week-content">
+                <div class="guest-lecture">
+                    <span class="guest-tag">Guest Lecture</span>
+                    <div class="guest-title">"Cultural Phylogenies"</div>
+                    <div class="guest-speaker">Simon Greenhill</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Week 8 -->
+        <div class="week-card">
+            <div class="week-header">
+                <span class="week-badge">Week 8</span>
+                <span class="week-date">Begins 4 May</span>
+            </div>
+            <div class="week-content">
+                <div class="guest-lecture">
+                    <span class="guest-tag">Guest Lecture</span>
+                    <div class="guest-title">"Protein structure and the beginning of a third era in phylogenetics"</div>
+                    <div class="guest-speaker">Caroline Puente-Lelievre</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Week 9 -->
+        <div class="week-card">
+            <div class="week-header">
+                <span class="week-badge">Week 9</span>
+                <span class="week-date">Begins 11 May</span>
+            </div>
+            <div class="week-content">
+                <div class="session">
+                    <div class="session-time"><i class="fas fa-chalkboard-teacher"></i> Tuesday 1&ndash;3pm</div>
+                    <ul class="session-items">
+                        <li class="session-item">
+                            <div>
+                                <span class="lecture-num">L9</span>
+                                {% assign found_l9 = false %}
+                                {% for page in site.pages %}{% if page.url == "/lecture-relaxed-phylogenetics/" %}{% assign found_l9 = true %}{% endif %}{% endfor %}
+                                {% if found_l9 %}<a href="{{site.baseurl}}/lecture-relaxed-phylogenetics/" class="lecture-title">Time-trees and Relaxed Phylogenetics</a>{% else %}<span class="lecture-unavailable">Time-trees and Relaxed Phylogenetics</span>{% endif %}
+                            </div>
+                            <div class="lecture-links">
+                                {% if found_l9 %}<a href="{{site.baseurl}}/lecture-relaxed-phylogenetics/" class="lecture-link slides-link">Slides</a>{% endif %}
+                                {% assign found_l9n = false %}
+                                {% for page in site.pages %}{% if page.url == "/lecture-relaxed-phylogenetics/notes/" %}{% assign found_l9n = true %}{% endif %}{% endfor %}
+                                {% if found_l9n %}<a href="{{site.baseurl}}/lecture-relaxed-phylogenetics/notes/" class="lecture-link notes-link">Notes</a>{% endif %}
+                            </div>
+                        </li>
+                        <li class="session-item">
+                            <div>
+                                <span class="lecture-num">L10</span>
+                                {% assign found_l10 = false %}
+                                {% for page in site.pages %}{% if page.url == "/lecture-coalescent/" %}{% assign found_l10 = true %}{% endif %}{% endfor %}
+                                {% if found_l10 %}<a href="{{site.baseurl}}/lecture-coalescent/" class="lecture-title">The Coalescent</a>{% else %}<span class="lecture-unavailable">The Coalescent</span>{% endif %}
+                            </div>
+                            <div class="lecture-links">
+                                {% if found_l10 %}<a href="{{site.baseurl}}/lecture-coalescent/" class="lecture-link slides-link">Slides</a>{% endif %}
+                                {% assign found_l10n = false %}
+                                {% for page in site.pages %}{% if page.url == "/lecture-coalescent/notes/" %}{% assign found_l10n = true %}{% endif %}{% endfor %}
+                                {% if found_l10n %}<a href="{{site.baseurl}}/lecture-coalescent/notes/" class="lecture-link notes-link">Notes</a>{% endif %}
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Week 10 -->
+        <div class="week-card">
+            <div class="week-header">
+                <span class="week-badge">Week 10</span>
+                <span class="week-date">Begins 18 May</span>
+            </div>
+            <div class="week-content">
+                <div class="session">
+                    <div class="session-time"><i class="fas fa-chalkboard-teacher"></i> Tuesday 1&ndash;3pm</div>
+                    <ul class="session-items">
+                        <li class="session-item">
+                            <div>
+                                <span class="lecture-num">L11</span>
+                                <span class="lecture-unavailable">Phylogenetic Comparative Methods</span>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Week 11 -->
+        <div class="week-card">
+            <div class="week-header">
+                <span class="week-badge">Week 11</span>
+                <span class="week-date">Begins 25 May</span>
+            </div>
+            <div class="week-content">
+                <div class="session">
+                    <div class="session-time"><i class="fas fa-chalkboard-teacher"></i> Tuesday 1&ndash;3pm</div>
+                    <ul class="session-items">
+                        <li class="session-item">
+                            <div>
+                                <span class="lecture-num">L12</span>
+                                <span class="lecture-unavailable">Phylogenetic Comparative Methods</span>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Week 12 -->
+        <div class="week-card">
+            <div class="week-header">
+                <span class="week-badge">Week 12</span>
+                <span class="week-date">Begins 1 June</span>
+            </div>
+            <div class="week-content">
+                <div class="session">
+                    <div class="session-time"><i class="fas fa-chalkboard-teacher"></i> Tuesday 1&ndash;3pm</div>
+                    <ul class="session-items">
+                        <li class="session-item">
+                            <div>
+                                <span class="lecture-num">L13</span>
+                                <span class="lecture-unavailable">Phylogenetic Comparative Methods</span>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Study Week -->
+        <div class="week-card break">
+            <div class="week-header">
+                <span class="week-badge break-badge">Study</span>
+                <span class="week-date">Begins 9 June</span>
+            </div>
+            <div class="week-content">
+                Study Week
+            </div>
+        </div>
+
+        <!-- Exam Week -->
+        <div class="week-card break">
+            <div class="week-header">
+                <span class="week-badge exam-badge">Exam</span>
+                <span class="week-date">Begins 16 June</span>
+            </div>
+            <div class="week-content">
+                Examination Week
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        sessionStorage.setItem('lectureHome', '{{site.baseurl}}/biosci700.html');
+    </script>
+
+    <footer class="footer">
+        <p>Lecture slides prepared by Alexei Drummond and Tim Vaughan.<br>
+        <a href="{{site.baseurl}}/">View all lecture modules</a></p>
+    </footer>
+</body>
+</html>

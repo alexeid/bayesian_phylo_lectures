@@ -1,129 +1,129 @@
-- 
+-
   title: Introduction - Developing Darwin's Computer
-  folder: lecture_intro
+  folder: lecture-darwins-computer
   lecturer: Alexei Drummond
   section: introductionSA
 -
   title: Homology and alignment
-  folder: lecture2
-  notes_folder: lecture2_homology_notes
+  folder: lecture-homology
+  notes_folder: lecture-homology/notes
   lecturer: Alexei Drummond
   section: introductionSA
 -
   title: Multiple sequence alignment
-  folder: lecture3
-  notes_folder: lecture3_msa_notes
+  folder: lecture-msa
+  notes_folder: lecture-msa/notes
   lecturer: Alexei Drummond
   section: introductionSA
 -
   title: General and affine gap penalties
-  folder: lectureAffineGaps
+  folder: lecture-affine-gaps
   lecturer: Alexei Drummond
   section: introductionSA
 -
   title: Hidden Markov Models
-  folder: lecture4
+  folder: lecture-hmm
   lecturer: Alexei Drummond
   section: introductionSA
 -
   title: Phylogenetics
-  folder: lecture5
-  notes_folder: lecture5_phylogenetics_notes
+  folder: lecture-phylogenetics
+  notes_folder: lecture-phylogenetics/notes
   lecturer: Alexei Drummond
   section: introduction
 -
   title: Parsimony
-  folder: lecture6
-  notes_folder: lecture6_parsimony_notes
+  folder: lecture-parsimony
+  notes_folder: lecture-parsimony/notes
   lecturer: Alexei Drummond
   section: introduction
-- 
+-
   title: Model-based Phylogenetic Inference
-  folder: lectureSubstitutionModels
-  notes_folder: lecture_substmodel_notes
+  folder: lecture-substitution-models
+  notes_folder: lecture-substitution-models/notes
   lecturer: Alexei Drummond
   section: introduction
 -
   title: Bayesian Inference
-  folder: lecture8
-  notes_folder: lecture8_bayesian_inference_notes
+  folder: lecture-bayesian-inference
+  notes_folder: lecture-bayesian-inference/notes
   lecturer: Alexei Drummond
   section: bayesian_phylo
-- 
+-
   title: Bayesian Phylogenetic Inference
-  folder: lecture9
-  notes_folder: lecture9_bayesian_phylo_notes
+  folder: lecture-bayesian-phylogenetics
+  notes_folder: lecture-bayesian-phylogenetics/notes
   lecturer: Alexei Drummond
   section: bayesian_phylo
-- 
+-
   title: Time-trees and Relaxed phylogenetics
-  folder: lectureRelaxedPhylogenetics
-  notes_folder: lecture_timetree_clocks_notes
+  folder: lecture-relaxed-phylogenetics
+  notes_folder: lecture-relaxed-phylogenetics/notes
   lecturer: Alexei Drummond
   section: bayesian_phylo
-- 
+-
   title: The Coalescent
-  folder: lecture10
-  notes_folder: lecture10_coalescent_notes
+  folder: lecture-coalescent
+  notes_folder: lecture-coalescent/notes
   lecturer: Alexei Drummond
   section: bayesian_phylo
-- 
+-
   title: Phylodynamics and the coalescent
-  folder: lectureSkyline
+  folder: lecture-skyline
   lecturer: Alexei Drummond
   section: advanced
-- 
+-
   title: The multi-species coalescent
-  folder: lecture12
+  folder: lecture-multispecies-coalescent
   lecturer: Alexei Drummond
   section: advanced
-- 
+-
   title: Master Equations and The Structured Coalescent
-  folder: lecture13
+  folder: lecture-structured-coalescent
   lecturer: Alexei Drummond
   section: advanced
-- 
+-
   title: The Coalescent with Recombination
-  folder: lecture14
+  folder: lecture-recombination
   lecturer: Alexei Drummond
   section: advanced
-- 
+-
   title: Birth-death tree priors
-  folder: lecture15
+  folder: lecture-birth-death
   lecturer: Alexei Drummond
   section: advanced
-- 
+-
   title: Sampled Ancestors, FBD
   folder: lecture_sa
   lecturer: Alexei Drummond
   section: advanced
 -
   title: Python Programming Primer
-  folder: lecturePython
+  folder: lecture-python
   lecturer: Alexei Drummond
   section: programming
-  
+
 -
   title: Introduction - Genome Assembly
-  folder: lectureGenomeAssembly
+  folder: lecture-genome-assembly
   lecturer: Alexei Drummond
   section: introductionSA
-  
+
 -
   title: Artificial Life
-  folder: lectureArtificialLife
+  folder: lecture-artificial-life
   lecturer: Alexei Drummond
   section: artificiallife
-  
+
 -
   title: Artificial Life 2
-  folder: lectureArtificialLifeII
+  folder: lecture-artificial-life-ii
   lecturer: Alexei Drummond
   section: artificiallife
 
 -
   title: Review
-  folder: lectureReview
+  folder: lecture-review
   lecturer: Alexei Drummond
   section: review
-  
+

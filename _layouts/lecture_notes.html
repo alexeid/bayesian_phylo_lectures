@@ -465,7 +465,13 @@
     <div class="container">
         <!-- Breadcrumb navigation -->
         <div class="breadcrumb">
-            <a href="{{ site.baseurl }}/">Home</a>
+            <a href="{{ site.baseurl }}/" id="home-link">Home</a>
+            <script>
+                (function() {
+                    var home = sessionStorage.getItem('lectureHome');
+                    if (home) document.getElementById('home-link').href = home;
+                })();
+            </script>
             <span>›</span>
             <a href="{{ site.baseurl }}/#{{ page.section }}">{{ page.section_name | default: page.section }}</a>
             <span>›</span>

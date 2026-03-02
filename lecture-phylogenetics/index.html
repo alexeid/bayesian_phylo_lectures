@@ -1,0 +1,525 @@
+---
+lecture_num: 5
+---
+<section>
+    <h2>Molecules as Documents of Evolutionary History</h2>
+    
+    <ul class="spaced" style="margin-top:5%; width:85%">
+        <li>Macromolecules contain information about the processes and
+history that formed them
+<pre style="font-size:22px;box-shadow:none;margin-bottom:0">
+HIV-1 (UK.) ATC<font color="red">G</font>GATGCTA<font color="red">A</font>AGC<font color="red">A</font>TATGA<font color="red">C</font>ACAGAGGTACA<font color="red">TAA</font>TGTTT
+HIV-1 (USA) ATC<font color="red">A</font>GATGCTA<font color="red">G</font>AGC<font color="red">T</font>TATGA<font color="red">T</font>ACAGAGGTACA<font color="red">---</font>TGTTT
+
+</pre>
+</li>
+        <li>However, this information is not complete, so the full history
+must be inferred</li>
+        <li>One of the aims of computational biology is to decipher the
+information held in molecular sequences about the process
+and history of evolution
+        </li>
+    </ul>
+</section>
+
+<section>
+    <h2>Phylogenetics</h2>
+
+
+    <ul class="spaced" style="margin-top:5%; width:85%">
+		<li> Similarity (due to homology) is viewed as evidence of common ancestry </li>
+    	<ul class="spaced">
+			<li>Homology: the result of inheritance from a common ancestor</li>
+		</ul>
+		<li> Phylogenetic trees are used to portray relationships based upon common ancestry </li>
+		<li>Monophyletic groups (clades) - contain species which are more closely related to each other than to any outside of the group </li>
+		<li>Phylogenetics has in recent years become a statistical science based on probabilistic models of evolution (more on this in later lectures). </li>
+	</ul>
+
+</section>
+
+<section>
+	<h2>A typical molecular phylogenetic analysis</h2>
+	
+    <ol class="spaced" style="margin-top:5%; width:70%">
+	<li> Collect homologous sequences </li>
+	<li> Construct a multiple sequence alignment </li>
+	<li> Phylogeny reconstruction </li>
+	<li> Test the reliability of the estimated phylogeny  </li>
+	<li> Interpretation and application of phylogenies  </li>
+	</ol>
+</section>
+
+<section>
+	<h2>Applications of phylogenetics</h2>
+	
+	
+    <ul class="spaced" style="margin-top:5%; width:85%">
+	<li> Inferring relationships among species and genes </li> 
+	<li> Estimating divergence times </li>
+	<li> Identifying functional elements in comparisons of genomic sequences </li>
+	<li> Detecting molecular adaptation </li>
+	<li> Forensics </li>
+	<li> Studying the emergence and spread of viral pandemics </li>
+	<li> many more... </li>
+	</ul>
+</section>
+
+<section>
+	<h2>Types of phylogenies and representations</h2>
+	
+	<img data-src="typesOfPhylogenies.svg" style="width:95%">
+</section>
+
+<section>
+	<h2>Bifurcating (binary) and multifurcating trees</h2>
+	
+	<img data-src="bifurcatingAndMultifurcatingTrees.svg" style="width:85%">
+	
+	<ul style="margin-left:5%; width:70%">
+	<li>In a rooted tree a <font color="red">polytomy</font> is a node with more than 2 children. <br>
+	<li>In an unrooted tree a <font color="red">polytomy</font> is a node of degree 4 or greater.
+	</ul>
+
+</section>
+
+<section>
+	<h2>Rooted and unrooted trees</h2>
+
+	<img data-src="rootedToUnrooted.svg" style="width:70%">
+	
+	<div align="left" style="margin-top:5%; margin-left:15%; width:70%">
+	Many of the early phylogeny-reconstruction methods developed were unable to identify the root of the tree, so unrooted trees were inferred. 
+	This includes the maximum parsimony method, as well as those distance, likelihood and Bayesian methods that do not assume a molecular clock.
+	</div>
+
+</section>
+
+<section>
+	<h2>Rooting trees using an outgroup</h2>
+	
+	<img data-src="RootingTreesOutgroup.png" style="width:100%">
+
+</section>
+
+<section>
+	<h2>The same unrooted tree</h2>
+
+	<img data-src="unrootedTrees.png" style="width:100%">
+
+</section>
+
+<section>
+	<h2>Anatomy of a tree</h2>
+
+	<img data-src="AnatomyOfTree.png" style="width:100%">
+
+</section>
+
+<section>
+	<h2>How many trees are there?</h2>
+	
+	<div class="spaced" style="text-align: left;"> For $n$ taxa there are: </div>
+	$$T_n^{(R)}=(2n−3)(2n−5)\dots(3)(1)$$
+	
+	<div class="spaced" style="text-align: left;">rooted, binary trees </div>
+	<br>
+	<table class="noborders" style="font-size:0.9em; border-collapse:collapse">
+	<tr><td style="border-bottom: solid 1px; border-top: solid 1px;">$n$</td><td style="border-bottom: solid 1px; border-top: solid 1px;">#trees</td><td style="border-bottom: solid 1px; border-top: solid 1px;"></td></tr>
+	<tr><td>4</td><td>15</td><td>enumerable by hand</td><tr>
+	<tr><td>5</td><td>105</td><td>enumerable by hand on a rainy day</td><tr>
+	<tr><td>6</td><td>945</td><td>enumerable by computer</td><tr>
+	<tr><td>7</td><td>10395</td><td>still searchable very quickly on computer</td><tr>
+	<tr><td>8</td><td>135135</td><td>about the number of hairs on your head</td><tr>
+	<tr><td>9</td><td>2027025</td><td>greater than the population of Auckland</td><tr>
+	<tr><td>10</td><td>34459425</td><td>$\approx$ upper limit for exhaustive search</td><tr>
+	<tr><td>20</td><td>$8.2 \times 10^{21}$</td><td>$\approx$ upper limit of branch-and-bound searching</td><tr>
+	<tr><td>48</td><td>$3.21 \times 10^{70}$</td><td>$\approx$ the number of particles in the Universe</td><tr>
+	<tr><td style="border-bottom: solid 1px;">136</td><td style="border-bottom: solid 1px;">$2.11 \times 10^{267}$</td><td style="border-bottom: solid 1px;">number of trees to choose from in the "Out of Africa" data (Vigilante <i>et al.</i> 1991)</td><tr>
+	</table>
+
+</section>
+
+<section>
+	<h2>Counting unrooted trees with stepwise addition algorithm</h2>
+	
+	<img data-src="stepwiseAddition.png" style="width:100%">
+	
+	$$T_3 = 1 \rightarrow T_4 = 1 \times 3 \rightarrow T_5 = 1 \times 3 \times 5$$
+<br>
+$T_n = 1 \times 3 \times 5 \times \dots  \times (2n−5)$ unrooted trees with $n$ leaves 
+<br>
+<br>
+$T_{20} = 2.2 \times 10^{20}$, $T_{53} \approx$ number particles in the universe
+	
+</section>
+
+<section>
+	<h2>The topological distance between two trees</h2>
+	
+	<div class="spaced" style="text-align: left;">
+	The partition distance (Robinson and Foulds, 1981) is defined as the total number of bipartitions that are in one tree but not in the other. 
+	</div>	
+	<div class="spaced" style="text-align: left;">
+	Each internal branch defines a <font color="red">bipartition</font> (<font color="red">split</font>) of species.
+	</div>	
+	<img data-src="robinsonFoulds.png" style="width:80%">
+	
+	<div class="spaced" style="text-align: left; margin-left:10%;">
+	The distance between these two trees is 2. 
+	<br>
+	The partition distance ranges from 0 to $2(n − 3)$ for $n$ species
+	</div>
+</section>
+
+<section>
+	<h2>Phylogenetic reconstruction</h2>
+	
+	<div>
+	<div style="margin-top:5%; margin-left:5%; width:85%; text-align: left;">
+	There are essentially two types of data for phylogenetic tree estimation:
+	</div>
+
+	<ul class="spaced" style="margin-top:2%; width:85%">
+
+		<li><font color="red">Distance data</font>, usually stored in a distance matrix, e.g. DNA×DNA hybridisation data, morphometric differences, immunological data, pairwise genetic distances</li>
+		<li><font color="red">Character data</font>, usually stored in a character array, e.g. multiple sequence alignment of DNA sequences, morphological characters.</li>
+	</ul>
+	</div>
+	<div style="float:left; width:45%; margin-left:0%;">
+	Distances<br>
+	<table class="noborders" style="margin: 0 auto; ">
+	<tr style="border-bottom: solid 1px;"><td style="border-right: solid 1px;"></td><td>A</td><td>B</td><td>C</td><td>D</td><td>E</td></tr>
+	<tr><td style="border-right: solid 1px;">A</td><td>0</td><td>3</td><td>5</td><td>6</td><td>5</td></tr>
+	<tr><td style="border-right: solid 1px;">B</td><td>3</td><td>0</td><td>4</td><td>7</td><td>6</td></tr>
+	<tr><td style="border-right: solid 1px;">C</td><td>5</td><td>4</td><td>0</td><td>5</td><td>4</td></tr>
+	<tr><td style="border-right: solid 1px;">D</td><td>6</td><td>7</td><td>5</td><td>0</td><td>1</td></tr>
+	<tr><td style="border-right: solid 1px;">E</td><td>5</td><td>6</td><td>4</td><td>1</td><td>0</td></tr>
+	</table>
+	</div>
+	<div style="float:right; width:40%; margin-right:12%;">
+	Characters<br>
+	<table class="noborders" style="margin: 0 auto; ">
+	<tr style="border-bottom: solid 1px;"><td style="border-right: solid 1px;"></td><td>1</td><td>2</td><td>3</td><td>4</td><td>5</td><td>6</td><td>7</td><td>8</td><td>9</td></tr>
+	<tr><td style="border-right: solid 1px;">A</td><td>1</td><td>0</td><td>0</td><td>0</td><td>1</td><td>1</td><td>0</td><td>1</td><td>1</td></tr>
+	<tr><td style="border-right: solid 1px;">B</td><td>0</td><td>1</td><td>0</td><td>0</td><td>1</td><td>1</td><td>1</td><td>1</td><td>1</td></tr>
+	<tr><td style="border-right: solid 1px;">C</td><td>0</td><td>0</td><td>1</td><td>0</td><td>0</td><td>0</td><td>1</td><td>1</td><td>1</td></tr>
+	<tr><td style="border-right: solid 1px;">D</td><td>0</td><td>0</td><td>0</td><td>1</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td></tr>
+	<tr><td style="border-right: solid 1px;">E</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td></tr>
+	</table>
+	</div>
+</section>
+
+<section>
+	<h2>Phylogenetic reconstruction</h2>
+	
+	<div style="margin-top:5%; margin-left:5%; width:85%; text-align: left;">
+	There are a huge number of possible trees even for small data sets. 
+	</div>
+	<div style="margin-top:5%; margin-left:5%; width:85%; text-align: left;">
+	We have three options:
+	</div>
+	<ul class="spaced" style="margin-top:5%; width:70%">
+		<li>Construct a tree according to some clustering algorithm</li>
+		<li>Assign a goodness of fit criterion (an objective function) and find the tree(s) which optimise(s) this criterion</li>
+		<li>Admit it is a statistical estimation problem and find the most probable phylogenies under a statistical model.</li>
+	</ul>
+</section>
+
+<section>
+	<h2>Phylogenetic reconstruction</h2>
+
+	<img data-src="PhylogeneticReconstruction.png" style="width:70%">
+
+</section>
+
+<section>
+	<h2> Clustering algorithms</h2>
+	
+	<div style="margin-top:5%; margin-left:5%; width:85%; text-align: left;">
+	Common clustering algorithms are <font color="red">Neighbour-joining</font> and <font color="red">UPGMA</font> (Unweighted Pair-Group Method using Arithmetic averages).
+The clustering algorithms are usually very fast, and simple but there is no explicit optimality criterion, so
+	</div>
+
+	<ul class="spaced" style="margin-top:5%; width:70%">
+		<li>the method provides no measure of how good the tree is!</li>
+		<li>we do not get any idea about other potential trees - were there any better trees?</li>
+	</ul>
+</section>
+
+<section>
+	<h2> Clustering algorithms</h2>
+	<ul class="spaced" style="margin-top:5%; width:80%">
+		<li>The UPGMA and neighbor-joining (NJ) methods are both
+greedy heuristics which join, at each step, the two closest*
+sub-trees that are not already joined.</li>
+		<li>They are based on the minimum evolution principle.</li>
+		<li>An important concept in both of these methods is a pair of
+neighbors, which is defined as two nodes that are connected
+via a single node:</li>
+	</ul>
+	
+	<img data-src="pair.svg" style="width:25%">
+
+	<div style="margin-top:0%; margin-left:15%;  width:70%; text-align: left;">
+	* NJ uses rate-corrected distances
+	</div>
+</section>
+
+<section>
+	<h2>UPGMA example</h2>
+	
+	<div style="float:left; width:50%;">
+	
+	Distances<br>
+	<table class="noborders" style="margin: 0 auto; ">
+	<tr style="border-bottom: solid 1px;"><td style="border-right: solid 1px;"></td><td>A</td><td>B</td><td>C</td><td>D</td></tr>
+	<tr><td style="border-right: solid 1px;">A</td><td>0</td><td></td><td></td><td></td></tr>
+	<tr><td style="border-right: solid 1px;">B</td><td>8</td><td>0</td><td></td><td></td></tr>
+	<tr><td style="border-right: solid 1px;">C</td><td><font color="red"><b>7</b></font></td><td>9</td><td>0</td><td></td></tr>
+	<tr><td style="border-right: solid 1px;">D</td><td>12</td><td>14</td><td>11</td><td>0</td></tr>
+	</table>
+	</div>
+
+	<div style="float:right; width:50%">
+		<img data-src="upgma1.svg" style="height:200px;">
+	</div>
+	
+	<div style="margin-top:35%; width:100%;">
+	$$d_{B(AC)} = (d_{BA} + d_{BC} )/2 = (8 + 9)/2 = 8.5$$
+	$$d_{D(AC)} = (d_{DA} + d_{DC})/2 = (12 + 11)/2 = 11.5$$
+	</div>
+</section>
+
+<section>
+	<h2>UPGMA example</h2>
+	
+	<div style="float:left; width:50%;">
+	
+	Distances<br>
+	<table class="noborders" style="margin: 0 auto; ">
+	<tr style="border-bottom: solid 1px;"><td style="border-right: solid 1px;"></td><td>AC</td><td>B</td><td>D</td></tr>
+	<tr><td style="border-right: solid 1px;">AC</td><td>0</td><td></td><td></td></tr>
+	<tr><td style="border-right: solid 1px;">B</td><td><font color="red"><b>8.5</b></font></td><td>0</td><td></td></tr>
+	<tr><td style="border-right: solid 1px;">D</td><td>11.5</td><td>14</td><td>0</td></tr>
+	</table>
+	</div>
+
+	<div style="float:right; width:50%">
+		<img data-src="upgma2.svg" style="height:200px;">
+	</div>
+	
+	<div style="margin-top:35%; width:100%;">
+	$$d_{(ABC)D} =(d_{AD} +d_{BD} +d_{CD})/3=(12+14+11)/3 \approx 12.33$$
+	</div>
+</section>
+
+<section>
+	<h2>UPGMA example</h2>
+	
+	<div style="float:left; width:50%;">
+	
+	Distances<br>
+	<table class="noborders" style="margin: 0 auto; ">
+	<tr style="border-bottom: solid 1px;"><td style="border-right: solid 1px;"></td><td>ABC</td><td>D</td></tr>
+	<tr><td style="border-right: solid 1px;">ABC</td><td>0</td><td></td></tr>
+	<tr><td style="border-right: solid 1px;">D</td><td><font color="red"><b>12.33</b></font></td><td>0</td></tr>
+	</table>
+	</div>
+
+	<div style="float:right; width:50%">
+		<img data-src="upgma3.svg" style="height:200px;">
+	</div>
+	
+	<div style="margin-left:15%; margin-top:30%; width:70%; text-align:left">
+	UPGMA produces a <font color="red">ultrametric rooted tree</font> and assumes that evolution is <font color="red">clock-like</font>, 
+	i.e. it assumes that the rate of substitution is the same on all branches of the tree.
+	
+	</div>
+	<div style="margin-left:15%; margin-top:5%; width:70%; text-align:left">
+	A tree is <font color="red">ultrametric</font> when all leaves have the same age/height. 
+	</div>
+</section>
+	
+
+<section>
+	<h2>UPGMA weaknesses</h2>
+	
+	<div style="float:left; width:50%;">
+	
+	Distances<br>
+	<table class="noborders" style="margin: 0 auto; ">
+	<tr style="border-bottom: solid 1px;"><td style="border-right: solid 1px;"></td><td>A</td><td>B</td><td>C</td><td>D</td></tr>
+	<tr><td style="border-right: solid 1px;">A</td><td>0</td><td></td><td></td><td></td></tr>
+	<tr><td style="border-right: solid 1px;">B</td><td>8</td><td>0</td><td></td><td></td></tr>
+	<tr><td style="border-right: solid 1px;">C</td><td>7</td><td>9</td><td>0</td><td></td></tr>
+	<tr><td style="border-right: solid 1px;">D</td><td>12</td><td>14</td><td>11</td><td>0</td></tr>
+	</table>
+	</div>
+
+	<div style="float:right; width:50%">
+		<img data-src="non-upgma-tree.svg" style="height:250px;">
+	</div>
+	
+	<div style="margin-top:35%; margin-left:15%; width:70%; text-align:left">
+	There is a (non clock-like) tree <font color="red">with a different topology</font> that fits the distance matrix <font color="red">perfectly</font>!	
+	</div>
+</section>
+
+<section>
+	<h2>Neighbour-joining algorithm<br> (Saitou and Nei, 1987)</h2>
+	
+	 <ul class="spaced" style="margin-top:5%; width:70%">
+	 <li>Most widely-used distance-based method for phylogenetic reconstruction
+	 <li>UPGMA illustrated that it is not enough to pick the closest neighbors (at least when there is rate heterogeneity across branches)
+	 <li>Idea: take into account averaged distances to other leaves as well
+	 <li>Produces an unrooted tree
+	 </ul>
+</section>
+
+<section>
+	<h2>The basic idea</h2>
+	
+	<ul class="spaced" style="margin-top:5%; width:70%">
+	<li>We start by computing the “average distance” from i to every other taxon
+		$$r_i = \frac{1}{n−2} \sum_j d_{ij}$$
+	<li>We then compute new corrected distances for all pairs of $(i,j)$: 
+		$$d_{ij}^∗ = d_{ij} − r_i − r_j$$
+	<li>We are effectively pushing each node $i$ closer to all other nodes by $r_i$.
+
+</section>
+
+<section>
+	<h2>The basic idea</h2>
+	
+		$$d_{ij}^∗ = d_{ij} − r_i − r_j$$
+
+	<div style="margin-left:15%; margin-top:5%; width:70%; text-align:left">
+	The effect is to correct for long branches.
+	</div>
+
+<div style="float:right; width:50%">
+<br>
+$$d= 
+ \begin{bmatrix}
+  0 & 8 &7 & 12 \\
+  8 & 0 & 9 & 14 \\
+  7  & 9  & 0 & 11  \\
+  12 & 14 & 11 & 0
+ \end{bmatrix}$$
+<br>
+$$r = [13.5, 15.5, 13.5, 18.5]$$
+<br>
+
+$$d^{*}= 
+ \begin{bmatrix}
+  0 & -21 & -20 & -20 \\
+  -21 & 0 & -20 & -20 \\
+  -20  & -20  & 0 & -21  \\
+  -20 & -20 & -21 & 0
+ \end{bmatrix}$$
+ </div>	
+ 
+ <div style="float:left; width:50%">
+	<img data-src="nj.png" style="height:250px;">
+</div>
+
+
+<div style="margin-left:15%; margin-top:5%; width:70%; text-align:left">
+This is the result of the Neighbour-joining algorithm on same distance matrix as used in the UPGMA example. 
+AB and CD are grouped instead of AC.
+</div>
+
+</section>
+
+<section>
+	<h2>Neighbour joining</h2>
+	
+	<ul class="spaced" style="margin-top:5%; width:70%">
+	<li>We use an algorithm very similar to UPGMA to select the two closest nodes, $i$ and $j$, based on the corrected distances ($d^*$).
+	<li>We join these into a cluster and make a new node $k$ to correspond to their ancestor
+	<li>the distance to the new node $k$ is computed by $$d_{ik} = \frac{1}{2}(d_{ij} +r_i − r_j)$$
+	<li>Nodes $i$ and $j$ are removed from the pool and replaced by $k$. 
+	The uncorrected distances are updated based on the $d_{ik}$ calculation and $d^*$ is then recalculated.
+	<li>See Higgs and Attwood (2005; pp166-169) for details.
+	</ul>
+</section>
+
+<section>
+	<h2>Time complexity of the clustering algorithms</h2>
+	
+	<ul class="spaced" style="margin-top:5%; width:70%">
+	<li>Both of these clustering-based algorithms take $O(n^3)$ time once we have the distance matrix.
+	<li>There are n steps and in each step we do:
+		<ol style="margin-top:5%;">
+		<li>find the smallest distance
+		<li>join these two taxa
+		<li>compute the distance from the new ancestor to all others
+		</ol>
+	<li> Step 1 takes $O(n^2)$ and the other two steps take $O(n)$
+	</ul>
+	
+<div style="margin-left:15%; margin-top:5%; width:70%; text-align:left">
+	Note: There is an alternative (and much harder to follow) formulation of the UPGMA algorithm that takes $O(n^2)$
+</div>
+
+</section>
+
+<section>
+	<h2>Least squares distance-based phylogenetics</h2>
+	
+	<table class="noborders" style="margin: 0 auto; ">
+	<tr style="border-bottom: solid 1px;"><td style="border-right: solid 1px;">$d_{ij}$</td><td>Human</td><td>Chimp</td><td>Gorilla</td><td>Orangutan</td></tr>
+	<tr><td style="border-right: solid 1px;">Human</td><td>0</td><td></td><td></td><td></td></tr>
+	<tr><td style="border-right: solid 1px;">Chimp</td><td>0.0965</td><td>0</td><td></td><td></td></tr>
+	<tr><td style="border-right: solid 1px;">Gorilla</td><td>0.1140</td><td>0.1180</td><td>0</td><td></td></tr>
+	<tr><td style="border-right: solid 1px;">Orangutan</td><td>0.1849</td><td>0.2009</td><td>0.1947</td><td>0</td></tr>
+	</table>
+
+	<div style="float:right; width:50%">
+<br>
+$\begin{align*}
+S = &(d_{12} - \hat{d}_{12})^2 + (d_{13} - \hat{d}_{13})^2 + \\ 
+&(d_{14} - \hat{d}_{14})^2 + (d_{23} - \hat{d}_{23})^2 + \\
+&(d_{24} - \hat{d}_{24})^2 + (d_{34} - \hat{d}_{34})^2 \end{align*}$
+<br>
+<br>
+$$\hat{d}_{12} = t_1 + t_2, \quad \hat{d}_{13} = t_1 + t_0 + t_3, \dots$$
+
+ </div>	
+
+
+ <div style="float:left; width:50%">
+	<img data-src="hcgoTree.png" style="height:200px;">
+</div>
+
+<div style="margin-left:15%; margin-top:30%; width:70%; text-align:left">
+There are six data points (distances) and five free parameters (branch lengths) to numerically optimize so as to minimise S.
+</div>
+</section>
+
+<section>
+	<h2>Least squares distance-based phylogenetics</h2>
+
+<table class="noborders" style="margin: 0 auto; ">
+	<tr style="border-bottom: solid 1px;"><td style="border-right: solid 1px;">Tree</td><td>$t_0$</td><td>$t_1$ (H)</td><td>$t_2$ (C)</td><td>$t_3$ (G)</td><td>$t_4$ (O)</td><td style="border-left: solid 1px;">S</td></tr>
+<tr><td style="border-right: solid 1px;">((H,C),G,O)</td><td>0.008840</td><td>0.043266</td><td>0.053280</td><td>0.058908</td><td>0.135795</td><td style="border-left: solid 1px;">0.000035</td></tr>
+<tr><td style="border-right: solid 1px;">((H,G),C,O)</td><td>0.0</td><td>0.46212</td><td>0.056227</td><td>0.061854</td><td>0.138742</td><td style="border-left: solid 1px;">0.000140</td></tr>
+<tr><td style="border-right: solid 1px;">((H,O),C,G)</td><td>0.0</td><td>0.46212</td><td>0.056227</td><td>0.061854</td><td>0.138742</td><td style="border-left: solid 1px;">0.000140</td></tr>
+<tr><td style="border-right: solid 1px;">(H,G,C,O)</td><td>0.0</td><td>0.46212</td><td>0.056227</td><td>0.061854</td><td>0.138742</td><td style="border-left: solid 1px;">0.000140</td></tr>
+</table>
+
+ <div>
+	<img data-src="leastSquares.png" style="width:80%;">
+</div>
+
+</section>
+
+<section>
+	<h2>Reading: Trees and Distance Methods</h2>
+
+	<ul class="spaced" style="margin-top:5%; width:70%">
+	<li>Decoding Genomes, Stadler et al (2024), Chapter 6: Phylogenetic trees (sections 6.1&ndash;6.3)
+	<li>Computational Molecular Evolution, Ziheng Yang (2006), sections 3.1-3.3 &mdash; additional detail on neighbour-joining
+	</ul>
+</section>
