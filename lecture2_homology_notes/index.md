@@ -13,7 +13,7 @@ next_lecture: lecture3_msa_notes
     <div class="lecture-meta">
         <span><i class="fas fa-calendar"></i> Week 2</span>
         <span><i class="fas fa-clock"></i> 90 minutes</span>
-        <span><i class="fas fa-book"></i> Required reading: Ch. 2-3</span>
+        <span><i class="fas fa-book"></i> Required reading: Decoding Genomes Ch. 3.1, 5.3.1</span>
     </div>
 </div>
 
@@ -354,7 +354,11 @@ next_lecture: lecture3_msa_notes
 <div class="alert alert-info">
     <i class="fas fa-book"></i>
     <div>
-        <strong>Further Reading:</strong>
+        <strong>Recommended Reading:</strong>
+        <ul style="margin-bottom: 0;">
+            <li><a href="https://decodinggenomes.org/">Stadler et al. (2024) "Decoding Genomes"</a> - Chapter 3.1 (Pairwise alignments), Chapter 5.3.1 (JC69 model)</li>
+        </ul>
+        <strong>Optional (more algorithmic detail):</strong>
         <ul style="margin-bottom: 0;">
             <li>Durbin et al. (1998) "Biological Sequence Analysis" - Chapters 2-3</li>
             <li>Felsenstein (2004) "Inferring Phylogenies" - Chapter 11</li>

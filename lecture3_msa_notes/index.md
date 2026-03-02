@@ -14,7 +14,7 @@ next_lecture: lecture5_phylogenetics_notes
     <div class="lecture-meta">
         <span><i class="fas fa-calendar"></i> Week 3</span>
         <span><i class="fas fa-clock"></i> 90 minutes</span>
-        <span><i class="fas fa-book"></i> Required reading: Durbin et al. Ch. 6</span>
+        <span><i class="fas fa-book"></i> Required reading: Decoding Genomes Ch. 3.2-3.3</span>
     </div>
 </div>
 
@@ -451,6 +451,10 @@ F(i_1-1, i_2, i_3-1, \ldots,i_N-1) + S(x^{(1)}_{i_1},-,x^{(3)}_{i_3},\ldots,x^{(
     <i class="fas fa-book"></i>
     <div>
         <strong>Recommended Reading:</strong>
+        <ul style="margin-bottom: 0;">
+            <li><a href="https://decodinggenomes.org/">Stadler et al. (2024) "Decoding Genomes"</a> - Chapter 3.2 (Multiple sequence alignments), Chapter 3.3 (From reads to genomes)</li>
+        </ul>
+        <strong>Optional (more algorithmic detail):</strong>
         <ul style="margin-bottom: 0;">
             <li>Durbin et al. (1998) "Biological Sequence Analysis" - Chapter 6</li>
             <li>Thompson et al. (1994) "CLUSTALW" - Nature Protocols</li>
