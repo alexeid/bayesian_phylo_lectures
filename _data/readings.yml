@@ -1,0 +1,101 @@
+# Master lecture-to-chapter mapping for Decoding Genomes (Stadler et al., 2024)
+#
+# Principle:
+#   - biosci700.html lists WHOLE chapters as weekly reading
+#   - Slides and notes highlight SPECIFIC sections (and must match each other)
+
+lectures:
+  - id: L1
+    title: "Darwin's Computer"
+    directory: lecture-darwins-computer
+    dg_sections: ["1"]
+    week: 2
+
+  - id: L2
+    title: "Homology and Alignment"
+    directory: lecture-homology
+    dg_sections: ["3.1", "5.3.1"]
+    week: 2
+
+  - id: L3
+    title: "Multiple Sequence Alignment"
+    directory: lecture-msa
+    dg_sections: ["3.2", "3.3"]
+    week: 3
+
+  - id: L4
+    title: "Phylogenetics"
+    directory: lecture-phylogenetics
+    dg_sections: ["6.1", "6.2", "6.3.1"]
+    week: 3
+
+  - id: L5
+    title: "Parsimony"
+    directory: lecture-parsimony
+    dg_sections: ["6.3.2"]
+    week: 4
+
+  - id: L6
+    title: "Model-based Phylogenetic Inference"
+    directory: lecture-substitution-models
+    dg_sections: ["5", "6.3.3"]
+    week: 4
+
+  - id: L7
+    title: "Bayesian Inference"
+    directory: lecture-bayesian-inference
+    dg_sections: ["10"]
+    week: 5
+
+  - id: L8
+    title: "Bayesian Phylogenetic Inference"
+    directory: lecture-bayesian-phylogenetics
+    dg_sections: ["10"]
+    week: 5
+
+  - id: L9
+    title: "Time-trees and Relaxed Phylogenetics"
+    directory: lecture-relaxed-phylogenetics
+    dg_sections: ["6.4"]
+    week: 9
+    note: "poor coverage in DG"
+
+  - id: L10
+    title: "The Coalescent"
+    directory: lecture-coalescent
+    dg_sections: ["9.2"]
+    week: 9
+
+  - id: L11-13
+    title: "Traits and Comparative Methods"
+    dg_sections: ["8"]
+    week: 10
+
+weekly_reading:
+  - week: 1
+    chapters: ["1"]
+    note: "Background reading before lectures begin"
+
+  - week: 2
+    chapters: ["3"]
+    lectures: [L1, L2]
+
+  - week: 3
+    chapters: ["6"]
+    lectures: [L3, L4]
+
+  - week: 4
+    chapters: ["5"]
+    lectures: [L5, L6]
+
+  - week: 5
+    chapters: ["10"]
+    lectures: [L7, L8]
+
+  - week: 9
+    chapters: ["6.4", "9"]
+    lectures: [L9, L10]
+
+  - week: 10
+    chapters: ["8"]
+    lectures: [L11-13]
