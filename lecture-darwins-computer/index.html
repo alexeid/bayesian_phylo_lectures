@@ -5,16 +5,355 @@ reveal:
     history: true
 ---
 
+<!-- Slide 1: Visual opener - Darwin portrait + Origin illustration -->
 <section>
     <h2>Darwin's Computer</h2>
 
    <div style="width:40%;float:left;top:2em;">
             <img data-src="Charles_Darwin_by_G_Richmond.jpg">
    </div>
-   
+
    <div style="margin-left:40%;width:60%;top:2em;">
             <img data-src="Origin_of_Species.svg">
    </div>
 
-   
+   <p style="font-size:0.6em; clear:both; margin-top:0.5em">
+       Detail from the only illustration in the <i>Origin of Species</i> (Darwin, 1859)
+   </p>
+</section>
+
+<!-- Slide 2: Tree of Life -->
 <section>
+    <img data-src="treeOfLife_evogeneao.png" style="width:90%">
+</section>
+
+<!-- Slide 3: Descent with modification -->
+<section>
+    <img data-src="descentWithModification.png" style="width:90%">
+</section>
+
+<!-- Slide 4: 15 trees of 4 taxa -->
+<section>
+    <img data-src="15trees4taxa.png" style="width:90%">
+</section>
+
+<!-- Slide 5: 105 trees of 5 taxa -->
+<section>
+    <img data-src="105trees5taxa.png" style="width:90%">
+</section>
+
+<!-- Slide 6: 945 trees of 6 taxa -->
+<section>
+    <img data-src="945trees6taxa.png" style="width:90%">
+</section>
+
+<!-- Slide 7: How many trees are there? -->
+<section>
+    <h2>How many trees are there?</h2>
+
+    <table class="noborders" style="font-size:0.9em; border-collapse:collapse">
+    <tr><td style="border-bottom: solid 1px; border-top: solid 1px;">$n$</td><td style="border-bottom: solid 1px; border-top: solid 1px;">#trees</td><td style="border-bottom: solid 1px; border-top: solid 1px;"></td></tr>
+    <tr><td>4</td><td>15</td><td>enumerable by hand</td></tr>
+    <tr><td>5</td><td>105</td><td>enumerable by hand on a rainy day</td></tr>
+    <tr><td>6</td><td>945</td><td>enumerable by computer</td></tr>
+    <tr><td>7</td><td>10395</td><td>still searchable very quickly on computer</td></tr>
+    <tr><td>8</td><td>135135</td><td>about the number of hairs on your head</td></tr>
+    <tr><td>9</td><td>2027025</td><td>greater than the population of Auckland</td></tr>
+    <tr><td>10</td><td>34459425</td><td>$\approx$ upper limit for exhaustive search</td></tr>
+    <tr><td>20</td><td>$8.2 \times 10^{21}$</td><td>$\approx$ upper limit of branch-and-bound searching</td></tr>
+    <tr><td>48</td><td>$3.21 \times 10^{70}$</td><td>$\approx$ the number of particles in the Universe</td></tr>
+    <tr><td style="border-bottom: solid 1px;">136</td><td style="border-bottom: solid 1px;">$2.11 \times 10^{267}$</td><td style="border-bottom: solid 1px;">number of trees to choose from in the &ldquo;Out of Africa&rdquo; data (Vigilant <i>et al.</i> 1991)</td></tr>
+    </table>
+</section>
+
+<!-- Slide 8: Computing Darwin's Tree of Life -->
+<section>
+    <h2>Computing Darwin's Tree of Life</h2>
+
+    <img data-src="../common/images/treeoflife.jpg" style="width:45%">
+</section>
+
+<!-- Slide 9: Bayesian reconstruction of phylogenetic trees -->
+<section>
+    <h2>Bayesian reconstruction of phylogenetic trees</h2>
+    <p style="font-size:0.7em; text-align:center"><a class="cite">Yang &amp; Rannala (1997), Mau, Newton &amp; Larget (1998)</a></p>
+
+    <div style="margin-top:0.5em; text-align:left; width:85%; margin-left:7.5%">
+        <p>What we really want is the <b>probability of the tree</b> given the data.</p>
+
+        <p>We can compute that from the likelihood using <b>Bayes Theorem</b>:</p>
+    </div>
+
+    <img data-src="../common/images/PosteriorProbability.svg" style="width:65%; margin-top:0.5em">
+
+    <div style="margin-top:0.5em; text-align:left; width:85%; margin-left:7.5%; font-size:0.9em">
+        <p>This is known as the <b>Posterior probability</b> of the tree. Using the
+        <b>Markov chain Monte Carlo algorithm</b> we can produce a sample
+        of trees that have high posterior probability.</p>
+    </div>
+</section>
+
+<!-- Slide 10: The posterior distribution on Darwin's Finches -->
+<section>
+    <h2>The posterior distribution on Darwin's Finches</h2>
+
+    <img data-src="../common/images/FinchPosteriorPNG.png" style="width:45%">
+
+    <p style="font-size:0.7em; margin-top:0.5em; text-align:left; width:85%; margin-left:7.5%">
+        This posterior probability distribution was computed using
+        <b>Markov chain Monte Carlo</b> implemented in the <b>BEAST</b>
+        software package (Drummond <i>et al</i>, 2012).
+    </p>
+</section>
+
+<!-- Slide 11: The posterior distribution of larger trees -->
+<section>
+    <h2>The posterior distribution of larger trees</h2>
+
+    <img data-src="../common/images/densitreespace.png" style="width:70%">
+
+    <p style="font-size:0.7em; margin-top:0.5em">
+        <a class="cite">Produced using DensiTree (Bouckaert, 2012)</a>
+    </p>
+</section>
+
+<!-- Slide 12: Elaborations of the phylogenetic model -->
+<section>
+    <h2>Elaborations of the phylogenetic model</h2>
+
+    <div style="text-align:left; width:85%; margin-left:7.5%; margin-top:1em">
+        <p>Basic model: (posterior proportional to likelihood &times; prior)</p>
+        $$p(T|D) \propto \Pr(D|T) \; p(T)$$
+
+        <p style="margin-top:1em">Substitution model:</p>
+        $$p(T,\color{green}{Q}|D) \propto \Pr(D|T,\color{green}{Q}) \; p(T) \; \color{green}{p(Q)}$$
+
+        <p style="margin-top:1em">Substitution model and tree branching process prior:</p>
+        $$p(T,\color{green}{Q},\color{blue}{\Theta}|D) \propto \Pr(D|T,\color{green}{Q}) \; p(T|\color{blue}{\Theta}) \; \color{green}{p(Q)} \; \color{blue}{p(\Theta)}$$
+    </div>
+</section>
+
+<!-- Slide 13: Evolution is happening right now -->
+<section>
+    <h2>Elaborations of the model: Evolution is happening right now!</h2>
+
+    <p style="font-size:0.7em; text-align:center">Modelling phylogenetic data sampled through time</p>
+    <p style="font-size:0.6em; text-align:center"><a class="cite">Drummond and Rodrigo (2000), Drummond <i>et al</i> (2002)</a></p>
+
+    <div style="float:left; width:65%">
+        <img data-src="../common/images/serialTree.png" style="width:100%">
+    </div>
+
+    <div style="margin-left:67%; width:30%; text-align:left; font-size:0.8em; margin-top:1em">
+        <ul class="spaced">
+            <li>Rapidly evolving microbes</li>
+            <li>Ancient DNA</li>
+            <li>Cancer</li>
+            <li>Somatic evolution</li>
+            <li>Languages</li>
+            <li><i>et cetera</i></li>
+        </ul>
+    </div>
+
+    <div style="clear:both; margin-top:0.5em">
+        $$p(T,\color{green}{Q},\color{blue}{\Theta},\color{red}{\mu}|D) \propto \Pr\{D|\color{red}{\mu} T,\color{green}{Q}\} \; p(T|\color{blue}{\Theta}) \; \color{green}{p(Q)} \; \color{blue}{p(\Theta)} \; \color{red}{p(\mu)}$$
+    </div>
+</section>
+
+<!-- Slide 14: A calibrated phylogenetic inference -->
+<section>
+    <h2>A calibrated phylogenetic inference</h2>
+    <p style="font-size:0.6em; text-align:center"><a class="cite">Origin of the HIV epidemic in the Americas, Gilbert <i>et al</i> (2007)</a></p>
+
+    <img data-src="../common/images/2007Gilbert_Figure2.png" style="width:60%">
+
+    <p style="font-size:0.65em; margin-top:0.5em; text-align:left; width:85%; margin-left:7.5%">
+        A phylogenetic reconstruction of samples of HIV-1 virus. Each tip represents
+        a single infected individual from whom a blood sample has been taken.
+    </p>
+</section>
+
+<!-- Slide 15: BEAST software -->
+<section>
+    <img data-src="beastSoftware.png" style="width:90%">
+</section>
+
+<!-- Slide 16: Phylodynamics -->
+<section>
+    <img data-src="phylodynamics.png" style="width:90%">
+</section>
+
+<!-- Slide 17: Coalescent theory -->
+<section>
+    <h2>Coalescent theory: $p(g|\Theta)$</h2>
+
+    <div style="position:relative; display:inline-block; width:65%">
+        <img data-src="../common/images/coalescentTheory.JPG" style="width:100%">
+        <span style="position:absolute; left:12.5%; top:12.5%; font-size:1.5em; color:blue; font-style:italic">$\Theta$</span>
+        <span style="position:absolute; left:12.5%; top:87.5%; font-size:1.5em; font-style:italic; transform:translateY(-100%)">$g$</span>
+    </div>
+
+    <div style="margin-top:0.3em">
+        $$p(g,\color{green}{Q},\color{blue}{\Theta}|D) \propto \Pr\{D|\mu g,\color{green}{Q}\} \; p(g|\color{blue}{\Theta}) \; \color{green}{p(Q)} \; \color{blue}{p(\Theta)}$$
+    </div>
+</section>
+
+<!-- Slide 18: mtDNA and population size -->
+<section>
+    <h2>Mitochondrial DNA Variation Predicts Population Size in Humans</h2>
+
+    <img data-src="../common/images/mtDNAHumanCoalescent.jpg" style="width:66%">
+
+    <p style="font-size:0.6em; margin-top:0.5em">
+        <a class="cite">Atkinson, Gray and Drummond, 2008, Molecular Biology and Evolution</a>
+    </p>
+</section>
+
+<!-- Slide 19: Seasonal flu outbreaks -->
+<section>
+    <img data-src="seasonalFlu.png" style="width:90%">
+</section>
+
+<!-- Slide 20: Influenza global dynamics -->
+<section>
+    <img data-src="influenzaGlobalDynamics.png" style="width:90%">
+</section>
+
+<!-- Slide 21: Trees inside trees -->
+<section>
+    <img data-src="treesInsideTrees.png" style="width:90%">
+</section>
+
+<!-- Slide 22: Multispecies coalescent -->
+<section>
+    <img data-src="multispeciesCoalescent.png" style="width:90%">
+</section>
+
+<!-- Slide 23: HIV genealogical dynamics -->
+<section>
+    <img data-src="hivGenealogicalDynamics.png" style="width:90%">
+</section>
+
+<!-- Slide 24: Pathogen evolution inside transmission trees -->
+<section>
+    <img data-src="transmissionTrees.png" style="width:90%">
+</section>
+
+<!-- Slide 25: Phylogenies and the fossil record -->
+<section>
+    <img data-src="phylogeniesFossilRecord.png" style="width:90%">
+</section>
+
+<!-- Slide 26: Total evidence fossil dating -->
+<section>
+    <h2>Total evidence fossil dating</h2>
+
+    <ul class="spaced" style="margin-top:5%; width:80%">
+        <li>We have
+            <ul class="spaced" style="margin-top:0.5em; margin-left:1.5em">
+                <li><b>molecular data</b> of extant species</li>
+                <li><b>morphological data</b> of extant and <b>extinct</b> species</li>
+                <li><b>fossil ages</b> (or geological time intervals)</li>
+            </ul>
+        </li>
+        <li>We want to use all this data to learn about <b>evolutionary history</b>
+            and <b>macroevolutionary processes</b></li>
+        <li><b>Bayesian statistical inference</b> is our preferred method for
+            learning about the world.</li>
+    </ul>
+</section>
+
+<!-- Slide 27: FBD model 1 -->
+<section>
+    <img data-src="fbdModel1.png" style="width:90%">
+</section>
+
+<!-- Slide 28: FBD model 2 -->
+<section>
+    <img data-src="fbdModel2.png" style="width:90%">
+</section>
+
+<!-- Slide 29: Computer models of DNA and fossils -->
+<section>
+    <img data-src="computerModelsDNAFossils.png" style="width:90%">
+</section>
+
+<!-- Slide 30: Homo naledi -->
+<section>
+    <img data-src="homoNaledi.png" style="width:90%">
+</section>
+
+<!-- Slide 31: Can we date fossils using Bayesian phylogenetics? -->
+<section>
+    <h2>Can we date fossils using Bayesian phylogenetics?</h2>
+
+    <ul class="spaced" style="margin-top:3%; width:80%">
+        <li>Given
+            <ul class="spaced" style="margin-top:0.5em; margin-left:1.5em">
+                <li>A reference set of fossils of known age, and</li>
+                <li>A morphological characterization for reference fossils, and</li>
+                <li>The FBD model of sampled ancestor trees</li>
+                <li>A &ldquo;clock-like&rdquo; model of morphological evolution</li>
+                <li>A morphological characterization of a related focal fossil of unknown age</li>
+            </ul>
+        </li>
+        <li><b>Can the age of the focal fossil be estimated using Bayesian phylogenetic inference?</b></li>
+        <li style="font-size:0.85em">I tested this hypothesis on a penguin data set including 36 penguin fossils under a simple model of morphological evolution (M1) and a complex model (M8).</li>
+    </ul>
+</section>
+
+<!-- Slide 32: Estimating the phylogenetic age of a fossil -->
+<section>
+    <img data-src="fossilAgeScatter.png" style="width:90%">
+</section>
+
+<!-- Slide 33: Marginal posteriors -->
+<section>
+    <img data-src="marginalPosteriors.png" style="width:90%">
+</section>
+
+<!-- Slide 34: 123 Canid fossils -->
+<section>
+    <img data-src="canidFossils.png" style="width:90%">
+</section>
+
+<!-- Slide 35: Ardipithecus ramidus -->
+<section>
+    <img data-src="ardipithecus.png" style="width:90%">
+</section>
+
+<!-- Slide 36: Ardi phylogeny -->
+<section>
+    <img data-src="ardiPhylogeny.png" style="width:90%">
+</section>
+
+<!-- Slide 37: Final Perspectives -->
+<section>
+    <h2>Final Perspectives</h2>
+
+    <ul class="spaced" style="margin-top:3%; width:85%">
+        <li><b>Evolutionary biology has become a multidisciplinary analytical
+            science</b>, with major input from computer scientists, statisticians,
+            mathematicians and physicists.</li>
+        <li><b>Evolutionary biology is not just an historical science</b>. Rapidly
+            evolving natural systems, low-cost high-throughput sequencing
+            and high-throughput automated experimental evolution platforms,
+            all add up to the potential to close the loop between experimental
+            and theoretical evolutionary biology.</li>
+        <li><b>A common set of evolutionary modelling principles can inform</b>
+            us on diverse questions including human population history,
+            the spread of viral epidemics and the age of fossils.</li>
+    </ul>
+</section>
+
+<!-- Recommended Reading -->
+<section>
+    <h3>Recommended Reading</h3>
+
+    <div class="textbox" style="width: 80%; margin-left:10%; margin-top:2em">
+        <div class="title"><a href="https://decodinggenomes.org/" style="color:inherit; text-decoration:underline">Decoding Genomes</a> (Stadler et al., 2024)</div>
+        <ul class="spaced" style="margin-top:1em; margin-left:1em">
+            <li><b>Chapter 1</b>: Introduction</li>
+        </ul>
+    </div>
+</section>
