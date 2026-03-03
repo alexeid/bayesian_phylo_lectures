@@ -42,3 +42,8 @@ defaults:
                 mouseWheel: true
                 slideNumber: false
                 transition: none
+
+lecture_homes:
+  biosci700:
+    url: "/bayesian_phylo_lectures/biosci700.html"
+    label: "BIOSCI 700"

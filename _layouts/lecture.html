@@ -52,18 +52,14 @@
         {% for url in page.scripts %}
             <script src="{{url}}"></script>
         {% endfor %}
+        <script>var LECTURE_HOMES = {{ site.lecture_homes | jsonify }};</script>
+        <script src="{{site.baseurl}}/js/lecture-home.js"></script>
 	</head>
 
 	<body>
 		<div class="reveal">
-			<a href="{{site.baseurl}}/" id="home-button" title="Back to lectures"
+			<a href="{{site.baseurl}}/" id="home-button" data-home-link data-home-label title="Back to lectures"
 			   style="position:fixed; bottom:12px; left:12px; z-index:30; font-size:24px; color:rgba(100,100,100,0.5); text-decoration:none;">&#x1F3E0;</a>
-			<script>
-				(function() {
-					var home = sessionStorage.getItem('lectureHome');
-					if (home) document.getElementById('home-button').href = home;
-				})();
-			</script>
 			<div class="slides">
 
                 <section class="titlepage center">

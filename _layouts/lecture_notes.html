@@ -444,6 +444,8 @@
             transition: width 0.3s;
         }
     </style>
+    <script>var LECTURE_HOMES = {{ site.lecture_homes | jsonify }};</script>
+    <script src="{{site.baseurl}}/js/lecture-home.js"></script>
 </head>
 <body>
     <div class="progress-bar" id="progressBar"></div>
@@ -451,10 +453,10 @@
     <nav>
         <div class="nav-container">
             <div class="nav-title">
-                <a href="{{ site.baseurl }}/" style="text-decoration: none; color: inherit;">{{ site.title | default: "Computational Biology" }}</a>
+                <a href="{{ site.baseurl }}/" data-home-link data-home-label style="text-decoration: none; color: inherit;">{{ site.title | default: "Computational Biology" }}</a>
             </div>
             <div class="nav-links">
-                <a href="{{ site.baseurl }}/">Home</a>
+                <a href="{{ site.baseurl }}/" data-home-link data-home-label>Home</a>
                 <a href="{{ site.baseurl }}/#introduction">Introduction</a>
                 <a href="{{ site.baseurl }}/#bayesian">Bayesian</a>
                 <a href="{{ site.baseurl }}/#advanced">Advanced</a>
@@ -465,13 +467,7 @@
     <div class="container">
         <!-- Breadcrumb navigation -->
         <div class="breadcrumb">
-            <a href="{{ site.baseurl }}/" id="home-link">Home</a>
-            <script>
-                (function() {
-                    var home = sessionStorage.getItem('lectureHome');
-                    if (home) document.getElementById('home-link').href = home;
-                })();
-            </script>
+            <a href="{{ site.baseurl }}/" data-home-link data-home-label>Home</a>
             <span>›</span>
             <a href="{{ site.baseurl }}/#{{ page.section }}">{{ page.section_name | default: page.section }}</a>
             <span>›</span>
