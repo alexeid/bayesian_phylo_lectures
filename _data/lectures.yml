@@ -68,6 +68,24 @@
   lecturer: Alexei Drummond
   section: bayesian_phylo
 -
+  title: Phylogenetic Comparative Methods
+  folder: lecture-comparative-methods
+  lecturer: Alexei Drummond
+  slide_credit: Based on material by Matthew S. Fullmer
+  section: comparative
+-
+  title: Brownian Motion and Comparative Methods
+  folder: lecture-brownian-motion
+  lecturer: Alexei Drummond
+  slide_credit: Based on material by Matthew S. Fullmer
+  section: comparative
+-
+  title: Beyond Brownian Motion
+  folder: lecture-beyond-brownian
+  lecturer: Alexei Drummond
+  slide_credit: Based on material by Matthew S. Fullmer
+  section: comparative
+-
   title: Phylodynamics and the coalescent
   folder: lecture-skyline
   lecturer: Alexei Drummond

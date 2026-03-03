@@ -1,0 +1,29 @@
+<!-- Spare slides removed from lecture-substitution-models/index.html -->
+
+<!-- Least-squares Phylogenetic Inference
+     Removed: duplicates content in lecture-phylogenetics -->
+<section>
+    <h2>Least-squares Phylogenetic Inference</h2>
+
+    <div>
+        <div style="display:inline-block;width:45%;vertical-align:middle">
+            <ul>
+                <li>Can use genetic distance as the basis for least-squares-based phylogenetic inference.</li>
+                <li>Define cost of tree as the (weighted) sum of the squares of the
+                difference between the genetic distance on the tree and the
+                distance estimated from the sequence alignment:
+                $$C(T) = \sum_i\sum_j w_{ij}(d_{ij}(T)-\hat{d}_{ij})^2$$ </li>
+                <li>Search for tree $T$ with lowest $C(T)$.</li>
+            </ul>
+        </div>
+        <div style="display:inline-block;width:45%;vertical-align:middle">
+            <img data-src="lsq.svg" style="width:100%">
+        </div>
+    </div>
+
+    <p style="margin-top:0">Comments:
+    <ul>
+        <li>Ignores correlations due to shared ancestry.</li>
+        <li>Consistent estimator: converges to truth in the limit of infinitely long alignment.</li>
+    </ul></p>
+</section>

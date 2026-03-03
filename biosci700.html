@@ -541,6 +541,10 @@ layout: null
                 <span class="week-date">Begins 9 March</span>
             </div>
             <div class="week-content">
+                <div class="reading-item">
+                    <i class="fas fa-book-open"></i>
+                    Required Reading: <a href="https://decodinggenomes.org/" target="_blank">Decoding Genomes</a> &mdash; Chapter 3: Sequence Alignments
+                </div>
                 <div class="session">
                     <div class="session-time"><i class="fas fa-chalkboard-teacher"></i> Tuesday 1&ndash;3pm</div>
                     <ul class="session-items">
@@ -589,6 +593,10 @@ layout: null
                 <span class="week-date">Begins 16 March</span>
             </div>
             <div class="week-content">
+                <div class="reading-item">
+                    <i class="fas fa-book-open"></i>
+                    Required Reading: <a href="https://decodinggenomes.org/" target="_blank">Decoding Genomes</a> &mdash; Chapter 6: Phylogenetic Trees
+                </div>
                 <div class="session">
                     <div class="session-time"><i class="fas fa-chalkboard-teacher"></i> Tuesday 1&ndash;3pm</div>
                     <ul class="session-items">
@@ -640,6 +648,10 @@ layout: null
                 <span class="week-date">Begins 23 March</span>
             </div>
             <div class="week-content">
+                <div class="reading-item">
+                    <i class="fas fa-book-open"></i>
+                    Required Reading: <a href="https://decodinggenomes.org/" target="_blank">Decoding Genomes</a> &mdash; Chapter 5: Molecular Evolution
+                </div>
                 <div class="session">
                     <div class="session-time"><i class="fas fa-chalkboard-teacher"></i> Tuesday 1&ndash;3pm</div>
                     <ul class="session-items">
@@ -683,6 +695,10 @@ layout: null
                 <span class="week-date">Begins 30 March</span>
             </div>
             <div class="week-content">
+                <div class="reading-item">
+                    <i class="fas fa-book-open"></i>
+                    Required Reading: <a href="https://decodinggenomes.org/" target="_blank">Decoding Genomes</a> &mdash; Chapter 10: Bayesian Inference
+                </div>
                 <div class="session">
                     <div class="session-time"><i class="fas fa-chalkboard-teacher"></i> Tuesday 1&ndash;3pm</div>
                     <ul class="session-items">
@@ -790,6 +806,10 @@ layout: null
                 <span class="week-date">Begins 11 May</span>
             </div>
             <div class="week-content">
+                <div class="reading-item">
+                    <i class="fas fa-book-open"></i>
+                    Required Reading: <a href="https://decodinggenomes.org/" target="_blank">Decoding Genomes</a> &mdash; Chapter 9: Phylodynamics
+                </div>
                 <div class="session">
                     <div class="session-time"><i class="fas fa-chalkboard-teacher"></i> Tuesday 1&ndash;3pm</div>
                     <ul class="session-items">
@@ -833,13 +853,22 @@ layout: null
                 <span class="week-date">Begins 18 May</span>
             </div>
             <div class="week-content">
+                <div class="reading-item">
+                    <i class="fas fa-book-open"></i>
+                    Required Reading: <a href="https://decodinggenomes.org/" target="_blank">Decoding Genomes</a> &mdash; Chapter 8: Traits and Comparative Methods
+                </div>
                 <div class="session">
                     <div class="session-time"><i class="fas fa-chalkboard-teacher"></i> Tuesday 1&ndash;3pm</div>
                     <ul class="session-items">
                         <li class="session-item">
                             <div>
                                 <span class="lecture-num">L11</span>
-                                <span class="lecture-unavailable">Phylogenetic Comparative Methods</span>
+                                {% assign found_l11 = false %}
+                                {% for page in site.pages %}{% if page.url == "/lecture-comparative-methods/" %}{% assign found_l11 = true %}{% endif %}{% endfor %}
+                                {% if found_l11 %}<a href="{{site.baseurl}}/lecture-comparative-methods/" class="lecture-title">Phylogenetic Comparative Methods</a>{% else %}<span class="lecture-unavailable">Phylogenetic Comparative Methods</span>{% endif %}
+                            </div>
+                            <div class="lecture-links">
+                                {% if found_l11 %}<a href="{{site.baseurl}}/lecture-comparative-methods/" class="lecture-link slides-link">Slides</a>{% endif %}
                             </div>
                         </li>
                     </ul>
@@ -854,13 +883,22 @@ layout: null
                 <span class="week-date">Begins 25 May</span>
             </div>
             <div class="week-content">
+                <div class="reading-item">
+                    <i class="fas fa-book-open"></i>
+                    Required Reading: Uyeda et al. (2018) &mdash; Rethinking phylogenetic comparative methods
+                </div>
                 <div class="session">
                     <div class="session-time"><i class="fas fa-chalkboard-teacher"></i> Tuesday 1&ndash;3pm</div>
                     <ul class="session-items">
                         <li class="session-item">
                             <div>
                                 <span class="lecture-num">L12</span>
-                                <span class="lecture-unavailable">Phylogenetic Comparative Methods</span>
+                                {% assign found_l12 = false %}
+                                {% for page in site.pages %}{% if page.url == "/lecture-brownian-motion/" %}{% assign found_l12 = true %}{% endif %}{% endfor %}
+                                {% if found_l12 %}<a href="{{site.baseurl}}/lecture-brownian-motion/" class="lecture-title">Brownian Motion and Comparative Methods</a>{% else %}<span class="lecture-unavailable">Brownian Motion and Comparative Methods</span>{% endif %}
+                            </div>
+                            <div class="lecture-links">
+                                {% if found_l12 %}<a href="{{site.baseurl}}/lecture-brownian-motion/" class="lecture-link slides-link">Slides</a>{% endif %}
                             </div>
                         </li>
                     </ul>
@@ -881,7 +919,12 @@ layout: null
                         <li class="session-item">
                             <div>
                                 <span class="lecture-num">L13</span>
-                                <span class="lecture-unavailable">Phylogenetic Comparative Methods</span>
+                                {% assign found_l13 = false %}
+                                {% for page in site.pages %}{% if page.url == "/lecture-beyond-brownian/" %}{% assign found_l13 = true %}{% endif %}{% endfor %}
+                                {% if found_l13 %}<a href="{{site.baseurl}}/lecture-beyond-brownian/" class="lecture-title">Beyond Brownian Motion</a>{% else %}<span class="lecture-unavailable">Beyond Brownian Motion</span>{% endif %}
+                            </div>
+                            <div class="lecture-links">
+                                {% if found_l13 %}<a href="{{site.baseurl}}/lecture-beyond-brownian/" class="lecture-link slides-link">Slides</a>{% endif %}
                             </div>
                         </li>
                     </ul>

@@ -1,0 +1,271 @@
+---
+lecture_num: 11
+---
+
+<section class="center">
+    <h2>Model Selection</h2>
+</section>
+
+<section>
+    <h3>Fitting statistical models to data</h3>
+
+    <ul class="spaced" style="width:80%">
+        <li>Broadly, <b>parameter estimation</b> is more informative than test-statistics (i.e., $p$-values).
+            <ul>
+                <li>Rejecting null hypotheses is rarely interesting in biology &mdash; the null is often obviously false.</li>
+            </ul>
+        </li>
+
+        <li>Recall that the likelihood is:
+            $$L(H|D) = P(D|H)$$
+        </li>
+
+        <li>In an ML framework, the hypothesis with the highest probability of having generated the data is preferred.</li>
+
+        <li>ML will not always return accurate parameter estimates, even when the data is generated under the actual model.
+            <ul>
+                <li>As with all estimators, ML improves with more data.</li>
+            </ul>
+        </li>
+    </ul>
+</section>
+
+<section>
+    <h3>Likelihood Ratio Test</h3>
+
+    <ul class="spaced" style="width:80%">
+        <li>Can only compare two <b>nested</b> models &mdash; one must be a special case of the other.</li>
+
+        <li>Test statistic: $\Delta = 2(\ln L_1 - \ln L_0)$, where $L_1$ is the more complex model.</li>
+
+        <li>Under the null hypothesis, $\Delta \sim \chi^2_k$ where $k$ is the difference in number of parameters.</li>
+
+        <li>Limitations:
+            <ul>
+                <li>Results can depend on the order in which tests are carried out.</li>
+                <li>Can struggle with complex models with many parameters.</li>
+                <li>Cannot compare non-nested models.</li>
+            </ul>
+        </li>
+    </ul>
+</section>
+
+<section>
+    <h3>Akaike Information Criterion (AIC)</h3>
+
+    <ul class="spaced" style="width:80%">
+        <li>AIC balances model fit against model complexity:
+            $$\text{AIC} = 2k - 2\ln L$$
+            where $k$ is the number of estimated parameters.
+        </li>
+
+        <li>AIC assumes that reality is more complex than any of our models &mdash; the goal is to identify the model that most efficiently captures the important patterns in the data.</li>
+
+        <li>Lower AIC is better.</li>
+
+        <li>For small sample sizes, use the corrected version:
+            $$\text{AIC}_c = \text{AIC} + \frac{2k(k+1)}{n-k-1}$$
+            AIC$_c$ is recommended for general use over generic AIC.
+        </li>
+    </ul>
+</section>
+
+<section>
+    <h3>AIC weights</h3>
+
+    <ul class="spaced" style="width:80%">
+        <li><b>AIC weights</b> provide a more interpretable way to use AIC outputs.</li>
+
+        <li>For model $i$ in a set of $R$ candidate models:
+            $$w_i = \frac{e^{-\Delta_i/2}}{\sum_{r=1}^{R} e^{-\Delta_r/2}}$$
+            where $\Delta_i = \text{AIC}_i - \text{AIC}_{\min}$.
+        </li>
+
+        <li>Can be interpreted as an estimate of the probability that model $i$ is the best model in the set.</li>
+
+        <li>Modern phylogenetic software frequently calculates AIC for model selection (e.g., ModelFinder in IQ-TREE).</li>
+    </ul>
+</section>
+
+<section>
+    <h3>Bayes Factors</h3>
+
+    <ul class="spaced" style="width:80%">
+        <li>From posterior distributions, models can be compared using <b>Bayes Factors</b>:
+            $$B_{12} = \frac{P(D|H_1)}{P(D|H_2)}$$
+        </li>
+
+        <li>Bayes Factors are ratios of <b>marginal likelihoods</b> $P(D|H)$ &mdash; the probability of the data averaged over all possible parameter values (weighted by the prior).</li>
+
+        <li>This integrates over all possible parameter values rather than comparing models only at their best-fit parameters (as ML does).</li>
+
+        <li>Tends to favour simpler models than AIC &mdash; assumes the true model is among those tested.</li>
+    </ul>
+</section>
+
+<section>
+    <h3>Model selection: summary</h3>
+
+    <table style="font-size:0.75em">
+        <tr>
+            <th>Method</th>
+            <th>Compares</th>
+            <th>Key assumption</th>
+        </tr>
+        <tr>
+            <td>Likelihood Ratio Test</td>
+            <td>Nested models only</td>
+            <td>Null model is true</td>
+        </tr>
+        <tr>
+            <td>AIC / AIC$_c$</td>
+            <td>Any models</td>
+            <td>Truth is more complex than any model</td>
+        </tr>
+        <tr>
+            <td>Bayes Factors</td>
+            <td>Any models</td>
+            <td>True model is among candidates</td>
+        </tr>
+    </table>
+
+    <ul class="spaced" style="margin-top:1.5em; width:80%">
+        <li>AIC and Bayes Factors can disagree &mdash; Bayes Factors may prefer a simpler model.</li>
+        <li>All methods assume good data and correctly specified candidate models.</li>
+    </ul>
+</section>
+
+<section class="center">
+    <h2>Phylogenetic Comparative Methods</h2>
+</section>
+
+<section>
+    <h3>What are comparative methods?</h3>
+
+    <ul class="spaced" style="width:80%">
+        <li>Comparing traits across species &mdash; often looking for correlations or causal relationships.
+            <ul>
+                <li>e.g., two phenotypes across multiple species</li>
+                <li>e.g., a phenotype against environment</li>
+            </ul>
+        </li>
+
+        <li>Simply plotting traits against each other assumes samples are <b>independent</b> and from the same distribution.</li>
+
+        <li>But species sharing a phylogeny are <b>not independent</b> &mdash; closely related species tend to be similar due to shared ancestry.</li>
+
+        <li>We need methods that account for the phylogenetic relationships among species.</li>
+    </ul>
+</section>
+
+<section>
+    <h3>The problem of shared ancestry</h3>
+
+    <ul class="spaced" style="width:80%">
+        <li>Consider 8 taxa: they may seem like 8 independent samples.</li>
+
+        <li>But if they fall into two clades of 4, they are more like <b>4 independent samples</b> (or even 2).</li>
+
+        <li>Treating them as independent can be misleading:
+            <ul>
+                <li>Significance tests are more likely to report significance with 8 points than 4.</li>
+            </ul>
+        </li>
+
+        <li><b>Worst case</b>: two deep lineages, each with many species.
+            <ul>
+                <li>Sample all you want &mdash; you effectively have <b>two data points</b>, not 40.</li>
+                <li>It doesn't matter which species you selected within each lineage.</li>
+            </ul>
+        </li>
+    </ul>
+</section>
+
+<section>
+    <h3>Felsenstein's Phylogenetically Independent Contrasts</h3>
+
+    <ul class="spaced" style="width:80%">
+        <li>Joseph Felsenstein (1985) introduced <b>Phylogenetically Independent Contrasts</b> (PIC) to address non-independence.</li>
+
+        <li>The key insight: species on a shared phylogeny are not necessarily independent, so we must account for phylogeny in our comparative methods.</li>
+
+        <li>This is always a risk <b>except</b> when:
+            <blockquote style="font-size:0.8em">
+                "characters respond essentially instantaneously to natural selection in the current environment,
+                so that phylogenetic inertia is essentially absent." &mdash; Felsenstein (1985)
+            </blockquote>
+        </li>
+    </ul>
+</section>
+
+<section>
+    <h3>How PIC works</h3>
+
+    <ul class="spaced" style="width:80%">
+        <li>Assumes traits are evolving via <b>Brownian motion</b> on the phylogeny.</li>
+
+        <li>Under this model, pairs of sister taxa provide independent samples of evolutionary change.</li>
+
+        <li>Algorithm:
+            <ol>
+                <li>Take a pair of sister tips and calculate a <b>contrast</b> (difference in trait values).</li>
+                <li>Standardise by dividing by the square root of the sum of their branch lengths.</li>
+                <li>Prune those tips and replace with a new tip at their ancestor, with an estimated trait value.</li>
+                <li>Repeat until no more contrasts can be calculated.</li>
+            </ol>
+        </li>
+
+        <li>The resulting contrasts are independent and can be used in standard statistical tests.</li>
+    </ul>
+</section>
+
+<section>
+    <h3>PIC: assumptions and limitations</h3>
+
+    <ul class="spaced" style="width:80%">
+        <li>Assumes traits evolve by <b>Brownian motion</b> &mdash; how reasonable is this?</li>
+
+        <li>Assumes the phylogeny is <b>known without error</b>.</li>
+
+        <li>Assumes the model of evolution (branch lengths, topology) is correct.</li>
+
+        <li>Despite limitations, PIC was a foundational advance:
+            <ul>
+                <li>Showed that ignoring phylogeny can lead to seriously misleading conclusions.</li>
+                <li>Opened the field of <b>phylogenetic comparative methods</b>.</li>
+            </ul>
+        </li>
+    </ul>
+</section>
+
+<section>
+    <h3>Discussion</h3>
+
+    <ul class="spaced" style="width:80%">
+        <li>Can you imagine a situation where "phylogenetic inertia is essentially absent"?</li>
+
+        <li>How reasonable is the assumption that traits evolve by Brownian motion?</li>
+
+        <li>You are studying the surface proteins of a human pathogen. The primary selective force is for it to look different from generation to generation. Is PIC appropriate here?</li>
+    </ul>
+</section>
+
+<section>
+    <h3>Recommended Reading</h3>
+
+    <div style="display:inline-block;vertical-align:middle;margin-top:2em">
+        <img data-src="../lecture-substitution-models/dg_cover.png" style="height:350px">
+    </div>
+
+    <div class="textbox" style="width: 55%; display:inline-block; vertical-align:middle; margin-left:2em; margin-top:2em">
+        <div class="title"><a href="https://decodinggenomes.org/" style="color:inherit; text-decoration:underline">Decoding Genomes</a> (Stadler et al., 2024)</div>
+        <ul class="spaced" style="margin-top:1em; margin-left:1em">
+            <li><b>Chapter 8</b>: Traits and Comparative Methods</li>
+        </ul>
+        <div class="title" style="margin-top:1em"><a href="https://lukejharmon.github.io/pcm/" style="color:inherit; text-decoration:underline">Phylogenetic Comparative Methods</a> (Harmon, 2019)</div>
+        <ul class="spaced" style="margin-top:1em; margin-left:1em">
+            <li><b>Chapter 2</b>: Fitting statistical models</li>
+            <li><b>Chapter 4</b>: Continuous characters on phylogenies</li>
+        </ul>
+    </div>
+</section>

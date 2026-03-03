@@ -257,26 +257,6 @@ $$P(X(t_1)|X(t_0)) = \sum_{X(t_i)} P(X(t_1)|X(t_i))P(X(t_i)|X(t_0))$$
 
 <p><strong>In plain English:</strong> To get from state X(t₀) to X(t₁), sum over all possible paths through intermediate states.</p>
 
-<h3>Mathematical Details (Optional)</h3>
-
-<div class="alert alert-info">
-    <i class="fas fa-info-circle"></i>
-    <div>
-        This section provides mathematical depth for those interested. Biology-focused readers can skip to the next section.
-    </div>
-</div>
-
-<p>The differential form (Master equation/Kolmogorov forward equation):</p>
-<div class="math-block">
-$$\frac{d}{dt}p(x,t|x_0,t_0) = \sum_{x'} Q_{x'x}p(x',t|x_0,t_0)$$
-</div>
-
-<p>Where Q is the instantaneous rate matrix with:</p>
-<ul>
-    <li>\(Q_{ij}\) = rate of change from state i to j (i ≠ j)</li>
-    <li>\(Q_{ii} = -\sum_{j \neq i} Q_{ij}\) (rows sum to zero)</li>
-</ul>
-
 <h3>Relationship Between Q and P(t)</h3>
 
 <div class="definition-box">
@@ -322,24 +302,18 @@ $$\frac{d}{dt}p(x,t|x_0,t_0) = \sum_{x'} Q_{x'x}p(x',t|x_0,t_0)$$
     where \(\lambda = -Q_{xx}\) is the total rate of leaving state x.
 </div>
 
-<h3>Time-Reversibility and Detailed Balance</h3>
+<h3>Time-Reversibility</h3>
 
-<div class="definition-box">
-    <div class="title">Time-Reversible CTMC</div>
-    <p>A CTMC is time-reversible if it satisfies detailed balance:</p>
-    <div class="math-block">
-    $$\pi_i Q_{ij} = \pi_j Q_{ji}$$
-    </div>
-    <p>where π is the stationary distribution.</p>
-</div>
+<p>A CTMC is <strong>time-reversible</strong> if the process looks the same running forward or backward in time. This is a <strong>mathematical convenience</strong>, not a biological claim — evolution clearly has a direction!</p>
 
-<p>For time-reversible CTMCs:</p>
+<p>Why do we assume reversibility?</p>
 <ul>
-    <li>Process looks the same forward and backward in time</li>
-    <li>Stationary distribution satisfies: \(\pi Q = 0\)</li>
-    <li>Mathematical convenience for phylogenetics</li>
-    <li><strong>Important:</strong> No biological justification required!</li>
+    <li>It means we don't need to know the root position to calculate the likelihood of a tree (Felsenstein's "pulley principle")</li>
+    <li>All standard substitution models (JC69, K80, HKY, GTR) are time-reversible</li>
+    <li>Greatly simplifies computation</li>
 </ul>
+
+<p>The formal mathematical definition (detailed balance equations) is given in Appendix A.3.</p>
 
 <div class="alert alert-info">
     <i class="fas fa-info-circle"></i>
@@ -546,11 +520,7 @@ $$\hat{d} = -\frac{3}{4}\log\left(1 - \frac{4}{3}p\right)$$
     </ul>
 </div>
 
-<p>We model rate variation using a gamma distribution:</p>
-
-<div class="math-block">
-$$f(r) = \frac{\alpha^\alpha}{\Gamma(\alpha)} r^{\alpha-1} e^{-\alpha r}$$
-</div>
+<p>We model rate variation using a <strong>gamma distribution</strong> with a single shape parameter α (see Appendix A.5 for the formula):</p>
 
 <div class="figure">
     <img src="{{ site.baseurl }}/lecture-substitution-models/gamma_rates.png" alt="Gamma distributions" style="width: 50%;">
@@ -566,6 +536,8 @@ $$f(r) = \frac{\alpha^\alpha}{\Gamma(\alpha)} r^{\alpha-1} e^{-\alpha r}$$
         <li><strong>α → ∞:</strong> All sites evolve at same rate</li>
     </ul>
 </div>
+
+<p>In practice, the continuous gamma distribution is approximated by a <strong>discrete gamma</strong> with \(k\) rate categories (typically \(k=4\)), each with equal probability \(1/k\). This is the "+Γ" in model names like "GTR+Γ".</p>
 
 <h3>Model Comparison Example</h3>
 
@@ -839,6 +811,130 @@ $$f(r) = \frac{\alpha^\alpha}{\Gamma(\alpha)} r^{\alpha-1} e^{-\alpha r}$$
 </blockquote>
 </section>
 
+<section class="section" id="math-appendix">
+<h2>Mathematical Appendix</h2>
+
+<div class="alert alert-info">
+    <i class="fas fa-info-circle"></i>
+    <div>
+        This appendix collects the mathematical derivations that underpin the concepts presented above. These details are covered in full in Stadler et al. (2024) <em>Decoding Genomes</em>, Chapter 5. They are provided here for reference and are not examinable.
+    </div>
+</div>
+
+<h3>A.1 Master Equation / Kolmogorov Forward Equation</h3>
+
+<p>The Chapman-Kolmogorov equation for a CTMC can be written in differential form as the <strong>master equation</strong> (also called the Kolmogorov forward equation):</p>
+
+<div class="math-block">
+$$\frac{d}{dt}p(x,t|x_0,t_0) = \sum_{x'} Q_{x'x}\, p(x',t|x_0,t_0)$$
+</div>
+
+<p>where \(Q\) is the instantaneous rate matrix with off-diagonal elements \(Q_{ij}\) giving the rate from state \(i\) to \(j\), and diagonal elements \(Q_{ii} = -\sum_{j \neq i} Q_{ij}\) ensuring rows sum to zero. Because this equation is linear in the probabilities, its solution is the matrix exponential: \(\vec{p}(t) = \exp(Qt)\,\vec{p}(0)\).</p>
+
+<p>See <em>Decoding Genomes</em> §5.2.2.3.</p>
+
+<h3>A.2 Matrix Exponential</h3>
+
+<p>The matrix exponential is defined by the Taylor series:</p>
+
+<div class="math-block">
+$$P(t) = \exp(Qt) = \sum_{k=0}^{\infty} \frac{(Qt)^k}{k!} = I + tQ + \frac{(tQ)^2}{2!} + \frac{(tQ)^3}{3!} + \cdots$$
+</div>
+
+<p>Useful properties:</p>
+<ul>
+    <li>\(\exp(\mathbf{0}) = I\)</li>
+    <li>When \(AB = BA\): \(\exp(A+B) = \exp(A)\exp(B)\)</li>
+    <li>If \(A = \text{diag}(a_1,\ldots,a_n)\), then \(\exp(A) = \text{diag}(e^{a_1},\ldots,e^{a_n})\)</li>
+</ul>
+
+<div class="example-box">
+    <h4>Worked Example: 2-state system</h4>
+    <p>For the rate matrix \(Q = \begin{bmatrix} -1 & 1 \\ 0.6 & -0.6 \end{bmatrix}\):</p>
+    <ul>
+        <li>At \(t=1\): \(P(1) = \begin{bmatrix} 0.501 & 0.499 \\ 0.299 & 0.701 \end{bmatrix}\)</li>
+        <li>At \(t=2\): \(P(2) = \begin{bmatrix} 0.400 & 0.600 \\ 0.360 & 0.640 \end{bmatrix}\)</li>
+        <li>As \(t \to \infty\): \(P(\infty) = \begin{bmatrix} 0.375 & 0.625 \\ 0.375 & 0.625 \end{bmatrix}\)</li>
+    </ul>
+    <p>Note how rows converge to the <strong>stationary distribution</strong> \(\pi = [0.375, 0.625]\): the starting state no longer matters.</p>
+</div>
+
+<p>See <em>Decoding Genomes</em> §5.2.2.</p>
+
+<h3>A.3 Detailed Balance and Time-Reversibility</h3>
+
+<p>A CTMC is <strong>time-reversible</strong> if and only if its stationary distribution \(\pi\) satisfies the <strong>detailed balance</strong> condition:</p>
+
+<div class="math-block">
+$$\pi_i Q_{ij} = \pi_j Q_{ji} \quad \text{for all } i, j$$
+</div>
+
+<p>Equivalently, there exists a row vector \(\Pi\) of state probabilities such that \(\Pi Q = 0\).</p>
+
+<div class="example-box">
+    <h4>Verifying reversibility for the 2-state example</h4>
+    <p>For \(Q = \begin{bmatrix} -2 & 2 \\ 1 & -1 \end{bmatrix}\) with \(\pi = [1/3, 2/3]\):</p>
+    <ul>
+        <li>\(\pi_0 Q_{01} = \frac{1}{3} \times 2 = \frac{2}{3}\)</li>
+        <li>\(\pi_1 Q_{10} = \frac{2}{3} \times 1 = \frac{2}{3}\) ✓</li>
+    </ul>
+    <p>Detailed balance is satisfied, so this CTMC is time-reversible.</p>
+</div>
+
+<p>See <em>Decoding Genomes</em> §5.2.3.</p>
+
+<h3>A.4 Deriving JC69 Genetic Distance</h3>
+
+<p>Under the Jukes-Cantor model, the probability that a site differs after time \(t\) is:</p>
+
+<div class="math-block">
+$$p_{\text{diff}} = \sum_{x' \neq x} P(X(t)=x'|X(0)=x) = \frac{3}{4} - \frac{3}{4}e^{-\frac{4}{3}\mu t}$$
+</div>
+
+<p>Setting \(p_{\text{diff}}\) equal to the observed \(p\)-distance and solving for \(\mu t\) gives the JC69 distance estimator:</p>
+
+<div class="math-block">
+$$\hat{d} = \widehat{\mu t} = -\frac{3}{4}\log\left(1 - \frac{4}{3}p\right)$$
+</div>
+
+<p>See <em>Decoding Genomes</em> §5.3.</p>
+
+<h3>A.5 Gamma Distribution and JC69+Gamma Distance</h3>
+
+<p>The gamma distribution with shape parameter \(\alpha\) (and rate parameter \(\alpha\), so that the mean rate is 1) has probability density:</p>
+
+<div class="math-block">
+$$f(r) = \frac{\alpha^\alpha}{\Gamma(\alpha)} r^{\alpha-1} e^{-\alpha r}$$
+</div>
+
+<p>When site rates are gamma-distributed, the JC69 distance formula generalises to:</p>
+
+<div class="math-block">
+$$\hat{d} = -\frac{3}{4}\alpha\left[\left(1 - \frac{4}{3}p\right)^{-1/\alpha} - 1\right]$$
+</div>
+
+<p>See <em>Decoding Genomes</em> §5.4.</p>
+
+<h3>A.6 Maximum Likelihood Estimation: Derivation</h3>
+
+<p>For the coin-flip example with \(n\) heads in \(N\) flips:</p>
+
+<div class="math-block">
+$$\log L(f|D) = n \log f + (N-n)\log(1-f)$$
+</div>
+
+<p>Taking the derivative and setting it to zero:</p>
+
+<div class="math-block">
+$$\left.\frac{\partial}{\partial f}\log L(f|D)\right|_{f=\hat{f}} = \frac{n}{\hat{f}} - \frac{N-n}{1-\hat{f}} = 0$$
+</div>
+
+<p>Solving gives \(\hat{f} = n/N\), the observed proportion of heads.</p>
+
+<p>See <em>Decoding Genomes</em> §5.5.</p>
+
+</section>
+
 <section class="section">
 <h2>Summary</h2>
 
@@ -895,6 +991,7 @@ $$f(r) = \frac{\alpha^\alpha}{\Gamma(\alpha)} r^{\alpha-1} e^{-\alpha r}$$
     <div>
         <strong>Recommended Reading:</strong>
         <ul style="margin-bottom: 0;">
+            <li>Stadler et al. (2024) "Decoding Genomes" - Chapter 5: Molecular Evolution</li>
             <li>Felsenstein (2004) "Inferring Phylogenies" - Chapters 13-16</li>
             <li>Yang (2014) "Molecular Evolution: A Statistical Approach" - Chapters 1-2</li>
             <li>Drummond & Bouckaert (2015) "Bayesian Evolutionary Analysis with BEAST" - Chapter 2</li>

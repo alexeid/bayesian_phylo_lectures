@@ -1,0 +1,389 @@
+---
+lecture_num: 12
+---
+
+<section class="center">
+    <h2>Limitations of Phylogenetic Comparative Methods</h2>
+    <p style="font-size:0.8em">Uyeda et al. &mdash; Rethinking phylogenetic comparative methods</p>
+</section>
+
+<section>
+    <h3>Where do comparative methods go wrong?</h3>
+
+    <ul class="spaced" style="width:80%">
+        <li>Uyeda et al. offer three case studies of problems with possible solutions.</li>
+
+        <li>A central theme: typical models (e.g., Brownian motion) assume <b>continuity of change</b>.</li>
+
+        <li>When that assumption is violated, comparative methods can give misleading results.</li>
+
+        <li>The three case studies all share a common thread, but differ in how they get there.</li>
+    </ul>
+</section>
+
+<section>
+    <h3>Case Study I: Felsenstein's worst-case scenario</h3>
+
+    <ul class="spaced" style="width:80%">
+        <li>A single large change in one trait on one branch fools standard comparative methods.</li>
+
+        <li>These major shifts risk drowning out biological signal if unaccounted for.</li>
+
+        <li>An important nuance: the issue is not that species are non-independent per se, but that methods assume <b>errors</b> are independent.</li>
+
+        <li>Felsenstein's message was missed because it seemed so intuitive:
+            <ul>
+                <li>The challenge is to the inference of meaningful associations between traits.</li>
+                <li>Not because errors are non-independent, but because the structure of variation is mismodelled.</li>
+            </ul>
+        </li>
+    </ul>
+</section>
+
+<section>
+    <h3>Case Study II: Adaptive hypotheses and singular shifts</h3>
+
+    <ul class="spaced" style="width:80%">
+        <li>Multiple optima or varying selective strengths can exist across a phylogeny, creating:
+            <ul>
+                <li>Adaptive evolutionary responses</li>
+                <li>Singular evolutionary shifts</li>
+            </ul>
+        </li>
+
+        <li>Two approaches to investigate:
+            <ul>
+                <li>Test specific hypotheses about drivers of diversification rate shifts (e.g., SSE models).</li>
+                <li>Search for the most-supported number and configuration of rate regimes.</li>
+            </ul>
+        </li>
+
+        <li>Identifying <b>where</b> changes happened is valuable, but doesn't tell us <b>why</b>.
+            <ul>
+                <li>Beware the "just-so story".</li>
+            </ul>
+        </li>
+    </ul>
+</section>
+
+<section>
+    <h3>Case Study III: Darwin's scenario and unreplicated bursts</h3>
+
+    <ul class="spaced" style="width:80%">
+        <li>This case involves <b>discrete traits</b> (e.g., yes/no), where detecting evolutionary signal is harder.</li>
+
+        <li>Two flavours:
+            <ul>
+                <li><b>Darwin's scenario</b>: two rare traits that don't appear and disappear easily.</li>
+                <li><b>Unreplicated bursts</b>: discrete trait evolution concentrated in a few events.</li>
+            </ul>
+        </li>
+
+        <li>Correlated traits may seem to support an association, but:
+            <ul>
+                <li>We are often studying traits <i>because</i> we already suspect they may be correlated.</li>
+                <li>Confirmation bias is a real risk.</li>
+            </ul>
+        </li>
+    </ul>
+</section>
+
+<section>
+    <h3>Takeaways from Uyeda et al.</h3>
+
+    <ul class="spaced" style="width:80%">
+        <li>All three case studies share a common lesson:
+            <ul>
+                <li>We need to be <b>aware of how our methods work</b>.</li>
+                <li>We should not run methods blindly and accept the output.</li>
+            </ul>
+        </li>
+
+        <li>No model is perfect, but understanding <b>when and why</b> a model fails is essential.</li>
+
+        <li>Making assumptions explicit &mdash; both to your audience and to yourself &mdash; is critical for good science.</li>
+    </ul>
+</section>
+
+<section class="center">
+    <h2>Brownian Motion</h2>
+</section>
+
+<section>
+    <h3>Brownian motion: the random walk</h3>
+
+    <ul class="spaced" style="width:80%">
+        <li>The classic <b>random walk</b>: each step is in a random direction.</li>
+
+        <li>Core idea:
+            <ul>
+                <li>There is no bias towards any direction.</li>
+                <li>Each step is independent of every other step.</li>
+                <li>Steps occur in continuous time (not discrete generations).</li>
+            </ul>
+        </li>
+
+        <li>After many steps, the distribution of endpoints follows a <b>normal distribution</b>.
+            <ul>
+                <li>The mean equals the starting value.</li>
+                <li>The variance grows linearly with time.</li>
+            </ul>
+        </li>
+    </ul>
+</section>
+
+<section>
+    <h3>Brownian motion: the rate parameter</h3>
+
+    <div style="width:100%">
+        <div style="width:55%;display:inline-block;vertical-align:middle">
+            <ul class="spaced">
+                <li>The evolutionary rate parameter $\sigma^2$ governs how much change per unit time occurs.</li>
+
+                <li>After time $t$, the distribution of trait values is:
+                    $$X(t) \sim N\!\left(X(0),\; \sigma^2 t\right)$$
+                </li>
+
+                <li>Higher $\sigma^2$ $\Rightarrow$ greater spread of values (more variance).</li>
+
+                <li>But the <b>mean</b> remains at the starting value, regardless of $\sigma^2$.</li>
+            </ul>
+        </div>
+        <div style="width:400px;height:350px;display:inline-block;vertical-align:middle" id="bmPlot">
+        <script>
+            var bmTraces = [];
+            var sigmas = [0.5, 1.0, 2.0];
+            var colors = ['#1f77b4', '#ff7f0e', '#2ca02c'];
+            var t = 10;
+
+            for (var s = 0; s < sigmas.length; s++) {
+                var trace = {x: [], y: [], mode: 'lines', name: 'rate=' + sigmas[s]};
+                var variance = sigmas[s] * t;
+                var sd = Math.sqrt(variance);
+                for (var i = 0; i <= 100; i++) {
+                    var x = -4*Math.sqrt(2*t) + 8*Math.sqrt(2*t)*i/100;
+                    var pdf = Math.exp(-x*x/(2*variance)) / Math.sqrt(2*Math.PI*variance);
+                    trace.x[i] = x;
+                    trace.y[i] = pdf;
+                }
+                bmTraces.push(trace);
+            }
+
+            Plotly.newPlot('bmPlot', bmTraces, {
+                showlegend: true,
+                legend: {x: 0.65, y: 0.95},
+                xaxis: {title: 'Trait value'},
+                yaxis: {title: 'Density'},
+                margin: {t: 10}
+            }, {displayModeBar: false, staticPlot: true});
+        </script>
+        </div>
+    </div>
+    <p style="font-size:0.7em;margin-top:0.5em">Distribution of trait values after $t=10$ time units, starting at $X(0)=0$, for three different rates.</p>
+</section>
+
+<section>
+    <h3>Brownian motion and genetics</h3>
+
+    <ul class="spaced" style="width:80%">
+        <li>Brownian motion is mathematically very similar to <b>genetic drift</b>.</li>
+
+        <li>When evolutionary change is neutral &mdash; traits changing only due to random luck:
+            <ul>
+                <li>If a trait is influenced by many genes, each with small effect.</li>
+                <li>And the character does not affect fitness.</li>
+                <li>Then trait evolution approximates Brownian motion.</li>
+            </ul>
+        </li>
+
+        <li>But a trait evolving under BM is <b>not necessarily neutral</b> &mdash; at least three selection regimes also produce BM-like patterns (when selection is weak).</li>
+    </ul>
+</section>
+
+<section>
+    <h3>Brownian motion under selection</h3>
+
+    <ul class="spaced" style="width:80%">
+        <li>Three regimes where selection produces a Brownian-like result (all assume selection is weak):</li>
+
+        <li><b>1. Fluctuating directional selection</b>:
+            <ul><li>The direction (and possibly strength) of selection varies randomly every generation.</li></ul>
+        </li>
+
+        <li><b>2. Stabilizing selection with a moving optimum</b>:
+            <ul><li>The optimum itself moves randomly, and the population tracks it.</li></ul>
+        </li>
+
+        <li><b>3. Genetic drift with weak selection</b>:
+            <ul><li>Selection is present but too weak relative to drift to produce a consistent directional trend.</li></ul>
+        </li>
+
+        <li>When selection is much stronger than drift, selection completely dominates and BM is no longer appropriate.</li>
+    </ul>
+</section>
+
+<section>
+    <h3>Brownian motion with a trend</h3>
+
+    <ul class="spaced" style="width:80%">
+        <li>We are usually estimating the ancestral (root) value from an incomplete sample of extant values.</li>
+
+        <li>If a trend is slow enough, how can we distinguish a shift in the mean from statistical noise?</li>
+
+        <li>A BM model with a trend adds a <b>drift parameter</b> $\mu$:
+            $$X(t) \sim N\!\left(X(0) + \mu t,\; \sigma^2 t\right)$$
+        </li>
+
+        <li>Detecting trends requires either long time spans or strong trends relative to the rate of random change.</li>
+    </ul>
+</section>
+
+<section>
+    <h3>BM and phylogenetic trees</h3>
+
+    <ul class="spaced" style="width:80%">
+        <li>We can "wind back the clock" to infer <b>ancestral states</b> on a tree under Brownian motion.
+            <ul>
+                <li>This applies to other models too.</li>
+            </ul>
+        </li>
+
+        <li>These procedures generalise to <b>multivariate distributions</b>.
+            <ul>
+                <li>Both univariate and multivariate approaches use the same BM framework.</li>
+            </ul>
+        </li>
+
+        <li>The shared branch lengths in a phylogeny define a <b>variance-covariance matrix</b> $\mathbf{C}$:
+            <ul>
+                <li>Diagonal: total branch length from root to each tip (variance).</li>
+                <li>Off-diagonal: shared branch length between pairs of tips (covariance).</li>
+            </ul>
+        </li>
+    </ul>
+</section>
+
+<section class="center">
+    <h2>Estimating Rates of Brownian Motion</h2>
+</section>
+
+<section>
+    <h3>Estimating rates using independent contrasts</h3>
+
+    <ul class="spaced" style="width:80%">
+        <li>Each contrast is an amount of change, divided by the branch length.</li>
+
+        <li>For a single trait, we can estimate the evolutionary rate under BM:
+            $$\hat{\sigma}^2_{PIC} = \frac{\sum s^2_{ij}}{n-1}$$
+            This estimates the variance of the (standardised) contrasts, which equals $\sigma^2$.
+        </li>
+
+        <li>Simple, direct, and computationally efficient.</li>
+    </ul>
+</section>
+
+<section>
+    <h3>Estimating rates with maximum likelihood</h3>
+
+    <ul class="spaced" style="width:80%">
+        <li>BM tip states are drawn from a multivariate normal distribution whose covariance matrix depends on the tree.</li>
+
+        <li>To find ML estimates of $\sigma^2$ and the root state $X(0)$, we maximise the likelihood over parameter space.</li>
+
+        <li>Naively evaluating every combination is inefficient &mdash; the number of combinations grows explosively with more parameters.</li>
+
+        <li>Solution: <b>heuristic optimisation</b> (hill-climbing) algorithms that explore parameter space intelligently.</li>
+    </ul>
+</section>
+
+<section>
+    <h3>Optimisation and local optima</h3>
+
+    <div style="width:100%">
+        <div style="width:55%;display:inline-block;vertical-align:middle">
+            <ul class="spaced">
+                <li>Hill-climbing methods provide point estimates and confidence intervals.</li>
+
+                <li>But they risk getting <b>trapped on local optima</b>.</li>
+
+                <li>Strategies to reduce this risk:
+                    <ul>
+                        <li>Multiple independent random starting points.</li>
+                        <li>Simulated annealing.</li>
+                        <li>Bayesian MCMC (explores the full landscape).</li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+        <div style="width:400px;height:300px;display:inline-block;vertical-align:middle" id="optimPlot">
+        <script>
+            var optTrace = {x: [], y: [], mode: 'lines', line: {width: 3}};
+            for (var i = 0; i <= 200; i++) {
+                var x = -3 + 6*i/200;
+                optTrace.x[i] = x;
+                optTrace.y[i] = -0.5*Math.exp(-(x-1)*(x-1)/0.3) - 0.8*Math.exp(-(x+1.2)*(x+1.2)/0.5) - 0.3*Math.exp(-(x-2.5)*(x-2.5)/0.2);
+            }
+            Plotly.newPlot('optimPlot', [optTrace], {
+                showlegend: false,
+                xaxis: {title: 'Parameter value'},
+                yaxis: {title: 'Negative log-likelihood'},
+                margin: {t: 10}
+            }, {displayModeBar: false, staticPlot: true});
+        </script>
+        </div>
+    </div>
+    <p style="font-size:0.7em;margin-top:0.5em">A likelihood surface with multiple optima. A hill-climbing algorithm starting at different points may find different peaks.</p>
+</section>
+
+<section>
+    <h3>Restricted Maximum Likelihood (REML)</h3>
+
+    <ul class="spaced" style="width:80%">
+        <li>A problem with ML: computing the full covariance matrix is expensive for large trees.</li>
+
+        <li><b>REML</b> maximises a likelihood function based on <b>contrasts</b> rather than the full data:
+            <ul>
+                <li>Calculating contrasts is much faster than the full matrix computation.</li>
+                <li>Ignores nuisance parameters like the root state.</li>
+            </ul>
+        </li>
+
+        <li>Generally considered to give better (less biased) estimates of variance parameters than standard ML.</li>
+
+        <li>Widely used in phylogenetic comparative analyses.</li>
+    </ul>
+</section>
+
+<section>
+    <h3>Discussion</h3>
+
+    <ul class="spaced" style="width:80%">
+        <li>If we can use the PIC method to estimate evolutionary rate, why did we also cover ML and Bayesian approaches?</li>
+
+        <li>What are the arguments for log-transforming biological data before comparative analysis?</li>
+
+        <li>Can you think of a few ways to decrease the risk of hill-climbing algorithms getting stuck on local optima?</li>
+
+        <li>Given what Uyeda et al. have said, how reasonable was Felsenstein's assumption that traits evolve by Brownian motion?</li>
+    </ul>
+</section>
+
+<section>
+    <h3>Recommended Reading</h3>
+
+    <div style="display:inline-block;vertical-align:middle;margin-top:2em">
+        <img data-src="../lecture-substitution-models/dg_cover.png" style="height:350px">
+    </div>
+
+    <div class="textbox" style="width: 55%; display:inline-block; vertical-align:middle; margin-left:2em; margin-top:2em">
+        <div class="title"><a href="https://decodinggenomes.org/" style="color:inherit; text-decoration:underline">Decoding Genomes</a> (Stadler et al., 2024)</div>
+        <ul class="spaced" style="margin-top:1em; margin-left:1em">
+            <li><b>Chapter 8</b>: Traits and Comparative Methods</li>
+        </ul>
+        <div class="title" style="margin-top:1em"><a href="https://lukejharmon.github.io/pcm/" style="color:inherit; text-decoration:underline">Phylogenetic Comparative Methods</a> (Harmon, 2019)</div>
+        <ul class="spaced" style="margin-top:1em; margin-left:1em">
+            <li><b>Chapter 3</b>: Brownian Motion</li>
+            <li>Uyeda et al. (2018) &mdash; Rethinking phylogenetic comparative methods</li>
+        </ul>
+    </div>
+</section>
