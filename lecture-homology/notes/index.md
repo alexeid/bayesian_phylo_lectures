@@ -12,7 +12,7 @@ next_lecture: lecture-msa/notes
     <h1>{{ page.title }}</h1>
     <div class="lecture-meta">
         <span><i class="fas fa-calendar"></i> Week 2</span>
-        <span><i class="fas fa-clock"></i> 90 minutes</span>
+        <span><i class="fas fa-clock"></i> 50 minutes</span>
         <span><i class="fas fa-book"></i> Required reading: Decoding Genomes Ch. 3.1, 5.3.1</span>
     </div>
 </div>

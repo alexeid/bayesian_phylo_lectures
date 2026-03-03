@@ -13,7 +13,7 @@ next_lecture: lecture-phylogenetics/notes
     <h1>{{ page.title }}</h1>
     <div class="lecture-meta">
         <span><i class="fas fa-calendar"></i> Week 3</span>
-        <span><i class="fas fa-clock"></i> 90 minutes</span>
+        <span><i class="fas fa-clock"></i> 50 minutes</span>
         <span><i class="fas fa-book"></i> Required reading: Decoding Genomes Ch. 3.2-3.3</span>
     </div>
 </div>

@@ -13,7 +13,7 @@ next_lecture: lecture-bayesian-inference/notes
     <h1>{{ page.title }}</h1>
     <div class="lecture-meta">
         <span><i class="fas fa-calendar"></i> Week 7</span>
-        <span><i class="fas fa-clock"></i> 90 minutes</span>
+        <span><i class="fas fa-clock"></i> 50 minutes</span>
         <span><i class="fas fa-book"></i> Required reading: <em>Decoding Genomes</em> Ch 5, 6.3.3</span>
     </div>
 </div>
