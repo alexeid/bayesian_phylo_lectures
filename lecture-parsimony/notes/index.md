@@ -14,7 +14,7 @@ next_lecture: lecture-substitution-models/notes
     <div class="lecture-meta">
         <span><i class="fas fa-calendar"></i> Week 6</span>
         <span><i class="fas fa-clock"></i> 90 minutes</span>
-        <span><i class="fas fa-book"></i> Required reading: Felsenstein Ch. 1-3</span>
+        <span><i class="fas fa-book"></i> Required reading: <em>Decoding Genomes</em> Ch 6.3.2</span>
     </div>
 </div>
 
@@ -458,6 +458,17 @@ next_lecture: lecture-substitution-models/notes
         <li><strong>MEGA:</strong> User-friendly interface, good for teaching</li>
         <li><strong>MPBoot:</strong> Ultrafast bootstrap approximation for parsimony</li>
     </ul>
+</div>
+
+<div class="alert alert-info">
+    <i class="fas fa-book"></i>
+    <div>
+        <strong>Recommended Reading:</strong>
+        <ul style="margin-bottom: 0;">
+            <li>Stadler et al. (2024) <em>Decoding Genomes</em> - Ch 6.3.2 (parsimony)</li>
+            <li>Felsenstein (2004) "Inferring Phylogenies" - Chapters 1-3 (Sankoff algorithm, branch-and-bound)</li>
+        </ul>
+    </div>
 </div>
 
 <div class="self-assessment">

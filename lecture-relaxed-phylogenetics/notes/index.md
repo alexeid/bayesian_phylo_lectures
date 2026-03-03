@@ -14,7 +14,7 @@ next_lecture: lecture-model-selection/notes
     <div class="lecture-meta">
         <span><i class="fas fa-calendar"></i> Week 11</span>
         <span><i class="fas fa-clock"></i> 90 minutes</span>
-        <span><i class="fas fa-book"></i> Required reading: Drummond & Bouckaert Ch. 6-7, Yang Ch. 7</span>
+        <span><i class="fas fa-book"></i> Required reading: <em>Decoding Genomes</em> Ch 6.4</span>
     </div>
 </div>
 
@@ -556,7 +556,8 @@ next_lecture: lecture-model-selection/notes
     <div>
         <strong>Recommended Reading:</strong>
         <ul style="margin-bottom: 0;">
-            <li>Drummond & Bouckaert (2015) "Bayesian Evolutionary Analysis with BEAST" - Chapters 6-7</li>
+            <li>Stadler et al. (2024) <em>Decoding Genomes</em> - Ch 6.4 (strict clock, time trees, calibrations)</li>
+            <li>Drummond & Bouckaert (2015) "Bayesian Evolutionary Analysis with BEAST" - Chapters 6-7 (relaxed clocks in detail)</li>
             <li>Yang (2014) "Molecular Evolution: A Statistical Approach" - Chapter 7</li>
             <li>Drummond et al. (2006) "Relaxed phylogenetics and dating with confidence" - PLOS Biology</li>
             <li>Billera et al. (2001) "Geometry of the space of phylogenetic trees" - Advances in Applied Mathematics</li>

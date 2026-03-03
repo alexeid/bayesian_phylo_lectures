@@ -14,7 +14,7 @@ next_lecture: lecture-bayesian-phylogenetics/notes
     <div class="lecture-meta">
         <span><i class="fas fa-calendar"></i> Week 8</span>
         <span><i class="fas fa-clock"></i> 90 minutes</span>
-        <span><i class="fas fa-book"></i> Required reading: Jaynes Ch. 1-3</span>
+        <span><i class="fas fa-book"></i> Required reading: <em>Decoding Genomes</em> Ch 10</span>
     </div>
 </div>
 
@@ -542,8 +542,9 @@ $$P(D|M) = \int P(D|\theta_M,M)P(\theta_M|M)d\theta_M$$
 <div class="alert alert-info">
     <i class="fas fa-book"></i>
     <div>
-        <strong>Further Reading:</strong>
+        <strong>Recommended Reading:</strong>
         <ul style="margin-bottom: 0;">
+            <li>Stadler et al. (2024) <em>Decoding Genomes</em> - Ch 10 (Bayesian inference and MCMC)</li>
             <li>E.T. Jaynes (2003) "Probability Theory: The Logic of Science"</li>
             <li>MacKay (2003) "Information Theory, Inference, and Learning Algorithms"</li>
             <li>Gelman et al. (2013) "Bayesian Data Analysis"</li>

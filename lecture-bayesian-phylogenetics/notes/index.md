@@ -14,7 +14,7 @@ next_lecture: lecture-coalescent/notes
     <div class="lecture-meta">
         <span><i class="fas fa-calendar"></i> Week 9</span>
         <span><i class="fas fa-clock"></i> 90 minutes</span>
-        <span><i class="fas fa-book"></i> Required reading: Yang Ch. 7, Drummond & Bouckaert Ch. 4-5</span>
+        <span><i class="fas fa-book"></i> Required reading: <em>Decoding Genomes</em> Ch 10</span>
     </div>
 </div>
 
@@ -557,9 +557,10 @@ $$\pi(x')q(x|x')\alpha(x|x')=\pi(x)q(x'|x)\alpha(x'|x)$$
     <div>
         <strong>Recommended Reading:</strong>
         <ul style="margin-bottom: 0;">
-            <li>Felsenstein (2004) "Inferring Phylogenies" - Chapters 26-27</li>
-            <li>Drummond & Bouckaert (2015) "Bayesian Evolutionary Analysis with BEAST" - Chapters 4-5</li>
+            <li>Stadler et al. (2024) <em>Decoding Genomes</em> - Chapter 10 (Bayesian phylogenetics)</li>
             <li>Yang (2014) "Molecular Evolution: A Statistical Approach" - Chapter 7</li>
+            <li>Drummond & Bouckaert (2015) "Bayesian Evolutionary Analysis with BEAST" - Chapters 4-5</li>
+            <li>Felsenstein (2004) "Inferring Phylogenies" - Chapters 26-27</li>
             <li>Höhna et al. (2016) "RevBayes: Bayesian phylogenetic inference" - Systematic Biology</li>
         </ul>
     </div>

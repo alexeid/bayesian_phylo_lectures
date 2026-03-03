@@ -14,7 +14,7 @@ next_lecture: lecture-parsimony/notes
     <div class="lecture-meta">
         <span><i class="fas fa-calendar"></i> Week 5</span>
         <span><i class="fas fa-clock"></i> 90 minutes</span>
-        <span><i class="fas fa-book"></i> Required reading: Decoding Genomes Ch. 6</span>
+        <span><i class="fas fa-book"></i> Required reading: <em>Decoding Genomes</em> Ch 6.1&ndash;6.3.1</span>
     </div>
 </div>
 
@@ -540,7 +540,7 @@ $$S = \sum_{i<j} (d_{ij} - \hat{d}_{ij})^2$$
     <div>
         <strong>Reading:</strong>
         <ul style="margin-bottom: 0;">
-            <li>Stadler et al. (2024) "Decoding Genomes" - Chapter 6: Phylogenetic trees (sections 6.1&ndash;6.3)</li>
+            <li>Stadler et al. (2024) <em>Decoding Genomes</em> - Ch 6.1&ndash;6.3.1 (phylogenetic trees and distance-based methods)</li>
             <li>Yang (2006) "Computational Molecular Evolution" - Sections 3.1-3.3 &mdash; additional detail on neighbour-joining</li>
         </ul>
     </div>

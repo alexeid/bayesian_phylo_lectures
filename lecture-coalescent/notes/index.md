@@ -14,7 +14,7 @@ next_lecture: lecture-relaxed-phylogenetics/notes
     <div class="lecture-meta">
         <span><i class="fas fa-calendar"></i> Week 10</span>
         <span><i class="fas fa-clock"></i> 90 minutes</span>
-        <span><i class="fas fa-book"></i> Required reading: Wakeley Ch. 1-3, Hein et al. Ch. 3-4</span>
+        <span><i class="fas fa-book"></i> Required reading: <em>Decoding Genomes</em> Ch 9.2</span>
     </div>
 </div>
 
@@ -497,6 +497,7 @@ $$P(\text{tree}|\theta)$$
     <div>
         <strong>Recommended Reading:</strong>
         <ul style="margin-bottom: 0;">
+            <li>Stadler et al. (2024) <em>Decoding Genomes</em> - Ch 9.2 (the coalescent)</li>
             <li>Wakeley (2009) "Coalescent Theory: An Introduction" - Chapters 1-3</li>
             <li>Hein, Schierup & Wiuf (2005) "Gene Genealogies, Variation and Evolution" - Chapters 3-4</li>
             <li>Kingman (1982) "The coalescent" - Stochastic Processes and their Applications</li>

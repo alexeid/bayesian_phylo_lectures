@@ -14,7 +14,7 @@ next_lecture: lecture-bayesian-inference/notes
     <div class="lecture-meta">
         <span><i class="fas fa-calendar"></i> Week 7</span>
         <span><i class="fas fa-clock"></i> 90 minutes</span>
-        <span><i class="fas fa-book"></i> Required reading: Felsenstein (2004) Ch. 13-16</span>
+        <span><i class="fas fa-book"></i> Required reading: <em>Decoding Genomes</em> Ch 5, 6.3.3</span>
     </div>
 </div>
 
@@ -991,7 +991,7 @@ $$\left.\frac{\partial}{\partial f}\log L(f|D)\right|_{f=\hat{f}} = \frac{n}{\ha
     <div>
         <strong>Recommended Reading:</strong>
         <ul style="margin-bottom: 0;">
-            <li>Stadler et al. (2024) "Decoding Genomes" - Chapter 5: Molecular Evolution</li>
+            <li>Stadler et al. (2024) <em>Decoding Genomes</em> - Chapter 5: Molecular Evolution, Ch 6.3.3 (maximum likelihood methods)</li>
             <li>Felsenstein (2004) "Inferring Phylogenies" - Chapters 13-16</li>
             <li>Yang (2014) "Molecular Evolution: A Statistical Approach" - Chapters 1-2</li>
             <li>Drummond & Bouckaert (2015) "Bayesian Evolutionary Analysis with BEAST" - Chapter 2</li>
