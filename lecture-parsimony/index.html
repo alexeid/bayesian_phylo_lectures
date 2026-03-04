@@ -14,9 +14,22 @@ lecture_num: 6
 
 <section>
 	<h2>When do characters support the correct tree?</h2>
-	
-	<img data-src="CharactersSupportTree.png" style="width:100%">
 
+	<div style="display:flex; align-items:flex-start; gap:1em">
+		<div style="flex:0 0 50%">
+			<img data-src="CharactersSupportTree_cropped.png" style="width:100%">
+		</div>
+		<div style="font-size:0.75em; flex:1; text-align:left">
+			<p>Hair: <span style="color:red">&mdash;</span> absent <span style="color:blue">&mdash;</span> present</p>
+			<p><b>Congruence:</b> Unique and unreversed character</p>
+			<br>
+			<p>Tail (adult): <span style="color:red">&mdash;</span> absent <span style="color:blue">&mdash;</span> present</p>
+			<p><b>Homoplasy:</b> Character evolved independently</p>
+			<br>
+			<p>Tail (adult): <span style="color:red">&mdash;</span> absent <span style="color:blue">&mdash;</span> present</p>
+			<p><b>Parsimony gives incorrect inference</b></p>
+		</div>
+	</div>
 </section>
 
 <section>
@@ -27,6 +40,11 @@ lecture_num: 6
 	</ul>
 	
 	<img data-src="Reversals.png" style="width:100%">
+
+	<p style="font-size:0.75em; margin-top:0.3em; text-align:center">
+		<b>True tree:</b> one change (<span style="color:blue">&#9632;</span>) + one reversal (<span style="color:red">&#9632;</span>).
+		<b>Wrong tree:</b> two independent changes &mdash; appears more parsimonious (fewer total events).
+	</p>
 </section>
 
 <section>
@@ -50,7 +68,11 @@ minimum number of steps required to explain the observed distribution of charact
 	<h2>Parsimony</h2>
 	
 	<img data-src="Parsimony.png" style="width:95%">
-	
+
+	<p style="font-size:0.75em; margin-top:0.3em; text-align:center">
+		Tree A requires 1 step (gain of hair). Tree B requires 2 steps. Parsimony prefers Tree A.
+	</p>
+
 	<ul class="spaced" style="margin-top:5%; width:85%">
 	<li>Given a set of characters, such as aligned sequences, parsimony analysis works by determining the fit (minimum number of steps) of each character on a given tree.
 	<li>The sum over all characters is called the tree length.
@@ -95,6 +117,11 @@ minimum number of steps required to explain the observed distribution of charact
 
 	<img data-src="branch-and-bound.png" style="width:80%">
 
+	<p style="font-size:0.75em; margin-top:0.3em; text-align:center; width:80%; margin-left:auto; margin-right:auto">
+		Branch-and-bound search for 6 taxa. Numbers show parsimony scores.
+		The optimal score (*229) prunes branches with scores exceeding the current best.
+		Searches 34 of 105 possible trees.
+	</p>
 </section>
 
 <section>
@@ -115,33 +142,963 @@ minimum number of steps required to explain the observed distribution of charact
 
 <section>
 	<h2>Representing trees</h2>
-	
-	<img data-src="InternalStorage.png" style="width:100%">
+
+	<div style="display:flex; align-items:flex-start; gap:0.5em; justify-content:center">
+		<div style="flex:0 0 33%; align-self:center; text-align:center">
+			<svg viewBox="0 0 220 225" style="width:100%">
+				<g stroke="black" stroke-width="2" fill="none">
+					<line x1="80" y1="30" x2="170" y2="30"/>
+					<line x1="80" y1="30" x2="80" y2="80"/>
+					<line x1="170" y1="30" x2="170" y2="130"/>
+					<line x1="50" y1="80" x2="110" y2="80"/>
+					<line x1="50" y1="80" x2="50" y2="130"/>
+					<line x1="110" y1="80" x2="110" y2="180"/>
+					<line x1="30" y1="130" x2="70" y2="130"/>
+					<line x1="30" y1="130" x2="30" y2="180"/>
+					<line x1="70" y1="130" x2="70" y2="180"/>
+					<line x1="150" y1="130" x2="190" y2="130"/>
+					<line x1="150" y1="130" x2="150" y2="180"/>
+					<line x1="190" y1="130" x2="190" y2="180"/>
+				</g>
+				<circle cx="125" cy="30" r="12" fill="white" stroke="black" stroke-width="1.5"/>
+				<circle cx="80" cy="80" r="12" fill="white" stroke="black" stroke-width="1.5"/>
+				<circle cx="50" cy="130" r="12" fill="white" stroke="black" stroke-width="1.5"/>
+				<circle cx="170" cy="130" r="12" fill="white" stroke="black" stroke-width="1.5"/>
+				<circle cx="30" cy="180" r="12" fill="white" stroke="black" stroke-width="1.5"/>
+				<circle cx="70" cy="180" r="12" fill="white" stroke="black" stroke-width="1.5"/>
+				<circle cx="110" cy="180" r="12" fill="white" stroke="black" stroke-width="1.5"/>
+				<circle cx="150" cy="180" r="12" fill="white" stroke="black" stroke-width="1.5"/>
+				<circle cx="190" cy="180" r="12" fill="white" stroke="black" stroke-width="1.5"/>
+				<g text-anchor="middle" font-size="11" dominant-baseline="central">
+					<text x="125" y="30">1</text>
+					<text x="80" y="80">2</text>
+					<text x="50" y="130">3</text>
+					<text x="170" y="130">7</text>
+					<text x="30" y="180">4</text>
+					<text x="70" y="180">5</text>
+					<text x="110" y="180">6</text>
+					<text x="150" y="180">8</text>
+					<text x="190" y="180">9</text>
+				</g>
+				<g text-anchor="middle" font-size="13" font-weight="bold">
+					<text x="30" y="206">A</text>
+					<text x="70" y="206">B</text>
+					<text x="110" y="206">C</text>
+					<text x="150" y="206">D</text>
+					<text x="190" y="206">E</text>
+				</g>
+			</svg>
+		</div>
+		<div style="flex:0 0 auto">
+			<table style="font-size:0.75em; border-collapse:collapse">
+				<tr><td style="border:solid 1px">Node</td><td style="border:solid 1px">Left</td><td style="border:solid 1px">Right</td><td style="border:solid 1px">Taxon</td></tr>
+				<tr><td style="border:solid 1px">1</td><td style="border:solid 1px">2</td><td style="border:solid 1px">7</td><td style="border:solid 1px"></td></tr>
+				<tr><td style="border:solid 1px">2</td><td style="border:solid 1px">3</td><td style="border:solid 1px">6</td><td style="border:solid 1px"></td></tr>
+				<tr><td style="border:solid 1px">3</td><td style="border:solid 1px">4</td><td style="border:solid 1px">5</td><td style="border:solid 1px"></td></tr>
+				<tr><td style="border:solid 1px">4</td><td style="border:solid 1px black; color:#999">null</td><td style="border:solid 1px black; color:#999">null</td><td style="border:solid 1px">A</td></tr>
+				<tr><td style="border:solid 1px">5</td><td style="border:solid 1px black; color:#999">null</td><td style="border:solid 1px black; color:#999">null</td><td style="border:solid 1px">B</td></tr>
+				<tr><td style="border:solid 1px">6</td><td style="border:solid 1px black; color:#999">null</td><td style="border:solid 1px black; color:#999">null</td><td style="border:solid 1px">C</td></tr>
+				<tr><td style="border:solid 1px">7</td><td style="border:solid 1px">8</td><td style="border:solid 1px">9</td><td style="border:solid 1px"></td></tr>
+				<tr><td style="border:solid 1px">8</td><td style="border:solid 1px black; color:#999">null</td><td style="border:solid 1px black; color:#999">null</td><td style="border:solid 1px">D</td></tr>
+				<tr><td style="border:solid 1px">9</td><td style="border:solid 1px black; color:#999">null</td><td style="border:solid 1px black; color:#999">null</td><td style="border:solid 1px">E</td></tr>
+			</table>
+		</div>
+	</div>
 
 	<div align="left" style="margin-top:5%; margin-left:15%; width:70%">
-	This table is in pre-order (parents before children). The opposite is post-order (parents after children). 
-	You will need to know how to traverse a tree in pre- or post- order.	
+	This table is in pre-order (parents before children). The opposite is post-order (parents after children).
+	You will need to know how to traverse a tree in pre- or post- order.
 	</div>
 </section>
 
 <section>
-	<h2>Computing the "length" of a character</h2>
-	
-	<img data-src="LengthOfCharacter.png" style="width:100%">
-	
-	Internal nodes (L = left child, R = right child):
-	
-	$$\quad m[v,X]=\underset{Y}{\min}\{m[L,Y]+c(X,Y)\}+\underset{Z}{\min}\{m[R,Z]+c(X,Z)\}$$
+	<h2>Fitch Parsimony</h2>
 
-<br>
-Leaves:
+	<div style="display:flex; align-items:flex-start; gap:0.5em; justify-content:center">
+		<div style="flex:0 0 33%; align-self:center; text-align:center">
+			<svg viewBox="0 0 220 225" style="width:100%">
+				<g stroke="black" stroke-width="2" fill="none">
+					<line x1="80" y1="30" x2="170" y2="30"/>
+					<line x1="80" y1="30" x2="80" y2="80"/>
+					<line x1="170" y1="30" x2="170" y2="130"/>
+					<line x1="50" y1="80" x2="110" y2="80"/>
+					<line x1="50" y1="80" x2="50" y2="130"/>
+					<line x1="110" y1="80" x2="110" y2="180"/>
+					<line x1="30" y1="130" x2="70" y2="130"/>
+					<line x1="30" y1="130" x2="30" y2="180"/>
+					<line x1="70" y1="130" x2="70" y2="180"/>
+					<line x1="150" y1="130" x2="190" y2="130"/>
+					<line x1="150" y1="130" x2="150" y2="180"/>
+					<line x1="190" y1="130" x2="190" y2="180"/>
+				</g>
+				<circle cx="125" cy="30" r="12" fill="white" stroke="black" stroke-width="1.5"/>
+				<circle cx="80" cy="80" r="12" fill="white" stroke="black" stroke-width="1.5"/>
+				<circle cx="50" cy="130" r="12" fill="white" stroke="black" stroke-width="1.5"/>
+				<circle cx="170" cy="130" r="12" fill="white" stroke="black" stroke-width="1.5"/>
+				<circle cx="30" cy="180" r="12" fill="white" stroke="black" stroke-width="1.5"/>
+				<circle cx="70" cy="180" r="12" fill="white" stroke="black" stroke-width="1.5"/>
+				<circle cx="110" cy="180" r="12" fill="white" stroke="black" stroke-width="1.5"/>
+				<circle cx="150" cy="180" r="12" fill="white" stroke="black" stroke-width="1.5"/>
+				<circle cx="190" cy="180" r="12" fill="white" stroke="black" stroke-width="1.5"/>
+				<g text-anchor="middle" font-size="11" dominant-baseline="central">
+					<text x="125" y="30">1</text>
+					<text x="80" y="80">2</text>
+					<text x="50" y="130">3</text>
+					<text x="170" y="130">7</text>
+					<text x="30" y="180">4</text>
+					<text x="70" y="180">5</text>
+					<text x="110" y="180">6</text>
+					<text x="150" y="180">8</text>
+					<text x="190" y="180">9</text>
+				</g>
+				<g text-anchor="middle" font-size="13" font-weight="bold">
+					<text x="30" y="206">A</text>
+					<text x="70" y="206">B</text>
+					<text x="110" y="206">C</text>
+					<text x="150" y="206">D</text>
+					<text x="190" y="206">E</text>
+				</g>
+			</svg>
+		</div>
+		<div style="flex:0 0 auto; position:relative">
+			<svg id="fitch-static-arrow" style="position:absolute; right:100%; top:0; height:100%; width:20px; overflow:visible; margin-right:3px">
+				<line id="fitch-static-arrow-line" x1="10" y1="0" x2="10" y2="0" stroke="#666" stroke-width="2"/>
+				<polygon id="fitch-static-arrow-head" points="0,0 0,0 0,0" fill="#666"/>
+			</svg>
+			<table id="fitch-static-table" style="font-size:0.75em; border-collapse:collapse">
+				<tr><td style="border:solid 1px">Node</td><td style="border:solid 1px">Left</td><td style="border:solid 1px">Right</td><td style="border:solid 1px">Taxon</td><td style="border:solid 1px; min-width:4em">States</td><td style="border:solid 1px">Mark</td></tr>
+				<tr><td style="border:solid 1px">1</td><td style="border:solid 1px">2</td><td style="border:solid 1px">7</td><td style="border:solid 1px"></td><td style="border:solid 1px"></td><td style="border:solid 1px"></td></tr>
+				<tr><td style="border:solid 1px">2</td><td style="border:solid 1px">3</td><td style="border:solid 1px">6</td><td style="border:solid 1px"></td><td style="border:solid 1px"></td><td style="border:solid 1px"></td></tr>
+				<tr><td style="border:solid 1px">3</td><td style="border:solid 1px">4</td><td style="border:solid 1px">5</td><td style="border:solid 1px"></td><td style="border:solid 1px"></td><td style="border:solid 1px"></td></tr>
+				<tr><td style="border:solid 1px">4</td><td style="border:solid 1px black; color:#999">null</td><td style="border:solid 1px black; color:#999">null</td><td style="border:solid 1px">A</td><td style="border:solid 1px"></td><td style="border:solid 1px"></td></tr>
+				<tr><td style="border:solid 1px">5</td><td style="border:solid 1px black; color:#999">null</td><td style="border:solid 1px black; color:#999">null</td><td style="border:solid 1px">B</td><td style="border:solid 1px"></td><td style="border:solid 1px"></td></tr>
+				<tr><td style="border:solid 1px">6</td><td style="border:solid 1px black; color:#999">null</td><td style="border:solid 1px black; color:#999">null</td><td style="border:solid 1px">C</td><td style="border:solid 1px"></td><td style="border:solid 1px"></td></tr>
+				<tr><td style="border:solid 1px">7</td><td style="border:solid 1px">8</td><td style="border:solid 1px">9</td><td style="border:solid 1px"></td><td style="border:solid 1px"></td><td style="border:solid 1px"></td></tr>
+				<tr><td style="border:solid 1px">8</td><td style="border:solid 1px black; color:#999">null</td><td style="border:solid 1px black; color:#999">null</td><td style="border:solid 1px">D</td><td style="border:solid 1px"></td><td style="border:solid 1px"></td></tr>
+				<tr><td style="border:solid 1px">9</td><td style="border:solid 1px black; color:#999">null</td><td style="border:solid 1px black; color:#999">null</td><td style="border:solid 1px">E</td><td style="border:solid 1px"></td><td style="border:solid 1px"></td></tr>
+			</table>
+		</div>
+	</div>
 
-$\quad m[v,X] = 
-\begin{cases}
- 0 & \mbox{if character state for $v$ is $X$}\\
-  \infty & \mbox{otherwise}
-\end{cases}$
+	<script>
+	(function() {
+		var drawn = false;
+		new ResizeObserver(function() {
+			if (drawn) return;
+			var tbl = document.getElementById('fitch-static-table');
+			var rows = tbl.rows;
+			if (rows.length < 10 || rows[1].offsetHeight === 0) return;
+			var y1 = rows[1].offsetTop + rows[1].offsetHeight / 2;
+			var y9 = rows[9].offsetTop + rows[9].offsetHeight / 2;
+			document.getElementById('fitch-static-arrow-line').setAttribute('y1', y9);
+			document.getElementById('fitch-static-arrow-line').setAttribute('y2', y1 + 7);
+			document.getElementById('fitch-static-arrow-head').setAttribute('points', '4,'+(y1+7)+' 10,'+y1+' 16,'+(y1+7));
+			drawn = true;
+		}).observe(document.getElementById('fitch-static-table'));
+	})();
+	</script>
 
+	<div style="font-size:0.75em; text-align:center; margin-top:0.5em">
+		<p>For <b>internal nodes</b> $v$: $L$ = left child, $R$ = right child.</p>
+		<p>If $\text{states}(L) \cap \text{states}(R) \neq \emptyset$:
+		&nbsp;&nbsp; $\text{states}(v) \leftarrow \text{states}(L) \cap \text{states}(R)$</p>
+		<p>Else: &nbsp;&nbsp; $\text{states}(v) \leftarrow \text{states}(L) \cup \text{states}(R)$; &nbsp; Make a mark.</p>
+		<p><b>Leaves</b> $v$: $\text{states}(v) \leftarrow$ state for that taxon.</p>
+		<p><b>Length</b> = number of marks</p>
+	</div>
+</section>
+
+<section>
+	<h2>Worked example: Fitch parsimony</h2>
+
+	<div style="display:flex; align-items:flex-start; gap:0.5em; justify-content:center">
+		<div style="flex:0 0 33%; align-self:center; text-align:center">
+			<svg id="fitch-tree-svg" viewBox="0 0 220 225" style="width:100%">
+				<g stroke="black" stroke-width="2" fill="none">
+					<line x1="80" y1="30" x2="170" y2="30"/>
+					<line x1="80" y1="30" x2="80" y2="80"/>
+					<line x1="170" y1="30" x2="170" y2="130"/>
+					<line x1="50" y1="80" x2="110" y2="80"/>
+					<line x1="50" y1="80" x2="50" y2="130"/>
+					<line x1="110" y1="80" x2="110" y2="180"/>
+					<line x1="30" y1="130" x2="70" y2="130"/>
+					<line x1="30" y1="130" x2="30" y2="180"/>
+					<line x1="70" y1="130" x2="70" y2="180"/>
+					<line x1="150" y1="130" x2="190" y2="130"/>
+					<line x1="150" y1="130" x2="150" y2="180"/>
+					<line x1="190" y1="130" x2="190" y2="180"/>
+				</g>
+				<circle id="fitch-tnode-1" cx="125" cy="30" r="12" fill="white" stroke="black" stroke-width="1.5"/>
+				<circle id="fitch-tnode-2" cx="80" cy="80" r="12" fill="white" stroke="black" stroke-width="1.5"/>
+				<circle id="fitch-tnode-3" cx="50" cy="130" r="12" fill="white" stroke="black" stroke-width="1.5"/>
+				<circle id="fitch-tnode-7" cx="170" cy="130" r="12" fill="white" stroke="black" stroke-width="1.5"/>
+				<circle id="fitch-tnode-4" cx="30" cy="180" r="12" fill="white" stroke="black" stroke-width="1.5"/>
+				<circle id="fitch-tnode-5" cx="70" cy="180" r="12" fill="white" stroke="black" stroke-width="1.5"/>
+				<circle id="fitch-tnode-6" cx="110" cy="180" r="12" fill="white" stroke="black" stroke-width="1.5"/>
+				<circle id="fitch-tnode-8" cx="150" cy="180" r="12" fill="white" stroke="black" stroke-width="1.5"/>
+				<circle id="fitch-tnode-9" cx="190" cy="180" r="12" fill="white" stroke="black" stroke-width="1.5"/>
+				<g text-anchor="middle" font-size="11" dominant-baseline="central">
+					<text id="fitch-ttext-1" x="125" y="30">1</text>
+					<text id="fitch-ttext-2" x="80" y="80">2</text>
+					<text id="fitch-ttext-3" x="50" y="130">3</text>
+					<text id="fitch-ttext-7" x="170" y="130">7</text>
+					<text id="fitch-ttext-4" x="30" y="180">4</text>
+					<text id="fitch-ttext-5" x="70" y="180">5</text>
+					<text id="fitch-ttext-6" x="110" y="180">6</text>
+					<text id="fitch-ttext-8" x="150" y="180">8</text>
+					<text id="fitch-ttext-9" x="190" y="180">9</text>
+				</g>
+				<g text-anchor="middle" font-size="13" font-weight="bold">
+					<text x="30" y="206">A</text>
+					<text x="70" y="206">B</text>
+					<text x="110" y="206">C</text>
+					<text x="150" y="206">D</text>
+					<text x="190" y="206">E</text>
+				</g>
+			</svg>
+			<a id="fitch-tree-toggle" href="javascript:void(0)" onclick="fitchToggleLabels()" style="font-size:0.6em; color:#999">Show node numbers</a>
+		</div>
+		<div style="flex:0 0 auto; position:relative">
+			<svg id="fitch-arrow-svg" style="position:absolute; right:100%; top:0; height:100%; width:20px; overflow:visible; margin-right:3px">
+				<line id="fitch-arrow-line" x1="10" y1="0" x2="10" y2="0" stroke="#666" stroke-width="2"/>
+				<polygon id="fitch-arrow-head" points="0,0 0,0 0,0" fill="#666"/>
+			</svg>
+			<table id="fitch-table" style="font-size:0.75em; border-collapse:collapse">
+			</table>
+		</div>
+	</div>
+
+	<div id="fitch-detail" style="font-size:0.6em; margin-top:1em; min-height:2.5em; text-align:center">
+	</div>
+
+	<p style="font-size:0.6em; color:#999; text-align:center; margin-top:0.3em">Click leaf states to edit. Click internal states for detail.</p>
+
+	<script>
+	(function() {
+		var tree = {1:[2,7], 2:[3,6], 3:[4,5], 7:[8,9]};
+		var taxonName = {4:'A', 5:'B', 6:'C', 8:'D', 9:'E'};
+		var leafState = {4:'A', 5:'C', 6:'C', 8:'A', 9:'C'};
+		var postOrder = [9,8,7,6,5,4,3,2,1];
+		var nodes = [1,2,3,4,5,6,7,8,9];
+		var leafNodeIds = [4,5,6,8,9];
+		var bases = ['A','C','G','T'];
+		var nucColor = {A:'#e24e42', C:'#4488cc', G:'#e8b632', T:'#59b859'};
+
+		var states = {};
+		var marks = {};
+		var totalLength = 0;
+
+		function computeFitch() {
+			states = {};
+			marks = {};
+			for (var i = 0; i < postOrder.length; i++) {
+				var v = postOrder[i];
+				if (leafState[v]) {
+					states[v] = [leafState[v]];
+					marks[v] = false;
+				} else {
+					var L = tree[v][0], R = tree[v][1];
+					var inter = states[L].filter(function(x) { return states[R].indexOf(x) >= 0; });
+					if (inter.length > 0) {
+						states[v] = inter;
+						marks[v] = false;
+					} else {
+						var u = states[L].slice();
+						states[R].forEach(function(x) { if (u.indexOf(x) < 0) u.push(x); });
+						states[v] = u;
+						marks[v] = true;
+					}
+				}
+			}
+			totalLength = 0;
+			postOrder.forEach(function(v) { if (marks[v]) totalLength++; });
+		}
+
+		function buildTable() {
+			var tbl = document.getElementById('fitch-table');
+			var hdr = '<tr><td style="border:solid 1px">Node</td><td style="border:solid 1px">Left</td><td style="border:solid 1px">Right</td><td style="border:solid 1px">Taxon</td><td style="border:solid 1px;min-width:4em">States</td><td style="border:solid 1px">Mark</td></tr>';
+			tbl.innerHTML = hdr;
+
+			nodes.forEach(function(v) {
+				var isLeaf = !!leafState[v];
+				var left = isLeaf ? '<td style="border:solid 1px black;color:#999">null</td>' : '<td style="border:solid 1px">'+tree[v][0]+'</td>';
+				var right = isLeaf ? '<td style="border:solid 1px black;color:#999">null</td>' : '<td style="border:solid 1px">'+tree[v][1]+'</td>';
+				var taxon = isLeaf ? taxonName[v] : '';
+				var statesStr = '{' + states[v].join(',') + '}';
+				var markStr = marks[v] ? '+1' : '';
+				var row = '<tr>';
+				row += '<td style="border:solid 1px">'+v+'</td>';
+				row += left + right;
+				row += '<td style="border:solid 1px">'+taxon+'</td>';
+				if (isLeaf) {
+					var bg = nucColor[leafState[v]];
+					row += '<td id="fitch-cell-'+v+'" style="border:solid 1px black;cursor:pointer;text-align:center;background:'+bg+';color:white;font-weight:bold" onclick="fitchCycleLeaf('+v+')">' + statesStr + '</td>';
+				} else {
+					row += '<td id="fitch-cell-'+v+'" style="border:solid 1px;cursor:pointer;text-align:center" onclick="fitchClick('+v+')">' + statesStr + '</td>';
+				}
+				row += '<td style="border:solid 1px black;text-align:center;color:#c33">' + markStr + '</td>';
+				row += '</tr>';
+				tbl.innerHTML += row;
+			});
+
+			tbl.innerHTML += '<tr><td colspan="5" style="border:none;text-align:right"><b>Length =</b></td><td style="border:none;text-align:center;color:#c33"><b>'+totalLength+'</b></td></tr>';
+		}
+
+		var arrowDrawn = false;
+		function drawArrowOnce() {
+			if (arrowDrawn) return;
+			var tbl = document.getElementById('fitch-table');
+			var rows = tbl.rows;
+			if (rows.length < 10 || rows[1].offsetHeight === 0) return;
+			var row1 = rows[1];
+			var row9 = rows[9];
+			var y1 = row1.offsetTop + row1.offsetHeight / 2;
+			var y9 = row9.offsetTop + row9.offsetHeight / 2;
+			document.getElementById('fitch-arrow-line').setAttribute('y1', y9);
+			document.getElementById('fitch-arrow-line').setAttribute('y2', y1 + 7);
+			document.getElementById('fitch-arrow-head').setAttribute('points', '4,'+(y1+7)+' 10,'+y1+' 16,'+(y1+7));
+			arrowDrawn = true;
+		}
+		new ResizeObserver(drawArrowOnce).observe(document.getElementById('fitch-table'));
+
+
+		// Tree SVG
+		var showStates = true;
+
+		// Annotations group
+		var svg = document.getElementById('fitch-tree-svg');
+		var annoGroup = document.createElementNS('http://www.w3.org/2000/svg', 'g');
+		annoGroup.setAttribute('text-anchor', 'middle');
+		annoGroup.setAttribute('font-size', '10');
+		svg.appendChild(annoGroup);
+
+		var internalPos = {1:[125,30], 2:[80,80], 3:[50,130], 7:[170,130]};
+
+		function updateAnnotations() {
+			while (annoGroup.firstChild) annoGroup.removeChild(annoGroup.firstChild);
+			[1,2,3,7].forEach(function(v) {
+				var pos = internalPos[v];
+				var txt = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+				txt.setAttribute('x', pos[0]);
+				txt.setAttribute('y', pos[1] + 24);
+				if (marks[v]) {
+					txt.textContent = '\u222a +1';
+					txt.setAttribute('fill', '#c33');
+					txt.setAttribute('font-weight', 'bold');
+				} else {
+					txt.textContent = '\u2229';
+					txt.setAttribute('fill', '#666');
+				}
+				annoGroup.appendChild(txt);
+			});
+			annoGroup.style.display = showStates ? '' : 'none';
+		}
+
+		function updateFitchTree() {
+			nodes.forEach(function(v) {
+				var circle = document.getElementById('fitch-tnode-'+v);
+				var text = document.getElementById('fitch-ttext-'+v);
+				if (showStates) {
+					if (states[v].length === 1) {
+						circle.setAttribute('fill', nucColor[states[v][0]]);
+						text.setAttribute('fill', 'white');
+						text.textContent = states[v][0];
+						text.setAttribute('font-size', '11');
+					} else {
+						circle.setAttribute('fill', '#ddd');
+						text.setAttribute('fill', 'black');
+						text.textContent = states[v].join(',');
+						text.setAttribute('font-size', '8');
+					}
+				} else {
+					if (states[v].length === 1) {
+						circle.setAttribute('fill', nucColor[states[v][0]]);
+						text.setAttribute('fill', 'white');
+					} else {
+						circle.setAttribute('fill', '#ddd');
+						text.setAttribute('fill', 'black');
+					}
+					text.textContent = v;
+					text.setAttribute('font-size', '11');
+				}
+			});
+			updateAnnotations();
+		}
+
+		function restoreLeafColors() {
+			leafNodeIds.forEach(function(v) {
+				var cell = document.getElementById('fitch-cell-'+v);
+				if (cell) cell.style.background = nucColor[leafState[v]];
+			});
+		}
+
+		// Cycle leaf state: A -> C -> G -> T -> A
+		window.fitchCycleLeaf = function(v) {
+			var idx = bases.indexOf(leafState[v]);
+			leafState[v] = bases[(idx + 1) % 4];
+			computeFitch();
+			buildTable();
+			updateFitchTree();
+			document.getElementById('fitch-detail').innerHTML = '';
+		};
+
+		window.fitchToggleLabels = function() {
+			showStates = !showStates;
+			updateFitchTree();
+			document.getElementById('fitch-tree-toggle').textContent = showStates ? 'Show node numbers' : 'Show reconstructed states';
+		};
+
+		// Click handler for internal nodes
+		var fitchSelected = null;
+		window.fitchClick = function(v) {
+			var detail = document.getElementById('fitch-detail');
+			document.querySelectorAll('#fitch-table td.fitch-highlight').forEach(function(el) {
+				el.classList.remove('fitch-highlight');
+				el.style.background = '';
+				el.style.outline = '';
+			});
+			restoreLeafColors();
+
+			if (fitchSelected === v) {
+				fitchSelected = null;
+				detail.innerHTML = '';
+				return;
+			}
+			fitchSelected = v;
+
+			var cell = document.getElementById('fitch-cell-'+v);
+			cell.style.outline = '3px solid #ccaa00';
+			cell.classList.add('fitch-highlight');
+
+			var L = tree[v][0], R = tree[v][1];
+			var lCell = document.getElementById('fitch-cell-'+L);
+			var rCell = document.getElementById('fitch-cell-'+R);
+			lCell.style.outline = '3px solid #448aee';
+			lCell.classList.add('fitch-highlight');
+			rCell.style.outline = '3px solid #448aee';
+			rCell.classList.add('fitch-highlight');
+
+			var lStr = '{' + states[L].join(',') + '}';
+			var rStr = '{' + states[R].join(',') + '}';
+			var inter = states[L].filter(function(x) { return states[R].indexOf(x) >= 0; });
+
+			var html = '<b>Node '+v+'</b>: L='+L+', R='+R+'<br>';
+			if (inter.length > 0) {
+				html += 'states(L) &cap; states(R) = '+lStr+' &cap; '+rStr+' = <b>{'+inter.join(',')+'}</b>';
+			} else {
+				var union = states[L].slice();
+				states[R].forEach(function(x) { if (union.indexOf(x) < 0) union.push(x); });
+				html += 'states(L) &cap; states(R) = '+lStr+' &cap; '+rStr+' = &empty; &rarr; '+lStr+' &cup; '+rStr+' = <b>{'+union.join(',')+'}</b>, +1';
+			}
+			detail.innerHTML = html;
+		};
+
+		// Initial render
+		computeFitch();
+		buildTable();
+		updateFitchTree();
+	})();
+	</script>
+</section>
+
+<section>
+	<h2>Weighted parsimony (Sankoff algorithm)</h2>
+
+	<div style="display:flex; align-items:flex-start; gap:0.5em; justify-content:center">
+		<div style="flex:0 0 33%; align-self:center; text-align:center">
+			<svg viewBox="0 0 220 225" style="width:100%">
+				<g stroke="black" stroke-width="2" fill="none">
+					<line x1="80" y1="30" x2="170" y2="30"/>
+					<line x1="80" y1="30" x2="80" y2="80"/>
+					<line x1="170" y1="30" x2="170" y2="130"/>
+					<line x1="50" y1="80" x2="110" y2="80"/>
+					<line x1="50" y1="80" x2="50" y2="130"/>
+					<line x1="110" y1="80" x2="110" y2="180"/>
+					<line x1="30" y1="130" x2="70" y2="130"/>
+					<line x1="30" y1="130" x2="30" y2="180"/>
+					<line x1="70" y1="130" x2="70" y2="180"/>
+					<line x1="150" y1="130" x2="190" y2="130"/>
+					<line x1="150" y1="130" x2="150" y2="180"/>
+					<line x1="190" y1="130" x2="190" y2="180"/>
+				</g>
+				<circle cx="125" cy="30" r="12" fill="white" stroke="black" stroke-width="1.5"/>
+				<circle cx="80" cy="80" r="12" fill="white" stroke="black" stroke-width="1.5"/>
+				<circle cx="50" cy="130" r="12" fill="white" stroke="black" stroke-width="1.5"/>
+				<circle cx="170" cy="130" r="12" fill="white" stroke="black" stroke-width="1.5"/>
+				<circle cx="30" cy="180" r="12" fill="white" stroke="black" stroke-width="1.5"/>
+				<circle cx="70" cy="180" r="12" fill="white" stroke="black" stroke-width="1.5"/>
+				<circle cx="110" cy="180" r="12" fill="white" stroke="black" stroke-width="1.5"/>
+				<circle cx="150" cy="180" r="12" fill="white" stroke="black" stroke-width="1.5"/>
+				<circle cx="190" cy="180" r="12" fill="white" stroke="black" stroke-width="1.5"/>
+				<g text-anchor="middle" font-size="11" dominant-baseline="central">
+					<text x="125" y="30">1</text>
+					<text x="80" y="80">2</text>
+					<text x="50" y="130">3</text>
+					<text x="170" y="130">7</text>
+					<text x="30" y="180">4</text>
+					<text x="70" y="180">5</text>
+					<text x="110" y="180">6</text>
+					<text x="150" y="180">8</text>
+					<text x="190" y="180">9</text>
+				</g>
+				<g text-anchor="middle" font-size="13" font-weight="bold">
+					<text x="30" y="206">A</text>
+					<text x="70" y="206">B</text>
+					<text x="110" y="206">C</text>
+					<text x="150" y="206">D</text>
+					<text x="190" y="206">E</text>
+				</g>
+			</svg>
+		</div>
+		<div style="flex:0 0 auto; position:relative">
+			<svg id="sankoff-static-arrow" style="position:absolute; right:100%; top:0; height:100%; width:20px; overflow:visible; margin-right:3px">
+				<line id="sankoff-static-arrow-line" x1="10" y1="0" x2="10" y2="0" stroke="#666" stroke-width="2"/>
+				<polygon id="sankoff-static-arrow-head" points="0,0 0,0 0,0" fill="#666"/>
+			</svg>
+			<table id="sankoff-static-table" style="font-size:0.75em; border-collapse:collapse">
+				<tr><td style="border:solid 1px">Node</td><td style="border:solid 1px">Left</td><td style="border:solid 1px">Right</td><td style="border:solid 1px">Taxon</td><td style="border:solid 1px; min-width:2.5em">m(A)</td><td style="border:solid 1px; min-width:2.5em">m(C)</td><td style="border:solid 1px; min-width:2.5em">m(G)</td><td style="border:solid 1px; min-width:2.5em">m(T)</td></tr>
+				<tr><td style="border:solid 1px">1</td><td style="border:solid 1px">2</td><td style="border:solid 1px">7</td><td style="border:solid 1px"></td><td style="border:solid 1px"></td><td style="border:solid 1px"></td><td style="border:solid 1px"></td><td style="border:solid 1px"></td></tr>
+				<tr><td style="border:solid 1px">2</td><td style="border:solid 1px">3</td><td style="border:solid 1px">6</td><td style="border:solid 1px"></td><td style="border:solid 1px"></td><td style="border:solid 1px"></td><td style="border:solid 1px"></td><td style="border:solid 1px"></td></tr>
+				<tr><td style="border:solid 1px">3</td><td style="border:solid 1px">4</td><td style="border:solid 1px">5</td><td style="border:solid 1px"></td><td style="border:solid 1px"></td><td style="border:solid 1px"></td><td style="border:solid 1px"></td><td style="border:solid 1px"></td></tr>
+				<tr><td style="border:solid 1px">4</td><td style="border:solid 1px black; color:#999">null</td><td style="border:solid 1px black; color:#999">null</td><td style="border:solid 1px">A</td><td style="border:solid 1px"></td><td style="border:solid 1px"></td><td style="border:solid 1px"></td><td style="border:solid 1px"></td></tr>
+				<tr><td style="border:solid 1px">5</td><td style="border:solid 1px black; color:#999">null</td><td style="border:solid 1px black; color:#999">null</td><td style="border:solid 1px">B</td><td style="border:solid 1px"></td><td style="border:solid 1px"></td><td style="border:solid 1px"></td><td style="border:solid 1px"></td></tr>
+				<tr><td style="border:solid 1px">6</td><td style="border:solid 1px black; color:#999">null</td><td style="border:solid 1px black; color:#999">null</td><td style="border:solid 1px">C</td><td style="border:solid 1px"></td><td style="border:solid 1px"></td><td style="border:solid 1px"></td><td style="border:solid 1px"></td></tr>
+				<tr><td style="border:solid 1px">7</td><td style="border:solid 1px">8</td><td style="border:solid 1px">9</td><td style="border:solid 1px"></td><td style="border:solid 1px"></td><td style="border:solid 1px"></td><td style="border:solid 1px"></td><td style="border:solid 1px"></td></tr>
+				<tr><td style="border:solid 1px">8</td><td style="border:solid 1px black; color:#999">null</td><td style="border:solid 1px black; color:#999">null</td><td style="border:solid 1px">D</td><td style="border:solid 1px"></td><td style="border:solid 1px"></td><td style="border:solid 1px"></td><td style="border:solid 1px"></td></tr>
+				<tr><td style="border:solid 1px">9</td><td style="border:solid 1px black; color:#999">null</td><td style="border:solid 1px black; color:#999">null</td><td style="border:solid 1px">E</td><td style="border:solid 1px"></td><td style="border:solid 1px"></td><td style="border:solid 1px"></td><td style="border:solid 1px"></td></tr>
+			</table>
+		</div>
+		<table class="noborders" style="font-size:0.6em; border-collapse:collapse; flex:0 0 auto; align-self:center">
+			<tr><td></td><td>A</td><td>C</td><td>G</td><td>T</td></tr>
+			<tr><td>A</td><td style="border:solid 1px">0</td><td style="border:solid 1px">2</td><td style="border:solid 1px">1</td><td style="border:solid 1px">2</td></tr>
+			<tr><td>C</td><td style="border:solid 1px">2</td><td style="border:solid 1px">0</td><td style="border:solid 1px">2</td><td style="border:solid 1px">1</td></tr>
+			<tr><td>G</td><td style="border:solid 1px">1</td><td style="border:solid 1px">2</td><td style="border:solid 1px">0</td><td style="border:solid 1px">2</td></tr>
+			<tr><td>T</td><td style="border:solid 1px">2</td><td style="border:solid 1px">1</td><td style="border:solid 1px">2</td><td style="border:solid 1px">0</td></tr>
+		</table>
+	</div>
+
+	<div style="font-size:0.65em; text-align:left; margin-left:5%; margin-top:0.5em; width:90%">
+		<p style="margin-bottom:0.3em">Internal nodes (L = left child, R = right child):
+		&nbsp; $m[v,X]=\underset{Y}{\min}\{m[L,Y]+c(X,Y)\}+\underset{Z}{\min}\{m[R,Z]+c(X,Z)\}$</p>
+		<p>Leaves: &nbsp; $m[v,X] = \begin{cases} 0 & \text{if character state for } v \text{ is } X\\ \infty & \text{otherwise}\end{cases}$</p>
+	</div>
+
+	<script>
+	(function() {
+		var drawn = false;
+		new ResizeObserver(function() {
+			if (drawn) return;
+			var tbl = document.getElementById('sankoff-static-table');
+			var rows = tbl.rows;
+			if (rows.length < 10 || rows[1].offsetHeight === 0) return;
+			var y1 = rows[1].offsetTop + rows[1].offsetHeight / 2;
+			var y9 = rows[9].offsetTop + rows[9].offsetHeight / 2;
+			document.getElementById('sankoff-static-arrow-line').setAttribute('y1', y9);
+			document.getElementById('sankoff-static-arrow-line').setAttribute('y2', y1 + 7);
+			document.getElementById('sankoff-static-arrow-head').setAttribute('points', '4,'+(y1+7)+' 10,'+y1+' 16,'+(y1+7));
+			drawn = true;
+		}).observe(document.getElementById('sankoff-static-table'));
+	})();
+	</script>
+</section>
+
+<section>
+	<h2>Worked example: weighted parsimony</h2>
+
+	<div style="display:flex; align-items:flex-start; gap:0.5em; justify-content:center">
+		<div style="flex:0 0 33%; align-self:center; text-align:center">
+			<svg id="tree-svg" viewBox="0 0 220 225" style="width:100%">
+				<g stroke="black" stroke-width="2" fill="none">
+					<line x1="80" y1="30" x2="170" y2="30"/>
+					<line x1="80" y1="30" x2="80" y2="80"/>
+					<line x1="170" y1="30" x2="170" y2="130"/>
+					<line x1="50" y1="80" x2="110" y2="80"/>
+					<line x1="50" y1="80" x2="50" y2="130"/>
+					<line x1="110" y1="80" x2="110" y2="180"/>
+					<line x1="30" y1="130" x2="70" y2="130"/>
+					<line x1="30" y1="130" x2="30" y2="180"/>
+					<line x1="70" y1="130" x2="70" y2="180"/>
+					<line x1="150" y1="130" x2="190" y2="130"/>
+					<line x1="150" y1="130" x2="150" y2="180"/>
+					<line x1="190" y1="130" x2="190" y2="180"/>
+				</g>
+				<circle id="tnode-1" cx="125" cy="30" r="12" fill="white" stroke="black" stroke-width="1.5"/>
+				<circle id="tnode-2" cx="80" cy="80" r="12" fill="white" stroke="black" stroke-width="1.5"/>
+				<circle id="tnode-3" cx="50" cy="130" r="12" fill="white" stroke="black" stroke-width="1.5"/>
+				<circle id="tnode-7" cx="170" cy="130" r="12" fill="white" stroke="black" stroke-width="1.5"/>
+				<circle id="tnode-4" cx="30" cy="180" r="12" fill="white" stroke="black" stroke-width="1.5"/>
+				<circle id="tnode-5" cx="70" cy="180" r="12" fill="white" stroke="black" stroke-width="1.5"/>
+				<circle id="tnode-6" cx="110" cy="180" r="12" fill="white" stroke="black" stroke-width="1.5"/>
+				<circle id="tnode-8" cx="150" cy="180" r="12" fill="white" stroke="black" stroke-width="1.5"/>
+				<circle id="tnode-9" cx="190" cy="180" r="12" fill="white" stroke="black" stroke-width="1.5"/>
+				<g text-anchor="middle" font-size="11" dominant-baseline="central">
+					<text id="ttext-1" x="125" y="30">1</text>
+					<text id="ttext-2" x="80" y="80">2</text>
+					<text id="ttext-3" x="50" y="130">3</text>
+					<text id="ttext-7" x="170" y="130">7</text>
+					<text id="ttext-4" x="30" y="180">4</text>
+					<text id="ttext-5" x="70" y="180">5</text>
+					<text id="ttext-6" x="110" y="180">6</text>
+					<text id="ttext-8" x="150" y="180">8</text>
+					<text id="ttext-9" x="190" y="180">9</text>
+				</g>
+				<g text-anchor="middle" font-size="13" font-weight="bold">
+					<text x="30" y="206">A</text>
+					<text x="70" y="206">B</text>
+					<text x="110" y="206">C</text>
+					<text x="150" y="206">D</text>
+					<text x="190" y="206">E</text>
+				</g>
+				<g id="branch-costs" font-size="11" fill="#c33" font-weight="bold"></g>
+			</svg>
+			<a id="tree-toggle" href="javascript:void(0)" onclick="toggleTreeLabels()" style="font-size:0.6em; color:#999">Show node numbers</a>
+			<div id="root-buttons" style="font-size:0.6em; margin-top:0.3em">
+				Root:
+				<span id="root-btn-A" onclick="setRoot('A')" style="cursor:pointer; padding:0.1em 0.4em; background:#e24e42; color:white; border-radius:3px">A</span>
+				<span id="root-btn-C" onclick="setRoot('C')" style="cursor:pointer; padding:0.1em 0.4em; background:#4488cc; color:white; border-radius:3px">C</span>
+				<span id="root-btn-G" onclick="setRoot('G')" style="cursor:pointer; padding:0.1em 0.4em; background:#e8b632; color:white; border-radius:3px">G</span>
+				<span id="root-btn-T" onclick="setRoot('T')" style="cursor:pointer; padding:0.1em 0.4em; background:#59b859; color:white; border-radius:3px">T</span>
+				<div id="root-cost" style="margin-top:0.2em; color:#666"></div>
+			</div>
+		</div>
+		<div style="position:relative; flex:0 0 auto">
+			<svg id="sankoff-arrow-svg" style="position:absolute; right:100%; top:0; height:100%; width:20px; overflow:visible; margin-right:3px">
+				<line id="sankoff-arrow-line" x1="10" y1="0" x2="10" y2="0" stroke="#666" stroke-width="2"/>
+				<polygon id="sankoff-arrow-head" points="0,0 0,0 0,0" fill="#666"/>
+			</svg>
+			<table id="dp-table" style="font-size:0.75em; border-collapse:collapse">
+			</table>
+			<svg id="dp-arrows" style="position:absolute; top:0; left:0; width:100%; height:100%; pointer-events:none; overflow:visible">
+				<defs>
+					<marker id="arrowhead" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+						<polygon points="0 0, 8 3, 0 6" fill="#e44" />
+					</marker>
+				</defs>
+			</svg>
+		</div>
+		<table class="noborders" style="font-size:0.6em; border-collapse:collapse; flex:0 0 auto; align-self:center">
+			<tr><td></td><td>A</td><td>C</td><td>G</td><td>T</td></tr>
+			<tr><td>A</td><td style="border:solid 1px">0</td><td style="border:solid 1px">2</td><td style="border:solid 1px">1</td><td style="border:solid 1px">2</td></tr>
+			<tr><td>C</td><td style="border:solid 1px">2</td><td style="border:solid 1px">0</td><td style="border:solid 1px">2</td><td style="border:solid 1px">1</td></tr>
+			<tr><td>G</td><td style="border:solid 1px">1</td><td style="border:solid 1px">2</td><td style="border:solid 1px">0</td><td style="border:solid 1px">2</td></tr>
+			<tr><td>T</td><td style="border:solid 1px">2</td><td style="border:solid 1px">1</td><td style="border:solid 1px">2</td><td style="border:solid 1px">0</td></tr>
+		</table>
+	</div>
+
+	<div id="dp-detail" style="font-size:0.6em; margin-top:1em; min-height:2.5em; text-align:center">
+	</div>
+
+	<p style="font-size:0.6em; color:#999; text-align:center; margin-top:0.3em">Character states: A=A, B=C, C=C, D=A, E=C. Click any cell to see computation.</p>
+
+	<script>
+	(function() {
+		var S = ['A','C','G','T'];
+		var cost = {AA:0,AC:2,AG:1,AT:2, CA:2,CC:0,CG:2,CT:1, GA:1,GC:2,GG:0,GT:2, TA:2,TC:1,TG:2,TT:0};
+		var tree = {1:[2,7], 2:[3,6], 3:[4,5], 7:[8,9]};
+		var taxonName = {4:'A', 5:'B', 6:'C', 8:'D', 9:'E'};
+		var leafState = {4:'A', 5:'C', 6:'C', 8:'A', 9:'C'};
+		var INF = Infinity;
+		var m = {};
+		var postOrder = [9,8,7,6,5,4,3,2,1];
+
+		// Compute DP (iterate forward: 9,8,7,6,5,4,3,2,1 = bottom-up)
+		for (var i = 0; i < postOrder.length; i++) {
+			var v = postOrder[i];
+			S.forEach(function(X) {
+				if (leafState[v]) {
+					m[v+X] = (X === leafState[v]) ? 0 : INF;
+				} else {
+					var L = tree[v][0], R = tree[v][1];
+					var lMin = INF, rMin = INF;
+					S.forEach(function(Y) { lMin = Math.min(lMin, m[L+Y] + cost[X+Y]); });
+					S.forEach(function(Z) { rMin = Math.min(rMin, m[R+Z] + cost[X+Z]); });
+					m[v+X] = lMin + rMin;
+				}
+			});
+		}
+
+		// Traceback: reconstruct ancestral states
+		var optState = {};
+		function traceback(v, stateV) {
+			optState[v] = stateV;
+			if (leafState[v]) return;
+			var L = tree[v][0], R = tree[v][1];
+			[L, R].forEach(function(child) {
+				var bestY = '', bestVal = INF;
+				S.forEach(function(Y) {
+					var val = m[child+Y] + cost[stateV+Y];
+					if (val < bestVal) { bestVal = val; bestY = Y; }
+				});
+				traceback(child, bestY);
+			});
+		}
+		// Pre-compute traceback for all 4 root states
+		var allRecon = {};
+		S.forEach(function(rootX) {
+			var recon = {};
+			function tb(v, stateV) {
+				recon[v] = stateV;
+				if (leafState[v]) return;
+				var L = tree[v][0], R = tree[v][1];
+				[L, R].forEach(function(child) {
+					var bestY = '', bestVal = INF;
+					S.forEach(function(Y) {
+						var val = m[child+Y] + cost[stateV+Y];
+						if (val < bestVal) { bestVal = val; bestY = Y; }
+					});
+					tb(child, bestY);
+				});
+			}
+			tb(1, rootX);
+			allRecon[rootX] = recon;
+		});
+
+		var rootMin = INF, bestRoot = '';
+		S.forEach(function(X) { if (m['1'+X] < rootMin) { rootMin = m['1'+X]; bestRoot = X; } });
+		var curRoot = bestRoot;
+
+		// Nucleotide colours
+		var nucColor = {A:'#e24e42', C:'#4488cc', G:'#e8b632', T:'#59b859'};
+
+		// Branch cost display
+		var branchPos = {
+			'1-2':[90,55], '1-7':[180,80],
+			'2-3':[38,105], '2-6':[120,130],
+			'3-4':[16,155], '3-5':[80,155],
+			'7-8':[136,155], '7-9':[200,155]
+		};
+		var bcGroup = document.getElementById('branch-costs');
+		var branches = [[1,2],[1,7],[2,3],[2,6],[3,4],[3,5],[7,8],[7,9]];
+
+		function updateTree() {
+			var recon = allRecon[curRoot];
+			// Update node colours and labels
+			[1,2,3,4,5,6,7,8,9].forEach(function(v) {
+				var circle = document.getElementById('tnode-'+v);
+				var text = document.getElementById('ttext-'+v);
+				if (showStates) {
+					circle.setAttribute('fill', nucColor[recon[v]]);
+					text.setAttribute('fill', 'white');
+					text.textContent = recon[v];
+				} else {
+					circle.setAttribute('fill', 'white');
+					text.setAttribute('fill', 'black');
+					text.textContent = v;
+				}
+			});
+			// Update branch costs
+			while (bcGroup.firstChild) bcGroup.removeChild(bcGroup.firstChild);
+			if (showStates) {
+				branches.forEach(function(b) {
+					var p = b[0], c = b[1];
+					var val = cost[recon[p]+recon[c]];
+					if (val === 0) return;
+					var pos = branchPos[p+'-'+c];
+					var txt = document.createElementNS('http://www.w3.org/2000/svg','text');
+					txt.setAttribute('x', pos[0]);
+					txt.setAttribute('y', pos[1]);
+					txt.setAttribute('text-anchor', 'middle');
+					txt.textContent = '+' + val;
+					bcGroup.appendChild(txt);
+				});
+			}
+			// Update root buttons
+			S.forEach(function(X) {
+				var btn = document.getElementById('root-btn-'+X);
+				btn.style.fontWeight = (X === curRoot) ? 'bold' : 'normal';
+				btn.style.outline = (X === curRoot) ? '2px solid black' : 'none';
+			});
+			// Show total cost
+			document.getElementById('root-cost').textContent = 'Total cost: ' + m['1'+curRoot] + (curRoot === bestRoot ? ' (optimal)' : '');
+		}
+
+		var showStates = true;
+		window.toggleTreeLabels = function() {
+			showStates = !showStates;
+			updateTree();
+			document.getElementById('tree-toggle').textContent = showStates ? 'Show node numbers' : 'Show reconstructed states';
+			document.getElementById('root-buttons').style.display = showStates ? '' : 'none';
+		};
+
+		window.setRoot = function(X) {
+			curRoot = X;
+			updateTree();
+		};
+
+		updateTree();
+
+		// Build table
+		var tbl = document.getElementById('dp-table');
+		var hdr = '<tr><td style="border:solid 1px">Node</td><td style="border:solid 1px">Left</td><td style="border:solid 1px">Right</td><td style="border:solid 1px">Taxon</td>';
+		S.forEach(function(X) { hdr += '<td style="border:solid 1px;min-width:2.5em">m('+X+')</td>'; });
+		hdr += '</tr>';
+		tbl.innerHTML = hdr;
+
+		var nodes = [1,2,3,4,5,6,7,8,9];
+		nodes.forEach(function(v) {
+			var isLeaf = !!leafState[v];
+			var left = isLeaf ? '<td style="border:solid 1px black;color:#999">null</td>' : '<td style="border:solid 1px">'+tree[v][0]+'</td>';
+			var right = isLeaf ? '<td style="border:solid 1px black;color:#999">null</td>' : '<td style="border:solid 1px">'+tree[v][1]+'</td>';
+			var taxon = isLeaf ? taxonName[v] : '';
+			var row = '<tr><td style="border:solid 1px">'+v+'</td>'+left+right+'<td style="border:solid 1px">'+taxon+'</td>';
+			S.forEach(function(X) {
+				var val = m[v+X];
+				var display = (val === INF) ? '&infin;' : val;
+				row += '<td id="cell-'+v+'-'+X+'" style="border:solid 1px;cursor:pointer;text-align:center" onclick="dpClick('+v+',\''+X+'\')">' + display + '</td>';
+			});
+			row += '</tr>';
+			tbl.innerHTML += row;
+		});
+
+		function drawArrow(fromCell, toCell, label, color) {
+			var svg = document.getElementById('dp-arrows');
+			var container = svg.parentElement;
+
+			// Use offsetLeft/offsetTop to avoid Reveal.js transform issues
+			function getPos(el) {
+				var x = 0, y = 0;
+				var cur = el;
+				while (cur && cur !== container) {
+					x += cur.offsetLeft;
+					y += cur.offsetTop;
+					cur = cur.offsetParent;
+				}
+				return { x: x + el.offsetWidth/2, y: y + el.offsetHeight/2 };
+			}
+
+			var from = getPos(fromCell);
+			var to = getPos(toCell);
+			var x1 = from.x, y1 = from.y, x2 = to.x, y2 = to.y;
+
+			var line = document.createElementNS('http://www.w3.org/2000/svg','line');
+			line.setAttribute('x1', x1); line.setAttribute('y1', y1);
+			line.setAttribute('x2', x2); line.setAttribute('y2', y2);
+			line.setAttribute('stroke', color || '#e44');
+			line.setAttribute('stroke-width', '2');
+			line.setAttribute('marker-end', 'url(#arrowhead)');
+			svg.appendChild(line);
+
+			if (label) {
+				var text = document.createElementNS('http://www.w3.org/2000/svg','text');
+				text.setAttribute('x', (x1+x2)/2 - 10);
+				text.setAttribute('y', (y1+y2)/2 - 5);
+				text.setAttribute('fill', color || '#e44');
+				text.setAttribute('font-size', '12');
+				text.setAttribute('font-weight', 'bold');
+				text.textContent = label;
+				svg.appendChild(text);
+			}
+		}
+
+		function clearArrows() {
+			var svg = document.getElementById('dp-arrows');
+			while (svg.children.length > 1) svg.removeChild(svg.lastChild); // keep <defs>
+		}
+
+		// Click handler
+		var dpSelectedV = null, dpSelectedX = null;
+		window.dpClick = function(v, X) {
+			var detail = document.getElementById('dp-detail');
+			clearArrows();
+			// Clear previous highlights
+			document.querySelectorAll('#dp-table td.dp-highlight').forEach(function(el) {
+				el.classList.remove('dp-highlight');
+				el.style.background = '';
+			});
+
+			if (dpSelectedV === v && dpSelectedX === X) {
+				dpSelectedV = null;
+				dpSelectedX = null;
+				detail.innerHTML = '';
+				return;
+			}
+			dpSelectedV = v;
+			dpSelectedX = X;
+
+			var cell = document.getElementById('cell-'+v+'-'+X);
+			cell.style.background = '#ffffaa';
+			cell.classList.add('dp-highlight');
+
+			if (leafState[v]) {
+				if (X === leafState[v]) {
+					detail.innerHTML = '<b>Node '+v+'</b> (leaf, taxon='+leafState[v]+'): m['+v+','+X+'] = <b>0</b> because state matches';
+				} else {
+					detail.innerHTML = '<b>Node '+v+'</b> (leaf, taxon='+leafState[v]+'): m['+v+','+X+'] = <b>&infin;</b> because '+X+' &ne; '+leafState[v];
+				}
+				return;
+			}
+
+			var L = tree[v][0], R = tree[v][1];
+			var lTerms = [], rTerms = [], lMin = INF, rMin = INF, lBestY = '', rBestZ = '';
+			S.forEach(function(Y) {
+				var mLY = m[L+Y];
+				var cXY = cost[X+Y];
+				var sum = mLY + cXY;
+				var mStr = (mLY === INF) ? '&infin;' : mLY;
+				var sumStr = (sum >= INF) ? '&infin;' : sum;
+				var bold = false;
+				if (sum < lMin) { lMin = sum; lBestY = Y; bold = true; }
+				else if (sum === lMin) { bold = true; }
+				lTerms.push({Y:Y, mStr:mStr, c:cXY, sumStr:sumStr, bold:bold});
+			});
+			// fix bold flags: only mark the actual min
+			lTerms.forEach(function(t) { t.bold = (t.sumStr !== '&infin;' && parseInt(t.sumStr) === lMin); });
+
+			S.forEach(function(Z) {
+				var mRZ = m[R+Z];
+				var cXZ = cost[X+Z];
+				var sum = mRZ + cXZ;
+				var mStr = (mRZ === INF) ? '&infin;' : mRZ;
+				var sumStr = (sum >= INF) ? '&infin;' : sum;
+				if (sum < rMin) { rMin = sum; rBestZ = Z; }
+				rTerms.push({Z:Z, mStr:mStr, c:cXZ, sumStr:sumStr});
+			});
+			rTerms.forEach(function(t) { t.bold = (t.sumStr !== '&infin;' && parseInt(t.sumStr) === rMin); });
+
+			// Highlight child cells and draw arrows
+			var lCell = document.getElementById('cell-'+L+'-'+lBestY);
+			var rCell = document.getElementById('cell-'+R+'-'+rBestZ);
+			lCell.style.background = '#aaddff';
+			lCell.classList.add('dp-highlight');
+			rCell.style.background = '#aaddff';
+			rCell.classList.add('dp-highlight');
+			drawArrow(lCell, cell, 'c('+X+','+lBestY+')='+cost[X+lBestY], '#448aee');
+			drawArrow(rCell, cell, 'c('+X+','+rBestZ+')='+cost[X+rBestZ], '#448aee');
+
+			var html = '<b>Node '+v+'</b>, m['+v+','+X+'] &nbsp; L='+L+', R='+R+'<br>';
+			html += 'min<sub>Y</sub>{m['+L+',Y]+c('+X+',Y)} = min{ ';
+			html += lTerms.map(function(t) {
+				var s = t.mStr+'+'+t.c+'='+t.sumStr;
+				return t.bold ? '<b>'+s+'</b>' : s;
+			}).join(', ');
+			html += ' } = <b>'+lMin+'</b><br>';
+
+			html += 'min<sub>Z</sub>{m['+R+',Z]+c('+X+',Z)} = min{ ';
+			html += rTerms.map(function(t) {
+				var s = t.mStr+'+'+t.c+'='+t.sumStr;
+				return t.bold ? '<b>'+s+'</b>' : s;
+			}).join(', ');
+			html += ' } = <b>'+rMin+'</b><br>';
+
+			html += 'm['+v+','+X+'] = '+lMin+' + '+rMin+' = <b>'+(lMin+rMin)+'</b>';
+			detail.innerHTML = html;
+		};
+
+		// Draw traversal arrow
+		var sankoffArrowDrawn = false;
+		new ResizeObserver(function() {
+			if (sankoffArrowDrawn) return;
+			var rows = tbl.rows;
+			if (rows.length < 10 || rows[1].offsetHeight === 0) return;
+			var y1 = rows[1].offsetTop + rows[1].offsetHeight / 2;
+			var y9 = rows[9].offsetTop + rows[9].offsetHeight / 2;
+			document.getElementById('sankoff-arrow-line').setAttribute('y1', y9);
+			document.getElementById('sankoff-arrow-line').setAttribute('y2', y1 + 7);
+			document.getElementById('sankoff-arrow-head').setAttribute('points', '4,'+(y1+7)+' 10,'+y1+' 16,'+(y1+7));
+			sankoffArrowDrawn = true;
+		}).observe(tbl);
+	})();
+	</script>
 </section>
 
 <section>
@@ -161,12 +1118,6 @@ characters to consider.
 $O(nS)$ space
 
 
-</section>
-
-<section>
-	<h2>Special case: Fitch Parsimony</h2>
-
-	<img data-src="fitchAlgorithm.png" style="width:100%">
 </section>
 
 <section>
