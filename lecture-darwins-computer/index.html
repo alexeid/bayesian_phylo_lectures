@@ -9,42 +9,59 @@ reveal:
 <section>
     <h2>Darwin's Computer</h2>
 
-   <div style="width:40%;float:left;top:2em;">
+   <div style="width:30%;float:left;top:2em;">
             <img data-src="Charles_Darwin_by_G_Richmond.jpg">
    </div>
 
-   <div style="margin-left:40%;width:60%;top:2em;">
+   <div style="margin-left:32%;width:68%;top:2em;">
             <img data-src="Origin_of_Species.svg">
+            <p style="font-size:0.6em; margin-top:0.3em; text-align:center">
+                Detail from the only illustration in the <i>Origin of Species</i> (Darwin, 1859)
+            </p>
    </div>
-
-   <p style="font-size:0.6em; clear:both; margin-top:0.5em">
-       Detail from the only illustration in the <i>Origin of Species</i> (Darwin, 1859)
-   </p>
 </section>
 
 <!-- Slide 2: Tree of Life -->
 <section>
-    <img data-src="treeOfLife_evogeneao.png" style="width:90%">
+    <div style="overflow:hidden">
+        <img data-src="treeOfLife_evogeneao.png" style="width:90%; margin-bottom:-6%">
+    </div>
+    <p style="font-size:0.6em; margin-top:0.3em; text-align:center">
+        <a href="https://www.evogeneao.com/en/explore/tree-of-life-explorer">https://www.evogeneao.com/en/explore/tree-of-life-explorer</a>
+    </p>
 </section>
 
 <!-- Slide 3: Descent with modification -->
 <section>
-    <img data-src="descentWithModification.png" style="width:90%">
+    <h2>Descent with modification in populations</h2>
+
+    <div style="overflow:hidden; margin-top:0.3em">
+        <img data-src="descentWithModification.png" style="width:90%; margin-top:-8%">
+    </div>
 </section>
 
 <!-- Slide 4: 15 trees of 4 taxa -->
 <section>
-    <img data-src="15trees4taxa.png" style="width:90%">
+    <div style="overflow:hidden">
+        <img data-src="15trees4taxa.png" style="width:90%; margin-bottom:-8%">
+    </div>
+    <p style="font-size:0.8em; margin-top:0.3em; text-align:center">15 possible trees of 4 individuals/species</p>
 </section>
 
 <!-- Slide 5: 105 trees of 5 taxa -->
 <section>
-    <img data-src="105trees5taxa.png" style="width:90%">
+    <div style="overflow:hidden">
+        <img data-src="105trees5taxa.png" style="width:90%; margin-bottom:-8%">
+    </div>
+    <p style="font-size:0.8em; margin-top:0.3em; text-align:center">105 possible trees of 5 individuals/species</p>
 </section>
 
 <!-- Slide 6: 945 trees of 6 taxa -->
 <section>
-    <img data-src="945trees6taxa.png" style="width:90%">
+    <div style="overflow:hidden">
+        <img data-src="945trees6taxa.png" style="width:90%; margin-bottom:-8%">
+    </div>
+    <p style="font-size:0.8em; margin-top:0.3em; text-align:center">945 possible trees of 6 individuals/species</p>
 </section>
 
 <!-- Slide 7: How many trees are there? -->
@@ -167,20 +184,31 @@ reveal:
 
     <img data-src="../common/images/2007Gilbert_Figure2.png" style="width:60%">
 
-    <p style="font-size:0.65em; margin-top:0.5em; text-align:left; width:85%; margin-left:7.5%">
+    <p style="font-size:1em; margin-top:0.5em; text-align:left; width:85%; margin-left:7.5%">
         A phylogenetic reconstruction of samples of HIV-1 virus. Each tip represents
         a single infected individual from whom a blood sample has been taken.
     </p>
 </section>
 
-<!-- Slide 15: BEAST software -->
-<section>
-    <img data-src="beastSoftware.png" style="width:90%">
-</section>
+<!-- Slide 15: BEAST software — moved to lecture-bayesian-phylogenetics -->
 
-<!-- Slide 16: Phylodynamics -->
+<!-- Slide 16: Phylodynamics (converted from image to HTML) -->
 <section>
-    <img data-src="phylodynamics.png" style="width:90%">
+    <h2>Phylodynamics</h2>
+
+    <div style="overflow:hidden; margin-top:0.3em">
+        <img data-src="phylodynamics.png" style="width:85%; margin-top:-13%; margin-bottom:-19%">
+    </div>
+
+    <div style="display:flex; justify-content:space-between; width:65%; margin:0.3em auto 0; font-size:0.7em">
+        <p style="text-align:center">Statistical phylogenetics and<br>population genetics models</p>
+        <p style="text-align:center; margin-right:6%">Mathematical epidemiology,<br>non-linear dynamical models</p>
+    </div>
+
+    <p style="font-size:1em; margin-top:0.5em; text-align:left; width:85%; margin-left:7.5%">
+        <b>Goal:</b> the integration of immunological, genomic and
+        epidemiological data in a single coherent predictive model.
+    </p>
 </section>
 
 <!-- Slide 17: Coalescent theory -->
@@ -198,134 +226,55 @@ reveal:
     </div>
 </section>
 
-<!-- Slide 18: mtDNA and population size -->
+<!-- Slide 18: mtDNA — moved to lecture-coalescent -->
+<!-- Slides 19-20: Seasonal flu, influenza dynamics — moved to lecture-skyline -->
+
+<!-- Slide 21: Trees inside trees (converted from image to HTML) -->
 <section>
-    <h2>Mitochondrial DNA Variation Predicts Population Size in Humans</h2>
+    <h2>Trees inside trees</h2>
 
-    <img data-src="../common/images/mtDNAHumanCoalescent.jpg" style="width:66%">
+    <div style="float:left; width:48%; text-align:left; font-size:1em; margin-top:0.5em; margin-left:0.5em">
+        <ul class="spaced">
+            <li>Modelling <b>diversity and divergence</b></li>
+            <li>Central to understanding diverse areas including
+                <b>speciation genomics</b> and <b>host-symbiont co-evolution</b>
+                is building up a statistically rigorous model of the patterns
+                of divergence and diversity spanning multiple species/hosts,
+                multiple genes / gene families and multiple individuals per
+                species/host.</li>
+        </ul>
+    </div>
 
-    <p style="font-size:0.6em; margin-top:0.5em">
-        <a class="cite">Atkinson, Gray and Drummond, 2008, Molecular Biology and Evolution</a>
-    </p>
+    <div style="margin-left:50%; width:50%">
+        <img data-src="../common/images/multispeciesCoalescent/geneTreeSpeciesTree.png" style="width:100%">
+    </div>
+
+    <div style="clear:both; margin-top:0.3em; font-size:0.85em">
+        $$p(T,\color{purple}{S}|D) \propto \Pr\{D|T\} \; p(T|\color{purple}{S}) \; \color{purple}{p(S)}$$
+        <div style="margin-top:0.5em">
+        $$p(t_1,t_2,\ldots,t_N,\color{purple}{S}|D) \propto \prod_i \Pr\{D_i|t_i\} \; p(t_i|\color{purple}{S}) \; \color{purple}{p(S)}$$
+        </div>
+    </div>
 </section>
 
-<!-- Slide 19: Seasonal flu outbreaks -->
-<section>
-    <img data-src="seasonalFlu.png" style="width:90%">
-</section>
-
-<!-- Slide 20: Influenza global dynamics -->
-<section>
-    <img data-src="influenzaGlobalDynamics.png" style="width:90%">
-</section>
-
-<!-- Slide 21: Trees inside trees -->
-<section>
-    <img data-src="treesInsideTrees.png" style="width:90%">
-</section>
-
-<!-- Slide 22: Multispecies coalescent -->
-<section>
-    <img data-src="multispeciesCoalescent.png" style="width:90%">
-</section>
-
-<!-- Slide 23: HIV genealogical dynamics -->
-<section>
-    <img data-src="hivGenealogicalDynamics.png" style="width:90%">
-</section>
-
-<!-- Slide 24: Pathogen evolution inside transmission trees -->
-<section>
-    <img data-src="transmissionTrees.png" style="width:90%">
-</section>
+<!-- Slide 22: Multispecies coalescent — moved to lecture-multispecies-coalescent -->
+<!-- Slides 23-24: HIV dynamics, transmission trees — moved to lecture-skyline -->
 
 <!-- Slide 25: Phylogenies and the fossil record -->
 <section>
-    <img data-src="phylogeniesFossilRecord.png" style="width:90%">
+    <h2>Phylogenies and the fossil record</h2>
+
+    <div style="overflow:hidden">
+        <img data-src="phylogeniesFossilRecord.png" style="width:90%; margin-top:-11%; margin-bottom:-7%">
+    </div>
+
+    <p style="font-size:0.6em; margin-top:0.3em; text-align:center">
+        An example of <b>node dating</b> with BEAST from Subramanian et al (Biology Letters, 2013)
+    </p>
 </section>
 
-<!-- Slide 26: Total evidence fossil dating -->
-<section>
-    <h2>Total evidence fossil dating</h2>
-
-    <ul class="spaced" style="margin-top:5%; width:80%">
-        <li>We have
-            <ul class="spaced" style="margin-top:0.5em; margin-left:1.5em">
-                <li><b>molecular data</b> of extant species</li>
-                <li><b>morphological data</b> of extant and <b>extinct</b> species</li>
-                <li><b>fossil ages</b> (or geological time intervals)</li>
-            </ul>
-        </li>
-        <li>We want to use all this data to learn about <b>evolutionary history</b>
-            and <b>macroevolutionary processes</b></li>
-        <li><b>Bayesian statistical inference</b> is our preferred method for
-            learning about the world.</li>
-    </ul>
-</section>
-
-<!-- Slide 27: FBD model 1 -->
-<section>
-    <img data-src="fbdModel1.png" style="width:90%">
-</section>
-
-<!-- Slide 28: FBD model 2 -->
-<section>
-    <img data-src="fbdModel2.png" style="width:90%">
-</section>
-
-<!-- Slide 29: Computer models of DNA and fossils -->
-<section>
-    <img data-src="computerModelsDNAFossils.png" style="width:90%">
-</section>
-
-<!-- Slide 30: Homo naledi -->
-<section>
-    <img data-src="homoNaledi.png" style="width:90%">
-</section>
-
-<!-- Slide 31: Can we date fossils using Bayesian phylogenetics? -->
-<section>
-    <h2>Can we date fossils using Bayesian phylogenetics?</h2>
-
-    <ul class="spaced" style="margin-top:3%; width:80%">
-        <li>Given
-            <ul class="spaced" style="margin-top:0.5em; margin-left:1.5em">
-                <li>A reference set of fossils of known age, and</li>
-                <li>A morphological characterization for reference fossils, and</li>
-                <li>The FBD model of sampled ancestor trees</li>
-                <li>A &ldquo;clock-like&rdquo; model of morphological evolution</li>
-                <li>A morphological characterization of a related focal fossil of unknown age</li>
-            </ul>
-        </li>
-        <li><b>Can the age of the focal fossil be estimated using Bayesian phylogenetic inference?</b></li>
-        <li style="font-size:0.85em">I tested this hypothesis on a penguin data set including 36 penguin fossils under a simple model of morphological evolution (M1) and a complex model (M8).</li>
-    </ul>
-</section>
-
-<!-- Slide 32: Estimating the phylogenetic age of a fossil -->
-<section>
-    <img data-src="fossilAgeScatter.png" style="width:90%">
-</section>
-
-<!-- Slide 33: Marginal posteriors -->
-<section>
-    <img data-src="marginalPosteriors.png" style="width:90%">
-</section>
-
-<!-- Slide 34: 123 Canid fossils -->
-<section>
-    <img data-src="canidFossils.png" style="width:90%">
-</section>
-
-<!-- Slide 35: Ardipithecus ramidus -->
-<section>
-    <img data-src="ardipithecus.png" style="width:90%">
-</section>
-
-<!-- Slide 36: Ardi phylogeny -->
-<section>
-    <img data-src="ardiPhylogeny.png" style="width:90%">
-</section>
+<!-- Slides 26-28: Total evidence fossil dating, FBD models — moved to lecture-birth-death -->
+<!-- Slides 29-36: Fossil dating case studies — moved to lecture_sa -->
 
 <!-- Slide 37: Final Perspectives -->
 <section>
