@@ -127,7 +127,7 @@ next_lecture: lecture-bayesian-inference/notes
 
 <h4>Why p-distance Underestimates True Distance</h4>
 
-<p>The p-distance usually <strong>underestimates</strong> the true genetic (evolutionary) distance because it doesn't account for:</p>
+<p>The p-distance systematically <strong>underestimates</strong> the true genetic (evolutionary) distance because it cannot detect:</p>
 
 <div class="figure">
     <img src="{{ site.baseurl }}/lecture-substitution-models/pdist3.svg" alt="Multiple substitutions" style="width: 70%;">

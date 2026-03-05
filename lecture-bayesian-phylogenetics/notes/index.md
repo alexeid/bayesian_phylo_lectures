@@ -215,6 +215,18 @@ $$\dot{p}(k,t) = \lambda (k-1)p(k-1,t) - \lambda k p(k,t)$$
 
 <h3>Basic MCMC Theory Review</h3>
 
+<div class="bio-context">
+    <h4>Biological Intuition</h4>
+    <p>Think of MCMC like exploring a fitness landscape:</p>
+    <ul>
+        <li>Current position = current tree and parameters</li>
+        <li>Proposed moves = small changes ("mutations") to the tree and/or parameters</li>
+        <li>Acceptance/rejection = natural selection</li>
+        <li>Long run behavior = equilibrium distribution is the posterior</li>
+    </ul>
+    <p><strong>Key insight:</strong> We don't need to know the whole landscape, just the relative heights of where we are vs. where we're going!</p>
+</div>
+
 <p>MCMC works by simulating a stochastic trajectory according to:</p>
 <div class="math-block">
 $$p_{i+1}(x)=\int p_i(x')W(x|x')\mathrm{d}x'$$

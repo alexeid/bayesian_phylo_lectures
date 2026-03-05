@@ -155,6 +155,8 @@ lecture_num: 9
 <section>
     <h3>Basic MCMC Theory</h3>
 
+    <p style="font-size:0.85em">Think of MCMC like exploring a fitness landscape: current position = current tree &amp; parameters, proposed moves = small "mutations", acceptance/rejection = selection. We don't need the whole landscape—just the relative heights of where we are vs. where we're going.</p>
+
     <p>MCMC works by simulating a stochastic trajectory according to:
     $$p_{i+1}(x)=\int p_i(x')W(x|x')\mathrm{d}x'$$
     where
