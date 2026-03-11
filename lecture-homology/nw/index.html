@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Needleman–Wunsch Global Alignment</title>
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, sans-serif;
+    background: #f5f7fa; color: #333; padding: 24px;
+    display: flex; flex-direction: column; align-items: center;
+}
+h1 { font-size: 1.5rem; margin-bottom: 4px; }
+.subtitle { color: #666; font-size: 0.9rem; margin-bottom: 20px; }
+
+/* Controls */
+.controls {
+    display: flex; flex-wrap: wrap; gap: 12px; align-items: flex-end;
+    background: #fff; padding: 16px 20px; border-radius: 8px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1); margin-bottom: 20px;
+    max-width: 800px; width: 100%;
+}
+.control-group { display: flex; flex-direction: column; gap: 4px; }
+.control-group label { font-size: 0.75rem; font-weight: 600; color: #555; text-transform: uppercase; letter-spacing: 0.5px; }
+.control-group input[type="text"] {
+    font-family: "Courier New", monospace; font-size: 1rem;
+    padding: 6px 10px; border: 1px solid #ccc; border-radius: 4px; width: 220px;
+    text-transform: uppercase;
+}
+.control-group input[type="number"] {
+    width: 64px; padding: 6px 8px; border: 1px solid #ccc; border-radius: 4px;
+    font-size: 1rem; text-align: center;
+}
+.controls button {
+    padding: 8px 18px; border: none; border-radius: 4px; font-size: 0.9rem;
+    cursor: pointer; font-weight: 600; transition: background 0.15s;
+}
+.btn-primary { background: #2563eb; color: #fff; }
+.btn-primary:hover { background: #1d4ed8; }
+.btn-secondary { background: #e5e7eb; color: #333; }
+.btn-secondary:hover { background: #d1d5db; }
+
+/* Matrix */
+.matrix-wrap {
+    overflow-x: auto; background: #fff; padding: 20px;
+    border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    flex: 0 0 auto;
+}
+table { border-collapse: collapse; margin: 0 auto; }
+td, th {
+    width: 44px; height: 44px; text-align: center; vertical-align: middle;
+    font-size: 0.85rem; border: 1px solid #ddd; position: relative;
+}
+th { background: #f0f4f8; font-weight: 600; }
+th.seq-char { color: #2563eb; font-family: "Courier New", monospace; font-size: 1rem; }
+td.cell {
+    cursor: pointer; transition: background 0.1s;
+}
+td.cell:hover { background: #e0e7ff; }
+
+/* Arrows (traceback pointers) */
+td.cell .arrows {
+    position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+    pointer-events: none;
+}
+td.cell .arrows svg { position: absolute; top: 0; left: 0; width: 100%; height: 100%; }
+
+/* Traceback path */
+td.on-path { background: #fef3c7 !important; }
+td.on-path.match-cell { background: #d1fae5 !important; }
+td.on-path.mismatch-cell { background: #fee2e2 !important; }
+td.on-path.gap-cell { background: #fef3c7 !important; }
+
+/* Score in cell */
+td.cell .score { position: relative; z-index: 1; font-weight: 600; }
+
+/* Tooltip */
+.tooltip {
+    display: none; position: fixed; background: #1e293b; color: #fff;
+    padding: 8px 12px; border-radius: 6px; font-size: 0.8rem;
+    pointer-events: none; z-index: 100; white-space: pre-line;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+}
+
+/* Main body: matrix left, result right */
+.main-body {
+    display: flex; gap: 20px; align-items: flex-start;
+    justify-content: center;
+}
+
+/* Result */
+.result {
+    background: #fff; padding: 16px 20px; border-radius: 8px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1); flex: 0 0 auto;
+    font-family: "Courier New", monospace; font-size: 1rem; line-height: 1.8;
+}
+.result .label { font-family: sans-serif; font-size: 0.75rem; font-weight: 600; color: #555; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px; }
+.result .alignment { white-space: pre; }
+.result .score-display { font-family: sans-serif; font-size: 0.95rem; margin-top: 8px; }
+.result .score-display strong { color: #2563eb; }
+.match-char { color: #16a34a; font-weight: bold; }
+.mismatch-char { color: #dc2626; font-weight: bold; }
+.gap-char { color: #9ca3af; }
+.mid-line { color: #888; }
+</style>
+</head>
+<body>
+
+<h1>Needleman–Wunsch Global Alignment</h1>
+<p class="subtitle">Interactive dynamic programming demo</p>
+
+<div class="controls">
+    <div class="control-group">
+        <label>Sequence 1</label>
+        <input type="text" id="seq1" value="HEAGAWGHEE" spellcheck="false">
+    </div>
+    <div class="control-group">
+        <label>Sequence 2</label>
+        <input type="text" id="seq2" value="PAWHEAE" spellcheck="false">
+    </div>
+    <div class="control-group">
+        <label>Match</label>
+        <input type="number" id="match" value="1">
+    </div>
+    <div class="control-group">
+        <label>Mismatch</label>
+        <input type="number" id="mismatch" value="-1">
+    </div>
+    <div class="control-group">
+        <label>Gap</label>
+        <input type="number" id="gap" value="-2">
+    </div>
+    <button class="btn-primary" onclick="compute()">Align</button>
+    <button class="btn-secondary" onclick="clearPath()">Clear Path</button>
+</div>
+
+<div class="main-body">
+    <div class="matrix-wrap">
+        <table id="matrix"></table>
+    </div>
+    <div class="result" id="result"></div>
+</div>
+
+<div class="tooltip" id="tooltip"></div>
+
+<script>
+// State
+let F, ptr, seq1, seq2, matchScore, mismatchScore, gapScore;
+let pathCells = [];
+
+function compute() {
+    seq1 = document.getElementById('seq1').value.toUpperCase().replace(/[^A-Z]/g, '');
+    seq2 = document.getElementById('seq2').value.toUpperCase().replace(/[^A-Z]/g, '');
+    matchScore = parseInt(document.getElementById('match').value) || 0;
+    mismatchScore = parseInt(document.getElementById('mismatch').value) || 0;
+    gapScore = parseInt(document.getElementById('gap').value) || 0;
+
+    document.getElementById('seq1').value = seq1;
+    document.getElementById('seq2').value = seq2;
+
+    const m = seq1.length, n = seq2.length;
+
+    // Allocate
+    F = Array.from({length: m + 1}, () => new Array(n + 1).fill(0));
+    // ptr stores arrays of sources: 'diag', 'up', 'left'
+    ptr = Array.from({length: m + 1}, () => Array.from({length: n + 1}, () => []));
+
+    // Init
+    for (let i = 1; i <= m; i++) { F[i][0] = i * gapScore; ptr[i][0] = ['up']; }
+    for (let j = 1; j <= n; j++) { F[0][j] = j * gapScore; ptr[0][j] = ['left']; }
+
+    // Fill
+    for (let i = 1; i <= m; i++) {
+        for (let j = 1; j <= n; j++) {
+            const s = seq1[i-1] === seq2[j-1] ? matchScore : mismatchScore;
+            const diag = F[i-1][j-1] + s;
+            const up   = F[i-1][j] + gapScore;
+            const left = F[i][j-1] + gapScore;
+            const best = Math.max(diag, up, left);
+            F[i][j] = best;
+            ptr[i][j] = [];
+            if (diag === best) ptr[i][j].push('diag');
+            if (up === best)   ptr[i][j].push('up');
+            if (left === best) ptr[i][j].push('left');
+        }
+    }
+
+    renderMatrix();
+    traceback();
+}
+
+function renderMatrix() {
+    const m = seq1.length, n = seq2.length;
+    const table = document.getElementById('matrix');
+    let html = '<tr><th></th><th></th>';
+    for (let j = 0; j < n; j++) html += `<th class="seq-char">${seq2[j]}</th>`;
+    html += '</tr>';
+
+    for (let i = 0; i <= m; i++) {
+        html += '<tr>';
+        html += i === 0 ? '<th></th>' : `<th class="seq-char">${seq1[i-1]}</th>`;
+        for (let j = 0; j <= n; j++) {
+            html += `<td class="cell" id="c${i}_${j}" data-i="${i}" data-j="${j}">`;
+            html += renderArrows(i, j);
+            html += `<span class="score">${F[i][j]}</span></td>`;
+        }
+        html += '</tr>';
+    }
+    table.innerHTML = html;
+
+    // Hover events
+    table.querySelectorAll('td.cell').forEach(td => {
+        td.addEventListener('mouseenter', showTooltip);
+        td.addEventListener('mousemove', moveTooltip);
+        td.addEventListener('mouseleave', hideTooltip);
+    });
+}
+
+function renderArrows(i, j) {
+    if (i === 0 && j === 0) return '';
+    let svg = '<div class="arrows"><svg viewBox="0 0 44 44">';
+    const dirs = ptr[i][j];
+    for (const d of dirs) {
+        if (d === 'diag') svg += '<line x1="1" y1="1" x2="11" y2="11" stroke="#9ca3af" stroke-width="1.5" marker-end="url(#ah)"/>';
+        if (d === 'up')   svg += '<line x1="19" y1="1" x2="19" y2="11" stroke="#9ca3af" stroke-width="1.5" marker-end="url(#ah)"/>';
+        if (d === 'left') svg += '<line x1="1" y1="19" x2="11" y2="19" stroke="#9ca3af" stroke-width="1.5" marker-end="url(#ah)"/>';
+    }
+    // Arrowhead marker
+    svg += '<defs><marker id="ah" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#9ca3af"/></marker></defs>';
+    svg += '</svg></div>';
+    return svg;
+}
+
+function showTooltip(e) {
+    const i = +e.currentTarget.dataset.i, j = +e.currentTarget.dataset.j;
+    if (i === 0 && j === 0) return;
+    const tip = document.getElementById('tooltip');
+    let lines = [`F(${i},${j}) = ${F[i][j]}`];
+    if (i > 0 && j > 0) {
+        const s = seq1[i-1] === seq2[j-1] ? matchScore : mismatchScore;
+        const label = seq1[i-1] === seq2[j-1] ? 'match' : 'mismatch';
+        lines.push(`↖ diag: F(${i-1},${j-1}) + s(${seq1[i-1]},${seq2[j-1]}) = ${F[i-1][j-1]} + ${s} = ${F[i-1][j-1]+s}  [${label}]`);
+    }
+    if (i > 0) lines.push(`↑ up:   F(${i-1},${j}) + gap = ${F[i-1][j]} + ${gapScore} = ${F[i-1][j]+gapScore}`);
+    if (j > 0) lines.push(`← left: F(${i},${j-1}) + gap = ${F[i][j-1]} + ${gapScore} = ${F[i][j-1]+gapScore}`);
+    tip.textContent = lines.join('\n');
+    tip.style.display = 'block';
+}
+function moveTooltip(e) {
+    const tip = document.getElementById('tooltip');
+    tip.style.left = (e.clientX + 14) + 'px';
+    tip.style.top = (e.clientY + 14) + 'px';
+}
+function hideTooltip() { document.getElementById('tooltip').style.display = 'none'; }
+
+function traceback() {
+    pathCells = [];
+    const m = seq1.length, n = seq2.length;
+    let aln1 = '', mid = '', aln2 = '';
+    let i = m, j = n;
+
+    while (i > 0 || j > 0) {
+        pathCells.push([i, j]);
+        const dirs = ptr[i][j];
+        // Prefer diag, then up, then left for deterministic traceback
+        if (dirs.includes('diag') && i > 0 && j > 0) {
+            const isMatch = seq1[i-1] === seq2[j-1];
+            aln1 = seq1[i-1] + aln1;
+            aln2 = seq2[j-1] + aln2;
+            mid = (isMatch ? '|' : '.') + mid;
+            i--; j--;
+        } else if (dirs.includes('up') && i > 0) {
+            aln1 = seq1[i-1] + aln1;
+            aln2 = '-' + aln2;
+            mid = ' ' + mid;
+            i--;
+        } else {
+            aln1 = '-' + aln1;
+            aln2 = seq2[j-1] + aln2;
+            mid = ' ' + mid;
+            j--;
+        }
+    }
+    pathCells.push([0, 0]);
+
+    highlightPath();
+    showAlignment(aln1, mid, aln2);
+}
+
+function highlightPath() {
+    // Clear previous
+    document.querySelectorAll('td.cell').forEach(td => {
+        td.classList.remove('on-path', 'match-cell', 'mismatch-cell', 'gap-cell');
+    });
+
+    const pathSet = new Set(pathCells.map(([i,j]) => `${i}_${j}`));
+
+    for (let k = 0; k < pathCells.length - 1; k++) {
+        const [i, j] = pathCells[k];
+        const [pi, pj] = pathCells[k + 1];
+        const cell = document.getElementById(`c${i}_${j}`);
+        if (!cell) continue;
+        cell.classList.add('on-path');
+
+        // Determine move type (looking at where we came FROM, i.e. the next cell in traceback)
+        if (pi === i - 1 && pj === j - 1) {
+            // diagonal
+            cell.classList.add(seq1[i-1] === seq2[j-1] ? 'match-cell' : 'mismatch-cell');
+        } else {
+            cell.classList.add('gap-cell');
+        }
+    }
+    // Origin cell
+    const origin = document.getElementById('c0_0');
+    if (origin) origin.classList.add('on-path');
+}
+
+function showAlignment(aln1, mid, aln2) {
+    const res = document.getElementById('result');
+    const m = seq1.length, n = seq2.length;
+
+    // Colorize
+    let h1 = '', hm = '', h2 = '';
+    for (let k = 0; k < aln1.length; k++) {
+        if (aln1[k] === '-' || aln2[k] === '-') {
+            h1 += `<span class="gap-char">${aln1[k]}</span>`;
+            h2 += `<span class="gap-char">${aln2[k]}</span>`;
+            hm += `<span class="mid-line"> </span>`;
+        } else if (aln1[k] === aln2[k]) {
+            h1 += `<span class="match-char">${aln1[k]}</span>`;
+            h2 += `<span class="match-char">${aln2[k]}</span>`;
+            hm += `<span class="mid-line">|</span>`;
+        } else {
+            h1 += `<span class="mismatch-char">${aln1[k]}</span>`;
+            h2 += `<span class="mismatch-char">${aln2[k]}</span>`;
+            hm += `<span class="mid-line">.</span>`;
+        }
+    }
+
+    res.innerHTML = `<div class="label">Optimal Global Alignment</div>
+<div class="alignment">${h1}
+${hm}
+${h2}</div>
+<div class="score-display">Score: <strong>${F[m][n]}</strong></div>`;
+}
+
+function clearPath() {
+    document.querySelectorAll('td.cell').forEach(td => {
+        td.classList.remove('on-path', 'match-cell', 'mismatch-cell', 'gap-cell');
+    });
+    document.getElementById('result').innerHTML = '';
+    pathCells = [];
+}
+
+// Run on load
+compute();
+</script>
+</body>
+</html>
