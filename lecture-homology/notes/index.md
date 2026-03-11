@@ -266,7 +266,7 @@ next_lecture: lecture-msa/notes
 <div class="interactive-demo">
     <h4>Interactive Demo</h4>
     <p>Try the Needleman-Wunsch algorithm with your own sequences:</p>
-    <a href="https://gtuckerkellogg.github.io/pairwise/demo/" target="_blank">Launch Interactive Demo →</a>
+    <a href="../nw/" target="_blank">Launch Interactive Demo →</a>
 </div>
 
 <h3>Smith-Waterman Algorithm</h3>
