@@ -3,109 +3,6 @@ lecture_num: 12
 ---
 
 <section class="center">
-    <h2>Limitations of Phylogenetic Comparative Methods</h2>
-    <p style="font-size:0.8em">Uyeda et al. &mdash; Rethinking phylogenetic comparative methods</p>
-</section>
-
-<section>
-    <h3>Where do comparative methods go wrong?</h3>
-
-    <ul class="spaced" style="width:80%">
-        <li>Uyeda et al. offer three case studies of problems with possible solutions.</li>
-
-        <li>A central theme: typical models (e.g., Brownian motion) assume <b>continuity of change</b>.</li>
-
-        <li>When that assumption is violated, comparative methods can give misleading results.</li>
-
-        <li>The three case studies all share a common thread, but differ in how they get there.</li>
-    </ul>
-</section>
-
-<section>
-    <h3>Case Study I: Felsenstein's worst-case scenario</h3>
-
-    <ul class="spaced" style="width:80%">
-        <li>A single large change in one trait on one branch fools standard comparative methods.</li>
-
-        <li>These major shifts risk drowning out biological signal if unaccounted for.</li>
-
-        <li>An important nuance: the issue is not that species are non-independent per se, but that methods assume <b>errors</b> are independent.</li>
-
-        <li>Felsenstein's message was missed because it seemed so intuitive:
-            <ul>
-                <li>The challenge is to the inference of meaningful associations between traits.</li>
-                <li>Not because errors are non-independent, but because the structure of variation is mismodelled.</li>
-            </ul>
-        </li>
-    </ul>
-</section>
-
-<section>
-    <h3>Case Study II: Adaptive hypotheses and singular shifts</h3>
-
-    <ul class="spaced" style="width:80%">
-        <li>Multiple optima or varying selective strengths can exist across a phylogeny, creating:
-            <ul>
-                <li>Adaptive evolutionary responses</li>
-                <li>Singular evolutionary shifts</li>
-            </ul>
-        </li>
-
-        <li>Two approaches to investigate:
-            <ul>
-                <li>Test specific hypotheses about drivers of diversification rate shifts (e.g., SSE models).</li>
-                <li>Search for the most-supported number and configuration of rate regimes.</li>
-            </ul>
-        </li>
-
-        <li>Identifying <b>where</b> changes happened is valuable, but doesn't tell us <b>why</b>.
-            <ul>
-                <li>Beware the "just-so story".</li>
-            </ul>
-        </li>
-    </ul>
-</section>
-
-<section>
-    <h3>Case Study III: Darwin's scenario and unreplicated bursts</h3>
-
-    <ul class="spaced" style="width:80%">
-        <li>This case involves <b>discrete traits</b> (e.g., yes/no), where detecting evolutionary signal is harder.</li>
-
-        <li>Two flavours:
-            <ul>
-                <li><b>Darwin's scenario</b>: two rare traits that don't appear and disappear easily.</li>
-                <li><b>Unreplicated bursts</b>: discrete trait evolution concentrated in a few events.</li>
-            </ul>
-        </li>
-
-        <li>Correlated traits may seem to support an association, but:
-            <ul>
-                <li>We are often studying traits <i>because</i> we already suspect they may be correlated.</li>
-                <li>Confirmation bias is a real risk.</li>
-            </ul>
-        </li>
-    </ul>
-</section>
-
-<section>
-    <h3>Takeaways from Uyeda et al.</h3>
-
-    <ul class="spaced" style="width:80%">
-        <li>All three case studies share a common lesson:
-            <ul>
-                <li>We need to be <b>aware of how our methods work</b>.</li>
-                <li>We should not run methods blindly and accept the output.</li>
-            </ul>
-        </li>
-
-        <li>No model is perfect, but understanding <b>when and why</b> a model fails is essential.</li>
-
-        <li>Making assumptions explicit &mdash; both to your audience and to yourself &mdash; is critical for good science.</li>
-    </ul>
-</section>
-
-<section class="center">
     <h2>Brownian Motion</h2>
 </section>
 
@@ -285,54 +182,61 @@ lecture_num: 12
 <section>
     <h3>Estimating rates with maximum likelihood</h3>
 
-    <ul class="spaced" style="width:80%">
-        <li>BM tip states are drawn from a multivariate normal distribution whose covariance matrix depends on the tree.</li>
-
-        <li>To find ML estimates of $\sigma^2$ and the root state $X(0)$, we maximise the likelihood over parameter space.</li>
-
-        <li>Naively evaluating every combination is inefficient &mdash; the number of combinations grows explosively with more parameters.</li>
-
-        <li>Solution: <b>heuristic optimisation</b> (hill-climbing) algorithms that explore parameter space intelligently.</li>
-    </ul>
-</section>
-
-<section>
-    <h3>Optimisation and local optima</h3>
-
     <div style="width:100%">
         <div style="width:55%;display:inline-block;vertical-align:middle">
             <ul class="spaced">
-                <li>Hill-climbing methods provide point estimates and confidence intervals.</li>
+                <li>BM tip states are drawn from a multivariate normal whose covariance matrix depends on the tree.</li>
 
-                <li>But they risk getting <b>trapped on local optima</b>.</li>
+                <li>The likelihood depends on two parameters: the rate $\sigma^2$ and the root state $\bar{z}(0)$.</li>
 
-                <li>Strategies to reduce this risk:
+                <li>The ML estimate is the $(\sigma^2, \bar{z}(0))$ at the peak of this surface.</li>
+            </ul>
+        </div>
+        <div style="width:42%;display:inline-block;vertical-align:middle;text-align:center">
+            <img data-src="figures/figure4-3.png" style="max-width:100%; max-height:380px">
+            <div style="font-size:0.6em; margin-top:0.3em">
+                Likelihood surface for BM on mammal body mass (Garland 1992).
+            </div>
+        </div>
+    </div>
+
+    <div style="font-size:0.55em; margin-top:0.8em; text-align:right; opacity:0.7">
+        Harmon (2019) <i>Phylogenetic Comparative Methods</i>, Fig 4.3 (CC-BY-4.0).
+    </div>
+</section>
+
+<section>
+    <h3>Hill-climbing to the MLE</h3>
+
+    <div style="width:100%">
+        <div style="width:50%;display:inline-block;vertical-align:middle">
+            <ul class="spaced">
+                <li>Hill-climbing algorithms take iterative steps uphill toward the peak.</li>
+
+                <li>On a smooth, unimodal surface (right), the algorithm converges in a handful of steps.</li>
+
+                <li>Risk: getting <b>trapped on local optima</b> if the surface is rugged.</li>
+
+                <li>Mitigations:
                     <ul>
-                        <li>Multiple independent random starting points.</li>
+                        <li>Multiple random starting points.</li>
                         <li>Simulated annealing.</li>
                         <li>Bayesian MCMC (explores the full landscape).</li>
                     </ul>
                 </li>
             </ul>
         </div>
-        <div style="width:400px;height:300px;display:inline-block;vertical-align:middle" id="optimPlot">
-        <script>
-            var optTrace = {x: [], y: [], mode: 'lines', line: {width: 3}};
-            for (var i = 0; i <= 200; i++) {
-                var x = -3 + 6*i/200;
-                optTrace.x[i] = x;
-                optTrace.y[i] = -0.5*Math.exp(-(x-1)*(x-1)/0.3) - 0.8*Math.exp(-(x+1.2)*(x+1.2)/0.5) - 0.3*Math.exp(-(x-2.5)*(x-2.5)/0.2);
-            }
-            Plotly.newPlot('optimPlot', [optTrace], {
-                showlegend: false,
-                xaxis: {title: 'Parameter value'},
-                yaxis: {title: 'Negative log-likelihood'},
-                margin: {t: 10}
-            }, {displayModeBar: false, staticPlot: true});
-        </script>
+        <div style="width:47%;display:inline-block;vertical-align:middle;text-align:center">
+            <img data-src="figures/figure4-4.png" style="max-width:100%; max-height:400px">
+            <div style="font-size:0.6em; margin-top:0.3em">
+                Path of a Newton's-method optimiser climbing the BM likelihood surface (Garland 1992 mammal data).
+            </div>
         </div>
     </div>
-    <p style="font-size:0.7em;margin-top:0.5em">A likelihood surface with multiple optima. A hill-climbing algorithm starting at different points may find different peaks.</p>
+
+    <div style="font-size:0.55em; margin-top:0.6em; text-align:right; opacity:0.7">
+        Harmon (2019) <i>Phylogenetic Comparative Methods</i>, Fig 4.4 (CC-BY-4.0).
+    </div>
 </section>
 
 <section>
@@ -364,7 +268,7 @@ lecture_num: 12
 
         <li>Can you think of a few ways to decrease the risk of hill-climbing algorithms getting stuck on local optima?</li>
 
-        <li>Given what Uyeda et al. have said, how reasonable was Felsenstein's assumption that traits evolve by Brownian motion?</li>
+        <li>How would you decide whether Brownian motion is a reasonable model for a given trait?</li>
     </ul>
 </section>
 
@@ -383,7 +287,7 @@ lecture_num: 12
         <div class="title" style="margin-top:1em"><a href="https://lukejharmon.github.io/pcm/" style="color:inherit; text-decoration:underline">Phylogenetic Comparative Methods</a> (Harmon, 2019)</div>
         <ul class="spaced" style="margin-top:1em; margin-left:1em">
             <li><b>Chapter 3</b>: Brownian Motion</li>
-            <li>Uyeda et al. (2018) &mdash; Rethinking phylogenetic comparative methods</li>
+            <li><b>Chapter 4</b>: Fitting Brownian Motion Models to Single Characters</li>
         </ul>
     </div>
 </section>

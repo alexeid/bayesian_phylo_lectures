@@ -7,12 +7,57 @@ lecture_num: 11
 </section>
 
 <section>
+    <h3>Recall: likelihood and the MLE</h3>
+
+    <div style="width:100%">
+        <div style="width:50%;display:inline-block;vertical-align:middle">
+            <ul class="spaced">
+                <li>From the substitution models lecture (Week 4): a coin tossed 5 times gives $D=(H,T,T,H,T)$.</li>
+                <li>The likelihood of the heads probability $f$:
+                    $$L(f|D) = f^2(1-f)^3$$
+                </li>
+                <li>The maximum likelihood estimate is $\hat{f} = 2/5 = 0.4$ (the observed proportion of heads).</li>
+                <li>The same idea applies to any model: find the parameter value that makes the data most probable.</li>
+            </ul>
+        </div>
+        <div style="width:47%;display:inline-block;vertical-align:middle">
+            <div id="coinRecapPlot" style="width:100%;height:300px"></div>
+            <script>
+            (function() {
+                var trace = { x: [], y: [], mode: "lines", line: {width: 3} };
+                for (var i = 0; i <= 100; i++) {
+                    var f = i/100;
+                    trace.x[i] = f;
+                    trace.y[i] = Math.pow(f, 2) * Math.pow(1 - f, 3);
+                }
+                var layout = {
+                    showlegend: false,
+                    xaxis: { title: "f" },
+                    yaxis: { title: "L(f|D)" },
+                    margin: { t: 10, b: 40, l: 50, r: 10 },
+                    shapes: [{
+                        type: 'line',
+                        x0: 0.4, x1: 0.4, y0: 0, y1: 0.04,
+                        line: { dash: 'dash', color: 'orange', width: 2 }
+                    }],
+                    annotations: [{
+                        x: 0.4, y: 0.042, text: '$\\hat{f} = 0.4$', showarrow: false, font: {size: 12}
+                    }]
+                };
+                Plotly.newPlot('coinRecapPlot', [trace], layout, {displayModeBar: false, staticPlot: true});
+            })();
+            </script>
+        </div>
+    </div>
+</section>
+
+<section>
     <h3>Fitting statistical models to data</h3>
 
     <ul class="spaced" style="width:80%">
         <li>Broadly, <b>parameter estimation</b> is more informative than test-statistics (i.e., $p$-values).
             <ul>
-                <li>Rejecting null hypotheses is rarely interesting in biology &mdash; the null is often obviously false.</li>
+                <li>Rejecting null hypotheses is rarely interesting in biology: the null is often obviously false.</li>
             </ul>
         </li>
 
@@ -34,7 +79,7 @@ lecture_num: 11
     <h3>Likelihood Ratio Test</h3>
 
     <ul class="spaced" style="width:80%">
-        <li>Can only compare two <b>nested</b> models &mdash; one must be a special case of the other.</li>
+        <li>Can only compare two <b>nested</b> models: one must be a special case of the other.</li>
 
         <li>Test statistic: $\Delta = 2(\ln L_1 - \ln L_0)$, where $L_1$ is the more complex model.</li>
 
@@ -59,7 +104,7 @@ lecture_num: 11
             where $k$ is the number of estimated parameters.
         </li>
 
-        <li>AIC assumes that reality is more complex than any of our models &mdash; the goal is to identify the model that most efficiently captures the important patterns in the data.</li>
+        <li>AIC assumes that reality is more complex than any of our models: the goal is to identify the model that most efficiently captures the important patterns in the data.</li>
 
         <li>Lower AIC is better.</li>
 
@@ -90,17 +135,31 @@ lecture_num: 11
 <section>
     <h3>Bayes Factors</h3>
 
-    <ul class="spaced" style="width:80%">
-        <li>From posterior distributions, models can be compared using <b>Bayes Factors</b>:
-            $$B_{12} = \frac{P(D|H_1)}{P(D|H_2)}$$
-        </li>
+    <div style="width:100%">
+        <div style="width:60%;display:inline-block;vertical-align:middle">
+            <ul class="spaced">
+                <li>From posterior distributions, models can be compared using <b>Bayes Factors</b>:
+                    $$B_{12} = \frac{P(D|H_1)}{P(D|H_2)}$$
+                </li>
 
-        <li>Bayes Factors are ratios of <b>marginal likelihoods</b> $P(D|H)$ &mdash; the probability of the data averaged over all possible parameter values (weighted by the prior).</li>
+                <li>Bayes Factors are ratios of <b>marginal likelihoods</b> $P(D|H)$: the probability of the data averaged over all parameter values, weighted by the prior.</li>
 
-        <li>This integrates over all possible parameter values rather than comparing models only at their best-fit parameters (as ML does).</li>
+                <li>Unlike ML, this integrates over the full parameter space rather than evaluating only at the best-fit point.</li>
 
-        <li>Tends to favour simpler models than AIC &mdash; assumes the true model is among those tested.</li>
-    </ul>
+                <li>Tends to favour simpler models than AIC. Assumes the true model is among those tested.</li>
+            </ul>
+        </div>
+        <div style="width:38%;display:inline-block;vertical-align:middle;text-align:center">
+            <img data-src="figures/figure2-3.png" style="max-width:100%; max-height:300px">
+            <div style="font-size:0.6em; margin-top:0.3em">
+                Prior (dotted) and posterior (solid) for the coin example. The marginal likelihood is the normalising constant of the posterior.
+            </div>
+        </div>
+    </div>
+
+    <div style="font-size:0.55em; margin-top:0.5em; text-align:right; opacity:0.7">
+        Harmon (2019) <i>Phylogenetic Comparative Methods</i>, Fig 2.3 (CC-BY-4.0).
+    </div>
 </section>
 
 <section>
@@ -130,7 +189,7 @@ lecture_num: 11
     </table>
 
     <ul class="spaced" style="margin-top:1.5em; width:80%">
-        <li>AIC and Bayes Factors can disagree &mdash; Bayes Factors may prefer a simpler model.</li>
+        <li>AIC and Bayes Factors can disagree: Bayes Factors may prefer a simpler model.</li>
         <li>All methods assume good data and correctly specified candidate models.</li>
     </ul>
 </section>
@@ -143,7 +202,7 @@ lecture_num: 11
     <h3>What are comparative methods?</h3>
 
     <ul class="spaced" style="width:80%">
-        <li>Comparing traits across species &mdash; often looking for correlations or causal relationships.
+        <li>Comparing traits across species, often looking for correlations or causal relationships.
             <ul>
                 <li>e.g., two phenotypes across multiple species</li>
                 <li>e.g., a phenotype against environment</li>
@@ -152,10 +211,33 @@ lecture_num: 11
 
         <li>Simply plotting traits against each other assumes samples are <b>independent</b> and from the same distribution.</li>
 
-        <li>But species sharing a phylogeny are <b>not independent</b> &mdash; closely related species tend to be similar due to shared ancestry.</li>
+        <li>But species sharing a phylogeny are <b>not independent</b>: closely related species tend to be similar due to shared ancestry.</li>
 
         <li>We need methods that account for the phylogenetic relationships among species.</li>
     </ul>
+</section>
+
+<section>
+    <h3>Two possible phylogenies for 8 species</h3>
+
+    <div style="display:flex; justify-content:space-around; align-items:flex-start; margin-top:1em">
+        <div style="text-align:center; width:45%">
+            <img data-src="figures/fig2.png" style="max-width:100%; max-height:380px">
+            <div style="font-size:0.7em; margin-top:0.5em">
+                Star phylogeny: what naive regression implicitly assumes.
+            </div>
+        </div>
+        <div style="text-align:center; width:45%">
+            <img data-src="figures/fig3.png" style="max-width:100%; max-height:380px">
+            <div style="font-size:0.7em; margin-top:0.5em">
+                Resolved phylogeny: 4 pairs of close relatives.
+            </div>
+        </div>
+    </div>
+
+    <div style="font-size:0.55em; margin-top:1em; text-align:right; opacity:0.7">
+        Felsenstein, J. (1985) <i>Am Nat</i> 125:1&ndash;15, Figs 2 &amp; 3.
+    </div>
 </section>
 
 <section>
@@ -164,7 +246,7 @@ lecture_num: 11
     <ul class="spaced" style="width:80%">
         <li>Consider 8 taxa: they may seem like 8 independent samples.</li>
 
-        <li>But if they fall into two clades of 4, they are more like <b>4 independent samples</b> (or even 2).</li>
+        <li>But if they fall into two clades of 4, they are more like <b>4 independent samples</b>.</li>
 
         <li>Treating them as independent can be misleading:
             <ul>
@@ -174,11 +256,59 @@ lecture_num: 11
 
         <li><b>Worst case</b>: two deep lineages, each with many species.
             <ul>
-                <li>Sample all you want &mdash; you effectively have <b>two data points</b>, not 40.</li>
+                <li>Sample all you want: you effectively have <b>two data points</b>, not 40.</li>
                 <li>It doesn't matter which species you selected within each lineage.</li>
             </ul>
         </li>
     </ul>
+</section>
+
+<section>
+    <h3>The worst case</h3>
+
+    <div style="text-align:center; margin-top:1em">
+        <img data-src="figures/fig5.png" style="max-height:420px">
+    </div>
+
+    <div style="font-size:0.75em; margin-top:1em; width:75%; margin-left:auto; margin-right:auto">
+        40 species in two deep clades of 20. How many independent data points do we really have?
+    </div>
+
+    <div style="font-size:0.55em; margin-top:1em; text-align:right; opacity:0.7">
+        Felsenstein, J. (1985) <i>Am Nat</i> 125:1&ndash;15, Fig 5.
+    </div>
+</section>
+
+<section>
+    <h3>An apparent correlation...</h3>
+
+    <div style="text-align:center; margin-top:1em">
+        <img data-src="figures/fig6.png" style="max-height:420px">
+    </div>
+
+    <div style="font-size:0.75em; margin-top:1em; width:75%; margin-left:auto; margin-right:auto">
+        A regression of $Y$ on $X$ across 40 species. Looks significant ($P < .05$).
+    </div>
+
+    <div style="font-size:0.55em; margin-top:1em; text-align:right; opacity:0.7">
+        Felsenstein, J. (1985) <i>Am Nat</i> 125:1&ndash;15, Fig 6.
+    </div>
+</section>
+
+<section>
+    <h3>...is illusory</h3>
+
+    <div style="text-align:center; margin-top:1em">
+        <img data-src="figures/fig7.png" style="max-height:420px">
+    </div>
+
+    <div style="font-size:0.75em; margin-top:1em; width:75%; margin-left:auto; margin-right:auto">
+        Same data, points marked by clade. The "correlation" is just a line between two clade means: effectively only 2 independent points, not 40.
+    </div>
+
+    <div style="font-size:0.55em; margin-top:1em; text-align:right; opacity:0.7">
+        Felsenstein, J. (1985) <i>Am Nat</i> 125:1&ndash;15, Fig 7.
+    </div>
 </section>
 
 <section>
@@ -192,9 +322,31 @@ lecture_num: 11
         <li>This is always a risk <b>except</b> when:
             <blockquote style="font-size:0.8em">
                 "characters respond essentially instantaneously to natural selection in the current environment,
-                so that phylogenetic inertia is essentially absent." &mdash; Felsenstein (1985)
+                so that phylogenetic inertia is essentially absent." (Felsenstein 1985)
             </blockquote>
         </li>
+    </ul>
+</section>
+
+<section>
+    <h3>A quick model: Brownian motion</h3>
+
+    <ul class="spaced" style="width:80%">
+        <li>To handle the phylogenetic dependence, PIC assumes traits evolve by <b>Brownian motion</b> (BM).</li>
+
+        <li>BM is a random walk in continuous time. After time $t$, starting at $X(0)$:
+            $$X(t) \sim N\!\left(X(0),\; \sigma^2 t\right)$$
+        </li>
+
+        <li>Key properties:
+            <ul>
+                <li>No directional trend: the expected value stays at $X(0)$.</li>
+                <li>Variance grows linearly with time: long branches accumulate more change.</li>
+                <li>The single rate parameter $\sigma^2$ governs how fast the trait changes.</li>
+            </ul>
+        </li>
+
+        <li>Why this works for PIC: differences between sister taxa under BM are independent draws from a normal distribution. We will return to BM in depth next lecture.</li>
     </ul>
 </section>
 
@@ -220,10 +372,58 @@ lecture_num: 11
 </section>
 
 <section>
+    <h3>Independent contrasts on a tree</h3>
+
+    <div style="text-align:center; margin-top:1em">
+        <img data-src="figures/fig8.png" style="max-height:420px">
+    </div>
+
+    <div style="font-size:0.75em; margin-top:1em; width:80%; margin-left:auto; margin-right:auto">
+        Symmetric phylogeny with branch lengths $v_1 \ldots v_{14}$. Contrasts $X_1 - X_2$, $X_3 - X_4$, $\ldots$ are independent; their variances scale with the summed branch lengths.
+    </div>
+
+    <div style="font-size:0.55em; margin-top:1em; text-align:right; opacity:0.7">
+        Felsenstein, J. (1985) <i>Am Nat</i> 125:1&ndash;15, Fig 8.
+    </div>
+</section>
+
+<section>
+    <h3>A real comparative dataset</h3>
+
+    <div style="text-align:center; margin-top:0.5em">
+        <img data-src="figures/ghi_fig1.png" style="max-height:480px">
+    </div>
+
+    <div style="font-size:0.75em; margin-top:0.8em; width:80%; margin-left:auto; margin-right:auto">
+        Mammal phylogeny with home range and body mass for each species.
+    </div>
+
+    <div style="font-size:0.55em; margin-top:0.8em; text-align:right; opacity:0.7">
+        Garland, Harvey &amp; Ives (1992) <i>Syst Biol</i> 41:18&ndash;32, Fig 1.
+    </div>
+</section>
+
+<section>
+    <h3>PIC on real data</h3>
+
+    <div style="text-align:center; margin-top:0.5em">
+        <img data-src="figures/ghi_fig5.png" style="max-height:480px">
+    </div>
+
+    <div style="font-size:0.75em; margin-top:0.8em; width:80%; margin-left:auto; margin-right:auto">
+        Regression of standardised contrasts in home range on contrasts in body mass: what PIC looks like on real data. Open circles: ungulates; closed circles: carnivora.
+    </div>
+
+    <div style="font-size:0.55em; margin-top:0.8em; text-align:right; opacity:0.7">
+        Garland, Harvey &amp; Ives (1992) <i>Syst Biol</i> 41:18&ndash;32, Fig 5.
+    </div>
+</section>
+
+<section>
     <h3>PIC: assumptions and limitations</h3>
 
     <ul class="spaced" style="width:80%">
-        <li>Assumes traits evolve by <b>Brownian motion</b> &mdash; how reasonable is this?</li>
+        <li>Assumes traits evolve by <b>Brownian motion</b>. How reasonable is this?</li>
 
         <li>Assumes the phylogeny is <b>known without error</b>.</li>
 
