@@ -9,8 +9,8 @@ lecture_num: 11
 <section>
     <h3>Recall: likelihood and the MLE</h3>
 
-    <div style="width:100%">
-        <div style="width:50%;display:inline-block;vertical-align:middle">
+    <div style="display:flex;align-items:center;gap:2em;width:90%;margin:0 auto">
+        <div style="flex:1 1 auto;min-width:0">
             <ul class="spaced">
                 <li>From the substitution models lecture (Week 4): a coin tossed 5 times gives $D=(H,T,T,H,T)$.</li>
                 <li>The likelihood of the heads probability $f$:
@@ -20,8 +20,8 @@ lecture_num: 11
                 <li>The same idea applies to any model: find the parameter value that makes the data most probable.</li>
             </ul>
         </div>
-        <div style="width:47%;display:inline-block;vertical-align:middle">
-            <div id="coinRecapPlot" style="width:100%;height:300px"></div>
+        <div style="flex:0 0 400px">
+            <div id="coinRecapPlot" style="width:400px;height:300px"></div>
             <script>
             (function() {
                 var trace = { x: [], y: [], mode: "lines", line: {width: 3} };
@@ -33,7 +33,7 @@ lecture_num: 11
                 var layout = {
                     showlegend: false,
                     xaxis: { title: "f" },
-                    yaxis: { title: "L(f|D)" },
+                    yaxis: { title: "L(f|D)", range: [0, 0.045] },
                     margin: { t: 10, b: 40, l: 50, r: 10 },
                     shapes: [{
                         type: 'line',
@@ -41,10 +41,83 @@ lecture_num: 11
                         line: { dash: 'dash', color: 'orange', width: 2 }
                     }],
                     annotations: [{
-                        x: 0.4, y: 0.042, text: '$\\hat{f} = 0.4$', showarrow: false, font: {size: 12}
+                        x: 0.4, y: 0.042, text: 'f̂ = 0.4', showarrow: false, font: {size: 14}
                     }]
                 };
                 Plotly.newPlot('coinRecapPlot', [trace], layout, {displayModeBar: false, staticPlot: true});
+            })();
+            </script>
+        </div>
+    </div>
+</section>
+
+<section>
+    <h3>The traditional approach: hypothesis testing</h3>
+
+    <ul class="spaced" style="width:80%">
+        <li>Classical statistics asks: <b>can we reject a null hypothesis?</b>
+            <ul>
+                <li>Compute a $p$-value: probability of data as extreme as observed, assuming $H_0$.</li>
+                <li>Reject $H_0$ if $p < \alpha$ (conventionally $0.05$).</li>
+            </ul>
+        </li>
+
+        <li>For our coin: $H_0$: $f = 0.5$, data $D = (H,T,T,H,T)$.
+            <ul>
+                <li>Two-sided binomial test: $p = 1.0$.</li>
+                <li>We fail to reject $H_0$ &mdash; and the test has no further answer.</li>
+            </ul>
+        </li>
+
+        <li>But the data clearly carries information about $f$: the previous slide gave $\hat{f} = 0.4$.</li>
+
+        <li>And what if we had more data? Would the test tell us <b>what $f$ is</b> &mdash; or only whether it differs from $0.5$?</li>
+    </ul>
+</section>
+
+<section>
+    <h3>More data: lizard flipping (Harmon, Ch.&nbsp;2)</h3>
+
+    <div style="display:flex;align-items:center;gap:2em;width:90%;margin:0 auto">
+        <div style="flex:1 1 auto;min-width:0">
+            <ul class="spaced">
+                <li>Flip a lizard 100 times: observe 63 heads, 37 tails.</li>
+                <li>Two-sided binomial test of $H_0$: $f = 0.5$ gives $p = 0.006$ &mdash; <b>reject</b>: the lizard is unfair.</li>
+                <li>But what <i>is</i> $f$? Likelihood:
+                    $$L(f|D) = f^{63}(1-f)^{37}$$
+                </li>
+                <li>Maximum likelihood estimate: $\hat{f} = 63/100 = 0.63$.</li>
+                <li>Same idea as the coin &mdash; just with more data the likelihood is much more sharply peaked.</li>
+            </ul>
+        </div>
+        <div style="flex:0 0 400px">
+            <div id="lizardLikPlot" style="width:400px;height:300px"></div>
+            <script>
+            (function() {
+                var nH = 63, nT = 37;
+                var maxLL = nH * Math.log(nH/(nH+nT)) + nT * Math.log(nT/(nH+nT));
+                var trace = { x: [], y: [], mode: "lines", line: {width: 3} };
+                for (var i = 0; i <= 200; i++) {
+                    var f = i/200;
+                    var ll = nH * Math.log(Math.max(f, 1e-300)) + nT * Math.log(Math.max(1 - f, 1e-300));
+                    trace.x[i] = f;
+                    trace.y[i] = Math.exp(ll - maxLL);
+                }
+                var layout = {
+                    showlegend: false,
+                    xaxis: { title: "f" },
+                    yaxis: { title: "L(f|D), scaled", range: [0, 1.15] },
+                    margin: { t: 10, b: 40, l: 50, r: 10 },
+                    shapes: [{
+                        type: 'line',
+                        x0: 0.63, x1: 0.63, y0: 0, y1: 1.0,
+                        line: { dash: 'dash', color: 'orange', width: 2 }
+                    }],
+                    annotations: [{
+                        x: 0.63, y: 1.08, text: 'f̂ = 0.63', showarrow: false, font: {size: 14}
+                    }]
+                };
+                Plotly.newPlot('lizardLikPlot', [trace], layout, {displayModeBar: false, staticPlot: true});
             })();
             </script>
         </div>
