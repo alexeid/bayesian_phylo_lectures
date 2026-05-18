@@ -68,6 +68,11 @@
   lecturer: Alexei Drummond
   section: bayesian_phylo
 -
+  title: Model Selection
+  folder: lecture-model-selection
+  lecturer: Alexei Drummond
+  section: comparative
+-
   title: Phylogenetic Comparative Methods
   folder: lecture-comparative-methods
   lecturer: Alexei Drummond

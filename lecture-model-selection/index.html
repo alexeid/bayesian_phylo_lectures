@@ -1,0 +1,373 @@
+---
+lecture_num: 11
+---
+
+<section class="center">
+    <h2>Model Selection</h2>
+    <p style="font-size:0.75em;margin-top:1em">Likelihood, AIC, and Bayes Factors</p>
+</section>
+
+<section>
+    <h3>Recall: likelihood and the MLE</h3>
+
+    <div style="display:flex;align-items:center;gap:2em;width:90%;margin:0 auto">
+        <div style="flex:1 1 auto;min-width:0">
+            <ul class="spaced">
+                <li>From the substitution models lecture (Week 4): a coin tossed 5 times gives $D=(H,T,T,H,T)$.</li>
+                <li>The likelihood of the heads probability $f$:
+                    $$L(f|D) = f^2(1-f)^3$$
+                </li>
+                <li>The maximum likelihood estimate is $\hat{f} = 2/5 = 0.4$ (the observed proportion of heads).</li>
+                <li>The same idea applies to any model: find the parameter value that makes the data most probable.</li>
+            </ul>
+        </div>
+        <div style="flex:0 0 400px">
+            <div id="coinRecapPlot" style="width:400px;height:300px"></div>
+            <script>
+            (function() {
+                var trace = { x: [], y: [], mode: "lines", line: {width: 3} };
+                for (var i = 0; i <= 100; i++) {
+                    var f = i/100;
+                    trace.x[i] = f;
+                    trace.y[i] = Math.pow(f, 2) * Math.pow(1 - f, 3);
+                }
+                var layout = {
+                    showlegend: false,
+                    xaxis: { title: "f" },
+                    yaxis: { title: "L(f|D)", range: [0, 0.045] },
+                    margin: { t: 10, b: 40, l: 50, r: 10 },
+                    shapes: [{
+                        type: 'line',
+                        x0: 0.4, x1: 0.4, y0: 0, y1: 0.04,
+                        line: { dash: 'dash', color: 'orange', width: 2 }
+                    }],
+                    annotations: [{
+                        x: 0.4, y: 0.042, text: 'f̂ = 0.4', showarrow: false, font: {size: 14}
+                    }]
+                };
+                Plotly.newPlot('coinRecapPlot', [trace], layout, {displayModeBar: false, staticPlot: true});
+            })();
+            </script>
+        </div>
+    </div>
+</section>
+
+<section>
+    <h3>The traditional approach: hypothesis testing</h3>
+
+    <ul class="spaced" style="width:80%">
+        <li>Classical statistics asks: <b>can we reject a null hypothesis?</b>
+            <ul>
+                <li>Compute a $p$-value: probability of data as extreme as observed, assuming $H_0$.</li>
+                <li>Reject $H_0$ if $p &lt; \alpha$ (conventionally $0.05$).</li>
+            </ul>
+        </li>
+
+        <li>For our coin: $H_0$: $f = 0.5$, data $D = (H,T,T,H,T)$.
+            <ul>
+                <li>Two-sided binomial test: $p = 1.0$.</li>
+                <li>We fail to reject $H_0$, and the test has no further answer.</li>
+            </ul>
+        </li>
+
+        <li>But the data clearly carries information about $f$: the previous slide gave $\hat{f} = 0.4$.</li>
+
+        <li>And what if we had more data? Would the test tell us <b>what $f$ is</b>, or only whether it differs from $0.5$?</li>
+    </ul>
+</section>
+
+<section>
+    <h3>More data: lizard flipping (Harmon, Ch.&nbsp;2)</h3>
+
+    <div style="display:flex;align-items:center;gap:2em;width:90%;margin:0 auto">
+        <div style="flex:1 1 auto;min-width:0">
+            <ul class="spaced">
+                <li>Flip a lizard 100 times: observe 63 heads, 37 tails.</li>
+                <li>Two-sided binomial test of $H_0$: $f = 0.5$ gives $p = 0.006$, so we <b>reject</b>: the lizard is unfair.</li>
+                <li>But what <i>is</i> $f$? Likelihood:
+                    $$L(f|D) = f^{63}(1-f)^{37}$$
+                </li>
+                <li>Maximum likelihood estimate: $\hat{f} = 63/100 = 0.63$.</li>
+                <li>Same idea as the coin, just with more data the likelihood is much more sharply peaked.</li>
+            </ul>
+        </div>
+        <div style="flex:0 0 400px">
+            <div id="lizardLikPlot" style="width:400px;height:300px"></div>
+            <script>
+            (function() {
+                var nH = 63, nT = 37;
+                var maxLL = nH * Math.log(nH/(nH+nT)) + nT * Math.log(nT/(nH+nT));
+                var trace = { x: [], y: [], mode: "lines", line: {width: 3} };
+                for (var i = 0; i <= 200; i++) {
+                    var f = i/200;
+                    var ll = nH * Math.log(Math.max(f, 1e-300)) + nT * Math.log(Math.max(1 - f, 1e-300));
+                    trace.x[i] = f;
+                    trace.y[i] = Math.exp(ll - maxLL);
+                }
+                var layout = {
+                    showlegend: false,
+                    xaxis: { title: "f" },
+                    yaxis: { title: "L(f|D), scaled", range: [0, 1.15] },
+                    margin: { t: 10, b: 40, l: 50, r: 10 },
+                    shapes: [{
+                        type: 'line',
+                        x0: 0.63, x1: 0.63, y0: 0, y1: 1.0,
+                        line: { dash: 'dash', color: 'orange', width: 2 }
+                    }],
+                    annotations: [{
+                        x: 0.63, y: 1.08, text: 'f̂ = 0.63', showarrow: false, font: {size: 14}
+                    }]
+                };
+                Plotly.newPlot('lizardLikPlot', [trace], layout, {displayModeBar: false, staticPlot: true});
+            })();
+            </script>
+        </div>
+    </div>
+</section>
+
+<section>
+    <h3>Fitting statistical models to data</h3>
+
+    <ul class="spaced" style="width:80%">
+        <li>Broadly, <b>parameter estimation</b> is more informative than test-statistics (i.e., $p$-values).
+            <ul>
+                <li>Rejecting null hypotheses is rarely interesting in biology: the null is often obviously false.</li>
+            </ul>
+        </li>
+
+        <li>Recall that the likelihood is:
+            $$L(H|D) = P(D|H)$$
+        </li>
+
+        <li>In an ML framework, the hypothesis with the highest probability of having generated the data is preferred.</li>
+
+        <li>ML will not always return accurate parameter estimates, even when the data is generated under the actual model.
+            <ul>
+                <li>As with all estimators, ML improves with more data.</li>
+            </ul>
+        </li>
+    </ul>
+</section>
+
+<section>
+    <h3>Likelihood Ratio Test</h3>
+
+    <div style="display:flex;align-items:center;gap:2em;width:90%;margin:0 auto">
+        <div style="flex:1 1 auto;min-width:0">
+            <ul class="spaced">
+                <li>Can only compare two <b>nested</b> models: one must be a special case of the other.</li>
+
+                <li>Test statistic: $\Delta = 2(\ln L_1 - \ln L_0)$, where $L_1$ is the more complex model.</li>
+
+                <li>Under the null, $\Delta \sim \chi^2_k$ where $k$ is the difference in number of parameters.</li>
+
+                <li>Limitations:
+                    <ul>
+                        <li>Results can depend on order of tests.</li>
+                        <li>Cannot compare non-nested models.</li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+        <div style="flex:0 0 380px">
+            <div id="lrtPlot" style="width:380px;height:300px"></div>
+            <script>
+            (function() {
+                function chi2pdf(x, k) {
+                    if (x <= 0) return 0;
+                    var lognum = (k/2 - 1) * Math.log(x) - x/2;
+                    var lgamma = function(z){
+                        var g = 7, c = [0.99999999999980993,676.5203681218851,-1259.1392167224028,
+                            771.32342877765313,-176.61502916214059,12.507343278686905,
+                            -0.13857109526572012,9.9843695780195716e-6,1.5056327351493116e-7];
+                        if (z < 0.5) return Math.log(Math.PI/Math.sin(Math.PI*z)) - lgamma_helper(1-z, g, c);
+                        return lgamma_helper(z, g, c);
+                    };
+                    function lgamma_helper(z, g, c) {
+                        z = z - 1; var x_ = c[0];
+                        for (var i = 1; i < g+2; i++) x_ += c[i]/(z+i);
+                        var t = z + g + 0.5;
+                        return 0.5*Math.log(2*Math.PI) + (z+0.5)*Math.log(t) - t + Math.log(x_);
+                    }
+                    var logdenom = (k/2)*Math.log(2) + lgamma(k/2);
+                    return Math.exp(lognum - logdenom);
+                }
+                var traces = [];
+                var dfs = [1, 2, 4];
+                var colors = ['#1f77b4', '#ff7f0e', '#2ca02c'];
+                for (var d = 0; d < dfs.length; d++) {
+                    var tr = {x: [], y: [], mode: 'lines', name: 'k=' + dfs[d],
+                              line: {color: colors[d], width: 2.5}};
+                    for (var i = 1; i <= 200; i++) {
+                        var x = i * 0.1;
+                        tr.x.push(x); tr.y.push(chi2pdf(x, dfs[d]));
+                    }
+                    traces.push(tr);
+                }
+                var crit = {x: [3.841, 3.841], y: [0, 0.5], mode: 'lines',
+                            line: {dash: 'dash', color: '#888', width: 1.5},
+                            name: 'p=0.05 (k=1)', showlegend: true};
+                traces.push(crit);
+                Plotly.newPlot('lrtPlot', traces, {
+                    xaxis: {title: 'Δ = 2(lnL₁ − lnL₀)', range: [0, 15]},
+                    yaxis: {title: 'density', range: [0, 0.5]},
+                    margin: {t: 10, b: 40, l: 50, r: 10},
+                    legend: {x: 0.6, y: 0.95, font: {size: 11}}
+                }, {displayModeBar: false, staticPlot: true});
+            })();
+            </script>
+        </div>
+    </div>
+</section>
+
+<section>
+    <h3>Akaike Information Criterion (AIC)</h3>
+
+    <ul class="spaced" style="width:80%">
+        <li>AIC balances model fit against model complexity:
+            $$\text{AIC} = 2k - 2\ln L$$
+            where $k$ is the number of estimated parameters.
+        </li>
+
+        <li>AIC assumes that reality is more complex than any of our models: the goal is to identify the model that most efficiently captures the important patterns in the data.</li>
+
+        <li>Lower AIC is better.</li>
+
+        <li>For small sample sizes, use the corrected version:
+            $$\text{AIC}_c = \text{AIC} + \frac{2k(k+1)}{n-k-1}$$
+            AIC$_c$ is recommended for general use over generic AIC.
+        </li>
+    </ul>
+</section>
+
+<section>
+    <h3>AIC weights</h3>
+
+    <ul class="spaced" style="width:80%">
+        <li><b>AIC weights</b> provide a more interpretable way to use AIC outputs.</li>
+
+        <li>For model $i$ in a set of $R$ candidate models:
+            $$w_i = \frac{e^{-\Delta_i/2}}{\sum_{r=1}^{R} e^{-\Delta_r/2}}$$
+            where $\Delta_i = \text{AIC}_i - \text{AIC}_{\min}$.
+        </li>
+
+        <li>Can be interpreted as an estimate of the probability that model $i$ is the best model in the set.</li>
+
+        <li>Modern phylogenetic software frequently calculates AIC for model selection (e.g., ModelFinder in IQ-TREE).</li>
+    </ul>
+</section>
+
+<section>
+    <h3>Bayes Factors</h3>
+
+    <div style="display:flex;align-items:center;gap:2em;width:95%;margin:0 auto">
+        <div style="flex:1 1 auto;min-width:0">
+            <ul class="spaced">
+                <li>From posterior distributions, models can be compared using <b>Bayes Factors</b>:
+                    $$B_{12} = \frac{P(D|H_1)}{P(D|H_2)}$$
+                </li>
+
+                <li>Bayes Factors are ratios of <b>marginal likelihoods</b> $P(D|H)$: the probability of the data averaged over all parameter values, weighted by the prior.</li>
+
+                <li>Unlike ML, this integrates over the full parameter space rather than evaluating only at the best-fit point.</li>
+
+                <li>Tends to favour simpler models than AIC. Assumes the true model is among those tested.</li>
+            </ul>
+        </div>
+        <div style="flex:0 0 360px;text-align:center">
+            <img data-src="figures/figure2-3.png" style="max-width:100%; max-height:300px">
+            <div style="font-size:0.6em; margin-top:0.3em">
+                Prior (dotted) and posterior (solid) for the coin example. The marginal likelihood is the normalising constant of the posterior.
+            </div>
+        </div>
+    </div>
+
+    <div style="font-size:0.55em; margin-top:0.5em; text-align:right; opacity:0.7">
+        Harmon (2019) <i>Phylogenetic Comparative Methods</i>, Fig 2.3 (CC-BY-4.0).
+    </div>
+</section>
+
+<section>
+    <h3>Interpreting Bayes Factors</h3>
+
+    <div style="display:flex;gap:2em;width:90%;margin:0 auto;align-items:flex-start">
+        <div style="flex:1 1 auto">
+            <p style="margin-bottom:0.5em">Kass &amp; Raftery (1995) scale for $2\ln B_{12}$:</p>
+            <table style="font-size:0.8em; width:100%">
+                <tr><th>$2\ln B_{12}$</th><th>Evidence for $H_1$</th></tr>
+                <tr><td>0 to 2</td><td>Not worth more than a bare mention</td></tr>
+                <tr><td>2 to 6</td><td>Positive</td></tr>
+                <tr><td>6 to 10</td><td>Strong</td></tr>
+                <tr><td>&gt; 10</td><td>Very strong</td></tr>
+            </table>
+        </div>
+        <div style="flex:1 1 auto">
+            <ul class="spaced" style="margin:0">
+                <li>For nested models, $2\ln B_{12}$ is on the same scale as the LRT statistic.</li>
+                <li>Computing the marginal likelihood is hard. Common methods:
+                    <ul>
+                        <li>Path sampling / stepping-stone</li>
+                        <li>Harmonic mean estimator (unreliable; avoid)</li>
+                        <li>Nested sampling</li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <div style="font-size:0.55em; margin-top:1em; text-align:right; opacity:0.7">
+        Kass &amp; Raftery (1995) <i>J Am Stat Assoc</i> 90:773&ndash;795.
+    </div>
+</section>
+
+<section>
+    <h3>Model selection: summary</h3>
+
+    <table style="font-size:0.75em; width:90%; margin: 0 auto">
+        <tr>
+            <th>Method</th>
+            <th>Compares</th>
+            <th>Key assumption</th>
+        </tr>
+        <tr>
+            <td>Likelihood Ratio Test</td>
+            <td>Nested models only</td>
+            <td>Null model is true</td>
+        </tr>
+        <tr>
+            <td>AIC / AIC$_c$</td>
+            <td>Any models</td>
+            <td>Truth is more complex than any model</td>
+        </tr>
+        <tr>
+            <td>Bayes Factors</td>
+            <td>Any models</td>
+            <td>True model is among candidates</td>
+        </tr>
+    </table>
+
+    <ul class="spaced" style="margin-top:1.5em; width:80%">
+        <li>AIC and Bayes Factors can disagree: Bayes Factors may prefer a simpler model.</li>
+        <li>All methods assume good data and correctly specified candidate models.</li>
+        <li><b>Next lecture:</b> we apply these tools to comparative trait data.</li>
+    </ul>
+</section>
+
+<section>
+    <h3>Recommended Reading</h3>
+
+    <div style="display:inline-block;vertical-align:middle;margin-top:2em">
+        <img data-src="../lecture-substitution-models/dg_cover.png" style="height:350px">
+    </div>
+
+    <div class="textbox" style="width: 55%; display:inline-block; vertical-align:middle; margin-left:2em; margin-top:2em">
+        <div class="title"><a href="https://decodinggenomes.org/" style="color:inherit; text-decoration:underline">Decoding Genomes</a> (Stadler et al., 2024)</div>
+        <ul class="spaced" style="margin-top:1em; margin-left:1em">
+            <li><b>Chapter 7</b>: Statistical testing</li>
+        </ul>
+        <div class="title" style="margin-top:1em"><a href="https://lukejharmon.github.io/pcm/" style="color:inherit; text-decoration:underline">Phylogenetic Comparative Methods</a> (Harmon, 2019)</div>
+        <ul class="spaced" style="margin-top:1em; margin-left:1em">
+            <li><b>Chapter 2</b>: Fitting statistical models</li>
+        </ul>
+    </div>
+</section>

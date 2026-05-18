@@ -864,11 +864,22 @@ layout: null
                             <div>
                                 <span class="lecture-num">L11</span>
                                 {% assign found_l11 = false %}
-                                {% for page in site.pages %}{% if page.url == "/lecture-comparative-methods/" %}{% assign found_l11 = true %}{% endif %}{% endfor %}
-                                {% if found_l11 %}<a href="{{site.baseurl}}/lecture-comparative-methods/" class="lecture-title">Phylogenetic Comparative Methods</a>{% else %}<span class="lecture-unavailable">Phylogenetic Comparative Methods</span>{% endif %}
+                                {% for page in site.pages %}{% if page.url == "/lecture-model-selection/" %}{% assign found_l11 = true %}{% endif %}{% endfor %}
+                                {% if found_l11 %}<a href="{{site.baseurl}}/lecture-model-selection/" class="lecture-title">Model Selection</a>{% else %}<span class="lecture-unavailable">Model Selection</span>{% endif %}
                             </div>
                             <div class="lecture-links">
-                                {% if found_l11 %}<a href="{{site.baseurl}}/lecture-comparative-methods/" class="lecture-link slides-link">Slides</a>{% endif %}
+                                {% if found_l11 %}<a href="{{site.baseurl}}/lecture-model-selection/" class="lecture-link slides-link">Slides</a>{% endif %}
+                            </div>
+                        </li>
+                        <li class="session-item">
+                            <div>
+                                <span class="lecture-num">L12</span>
+                                {% assign found_l12 = false %}
+                                {% for page in site.pages %}{% if page.url == "/lecture-comparative-methods/" %}{% assign found_l12 = true %}{% endif %}{% endfor %}
+                                {% if found_l12 %}<a href="{{site.baseurl}}/lecture-comparative-methods/" class="lecture-title">Phylogenetic Comparative Methods</a>{% else %}<span class="lecture-unavailable">Phylogenetic Comparative Methods</span>{% endif %}
+                            </div>
+                            <div class="lecture-links">
+                                {% if found_l12 %}<a href="{{site.baseurl}}/lecture-comparative-methods/" class="lecture-link slides-link">Slides</a>{% endif %}
                             </div>
                         </li>
                     </ul>
@@ -892,13 +903,13 @@ layout: null
                     <ul class="session-items">
                         <li class="session-item">
                             <div>
-                                <span class="lecture-num">L12</span>
-                                {% assign found_l12 = false %}
-                                {% for page in site.pages %}{% if page.url == "/lecture-brownian-motion/" %}{% assign found_l12 = true %}{% endif %}{% endfor %}
-                                {% if found_l12 %}<a href="{{site.baseurl}}/lecture-brownian-motion/" class="lecture-title">Brownian Motion and Comparative Methods</a>{% else %}<span class="lecture-unavailable">Brownian Motion and Comparative Methods</span>{% endif %}
+                                <span class="lecture-num">L13</span>
+                                {% assign found_l13bm = false %}
+                                {% for page in site.pages %}{% if page.url == "/lecture-brownian-motion/" %}{% assign found_l13bm = true %}{% endif %}{% endfor %}
+                                {% if found_l13bm %}<a href="{{site.baseurl}}/lecture-brownian-motion/" class="lecture-title">Brownian Motion and Comparative Methods</a>{% else %}<span class="lecture-unavailable">Brownian Motion and Comparative Methods</span>{% endif %}
                             </div>
                             <div class="lecture-links">
-                                {% if found_l12 %}<a href="{{site.baseurl}}/lecture-brownian-motion/" class="lecture-link slides-link">Slides</a>{% endif %}
+                                {% if found_l13bm %}<a href="{{site.baseurl}}/lecture-brownian-motion/" class="lecture-link slides-link">Slides</a>{% endif %}
                             </div>
                         </li>
                     </ul>
@@ -918,13 +929,13 @@ layout: null
                     <ul class="session-items">
                         <li class="session-item">
                             <div>
-                                <span class="lecture-num">L13</span>
-                                {% assign found_l13 = false %}
-                                {% for page in site.pages %}{% if page.url == "/lecture-beyond-brownian/" %}{% assign found_l13 = true %}{% endif %}{% endfor %}
-                                {% if found_l13 %}<a href="{{site.baseurl}}/lecture-beyond-brownian/" class="lecture-title">Beyond Brownian Motion</a>{% else %}<span class="lecture-unavailable">Beyond Brownian Motion</span>{% endif %}
+                                <span class="lecture-num">L14</span>
+                                {% assign found_l14 = false %}
+                                {% for page in site.pages %}{% if page.url == "/lecture-beyond-brownian/" %}{% assign found_l14 = true %}{% endif %}{% endfor %}
+                                {% if found_l14 %}<a href="{{site.baseurl}}/lecture-beyond-brownian/" class="lecture-title">Beyond Brownian Motion</a>{% else %}<span class="lecture-unavailable">Beyond Brownian Motion</span>{% endif %}
                             </div>
                             <div class="lecture-links">
-                                {% if found_l13 %}<a href="{{site.baseurl}}/lecture-beyond-brownian/" class="lecture-link slides-link">Slides</a>{% endif %}
+                                {% if found_l14 %}<a href="{{site.baseurl}}/lecture-beyond-brownian/" class="lecture-link slides-link">Slides</a>{% endif %}
                             </div>
                         </li>
                     </ul>

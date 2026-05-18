@@ -1,274 +1,10 @@
 ---
-lecture_num: 11
+lecture_num: 12
 ---
 
 <section class="center">
-    <h2>Model Selection</h2>
-</section>
-
-<section>
-    <h3>Recall: likelihood and the MLE</h3>
-
-    <div style="display:flex;align-items:center;gap:2em;width:90%;margin:0 auto">
-        <div style="flex:1 1 auto;min-width:0">
-            <ul class="spaced">
-                <li>From the substitution models lecture (Week 4): a coin tossed 5 times gives $D=(H,T,T,H,T)$.</li>
-                <li>The likelihood of the heads probability $f$:
-                    $$L(f|D) = f^2(1-f)^3$$
-                </li>
-                <li>The maximum likelihood estimate is $\hat{f} = 2/5 = 0.4$ (the observed proportion of heads).</li>
-                <li>The same idea applies to any model: find the parameter value that makes the data most probable.</li>
-            </ul>
-        </div>
-        <div style="flex:0 0 400px">
-            <div id="coinRecapPlot" style="width:400px;height:300px"></div>
-            <script>
-            (function() {
-                var trace = { x: [], y: [], mode: "lines", line: {width: 3} };
-                for (var i = 0; i <= 100; i++) {
-                    var f = i/100;
-                    trace.x[i] = f;
-                    trace.y[i] = Math.pow(f, 2) * Math.pow(1 - f, 3);
-                }
-                var layout = {
-                    showlegend: false,
-                    xaxis: { title: "f" },
-                    yaxis: { title: "L(f|D)", range: [0, 0.045] },
-                    margin: { t: 10, b: 40, l: 50, r: 10 },
-                    shapes: [{
-                        type: 'line',
-                        x0: 0.4, x1: 0.4, y0: 0, y1: 0.04,
-                        line: { dash: 'dash', color: 'orange', width: 2 }
-                    }],
-                    annotations: [{
-                        x: 0.4, y: 0.042, text: 'f̂ = 0.4', showarrow: false, font: {size: 14}
-                    }]
-                };
-                Plotly.newPlot('coinRecapPlot', [trace], layout, {displayModeBar: false, staticPlot: true});
-            })();
-            </script>
-        </div>
-    </div>
-</section>
-
-<section>
-    <h3>The traditional approach: hypothesis testing</h3>
-
-    <ul class="spaced" style="width:80%">
-        <li>Classical statistics asks: <b>can we reject a null hypothesis?</b>
-            <ul>
-                <li>Compute a $p$-value: probability of data as extreme as observed, assuming $H_0$.</li>
-                <li>Reject $H_0$ if $p < \alpha$ (conventionally $0.05$).</li>
-            </ul>
-        </li>
-
-        <li>For our coin: $H_0$: $f = 0.5$, data $D = (H,T,T,H,T)$.
-            <ul>
-                <li>Two-sided binomial test: $p = 1.0$.</li>
-                <li>We fail to reject $H_0$ &mdash; and the test has no further answer.</li>
-            </ul>
-        </li>
-
-        <li>But the data clearly carries information about $f$: the previous slide gave $\hat{f} = 0.4$.</li>
-
-        <li>And what if we had more data? Would the test tell us <b>what $f$ is</b> &mdash; or only whether it differs from $0.5$?</li>
-    </ul>
-</section>
-
-<section>
-    <h3>More data: lizard flipping (Harmon, Ch.&nbsp;2)</h3>
-
-    <div style="display:flex;align-items:center;gap:2em;width:90%;margin:0 auto">
-        <div style="flex:1 1 auto;min-width:0">
-            <ul class="spaced">
-                <li>Flip a lizard 100 times: observe 63 heads, 37 tails.</li>
-                <li>Two-sided binomial test of $H_0$: $f = 0.5$ gives $p = 0.006$ &mdash; <b>reject</b>: the lizard is unfair.</li>
-                <li>But what <i>is</i> $f$? Likelihood:
-                    $$L(f|D) = f^{63}(1-f)^{37}$$
-                </li>
-                <li>Maximum likelihood estimate: $\hat{f} = 63/100 = 0.63$.</li>
-                <li>Same idea as the coin &mdash; just with more data the likelihood is much more sharply peaked.</li>
-            </ul>
-        </div>
-        <div style="flex:0 0 400px">
-            <div id="lizardLikPlot" style="width:400px;height:300px"></div>
-            <script>
-            (function() {
-                var nH = 63, nT = 37;
-                var maxLL = nH * Math.log(nH/(nH+nT)) + nT * Math.log(nT/(nH+nT));
-                var trace = { x: [], y: [], mode: "lines", line: {width: 3} };
-                for (var i = 0; i <= 200; i++) {
-                    var f = i/200;
-                    var ll = nH * Math.log(Math.max(f, 1e-300)) + nT * Math.log(Math.max(1 - f, 1e-300));
-                    trace.x[i] = f;
-                    trace.y[i] = Math.exp(ll - maxLL);
-                }
-                var layout = {
-                    showlegend: false,
-                    xaxis: { title: "f" },
-                    yaxis: { title: "L(f|D), scaled", range: [0, 1.15] },
-                    margin: { t: 10, b: 40, l: 50, r: 10 },
-                    shapes: [{
-                        type: 'line',
-                        x0: 0.63, x1: 0.63, y0: 0, y1: 1.0,
-                        line: { dash: 'dash', color: 'orange', width: 2 }
-                    }],
-                    annotations: [{
-                        x: 0.63, y: 1.08, text: 'f̂ = 0.63', showarrow: false, font: {size: 14}
-                    }]
-                };
-                Plotly.newPlot('lizardLikPlot', [trace], layout, {displayModeBar: false, staticPlot: true});
-            })();
-            </script>
-        </div>
-    </div>
-</section>
-
-<section>
-    <h3>Fitting statistical models to data</h3>
-
-    <ul class="spaced" style="width:80%">
-        <li>Broadly, <b>parameter estimation</b> is more informative than test-statistics (i.e., $p$-values).
-            <ul>
-                <li>Rejecting null hypotheses is rarely interesting in biology: the null is often obviously false.</li>
-            </ul>
-        </li>
-
-        <li>Recall that the likelihood is:
-            $$L(H|D) = P(D|H)$$
-        </li>
-
-        <li>In an ML framework, the hypothesis with the highest probability of having generated the data is preferred.</li>
-
-        <li>ML will not always return accurate parameter estimates, even when the data is generated under the actual model.
-            <ul>
-                <li>As with all estimators, ML improves with more data.</li>
-            </ul>
-        </li>
-    </ul>
-</section>
-
-<section>
-    <h3>Likelihood Ratio Test</h3>
-
-    <ul class="spaced" style="width:80%">
-        <li>Can only compare two <b>nested</b> models: one must be a special case of the other.</li>
-
-        <li>Test statistic: $\Delta = 2(\ln L_1 - \ln L_0)$, where $L_1$ is the more complex model.</li>
-
-        <li>Under the null hypothesis, $\Delta \sim \chi^2_k$ where $k$ is the difference in number of parameters.</li>
-
-        <li>Limitations:
-            <ul>
-                <li>Results can depend on the order in which tests are carried out.</li>
-                <li>Can struggle with complex models with many parameters.</li>
-                <li>Cannot compare non-nested models.</li>
-            </ul>
-        </li>
-    </ul>
-</section>
-
-<section>
-    <h3>Akaike Information Criterion (AIC)</h3>
-
-    <ul class="spaced" style="width:80%">
-        <li>AIC balances model fit against model complexity:
-            $$\text{AIC} = 2k - 2\ln L$$
-            where $k$ is the number of estimated parameters.
-        </li>
-
-        <li>AIC assumes that reality is more complex than any of our models: the goal is to identify the model that most efficiently captures the important patterns in the data.</li>
-
-        <li>Lower AIC is better.</li>
-
-        <li>For small sample sizes, use the corrected version:
-            $$\text{AIC}_c = \text{AIC} + \frac{2k(k+1)}{n-k-1}$$
-            AIC$_c$ is recommended for general use over generic AIC.
-        </li>
-    </ul>
-</section>
-
-<section>
-    <h3>AIC weights</h3>
-
-    <ul class="spaced" style="width:80%">
-        <li><b>AIC weights</b> provide a more interpretable way to use AIC outputs.</li>
-
-        <li>For model $i$ in a set of $R$ candidate models:
-            $$w_i = \frac{e^{-\Delta_i/2}}{\sum_{r=1}^{R} e^{-\Delta_r/2}}$$
-            where $\Delta_i = \text{AIC}_i - \text{AIC}_{\min}$.
-        </li>
-
-        <li>Can be interpreted as an estimate of the probability that model $i$ is the best model in the set.</li>
-
-        <li>Modern phylogenetic software frequently calculates AIC for model selection (e.g., ModelFinder in IQ-TREE).</li>
-    </ul>
-</section>
-
-<section>
-    <h3>Bayes Factors</h3>
-
-    <div style="width:100%">
-        <div style="width:60%;display:inline-block;vertical-align:middle">
-            <ul class="spaced">
-                <li>From posterior distributions, models can be compared using <b>Bayes Factors</b>:
-                    $$B_{12} = \frac{P(D|H_1)}{P(D|H_2)}$$
-                </li>
-
-                <li>Bayes Factors are ratios of <b>marginal likelihoods</b> $P(D|H)$: the probability of the data averaged over all parameter values, weighted by the prior.</li>
-
-                <li>Unlike ML, this integrates over the full parameter space rather than evaluating only at the best-fit point.</li>
-
-                <li>Tends to favour simpler models than AIC. Assumes the true model is among those tested.</li>
-            </ul>
-        </div>
-        <div style="width:38%;display:inline-block;vertical-align:middle;text-align:center">
-            <img data-src="figures/figure2-3.png" style="max-width:100%; max-height:300px">
-            <div style="font-size:0.6em; margin-top:0.3em">
-                Prior (dotted) and posterior (solid) for the coin example. The marginal likelihood is the normalising constant of the posterior.
-            </div>
-        </div>
-    </div>
-
-    <div style="font-size:0.55em; margin-top:0.5em; text-align:right; opacity:0.7">
-        Harmon (2019) <i>Phylogenetic Comparative Methods</i>, Fig 2.3 (CC-BY-4.0).
-    </div>
-</section>
-
-<section>
-    <h3>Model selection: summary</h3>
-
-    <table style="font-size:0.75em">
-        <tr>
-            <th>Method</th>
-            <th>Compares</th>
-            <th>Key assumption</th>
-        </tr>
-        <tr>
-            <td>Likelihood Ratio Test</td>
-            <td>Nested models only</td>
-            <td>Null model is true</td>
-        </tr>
-        <tr>
-            <td>AIC / AIC$_c$</td>
-            <td>Any models</td>
-            <td>Truth is more complex than any model</td>
-        </tr>
-        <tr>
-            <td>Bayes Factors</td>
-            <td>Any models</td>
-            <td>True model is among candidates</td>
-        </tr>
-    </table>
-
-    <ul class="spaced" style="margin-top:1.5em; width:80%">
-        <li>AIC and Bayes Factors can disagree: Bayes Factors may prefer a simpler model.</li>
-        <li>All methods assume good data and correctly specified candidate models.</li>
-    </ul>
-</section>
-
-<section class="center">
     <h2>Phylogenetic Comparative Methods</h2>
+    <p style="font-size:0.75em;margin-top:1em">From PIC to PGLS</p>
 </section>
 
 <section>
@@ -282,12 +18,46 @@ lecture_num: 11
             </ul>
         </li>
 
-        <li>Simply plotting traits against each other assumes samples are <b>independent</b> and from the same distribution.</li>
+        <li>Bridging <b>microevolutionary processes</b> (genetic drift, selection) with <b>macroevolutionary patterns</b> across the tree of life (Harmon, Ch. 1).</li>
 
-        <li>But species sharing a phylogeny are <b>not independent</b>: closely related species tend to be similar due to shared ancestry.</li>
+        <li>The field crystallised in the 1980s when <b>Felsenstein (1985)</b> showed that ignoring phylogenetic relatedness can lead to highly misleading conclusions.</li>
 
-        <li>We need methods that account for the phylogenetic relationships among species.</li>
+        <li>Synthesised by <b>Harvey &amp; Pagel (1991)</b> and now a core tool in evolutionary biology.</li>
     </ul>
+</section>
+
+<section>
+    <h3>Adaptive radiations: poster children of PCMs</h3>
+
+    <div style="display:flex;gap:1.2em;width:95%;margin:0 auto;justify-content:space-around;align-items:flex-end">
+        <div style="text-align:center;flex:1.3">
+            <img data-src="figures/Four-Lizards-byJonSuh-scaled.jpg" style="max-width:100%;max-height:240px;border-radius:6px">
+            <div style="font-size:0.8em;margin-top:0.3em"><b>Caribbean anoles</b></div>
+            <div style="font-size:0.65em;opacity:0.8">Convergent ecomorphs across islands</div>
+        </div>
+        <div style="text-align:center;flex:1">
+            <img data-src="figures/fig4_convergent_cichlids.jpg" style="max-width:100%;max-height:240px;border-radius:6px">
+            <div style="font-size:0.8em;margin-top:0.3em"><b>African cichlids</b></div>
+            <div style="font-size:0.65em;opacity:0.8">Parallel morphs in Lakes Tanganyika &amp; Malawi</div>
+        </div>
+        <div style="text-align:center;flex:1.3">
+            <img data-src="figures/darwins_finches_gould.jpg" style="max-width:100%;max-height:240px;border-radius:6px;background:#fff">
+            <div style="font-size:0.8em;margin-top:0.3em"><b>Darwin's finches</b></div>
+            <div style="font-size:0.65em;opacity:0.8">Beak shape vs diet across Gal&aacute;pagos</div>
+        </div>
+    </div>
+
+    <ul class="spaced" style="margin-top:0.8em; width:85%; font-size:0.85em">
+        <li>Rapid diversification, often without a fossil record.</li>
+        <li>PCMs reconstruct evolutionary processes from <b>extant species</b> using a phylogeny.</li>
+        <li>Did some clades evolve faster? Which traits co-evolve? Does an island habitat drive the radiation?</li>
+    </ul>
+
+    <div style="font-size:0.45em; margin-top:0.3em; text-align:right; opacity:0.7; line-height:1.4">
+        Anolis: Jon Suh, via <a href="https://www.quantamagazine.org/evolution-fast-or-slow-lizards-help-resolve-a-paradox-20240102/" style="color:inherit">Quanta Magazine</a> (2024).<br>
+        Cichlids: Kuraku &amp; Meyer (2008) <i>Curr Opin Genet Dev</i> 18:551&ndash;558, Fig 4.<br>
+        Finches: John Gould, <i>The Zoology of the Voyage of H.M.S. Beagle</i> (1845), public domain.
+    </div>
 </section>
 
 <section>
@@ -353,6 +123,165 @@ lecture_num: 11
 </section>
 
 <section>
+    <h3>Try it yourself: the correlation illusion</h3>
+
+    <div style="display:flex;gap:1.5em;width:98%;margin:0 auto;align-items:flex-start">
+        <div style="flex:0 0 240px;font-size:0.78em">
+            <p style="margin-bottom:0.4em"><b>Two clades, no real correlation.</b></p>
+            <p style="margin-bottom:0.6em;opacity:0.8">Within each clade, $x$ and $y$ are independent. Only the clade <i>means</i> differ.</p>
+
+            <label style="display:block;margin-top:0.6em">Clade separation $d$: <span id="ciSepVal">3.0</span></label>
+            <input id="ciSep" type="range" min="0" max="8" step="0.2" value="3.0" style="width:100%">
+
+            <label style="display:block;margin-top:0.4em">Within-clade noise $\sigma$: <span id="ciSigVal">1.0</span></label>
+            <input id="ciSig" type="range" min="0.2" max="3" step="0.1" value="1.0" style="width:100%">
+
+            <label style="display:block;margin-top:0.4em">Species per clade $n$: <span id="ciNVal">15</span></label>
+            <input id="ciN" type="range" min="3" max="30" step="1" value="15" style="width:100%">
+
+            <button id="ciReroll" style="margin-top:0.6em;padding:4px 12px;font-size:0.9em">Re-sample</button>
+
+            <div id="ciStats" style="margin-top:0.8em;padding:0.5em;background:#f3f4f6;border-radius:6px;font-size:0.85em"></div>
+        </div>
+        <div style="flex:1 1 auto">
+            <div id="ciPlot" style="width:100%;height:440px"></div>
+        </div>
+    </div>
+
+    <script>
+    (function() {
+        function rnorm() {
+            var u=0,v=0; while(u===0)u=Math.random(); while(v===0)v=Math.random();
+            return Math.sqrt(-2*Math.log(u))*Math.cos(2*Math.PI*v);
+        }
+        var seed = 42;
+        function regress(xs, ys) {
+            var n=xs.length, mx=0, my=0;
+            for (var i=0;i<n;i++){mx+=xs[i]; my+=ys[i];}
+            mx/=n; my/=n;
+            var sxx=0,syy=0,sxy=0;
+            for (i=0;i<n;i++){var dx=xs[i]-mx, dy=ys[i]-my; sxx+=dx*dx; syy+=dy*dy; sxy+=dx*dy;}
+            var slope = sxx>0 ? sxy/sxx : 0;
+            var inter = my - slope*mx;
+            var r2 = (sxx*syy>0) ? (sxy*sxy)/(sxx*syy) : 0;
+            var se2 = syy*(1-r2)/Math.max(1,(n-2));
+            var seSlope = sxx>0 ? Math.sqrt(se2/sxx) : 0;
+            var t = seSlope>0 ? slope/seSlope : 0;
+            return {slope:slope, intercept:inter, r2:r2, t:t, n:n};
+        }
+        function tPval(t, df) {
+            var x = df/(df+t*t);
+            function betainc(x,a,b){
+                var lbeta = function(a,b){
+                    var lg=function(z){
+                        var c=[0.99999999999980993,676.5203681218851,-1259.1392167224028,
+                            771.32342877765313,-176.61502916214059,12.507343278686905];
+                        z=z-1; var x_=c[0];
+                        for (var i=1;i<6;i++) x_+=c[i]/(z+i);
+                        var t_=z+5.5;
+                        return 0.5*Math.log(2*Math.PI)+(z+0.5)*Math.log(t_)-t_+Math.log(x_);
+                    };
+                    return lg(a)+lg(b)-lg(a+b);
+                };
+                function cf(x,a,b){
+                    var MAX=200, EPS=3e-7;
+                    var qab=a+b, qap=a+1, qam=a-1;
+                    var c=1, d=1-qab*x/qap;
+                    if (Math.abs(d)<1e-30) d=1e-30;
+                    d=1/d; var h=d;
+                    for (var m=1;m<=MAX;m++){
+                        var m2=2*m;
+                        var aa=m*(b-m)*x/((qam+m2)*(a+m2));
+                        d=1+aa*d; if (Math.abs(d)<1e-30) d=1e-30;
+                        c=1+aa/c; if (Math.abs(c)<1e-30) c=1e-30;
+                        d=1/d; h*=d*c;
+                        aa=-(a+m)*(qab+m)*x/((a+m2)*(qap+m2));
+                        d=1+aa*d; if (Math.abs(d)<1e-30) d=1e-30;
+                        c=1+aa/c; if (Math.abs(c)<1e-30) c=1e-30;
+                        d=1/d; var del=d*c; h*=del;
+                        if (Math.abs(del-1)<EPS) break;
+                    }
+                    return h;
+                }
+                var lb = lbeta_(a,b);
+                function lbeta_(a,b){
+                    function lg(z){var c=[0.99999999999980993,676.5203681218851,-1259.1392167224028,
+                        771.32342877765313,-176.61502916214059,12.507343278686905];
+                        z=z-1; var x_=c[0]; for (var i=1;i<6;i++) x_+=c[i]/(z+i);
+                        var t_=z+5.5; return 0.5*Math.log(2*Math.PI)+(z+0.5)*Math.log(t_)-t_+Math.log(x_);}
+                    return lg(a)+lg(b)-lg(a+b);
+                }
+                if (x<(a+1)/(a+b+2)) return Math.exp(a*Math.log(x)+b*Math.log(1-x)-lb)*cf(x,a,b)/a;
+                return 1 - Math.exp(a*Math.log(x)+b*Math.log(1-x)-lb)*cf(1-x,b,a)/b;
+            }
+            return betainc(x, df/2, 0.5);
+        }
+        function genData() {
+            var d = parseFloat(document.getElementById('ciSep').value);
+            var s = parseFloat(document.getElementById('ciSig').value);
+            var n = parseInt(document.getElementById('ciN').value);
+            document.getElementById('ciSepVal').textContent = d.toFixed(1);
+            document.getElementById('ciSigVal').textContent = s.toFixed(1);
+            document.getElementById('ciNVal').textContent = n;
+            var x1=[], y1=[], x2=[], y2=[];
+            for (var i=0;i<n;i++){ x1.push(0 + s*rnorm()); y1.push(0 + s*rnorm()); }
+            for (i=0;i<n;i++){ x2.push(d + s*rnorm()); y2.push(d + s*rnorm()); }
+            var allX = x1.concat(x2), allY = y1.concat(y2);
+            var fit = regress(allX, allY);
+            var p = tPval(fit.t, allX.length-2);
+            // PIC equivalent: contrast of clade means
+            var m1x=0,m1y=0,m2x=0,m2y=0;
+            for (i=0;i<n;i++){m1x+=x1[i]; m1y+=y1[i]; m2x+=x2[i]; m2y+=y2[i];}
+            m1x/=n; m1y/=n; m2x/=n; m2y/=n;
+            var picSlope = (m2x-m1x)!==0 ? (m2y-m1y)/(m2x-m1x) : 0;
+
+            var xMin = Math.min.apply(null, allX), xMax = Math.max.apply(null, allX);
+            var lineX = [xMin, xMax], lineY = [fit.intercept+fit.slope*xMin, fit.intercept+fit.slope*xMax];
+
+            Plotly.react('ciPlot', [
+                {x:x1, y:y1, mode:'markers', type:'scatter', name:'Clade 1',
+                 marker:{color:'#1f77b4', size:9, line:{color:'#0c4a87',width:1}}},
+                {x:x2, y:y2, mode:'markers', type:'scatter', name:'Clade 2',
+                 marker:{color:'#d62728', size:9, line:{color:'#7f1410',width:1}}},
+                {x:lineX, y:lineY, mode:'lines', name:'OLS fit',
+                 line:{color:'#444', width:2.5}}
+            ], {
+                xaxis:{title:'trait x', zeroline:false},
+                yaxis:{title:'trait y', zeroline:false},
+                margin:{t:10,b:40,l:50,r:10},
+                legend:{x:0.02, y:0.98, bgcolor:'rgba(255,255,255,0.8)'},
+                shapes:[
+                    {type:'circle', xref:'x', yref:'y',
+                     x0:m1x-0.15, x1:m1x+0.15, y0:m1y-0.15, y1:m1y+0.15,
+                     line:{color:'#0c4a87',width:3}, fillcolor:'rgba(255,255,255,0)'},
+                    {type:'circle', xref:'x', yref:'y',
+                     x0:m2x-0.15, x1:m2x+0.15, y0:m2y-0.15, y1:m2y+0.15,
+                     line:{color:'#7f1410',width:3}, fillcolor:'rgba(255,255,255,0)'}
+                ]
+            }, {displayModeBar:false, staticPlot:true});
+
+            var pStr = p<0.001 ? '&lt;0.001' : p.toFixed(3);
+            var verdict = p<0.05 ? '<span style="color:#d62728"><b>"significant"</b></span>' : 'not significant';
+            document.getElementById('ciStats').innerHTML =
+                'OLS slope: <b>'+fit.slope.toFixed(2)+'</b><br>'+
+                '$R^2$: <b>'+fit.r2.toFixed(2)+'</b>, <i>p</i> = <b>'+pStr+'</b> '+verdict+'<br>'+
+                '<span style="color:#666">Contrast of clade means: slope &asymp; <b>'+picSlope.toFixed(2)+'</b><br>(but just 1 contrast: <b>not testable</b>)</span>';
+            if (window.MathJax && MathJax.typesetPromise) MathJax.typesetPromise([document.getElementById('ciStats')]);
+        }
+        document.getElementById('ciSep').addEventListener('input', genData);
+        document.getElementById('ciSig').addEventListener('input', genData);
+        document.getElementById('ciN').addEventListener('input', genData);
+        document.getElementById('ciReroll').addEventListener('click', genData);
+        genData();
+    })();
+    </script>
+
+    <p style="font-size:0.7em;margin-top:0.4em;text-align:center;opacity:0.8">
+        Increase $d$, hold $\sigma$ small: $p$ shrinks fast. But the "signal" is really just 1 between-clade contrast.
+    </p>
+</section>
+
+<section>
     <h3>An apparent correlation...</h3>
 
     <div style="text-align:center; margin-top:1em">
@@ -360,7 +289,7 @@ lecture_num: 11
     </div>
 
     <div style="font-size:0.75em; margin-top:1em; width:75%; margin-left:auto; margin-right:auto">
-        A regression of $Y$ on $X$ across 40 species. Looks significant ($P < .05$).
+        A regression of $Y$ on $X$ across 40 species. Looks significant ($P &lt; .05$).
     </div>
 
     <div style="font-size:0.55em; margin-top:1em; text-align:right; opacity:0.7">
@@ -427,21 +356,275 @@ lecture_num: 11
     <h3>How PIC works</h3>
 
     <ul class="spaced" style="width:80%">
-        <li>Assumes traits are evolving via <b>Brownian motion</b> on the phylogeny.</li>
-
-        <li>Under this model, pairs of sister taxa provide independent samples of evolutionary change.</li>
+        <li>Under BM, pairs of sister taxa provide independent samples of evolutionary change.</li>
 
         <li>Algorithm:
             <ol>
                 <li>Take a pair of sister tips and calculate a <b>contrast</b> (difference in trait values).</li>
                 <li>Standardise by dividing by the square root of the sum of their branch lengths.</li>
-                <li>Prune those tips and replace with a new tip at their ancestor, with an estimated trait value.</li>
+                <li>Prune those tips, replace with a new tip at their ancestor with an estimated trait value, and adjust its branch length.</li>
                 <li>Repeat until no more contrasts can be calculated.</li>
             </ol>
         </li>
 
+        <li>Standardised contrast for tips $i, j$ with branch lengths $v_i, v_j$:
+            $$c_{ij} = \frac{X_i - X_j}{\sqrt{v_i + v_j}} \sim N(0, \sigma^2)$$
+        </li>
+
         <li>The resulting contrasts are independent and can be used in standard statistical tests.</li>
     </ul>
+</section>
+
+<section>
+    <h3>Try it yourself: step through PIC</h3>
+
+    <div style="display:flex;gap:1em;width:98%;margin:0 auto;align-items:flex-start">
+        <div style="flex:0 0 200px;font-size:0.85em">
+            <div id="picStep" style="font-weight:600;color:#1e40af;margin-bottom:0.5em">Step 0</div>
+            <div id="picDesc" style="font-size:0.85em;min-height:6em">Click <b>Next step</b> to compute contrasts one at a time.</div>
+            <button id="picNext" style="margin-top:0.6em;padding:6px 14px;font-size:0.9em">Next step &raquo;</button>
+            <button id="picReset" style="margin-top:0.4em;padding:6px 14px;font-size:0.85em;background:#eee">Reset</button>
+            <div style="margin-top:1em;font-size:0.8em">
+                <div style="font-weight:600;margin-bottom:0.3em">Contrasts computed:</div>
+                <div id="picList" style="font-family: 'JetBrains Mono', monospace; font-size:0.85em">&mdash;</div>
+            </div>
+        </div>
+        <div style="flex:1 1 auto">
+            <svg id="picTree" viewBox="0 0 600 380" style="width:100%;height:420px;background:#fafafa;border-radius:8px"></svg>
+        </div>
+    </div>
+
+    <script>
+    (function() {
+        // Balanced 4-tip tree: ((A:1, B:1):1, (C:1, D:1):1)
+        // Trait values at tips
+        var initial = {
+            tips: [
+                {id:'A', x:120, y:60,  trait: 1.2, alive:true},
+                {id:'B', x:120, y:140, trait: 2.8, alive:true},
+                {id:'C', x:120, y:240, trait: 4.5, alive:true},
+                {id:'D', x:120, y:320, trait: 5.2, alive:true}
+            ],
+            internals: [
+                {id:'AB', x:260, y:100, trait:null, branch:1, alive:false},
+                {id:'CD', x:260, y:280, trait:null, branch:1, alive:false},
+                {id:'root', x:400, y:190, trait:null, alive:false}
+            ],
+            edges: [
+                // from -> to, branch length
+                ['AB','A', 1], ['AB','B', 1],
+                ['CD','C', 1], ['CD','D', 1],
+                ['root','AB', 1], ['root','CD', 1]
+            ],
+            sqrt2: Math.sqrt(2)
+        };
+        var state = JSON.parse(JSON.stringify(initial));
+        state.step = 0;
+        state.contrasts = [];
+
+        function getNode(id) {
+            for (var i=0;i<state.tips.length;i++) if (state.tips[i].id===id) return state.tips[i];
+            for (i=0;i<state.internals.length;i++) if (state.internals[i].id===id) return state.internals[i];
+            return null;
+        }
+        function drawTree(highlight) {
+            highlight = highlight || {};
+            var svg = document.getElementById('picTree');
+            svg.innerHTML='';
+            var NS = 'http://www.w3.org/2000/svg';
+            function add(tag, attrs, text){
+                var el = document.createElementNS(NS, tag);
+                for (var k in attrs) el.setAttribute(k, attrs[k]);
+                if (text!=null) el.textContent = text;
+                svg.appendChild(el); return el;
+            }
+            // Draw edges
+            for (var e=0;e<state.edges.length;e++){
+                var p = getNode(state.edges[e][0]);
+                var c = getNode(state.edges[e][1]);
+                if (!p || !c) continue;
+                var fade = (!c.alive && !p.alive) || (highlight.fade && highlight.fade.indexOf(c.id)>=0);
+                var hl = highlight.edges && highlight.edges.indexOf(c.id)>=0;
+                add('line', {x1:p.x, y1:p.y, x2:c.x, y2:c.y,
+                    stroke: hl?'#ea580c':(fade?'#ccc':'#333'),
+                    'stroke-width': hl?4:2.5});
+            }
+            // Draw branch length labels on edges
+            for (e=0;e<state.edges.length;e++){
+                var p2 = getNode(state.edges[e][0]);
+                var c2 = getNode(state.edges[e][1]);
+                if (!p2 || !c2) continue;
+                var fade2 = (!c2.alive && !p2.alive) || (highlight.fade && highlight.fade.indexOf(c2.id)>=0);
+                var hl_e = highlight.edges && highlight.edges.indexOf(c2.id)>=0;
+                var mx = (p2.x + c2.x)/2;
+                var my = (p2.y + c2.y)/2;
+                // Offset label perpendicular to edge so it sits above the line
+                var dx = c2.x - p2.x, dy = c2.y - p2.y;
+                var len = Math.sqrt(dx*dx + dy*dy) || 1;
+                // Perpendicular unit: (-dy, dx)/len; pick direction that puts label upward
+                var ox = -dy/len * 9, oy = dx/len * 9;
+                if (oy > 0) { ox = -ox; oy = -oy; }
+                var lbl = 'v=' + (state.edges[e][2]).toString();
+                add('text', {x:mx + ox, y:my + oy + 3, 'text-anchor':'middle',
+                    'font-size':'10px', 'font-style':'italic',
+                    fill: hl_e?'#ea580c':(fade2?'#bbb':'#555')}, lbl);
+            }
+            // Draw nodes (tips first, then internals)
+            for (var i=0;i<state.tips.length;i++){
+                var t = state.tips[i];
+                var alive = t.alive;
+                var hl_n = highlight.nodes && highlight.nodes.indexOf(t.id)>=0;
+                add('circle', {cx:t.x, cy:t.y, r:hl_n?14:11,
+                    fill: alive ? (hl_n?'#fed7aa':'#dbeafe') : '#eee',
+                    stroke: alive ? (hl_n?'#ea580c':'#1e40af') : '#bbb',
+                    'stroke-width': hl_n?3:2});
+                add('text', {x:t.x, y:t.y+4, 'text-anchor':'middle',
+                    'font-size':'13px', 'font-weight':'600',
+                    fill: alive?'#1e40af':'#999'}, t.id);
+                add('text', {x:t.x-22, y:t.y+5, 'text-anchor':'end',
+                    'font-size':'11px', fill:alive?'#333':'#999'},
+                    t.trait!=null ? t.trait.toFixed(2) : '?');
+            }
+            for (i=0;i<state.internals.length;i++){
+                var n = state.internals[i];
+                if (!n.alive && !highlight.show_internal_ghost) continue;
+                var hl2 = highlight.nodes && highlight.nodes.indexOf(n.id)>=0;
+                add('circle', {cx:n.x, cy:n.y, r:hl2?14:11,
+                    fill:hl2?'#fed7aa':(n.alive?'#dcfce7':'#eee'),
+                    stroke:hl2?'#ea580c':(n.alive?'#15803d':'#bbb'),
+                    'stroke-width':hl2?3:2});
+                add('text', {x:n.x, y:n.y+4, 'text-anchor':'middle',
+                    'font-size':'11px', 'font-weight':'600',
+                    fill:n.alive?'#15803d':'#777'}, n.id);
+                if (n.trait!=null) {
+                    add('text', {x:n.x+22, y:n.y+5, 'text-anchor':'start',
+                        'font-size':'11px', fill:'#15803d'}, n.trait.toFixed(2));
+                }
+            }
+            // Draw contrast label between contrasted nodes
+            if (highlight.contrast) {
+                var a = getNode(highlight.contrast.a);
+                var b = getNode(highlight.contrast.b);
+                if (a && b) {
+                    var cx = (a.x + b.x)/2;
+                    var cy = (a.y + b.y)/2;
+                    var txt = highlight.contrast.text;
+                    // Approx text width (10px per char)
+                    var w = txt.length * 7 + 14;
+                    add('rect', {x:cx - w/2, y:cy - 12, width:w, height:22,
+                        rx:4, ry:4, fill:'#fff7ed', stroke:'#ea580c', 'stroke-width':1.5});
+                    add('text', {x:cx, y:cy+3, 'text-anchor':'middle',
+                        'font-size':'12px', 'font-weight':'600', fill:'#9a3412'}, txt);
+                }
+            }
+        }
+        function fmt(x){ return (x>=0?'+':'') + x.toFixed(2); }
+        function updateList() {
+            var html = state.contrasts.length===0 ? '&mdash;' :
+                state.contrasts.map(function(c){
+                    return c.label.replace('c_','c') + ' = ' + fmt(c.value);
+                }).join('<br>');
+            document.getElementById('picList').innerHTML = html;
+        }
+        function setText(step, desc) {
+            document.getElementById('picStep').innerHTML = step;
+            document.getElementById('picDesc').innerHTML = desc;
+        }
+        function setEdgeLen(parentId, childId, newLen) {
+            for (var k=0;k<state.edges.length;k++){
+                if (state.edges[k][0]===parentId && state.edges[k][1]===childId){
+                    state.edges[k][2] = newLen;
+                    return;
+                }
+            }
+        }
+        var steps = [
+            function() { // 0: initial
+                drawTree({});
+                setText('Step 0: starting tree',
+                    'Four tips (A, B, C, D) with measured trait values. All branch lengths <i>v</i>&nbsp;=&nbsp;1. Under BM the variance of change along a branch is &sigma;<sup>2</sup><i>v</i>.');
+            },
+            function() { // 1: contrast 1 - A,B
+                var A = getNode('A'), B = getNode('B');
+                var c = (B.trait - A.trait) / state.sqrt2;
+                state.contrasts.push({label:'c_1', value:c});
+                updateList();
+                drawTree({nodes:['A','B'], edges:['A','B'],
+                    contrast:{a:'A', b:'B', text:'c₁ = '+fmt(c)}});
+                setText('Step 1: contrast B &minus; A',
+                    'Sister pair (A, B). <i>c</i><sub>1</sub> = (X<sub>B</sub> &minus; X<sub>A</sub>)/&radic;(v<sub>A</sub>+v<sub>B</sub>) = ('+B.trait+' &minus; '+A.trait+')/&radic;2 = '+c.toFixed(2)+'.');
+            },
+            function() { // 2: prune A,B, add AB ancestor
+                var A=getNode('A'),B=getNode('B'),AB=getNode('AB');
+                A.alive=false; B.alive=false;
+                AB.alive=true;
+                AB.trait = (A.trait + B.trait)/2;
+                AB.branch = 1 + (1*1)/(1+1);
+                setEdgeLen('root','AB', 1.5);
+                drawTree({nodes:['AB']});
+                setText('Step 2: prune (A, B), ancestor AB',
+                    'Ancestor trait = weighted mean = '+AB.trait.toFixed(2)+'. The edge from root to AB lengthens to absorb pruned variance: <i>v</i><sub>AB</sub> = 1 + (v<sub>A</sub>&middot;v<sub>B</sub>)/(v<sub>A</sub>+v<sub>B</sub>) = 1.5.');
+            },
+            function() { // 3: contrast C,D
+                var C=getNode('C'),D=getNode('D');
+                var c = (D.trait - C.trait) / state.sqrt2;
+                state.contrasts.push({label:'c_2', value:c});
+                updateList();
+                drawTree({nodes:['C','D'], edges:['C','D'],
+                    contrast:{a:'C', b:'D', text:'c₂ = '+fmt(c)}});
+                setText('Step 3: contrast D &minus; C',
+                    'Sister pair (C, D). <i>c</i><sub>2</sub> = ('+D.trait+' &minus; '+C.trait+')/&radic;2 = '+c.toFixed(2)+'.');
+            },
+            function() { // 4: prune C,D
+                var C=getNode('C'),D=getNode('D'),CD=getNode('CD');
+                C.alive=false; D.alive=false;
+                CD.alive=true;
+                CD.trait = (C.trait + D.trait)/2;
+                CD.branch = 1 + 0.5;
+                setEdgeLen('root','CD', 1.5);
+                drawTree({nodes:['CD']});
+                setText('Step 4: prune (C, D), ancestor CD',
+                    'Ancestor trait = '+CD.trait.toFixed(2)+'. <i>v</i><sub>CD</sub> = 1.5.');
+            },
+            function() { // 5: contrast AB, CD
+                var AB=getNode('AB'),CD=getNode('CD');
+                var denom = Math.sqrt(AB.branch + CD.branch);
+                var c = (CD.trait - AB.trait) / denom;
+                state.contrasts.push({label:'c_3', value:c});
+                updateList();
+                drawTree({nodes:['AB','CD'], edges:['AB','CD'],
+                    contrast:{a:'AB', b:'CD', text:'c₃ = '+fmt(c)}});
+                setText('Step 5: contrast CD &minus; AB',
+                    'Final pair. <i>c</i><sub>3</sub> = ('+CD.trait.toFixed(2)+' &minus; '+AB.trait.toFixed(2)+')/&radic;'+(AB.branch+CD.branch).toFixed(1)+' = '+c.toFixed(2)+'.');
+            },
+            function() { // 6: done
+                drawTree({fade:['A','B','C','D','AB','CD']});
+                setText('Done: 3 independent contrasts',
+                    '<b>n &minus; 1 = 3 contrasts</b> for n = 4 tips. Each is an independent sample of evolutionary change, usable in standard tests (regression, correlation).');
+            }
+        ];
+        function go() {
+            steps[state.step]();
+            state.step = Math.min(state.step+1, steps.length-1);
+            if (state.step === steps.length-1) {
+                document.getElementById('picNext').disabled = true;
+            }
+        }
+        function reset() {
+            state = JSON.parse(JSON.stringify(initial));
+            state.step = 0;
+            state.contrasts = [];
+            updateList();
+            document.getElementById('picNext').disabled = false;
+            go();
+            state.step = 1;
+        }
+        document.getElementById('picNext').addEventListener('click', go);
+        document.getElementById('picReset').addEventListener('click', reset);
+        reset();
+        state.step = 1;
+    })();
+    </script>
 </section>
 
 <section>
@@ -492,17 +675,303 @@ lecture_num: 11
     </div>
 </section>
 
+<section class="center">
+    <h2>From PIC to PGLS</h2>
+    <p style="font-size:0.75em;margin-top:1em">Multivariate Brownian motion (Harmon, Ch. 5)</p>
+</section>
+
 <section>
-    <h3>PIC: assumptions and limitations</h3>
+    <h3>Multivariate Brownian motion</h3>
+
+    <ul class="spaced" style="width:85%">
+        <li>So far, PIC handles <b>one trait at a time</b>. What if two traits evolve <i>together</i>?</li>
+
+        <li>Multivariate BM: $r$ traits with a <b>rate matrix</b> $\mathbf{R}$:
+            $$\mathbf{R} = \begin{pmatrix} \sigma_x^2 &amp; \sigma_{xy} \\ \sigma_{xy} &amp; \sigma_y^2 \end{pmatrix}$$
+            <ul>
+                <li>Diagonal: per-trait evolutionary rates.</li>
+                <li>Off-diagonal: <b>evolutionary covariance</b> $\sigma_{xy}$ between traits.</li>
+            </ul>
+        </li>
+
+        <li>Full tip-trait covariance combines $\mathbf{R}$ with the phylogenetic $\mathbf{C}$:
+            $$\mathbf{V} = \mathbf{R} \otimes \mathbf{C}$$
+        </li>
+
+        <li>$\sigma_{xy} \ne 0$ means the traits have a real evolutionary tendency to change together, beyond shared ancestry.</li>
+    </ul>
+</section>
+
+<section>
+    <h3>Evolutionary correlation vs. spurious correlation</h3>
+
+    <div style="text-align:center;margin-top:0.3em">
+        <img data-src="figures/figure5-1.png" style="max-width:90%;max-height:380px">
+    </div>
+
+    <div style="display:flex;gap:1.5em;width:90%;margin:0.5em auto;font-size:0.78em">
+        <div style="flex:1;text-align:center"><b>A.</b> Phylogenetic structure alone &rarr; <i>spurious</i> pattern</div>
+        <div style="flex:1;text-align:center"><b>B.</b> Genuine positive evolutionary covariance ($\sigma_{xy} &gt; 0$)</div>
+        <div style="flex:1;text-align:center"><b>C.</b> Genuine negative evolutionary covariance ($\sigma_{xy} &lt; 0$)</div>
+    </div>
+
+    <div style="font-size:0.6em; margin-top:0.8em; text-align:right; opacity:0.7">
+        Harmon (2019) <i>Phylogenetic Comparative Methods</i>, Fig 5.1 (CC-BY-4.0).
+    </div>
+</section>
+
+<section>
+    <h3>Phylogenetic GLS (PGLS)</h3>
+
+    <ul class="spaced" style="width:85%">
+        <li><b>Idea:</b> use standard regression $\mathbf{y} = \beta_0 + \beta_1 \mathbf{x} + \varepsilon$, but let the residuals $\varepsilon$ be correlated according to the phylogeny.</li>
+
+        <li>Generalised least squares:
+            $$\hat{\boldsymbol{\beta}} = (\mathbf{X}^\top \mathbf{C}^{-1} \mathbf{X})^{-1} \mathbf{X}^\top \mathbf{C}^{-1} \mathbf{y}$$
+            where $\mathbf{C}$ is the phylogenetic variance&ndash;covariance matrix.
+        </li>
+
+        <li><b>Equivalence:</b> for a single predictor under BM, PGLS gives the same slope as PIC, but also recovers an <b>intercept</b>.</li>
+
+        <li>Easily extends to multiple predictors, categorical variables, mixed effects.</li>
+
+        <li>Modern PCM software (e.g., <span style="font-family:monospace;font-size:0.95em">ape</span>, <span style="font-family:monospace;font-size:0.95em">caper</span>, <span style="font-family:monospace;font-size:0.95em">phylolm</span>) defaults to PGLS-style frameworks.</li>
+    </ul>
+</section>
+
+<section>
+    <h3>OLS vs PGLS on real data</h3>
+
+    <div style="display:flex;align-items:center;gap:1.5em;width:95%;margin:0 auto">
+        <div style="flex:0 0 360px;text-align:center">
+            <img data-src="figures/figure5-3.png" style="max-width:100%;max-height:380px">
+            <div style="font-size:0.6em;margin-top:0.3em">
+                Mammal $\ln(\text{home range})$ vs $\ln(\text{body mass})$.
+                Solid: PGLS. Dashed: naive OLS.
+            </div>
+        </div>
+        <div style="flex:1 1 auto;font-size:0.9em">
+            <ul class="spaced">
+                <li>Same data as Garland (1992), now fitted two ways.</li>
+                <li>OLS slope &asymp; <b>1.0</b>. PGLS slope &asymp; <b>0.5</b>.</li>
+                <li>OLS over-estimates the relationship by treating closely related species as independent samples.</li>
+                <li>PGLS corrects this and is closer to the true evolutionary slope.</li>
+            </ul>
+        </div>
+    </div>
+
+    <div style="font-size:0.55em; margin-top:0.6em; text-align:right; opacity:0.7">
+        Harmon (2019) <i>Phylogenetic Comparative Methods</i>, Fig 5.3 (CC-BY-4.0).
+    </div>
+</section>
+
+<section>
+    <h3>Try it yourself: OLS vs PGLS</h3>
+
+    <div style="display:flex;gap:1.5em;width:98%;margin:0 auto;align-items:flex-start">
+        <div style="flex:0 0 240px;font-size:0.78em">
+            <p style="margin-bottom:0.4em"><b>Simulated BM</b> on an 8-tip balanced tree.</p>
+            <p style="margin-bottom:0.6em;opacity:0.8">Generate $(x,y)$ at the tips under multivariate BM with rate matrix $\mathbf{R}$.</p>
+
+            <label style="display:block;margin-top:0.4em">True $\sigma_{xy}$ (evolutionary cov.): <span id="pgVal">0.0</span></label>
+            <input id="pgCov" type="range" min="-0.9" max="0.9" step="0.05" value="0" style="width:100%">
+
+            <label style="display:block;margin-top:0.4em">Tree depth (rate units): <span id="pgDVal">1.0</span></label>
+            <input id="pgDepth" type="range" min="0.2" max="3" step="0.1" value="1.0" style="width:100%">
+
+            <button id="pgReroll" style="margin-top:0.6em;padding:4px 12px;font-size:0.9em">Re-sample tree data</button>
+
+            <div id="pgStats" style="margin-top:0.8em;padding:0.5em;background:#f3f4f6;border-radius:6px;font-size:0.82em"></div>
+            <p style="font-size:0.72em;margin-top:0.6em;opacity:0.75">PGLS computed via Felsenstein's contrasts (equivalent under BM).</p>
+        </div>
+        <div style="flex:1 1 auto">
+            <div id="pgPlot" style="width:100%;height:440px"></div>
+        </div>
+    </div>
+
+    <script>
+    (function() {
+        function rnorm() {
+            var u=0,v=0; while(u===0)u=Math.random(); while(v===0)v=Math.random();
+            return Math.sqrt(-2*Math.log(u))*Math.cos(2*Math.PI*v);
+        }
+        // Cholesky-like sample for bivariate normal with given covariance
+        function sampleBivariate(varxy, vary, cov) {
+            // R = [[s2x, sxy],[sxy, s2y]]
+            // For correlated samples
+            var s2x = varxy, s2y = vary;
+            var z1 = rnorm(), z2 = rnorm();
+            var x = Math.sqrt(s2x) * z1;
+            var rho = cov / Math.sqrt(s2x*s2y);
+            rho = Math.max(-0.999, Math.min(0.999, rho));
+            var y = Math.sqrt(s2y) * (rho*z1 + Math.sqrt(1-rho*rho)*z2);
+            return [x, y];
+        }
+        // Balanced 8-tip tree: ((((1,2),(3,4)),((5,6),(7,8))))
+        // Branch lengths chosen so total root-to-tip = depth
+        // Internal structure: at each internal node, half the depth remains
+        // For balanced tree of depth D with 4 levels: each branch = D/3
+        // Actually: 3 internal levels, so each branch = D/3
+        function simulateBM(depth, sxy) {
+            // Returns x,y at 8 tips, using true rate matrix [[1, sxy],[sxy, 1]]
+            // R = [[1, sxy],[sxy, 1]], C = phylo-VCV
+            // Simulate down the tree
+            var bl = depth / 3; // each branch length
+            // Variance of a single branch increment under R
+            // Root state = 0 for both traits
+            function step(parent_xy, blen) {
+                var inc = sampleBivariate(blen, blen, sxy*blen);
+                return [parent_xy[0]+inc[0], parent_xy[1]+inc[1]];
+            }
+            var root = [0, 0];
+            var n12 = step(root, bl);
+            var n34 = step(root, bl);
+            var n56 = step(root, bl);
+            var n78 = step(root, bl);
+            // Wait - the topology is (((1,2),(3,4)),((5,6),(7,8)))
+            // Better: root -> two clades, each splits twice
+            var c_left  = step(root, bl); // ancestor of 1-4
+            var c_right = step(root, bl); // ancestor of 5-8
+            var c_12 = step(c_left, bl);
+            var c_34 = step(c_left, bl);
+            var c_56 = step(c_right, bl);
+            var c_78 = step(c_right, bl);
+            var t1 = step(c_12, bl), t2 = step(c_12, bl);
+            var t3 = step(c_34, bl), t4 = step(c_34, bl);
+            var t5 = step(c_56, bl), t6 = step(c_56, bl);
+            var t7 = step(c_78, bl), t8 = step(c_78, bl);
+            return [t1,t2,t3,t4,t5,t6,t7,t8];
+        }
+        function regress(xs, ys, throughOrigin) {
+            var n=xs.length;
+            if (throughOrigin) {
+                var sxy=0, sxx=0;
+                for (var i=0;i<n;i++){sxy+=xs[i]*ys[i]; sxx+=xs[i]*xs[i];}
+                var slope = sxx>0 ? sxy/sxx : 0;
+                var ssres=0;
+                for (i=0;i<n;i++){var r=ys[i]-slope*xs[i]; ssres+=r*r;}
+                var sst=0;
+                for (i=0;i<n;i++) sst+=ys[i]*ys[i];
+                var r2 = sst>0 ? 1-ssres/sst : 0;
+                return {slope:slope, intercept:0, r2:r2};
+            }
+            var mx=0,my=0;
+            for (i=0;i<n;i++){mx+=xs[i]; my+=ys[i];}
+            mx/=n; my/=n;
+            var sxx=0,syy=0,sxy=0;
+            for (i=0;i<n;i++){var dx=xs[i]-mx, dy=ys[i]-my; sxx+=dx*dx; syy+=dy*dy; sxy+=dx*dy;}
+            var slope2 = sxx>0 ? sxy/sxx : 0;
+            var inter = my - slope2*mx;
+            var r22 = (sxx*syy>0) ? (sxy*sxy)/(sxx*syy) : 0;
+            return {slope:slope2, intercept:inter, r2:r22};
+        }
+        // PIC on balanced 8-tip tree, all branches = bl
+        function computePIC(tips, bl) {
+            // Three levels: 4 cherry contrasts, 2 level-2 contrasts, 1 root contrast
+            var xs=[], ys=[];
+            // Level 1: cherries (t1,t2), (t3,t4), (t5,t6), (t7,t8)
+            var pairs = [[0,1],[2,3],[4,5],[6,7]];
+            var anc = [];
+            for (var p=0;p<pairs.length;p++){
+                var a=tips[pairs[p][0]], b=tips[pairs[p][1]];
+                var denom = Math.sqrt(2*bl);
+                xs.push((b[0]-a[0])/denom);
+                ys.push((b[1]-a[1])/denom);
+                anc.push([(a[0]+b[0])/2, (a[1]+b[1])/2]);
+            }
+            // Level 2 branch length: bl + bl/2 = 1.5*bl (combined)
+            var anc_bl = bl + bl/2;
+            var anc2 = [];
+            for (var q=0;q<2;q++){
+                var a2=anc[2*q], b2=anc[2*q+1];
+                var denom2 = Math.sqrt(2*anc_bl);
+                xs.push((b2[0]-a2[0])/denom2);
+                ys.push((b2[1]-a2[1])/denom2);
+                anc2.push([(a2[0]+b2[0])/2, (a2[1]+b2[1])/2]);
+            }
+            // Level 3: root
+            var anc2_bl = bl + anc_bl/2;
+            var d3 = Math.sqrt(2*anc2_bl);
+            xs.push((anc2[1][0]-anc2[0][0])/d3);
+            ys.push((anc2[1][1]-anc2[0][1])/d3);
+            return {x:xs, y:ys};
+        }
+        function go() {
+            var sxy = parseFloat(document.getElementById('pgCov').value);
+            var depth = parseFloat(document.getElementById('pgDepth').value);
+            document.getElementById('pgVal').textContent = sxy.toFixed(2);
+            document.getElementById('pgDVal').textContent = depth.toFixed(1);
+
+            var tips = simulateBM(depth, sxy);
+            var xs = tips.map(function(t){return t[0];});
+            var ys = tips.map(function(t){return t[1];});
+
+            var olsFit = regress(xs, ys, false);
+            var pic = computePIC(tips, depth/3);
+            var picFit = regress(pic.x, pic.y, true);
+
+            var xMin = Math.min.apply(null, xs)-0.3, xMax = Math.max.apply(null, xs)+0.3;
+            var olsX = [xMin, xMax],
+                olsY = [olsFit.intercept+olsFit.slope*xMin, olsFit.intercept+olsFit.slope*xMax];
+            // PGLS slope = PIC slope (under BM). For intercept use phylo-mean approximation: y - slope*x averaged
+            var meanX=0, meanY=0;
+            for (var i=0;i<xs.length;i++){meanX+=xs[i]; meanY+=ys[i];} meanX/=xs.length; meanY/=xs.length;
+            var pglsInter = meanY - picFit.slope*meanX;
+            var pgY = [pglsInter+picFit.slope*xMin, pglsInter+picFit.slope*xMax];
+
+            // Color tips by left/right clade for clarity
+            var leftX=xs.slice(0,4), leftY=ys.slice(0,4);
+            var rightX=xs.slice(4), rightY=ys.slice(4);
+
+            Plotly.react('pgPlot', [
+                {x:leftX, y:leftY, mode:'markers', type:'scatter', name:'Left clade',
+                 marker:{color:'#1f77b4', size:11, line:{color:'#0c4a87',width:1}}},
+                {x:rightX, y:rightY, mode:'markers', type:'scatter', name:'Right clade',
+                 marker:{color:'#d62728', size:11, line:{color:'#7f1410',width:1}}},
+                {x:olsX, y:olsY, mode:'lines', name:'OLS (naive)',
+                 line:{color:'#888', width:2.5, dash:'dash'}},
+                {x:olsX, y:pgY, mode:'lines', name:'PGLS (phylogeny-aware)',
+                 line:{color:'#222', width:3}}
+            ], {
+                xaxis:{title:'trait x', zeroline:false},
+                yaxis:{title:'trait y', zeroline:false},
+                margin:{t:10,b:40,l:50,r:10},
+                legend:{x:0.02, y:0.98, bgcolor:'rgba(255,255,255,0.85)', font:{size:11}}
+            }, {displayModeBar:false, staticPlot:true});
+
+            document.getElementById('pgStats').innerHTML =
+                '<b>Slopes</b><br>OLS:&nbsp;&nbsp;<b>'+olsFit.slope.toFixed(2)+'</b><br>'+
+                'PGLS: <b>'+picFit.slope.toFixed(2)+'</b><br>'+
+                '<span style="color:#666;font-size:0.95em">True slope under BM &approx; '+sxy.toFixed(2)+'.<br>OLS often overshoots when shared ancestry inflates the apparent trend.</span>';
+            if (window.MathJax && MathJax.typesetPromise) MathJax.typesetPromise([document.getElementById('pgStats')]);
+        }
+        document.getElementById('pgCov').addEventListener('input', go);
+        document.getElementById('pgDepth').addEventListener('input', go);
+        document.getElementById('pgReroll').addEventListener('click', go);
+        go();
+    })();
+    </script>
+
+    <p style="font-size:0.7em;margin-top:0.3em;text-align:center;opacity:0.8">
+        Set $\sigma_{xy} \approx 0$, hit re-sample several times: OLS often shows a strong slope just from shared ancestry.
+    </p>
+</section>
+
+<section>
+    <h3>PIC / PGLS: assumptions and limitations</h3>
 
     <ul class="spaced" style="width:80%">
-        <li>Assumes traits evolve by <b>Brownian motion</b>. How reasonable is this?</li>
+        <li>Assume traits evolve by <b>Brownian motion</b>. How reasonable is this?
+            <ul>
+                <li>Beyond-BM models (OU, early burst, $\lambda$) relax this. See next lecture.</li>
+            </ul>
+        </li>
 
-        <li>Assumes the phylogeny is <b>known without error</b>.</li>
+        <li>Assume the phylogeny is <b>known without error</b> (topology and branch lengths).</li>
 
-        <li>Assumes the model of evolution (branch lengths, topology) is correct.</li>
+        <li>For PGLS regression: assume the <b>predictor is fixed</b>, not evolving. Often violated for trait-vs-trait questions.</li>
 
-        <li>Despite limitations, PIC was a foundational advance:
+        <li>Despite limitations, PIC/PGLS were foundational advances:
             <ul>
                 <li>Showed that ignoring phylogeny can lead to seriously misleading conclusions.</li>
                 <li>Opened the field of <b>phylogenetic comparative methods</b>.</li>
@@ -519,7 +988,9 @@ lecture_num: 11
 
         <li>How reasonable is the assumption that traits evolve by Brownian motion?</li>
 
-        <li>You are studying the surface proteins of a human pathogen. The primary selective force is for it to look different from generation to generation. Is PIC appropriate here?</li>
+        <li>You are studying the surface proteins of a human pathogen. The primary selective force is for them to look different from generation to generation. Is PIC appropriate here?</li>
+
+        <li>In the OLS-vs-PGLS demo, when $\sigma_{xy}=0$ but you still see a non-zero OLS slope: where is that signal coming from?</li>
     </ul>
 </section>
 
@@ -537,8 +1008,9 @@ lecture_num: 11
         </ul>
         <div class="title" style="margin-top:1em"><a href="https://lukejharmon.github.io/pcm/" style="color:inherit; text-decoration:underline">Phylogenetic Comparative Methods</a> (Harmon, 2019)</div>
         <ul class="spaced" style="margin-top:1em; margin-left:1em">
-            <li><b>Chapter 2</b>: Fitting statistical models</li>
-            <li><b>Chapter 4</b>: Continuous characters on phylogenies</li>
+            <li><b>Chapter 1</b>: A macroevolutionary research program</li>
+            <li><b>Chapter 3</b>: Introduction to Brownian motion</li>
+            <li><b>Chapter 5</b>: Multivariate Brownian motion</li>
         </ul>
     </div>
 </section>
