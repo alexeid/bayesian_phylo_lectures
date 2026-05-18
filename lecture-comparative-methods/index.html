@@ -3,8 +3,40 @@ lecture_num: 12
 ---
 
 <section class="center">
-    <h2>Phylogenetic Comparative Methods</h2>
-    <p style="font-size:0.75em;margin-top:1em">From PIC to PGLS</p>
+    <h2 style="margin-bottom:0.2em">Is evolution repeatable?</h2>
+    <p style="font-size:0.6em;margin:0.2em 0 0.6em 0;opacity:0.8;font-style:italic;max-width:80%;margin-left:auto;margin-right:auto">"&hellip;evolution over long time scales is utterly unpredictable and quite unrepeatable." (S. J. Gould, 1989)</p>
+    <img data-src="figures/Four-Lizards-byJonSuh-scaled.jpg" style="max-height:360px;border-radius:8px;box-shadow:0 4px 24px rgba(0,0,0,0.25)">
+</section>
+
+<section>
+    <h3>What the math is for</h3>
+
+    <div style="display:flex;gap:1.5em;width:96%;margin:0.3em auto;align-items:flex-start">
+        <div style="flex:1.15;font-size:0.82em">
+            <p style="margin:0 0 0.3em 0">By the end of these two lectures, you'll be able to read this sentence:</p>
+
+            <div style="background:#eff6ff;border-left:4px solid #1d4ed8;padding:0.55em 0.8em;border-radius:4px;margin:0.3em 0 0.6em 0;font-size:0.92em">
+                <i>"A convergent multipeak OU model is favoured by <b>$\Delta\mathrm{AIC}_c = 162.6$</b> over the non-convergent alternative; Greater Antillean anole faunas are far more similar than chance."</i> (Mahler et al., 2013)
+            </div>
+
+            <p style="margin:0.3em 0">In English: four islands, four independent evolutionary experiments, and the same handful of lizard "ecomorphs" comes out each time. <b>Within an adaptive radiation, convergence beats contingency.</b></p>
+            <p style="font-size:0.78em;opacity:0.8;margin:0 0 0.4em 0">Gould's argument was about <i>deep</i>-time evolution (replaying the whole history of life). An adaptive radiation unfolds over tens of millions of years in one ecological setting; it is the easier version of his question, and even here it took a lot of math to see the answer.</p>
+
+            <p style="margin:0.6em 0 0.2em 0">But first, a deeper problem stands in the way:</p>
+            <p style="font-size:1.15em;font-weight:700;margin:0.2em 0;color:#1d4ed8">Are species independent data points?</p>
+            <p style="font-size:0.9em;opacity:0.9;margin-top:0">No. Most of today's math is the price of fixing that.</p>
+        </div>
+
+        <div style="flex:0.95;font-size:0.78em;background:#f8fafc;border-radius:6px;padding:0.7em 0.9em">
+            <p style="margin:0 0 0.3em 0;font-weight:700">Three tools we need to get from the question to the answer</p>
+            <ol class="spaced" style="margin:0.3em 0 0 1em">
+                <li><b>Handle shared ancestry.</b> PIC, PGLS, the phylogenetic variance&ndash;covariance matrix $\mathbf{C}$. (This lecture.)</li>
+                <li><b>Fit models with multiple adaptive peaks.</b> Multivariate Ornstein&ndash;Uhlenbeck on the tree. (Next lecture.)</li>
+                <li><b>Decide between models.</b> $\mathrm{AIC}_c$ on a stepwise search. (Last lecture, used again here.)</li>
+            </ol>
+            <p style="font-size:0.85em;opacity:0.8;margin:0.6em 0 0 0">Each tool plays a specific role when we return to the lizards at the end.</p>
+        </div>
+    </div>
 </section>
 
 <section>
@@ -1072,8 +1104,8 @@ lecture_num: 12
         <div style="flex:1;background:#dcfce7;border-left:4px solid #15803d;padding:0.7em 0.9em;border-radius:4px">
             <div style="font-size:0.78em;font-weight:700;color:#15803d;letter-spacing:0.05em">MULTIVARIATE BM</div>
             <div style="font-size:0.95em;font-weight:700;margin:0.2em 0">Anolis ecomorph convergence on four islands</div>
-            <div style="font-size:0.78em;margin:0.3em 0">~100 Anolis species, six body-shape traits. A multivariate evolutionary model identifies convergent peaks in trait-space across the four Greater Antilles islands.</div>
-            <div style="font-size:0.78em;font-weight:600;margin-top:0.3em">$\Rightarrow$ adaptive radiation reproduces similar morphs again and again.</div>
+            <div style="font-size:0.78em;margin:0.3em 0">100 Anolis species, 11 traits $\to$ 4 pPC axes. A multipeak OU model fit by stepwise AIC identifies convergent peaks in trait-space across the four Greater Antilles islands.</div>
+            <div style="font-size:0.78em;font-weight:600;margin-top:0.3em">$\Rightarrow$ adaptive radiation reproduces similar morphs again and again. See next slides.</div>
             <div style="font-size:0.7em;margin-top:0.5em;opacity:0.7">Mahler et al. (2013) <i>Science</i> 341:292.</div>
         </div>
     </div>
@@ -1106,6 +1138,137 @@ lecture_num: 12
     </ul>
 </section>
 
+<section class="center">
+    <h2>Spotlight: convergence on the macroevolutionary landscape</h2>
+    <p style="font-size:0.7em;margin-top:1em;opacity:0.85">Mahler, Ingram, Revell &amp; Losos (2013) <i>Science</i> 341:292</p>
+</section>
+
+<section>
+    <h3>A whole-fauna test of replicated radiation</h3>
+
+    <div style="display:flex;gap:1em;width:96%;margin:0.3em auto;align-items:center">
+        <div style="flex:1;text-align:center">
+            <img data-src="figures/Four-Lizards-byJonSuh-scaled.jpg" style="max-width:100%;max-height:340px;border-radius:6px">
+            <div style="font-size:0.6em;opacity:0.8;margin-top:0.3em">Caribbean anoles. Jon Suh / Quanta Magazine.</div>
+        </div>
+        <div style="flex:1.1;font-size:0.78em">
+            <ul class="spaced">
+                <li><b>Setup.</b> 100 of 119 <i>Anolis</i> species across Cuba, Hispaniola, Puerto Rico, and Jamaica. 11 ecomorphological traits $\to$ 4 phylogenetic PC axes. MCC tree from a BEAST analysis of mtDNA.</li>
+
+                <li><b>Old story.</b> Each island has the same handful of named <i>ecomorphs</i> (twig, grass-bush, trunk-crown&hellip;): convergence among <i>matched</i> species.</li>
+
+                <li><b>New question.</b> When you include the "unique" species too (~20% of the fauna), are entire island radiations <i>still</i> more similar than chance?</li>
+
+                <li><b>Why we care.</b> The paper combines two threads from this session: a multivariate, multi-peak trait model (this lecture) and stepwise AIC<sub>c</sub> model comparison (last lecture).</li>
+            </ul>
+        </div>
+    </div>
+</section>
+
+<section>
+    <h3>The Hansen model: a multi-peak OU on the tree</h3>
+
+    <div style="display:flex;gap:1.2em;width:95%;margin:0.2em auto;align-items:flex-start">
+        <div style="flex:1.1;font-size:0.78em">
+            <ul class="spaced">
+                <li>Each lineage evolves under an Ornstein&ndash;Uhlenbeck process:
+                    $$dX = \alpha(\theta - X)\,dt + \sigma\,dW$$
+                    BM noise $\sigma^2$, pulled toward an optimum $\theta$ with strength $\alpha$. (We meet OU properly in the next lecture.)</li>
+
+                <li><b>Multi-peak twist.</b> Paint the branches of the tree with <i>regimes</i>. Each regime has its own $\theta_i$, an adaptive peak in trait space.</li>
+
+                <li>Parameters: $\sigma^2$, $\alpha$, and $\theta_1,\ldots,\theta_{k'}$. With $m$ traits, each $\theta_i$ is an $m$-vector; this is the <b>multivariate</b> piece.</li>
+
+                <li>Captures Simpson's "adaptive zones" mathematically: lineages that share a regime are pulled toward the same point on the landscape.</li>
+            </ul>
+        </div>
+
+        <div style="flex:1">
+            <svg viewBox="0 0 320 260" style="width:100%;max-height:300px;font-family:inherit">
+                <!-- tree: 4 tips, two regimes (yellow and blue) painted on branches -->
+                <!-- branches -->
+                <line x1="40" y1="130" x2="100" y2="130" stroke="#ca8a04" stroke-width="6"/>
+                <line x1="100" y1="60" x2="100" y2="200" stroke="#ca8a04" stroke-width="6"/>
+                <line x1="100" y1="60" x2="170" y2="60" stroke="#ca8a04" stroke-width="6"/>
+                <line x1="170" y1="40" x2="170" y2="80" stroke="#ca8a04" stroke-width="6"/>
+                <line x1="170" y1="40" x2="240" y2="40" stroke="#ca8a04" stroke-width="6"/>
+                <line x1="170" y1="80" x2="240" y2="80" stroke="#1d4ed8" stroke-width="6"/>
+                <line x1="100" y1="200" x2="170" y2="200" stroke="#ca8a04" stroke-width="6"/>
+                <line x1="170" y1="180" x2="170" y2="220" stroke="#ca8a04" stroke-width="6"/>
+                <line x1="170" y1="180" x2="240" y2="180" stroke="#1d4ed8" stroke-width="6"/>
+                <line x1="170" y1="220" x2="240" y2="220" stroke="#ca8a04" stroke-width="6"/>
+                <!-- regime-shift markers (stars at shift points) -->
+                <circle cx="170" cy="80" r="6" fill="#1d4ed8" stroke="#fff" stroke-width="1.5"/>
+                <circle cx="170" cy="180" r="6" fill="#1d4ed8" stroke="#fff" stroke-width="1.5"/>
+                <!-- tip labels -->
+                <text x="245" y="44" font-size="11">$\theta_1$</text>
+                <text x="245" y="84" font-size="11">$\theta_2$</text>
+                <text x="245" y="184" font-size="11">$\theta_2$</text>
+                <text x="245" y="224" font-size="11">$\theta_1$</text>
+                <!-- legend -->
+                <rect x="20" y="230" width="14" height="6" fill="#ca8a04"/>
+                <text x="38" y="237" font-size="10">regime 1 ($\theta_1$)</text>
+                <rect x="140" y="230" width="14" height="6" fill="#1d4ed8"/>
+                <text x="158" y="237" font-size="10">regime 2 ($\theta_2$)</text>
+                <text x="20" y="20" font-size="11" font-weight="bold">Two regimes painted on a 4-tip tree</text>
+                <text x="20" y="252" font-size="9" opacity="0.7">Two independent shifts to regime 2: <i>convergence</i> if they share $\theta_2$.</text>
+            </svg>
+        </div>
+    </div>
+</section>
+
+<section>
+    <h3>SURFACE: stepwise AIC<sub>c</sub> on the landscape</h3>
+
+    <ul class="spaced" style="width:88%;font-size:0.82em">
+        <li><b>Problem.</b> Where do the peak shifts go on the tree? How many peaks? Which shifts are convergent? Too many possibilities to enumerate.</li>
+
+        <li><b>SURFACE</b> (Ingram &amp; Mahler 2013) is a two-phase stepwise AIC<sub>c</sub> search, the same logic as L11 applied to the multi-peak OU model:
+            <ul>
+                <li><b>Forward phase.</b> Start from a single-peak OU. At each step, try placing a new shift on every branch; keep the placement that lowers AIC<sub>c</sub> the most. Stop when nothing helps.</li>
+                <li><b>Backward phase.</b> Try collapsing every pair of peaks into a single shared peak (= convergence). Each collapse removes $m$ optimum parameters, so AIC<sub>c</sub> can improve even though the log-likelihood cannot.</li>
+            </ul>
+        </li>
+
+        <li>Crucially, ecomorph labels are <i>not</i> used as input. Any convergence the method finds is data-driven.</li>
+
+        <li>Parameter count for $k$ shifts and $k'$ distinct peaks: $\,k + (k'+2)\,m$. Forward phase has $k'=k$; backward phase drives $k' < k$.</li>
+    </ul>
+</section>
+
+<section>
+    <h3>The result: AIC<sub>c</sub> picks a convergent landscape</h3>
+
+    <div style="display:flex;gap:1em;width:97%;margin:0.2em auto;align-items:flex-start">
+        <div style="flex:1.05;text-align:center">
+            <img data-src="figures/341_292_f2.jpeg" style="max-width:100%;max-height:420px;border-radius:4px">
+            <div style="font-size:0.55em;opacity:0.7;margin-top:0.3em">Mahler et al. (2013) <i>Science</i> 341:292, Fig 2. Branches and islands coloured by adaptive peak; solid lines connect convergent peaks reached from multiple islands.</div>
+        </div>
+        <div style="flex:0.95;font-size:0.78em">
+            <div style="background:#eff6ff;border-left:4px solid #1d4ed8;padding:0.5em 0.7em;border-radius:4px;margin-bottom:0.6em">
+                <div style="font-weight:700;font-size:0.85em">Final SURFACE model vs alternatives ($\Delta\mathrm{AIC}_c$)</div>
+                <table style="font-size:0.85em;margin-top:0.4em;border-collapse:collapse;width:100%">
+                    <tr style="border-bottom:1px solid #ccc"><td style="padding:0.15em 0.3em">single-peak OU</td><td style="text-align:right;padding:0.15em 0.3em"><b>340.4</b></td></tr>
+                    <tr style="border-bottom:1px solid #ccc"><td style="padding:0.15em 0.3em">BM / EB / time / lineage&#8209;diversity (no peaks)</td><td style="text-align:right;padding:0.15em 0.3em"><b>$\geq 279.3$</b></td></tr>
+                    <tr><td style="padding:0.15em 0.3em">non-convergent multipeak (forward phase only)</td><td style="text-align:right;padding:0.15em 0.3em"><b>162.6</b></td></tr>
+                </table>
+                <div style="font-size:0.7em;opacity:0.75;margin-top:0.3em">Each row: $\Delta\mathrm{AIC}_c$ <i>above</i> the final convergent model. Larger $\to$ more strongly rejected. (Supp. fig. S2)</div>
+            </div>
+
+            <ul class="spaced" style="font-size:0.95em;margin-top:0.3em">
+                <li><b>29</b> peak shifts collapsed to <b>15</b> distinct peaks.</li>
+                <li><b>22 / 29 (76%)</b> shifts are convergent.</li>
+                <li><b>7 / 8</b> convergent peaks span more than one island.</li>
+                <li>Endemic "unique" peaks occur only on the two largest islands: an <i>area effect</i>.</li>
+            </ul>
+
+            <div style="background:#fef3c7;border-left:4px solid #ca8a04;padding:0.4em 0.7em;border-radius:4px;margin-top:0.7em;font-size:0.82em">
+                <b>Callback to slide 2.</b> <i>Is evolution repeatable?</i> Within this adaptive radiation (30&ndash;50 Myr, one ecological setting), $\Delta\mathrm{AIC}_c = 162.6$ says yes. Gould's deeper claim (replay the entire tape of life) is not what this number tests; it is the easier version of the question, and the formal answer required every tool in today's lectures.
+            </div>
+        </div>
+    </div>
+</section>
+
 <section>
     <h3>Discussion</h3>
 
@@ -1117,26 +1280,30 @@ lecture_num: 12
         <li>You are studying the surface proteins of a human pathogen. The primary selective force is for them to look different from generation to generation. Is PIC appropriate here?</li>
 
         <li>In the OLS-vs-PGLS demo, when $\sigma_{xy}=0$ but you still see a non-zero OLS slope: where is that signal coming from?</li>
+
+        <li>In Mahler et al., the convergent landscape beats a non-convergent multipeak model by $\Delta\mathrm{AIC}_c = 162.6$. The two models use the same shift placements, so what is the convergent model trading off to win, and why does AIC<sub>c</sub> reward it?</li>
     </ul>
 </section>
 
 <section>
     <h3>Recommended Reading</h3>
 
-    <div style="display:inline-block;vertical-align:middle;margin-top:2em">
-        <img data-src="../lecture-substitution-models/dg_cover.png" style="height:350px">
+    <div style="display:inline-block;vertical-align:middle;margin-top:0.5em">
+        <img data-src="../lecture-substitution-models/dg_cover.png" style="height:280px">
     </div>
 
-    <div class="textbox" style="width: 55%; display:inline-block; vertical-align:middle; margin-left:2em; margin-top:2em">
+    <div class="textbox" style="width: 55%; display:inline-block; vertical-align:middle; margin-left:1.5em; margin-top:0.5em; font-size:0.85em">
         <div class="title"><a href="https://decodinggenomes.org/" style="color:inherit; text-decoration:underline">Decoding Genomes</a> (Stadler et al., 2024)</div>
-        <ul class="spaced" style="margin-top:1em; margin-left:1em">
+        <ul class="spaced" style="margin-top:0.3em; margin-left:1em">
             <li><b>Chapter 8</b>: Traits and Comparative Methods</li>
         </ul>
-        <div class="title" style="margin-top:1em"><a href="https://lukejharmon.github.io/pcm/" style="color:inherit; text-decoration:underline">Phylogenetic Comparative Methods</a> (Harmon, 2019)</div>
-        <ul class="spaced" style="margin-top:1em; margin-left:1em">
-            <li><b>Chapter 1</b>: A macroevolutionary research program</li>
-            <li><b>Chapter 3</b>: Introduction to Brownian motion</li>
-            <li><b>Chapter 5</b>: Multivariate Brownian motion</li>
+        <div class="title" style="margin-top:0.5em"><a href="https://lukejharmon.github.io/pcm/" style="color:inherit; text-decoration:underline">Phylogenetic Comparative Methods</a> (Harmon, 2019)</div>
+        <ul class="spaced" style="margin-top:0.3em; margin-left:1em">
+            <li><b>Chapters 1, 3, 5</b>: macroevolutionary research, Brownian motion, multivariate BM</li>
+        </ul>
+        <div class="title" style="margin-top:0.5em">Case study paper</div>
+        <ul class="spaced" style="margin-top:0.3em; margin-left:1em">
+            <li>Mahler, Ingram, Revell &amp; Losos (2013). <a href="https://www.science.org/doi/10.1126/science.1232392" style="color:inherit;text-decoration:underline">Exceptional convergence on the macroevolutionary landscape in island lizard radiations.</a> <i>Science</i> 341:292.</li>
         </ul>
     </div>
 </section>

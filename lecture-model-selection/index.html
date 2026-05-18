@@ -3,8 +3,40 @@ lecture_num: 11
 ---
 
 <section class="center">
-    <h2>Model Selection</h2>
-    <p style="font-size:0.75em;margin-top:1em">Likelihood, AIC, and Bayes Factors</p>
+    <h2 style="margin-bottom:0.2em">All models are wrong.</h2>
+    <h2 style="margin-top:0.2em;color:#1d4ed8;font-style:italic">Some are useful.</h2>
+    <p style="font-size:0.55em;margin-top:0.5em;opacity:0.75">(G. E. P. Box, 1979)</p>
+    <p style="font-size:0.95em;margin-top:1.8em;font-weight:600">How do we tell which?</p>
+</section>
+
+<section>
+    <h3>What today's math is for</h3>
+
+    <div style="display:flex;gap:1.5em;width:96%;margin:0.3em auto;align-items:flex-start">
+        <div style="flex:1.15;font-size:0.82em">
+            <p style="margin:0 0 0.3em 0">Every time you fit a model to biological data, you face a choice:</p>
+
+            <ul class="spaced" style="margin:0.3em 0">
+                <li><b>Phylogeny.</b> JC, K80, HKY, GTR, $+\Gamma$, $+I$, &hellip; pick the wrong substitution model and your tree is biased.</li>
+                <li><b>Trait evolution.</b> Constant-rate Brownian motion, or an early burst? Or convergence on multiple adaptive peaks? (Next lecture.)</li>
+                <li><b>Divergence times.</b> Strict molecular clock, or a relaxed one? The same calibrations can give different node ages depending on how rate variation is modelled across branches.</li>
+            </ul>
+
+            <p style="margin:0.6em 0 0.2em 0">A bigger model can always fit the observed data better. The question is:</p>
+            <p style="font-size:1.1em;font-weight:700;margin:0.2em 0;color:#1d4ed8">When does an extra parameter improve a model enough to justify its inclusion?</p>
+            <p style="font-size:0.9em;opacity:0.9;margin-top:0">That is what this lecture answers.</p>
+        </div>
+
+        <div style="flex:0.95;font-size:0.78em;background:#f8fafc;border-radius:6px;padding:0.7em 0.9em">
+            <p style="margin:0 0 0.3em 0;font-weight:700">Three tools you'll meet today</p>
+            <ol class="spaced" style="margin:0.3em 0 0 1em">
+                <li><b>Likelihood Ratio Test.</b> Nested models only; classical $\chi^2$.</li>
+                <li><b>AIC / AIC<sub>c</sub> / AIC weights.</b> Any models; graded support.</li>
+                <li><b>Bayes Factors.</b> Bayesian; integrates over parameter uncertainty.</li>
+            </ol>
+            <p style="font-size:0.85em;opacity:0.85;margin:0.6em 0 0 0">Next lecture applies all three to evolutionary trait data, and ends with a paper whose punchline is "$\Delta\mathrm{AIC}_c = 162.6$".</p>
+        </div>
+    </div>
 </section>
 
 <section>
@@ -255,6 +287,45 @@ lecture_num: 11
 
         <li>Modern phylogenetic software frequently calculates AIC for model selection (e.g., ModelFinder in IQ-TREE).</li>
     </ul>
+</section>
+
+<section>
+    <h3>Worked example: choosing a substitution model</h3>
+
+    <p style="font-size:0.78em;margin:0 0 0.4em 0;width:92%">
+        A typical alignment fit by maximum likelihood under four nucleotide models. More-parameterised models fit better, but do they fit <i>enough</i> better?
+    </p>
+
+    <table style="font-size:0.82em;width:88%;margin:0 auto;border-collapse:collapse">
+        <tr style="border-bottom:2px solid #333;background:#f1f5f9">
+            <th style="text-align:left;padding:0.3em 0.5em">Model</th>
+            <th style="text-align:right;padding:0.3em 0.5em">$k$</th>
+            <th style="text-align:right;padding:0.3em 0.5em">$\ln L$</th>
+            <th style="text-align:right;padding:0.3em 0.5em">AIC</th>
+            <th style="text-align:right;padding:0.3em 0.5em">$\Delta$AIC</th>
+            <th style="text-align:right;padding:0.3em 0.5em">weight $w_i$</th>
+        </tr>
+        <tr style="border-bottom:1px solid #ddd"><td style="padding:0.25em 0.5em">JC</td><td style="text-align:right;padding:0.25em 0.5em">1</td><td style="text-align:right;padding:0.25em 0.5em">$-2100.0$</td><td style="text-align:right;padding:0.25em 0.5em">4202.0</td><td style="text-align:right;padding:0.25em 0.5em">35.0</td><td style="text-align:right;padding:0.25em 0.5em">$\approx 0$</td></tr>
+        <tr style="border-bottom:1px solid #ddd"><td style="padding:0.25em 0.5em">K80</td><td style="text-align:right;padding:0.25em 0.5em">2</td><td style="text-align:right;padding:0.25em 0.5em">$-2085.0$</td><td style="text-align:right;padding:0.25em 0.5em">4174.0</td><td style="text-align:right;padding:0.25em 0.5em">7.0</td><td style="text-align:right;padding:0.25em 0.5em">0.022</td></tr>
+        <tr style="background:#fef3c7;border-bottom:1px solid #ddd"><td style="padding:0.25em 0.5em"><b>HKY</b></td><td style="text-align:right;padding:0.25em 0.5em">4</td><td style="text-align:right;padding:0.25em 0.5em">$-2079.5$</td><td style="text-align:right;padding:0.25em 0.5em"><b>4167.0</b></td><td style="text-align:right;padding:0.25em 0.5em"><b>0.0</b></td><td style="text-align:right;padding:0.25em 0.5em"><b>0.715</b></td></tr>
+        <tr><td style="padding:0.25em 0.5em">GTR</td><td style="text-align:right;padding:0.25em 0.5em">8</td><td style="text-align:right;padding:0.25em 0.5em">$-2076.5$</td><td style="text-align:right;padding:0.25em 0.5em">4169.0</td><td style="text-align:right;padding:0.25em 0.5em">2.0</td><td style="text-align:right;padding:0.25em 0.5em">0.263</td></tr>
+    </table>
+
+    <div style="display:flex;gap:0.8em;width:96%;margin:0.7em auto;font-size:0.74em">
+        <div style="flex:1;background:#eff6ff;border-left:4px solid #1d4ed8;padding:0.45em 0.65em;border-radius:4px">
+            <b>HKY wins by parsimony.</b> GTR's extra 3 lnL units of flexibility cost 4 extra parameters; HKY beats it by 2 AIC units.
+        </div>
+        <div style="flex:1;background:#dcfce7;border-left:4px solid #15803d;padding:0.45em 0.65em;border-radius:4px">
+            <b>Weights are graded.</b> Read as "HKY 72%, GTR 26%, K80 2%, JC effectively 0%": the data's relative support among these four.
+        </div>
+        <div style="flex:1;background:#fdf4ff;border-left:4px solid #a21caf;padding:0.45em 0.65em;border-radius:4px">
+            <b>LRT agrees, where it can.</b> JC$\to$K80: $\Delta = 30$ ($p \ll 0.001$). K80$\to$HKY: $\Delta = 11$ ($p = 0.004$). HKY$\to$GTR: $\Delta = 6$ on $\chi^2_4$, $p = 0.20$. Keep HKY.
+        </div>
+    </div>
+
+    <p style="font-size:0.7em;text-align:center;margin-top:0.4em;opacity:0.85">
+        This is what IQ-TREE's ModelFinder and jModelTest do automatically, across many more models.
+    </p>
 </section>
 
 <section>
