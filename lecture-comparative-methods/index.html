@@ -681,10 +681,64 @@ lecture_num: 12
 </section>
 
 <section>
+    <h3>The phylogenetic variance&ndash;covariance matrix $\mathbf{C}$</h3>
+
+    <div style="display:flex;gap:1em;width:99%;margin:0 auto;align-items:center">
+        <div style="flex:0 0 240px">
+            <svg viewBox="0 0 280 280" style="width:100%;height:280px">
+                <!-- Tree (((A,B):1, C:2):1, D:3), ultrametric depth 3 -->
+                <line x1="40"  y1="178" x2="110" y2="125" stroke="#333" stroke-width="3"/>
+                <line x1="110" y1="125" x2="180" y2="80"  stroke="#333" stroke-width="3"/>
+                <line x1="180" y1="80"  x2="250" y2="50"  stroke="#333" stroke-width="3"/>
+                <line x1="180" y1="80"  x2="250" y2="110" stroke="#333" stroke-width="3"/>
+                <line x1="110" y1="125" x2="250" y2="170" stroke="#333" stroke-width="3"/>
+                <line x1="40"  y1="178" x2="250" y2="230" stroke="#333" stroke-width="3"/>
+                <!-- Branch length labels (bigger, darker) -->
+                <text x="60"  y="148" font-size="18" font-weight="700" fill="#1e40af">1</text>
+                <text x="135" y="98"  font-size="18" font-weight="700" fill="#1e40af">1</text>
+                <text x="210" y="60"  font-size="18" font-weight="700" fill="#1e40af">1</text>
+                <text x="210" y="108" font-size="18" font-weight="700" fill="#1e40af">1</text>
+                <text x="158" y="155" font-size="18" font-weight="700" fill="#1e40af">2</text>
+                <text x="115" y="216" font-size="18" font-weight="700" fill="#1e40af">3</text>
+                <!-- Tips -->
+                <circle cx="250" cy="50"  r="13" fill="#dbeafe" stroke="#1e40af" stroke-width="2"/>
+                <text x="250" y="55"  text-anchor="middle" font-size="15" font-weight="700" fill="#1e40af">A</text>
+                <circle cx="250" cy="110" r="13" fill="#dbeafe" stroke="#1e40af" stroke-width="2"/>
+                <text x="250" y="115" text-anchor="middle" font-size="15" font-weight="700" fill="#1e40af">B</text>
+                <circle cx="250" cy="170" r="13" fill="#dbeafe" stroke="#1e40af" stroke-width="2"/>
+                <text x="250" y="175" text-anchor="middle" font-size="15" font-weight="700" fill="#1e40af">C</text>
+                <circle cx="250" cy="230" r="13" fill="#dbeafe" stroke="#1e40af" stroke-width="2"/>
+                <text x="250" y="235" text-anchor="middle" font-size="15" font-weight="700" fill="#1e40af">D</text>
+            </svg>
+        </div>
+
+        <div style="flex:1;text-align:center">
+            <p style="font-size:0.85em;margin:0 0 0.3em"><b>$\mathbf{C}$: shared root-to-MRCA path</b></p>
+            <div style="font-size:0.95em">
+            $$\mathbf{C} = \begin{pmatrix} 3 &amp; \color{#1d4ed8}{2} &amp; \color{#1d4ed8}{1} &amp; 0 \\ \color{#1d4ed8}{2} &amp; 3 &amp; \color{#1d4ed8}{1} &amp; 0 \\ \color{#1d4ed8}{1} &amp; \color{#1d4ed8}{1} &amp; 3 &amp; 0 \\ 0 &amp; 0 &amp; 0 &amp; 3 \end{pmatrix}$$
+            </div>
+            <p style="font-size:0.78em;opacity:0.85;margin-top:0.3em">A&amp;B share 2; A&amp;C share 1; D shares 0 with anyone.</p>
+        </div>
+
+        <div style="flex:1;text-align:center">
+            <p style="font-size:0.85em;margin:0 0 0.3em"><b>Inverse</b> $\mathbf{C}^{-1}$</p>
+            <div style="font-size:0.88em">
+            $$\mathbf{C}^{-1} = \begin{pmatrix} \tfrac{8}{13} &amp; \color{#dc2626}{-\tfrac{5}{13}} &amp; \color{#dc2626}{-\tfrac{1}{13}} &amp; 0 \\ \color{#dc2626}{-\tfrac{5}{13}} &amp; \tfrac{8}{13} &amp; \color{#dc2626}{-\tfrac{1}{13}} &amp; 0 \\ \color{#dc2626}{-\tfrac{1}{13}} &amp; \color{#dc2626}{-\tfrac{1}{13}} &amp; \tfrac{5}{13} &amp; 0 \\ 0 &amp; 0 &amp; 0 &amp; \tfrac{1}{3} \end{pmatrix}$$
+            </div>
+            <p style="font-size:0.78em;opacity:0.85;margin-top:0.3em"><span style="color:#dc2626">Negative</span> off-diagonals down-weight related species.</p>
+        </div>
+    </div>
+
+    <div style="margin-top:0.5em;width:93%;margin-left:auto;margin-right:auto;font-size:0.8em;background:#fef3c7;padding:0.5em 0.8em;border-radius:6px">
+        $\mathbf{C}$ is the central object for the rest of the lecture. The most-related pair (A, B, share 2 units) gets the largest negative entry $-5/13$ in $\mathbf{C}^{-1}$. D, unrelated to anyone, has a clean $1/3$, like a single independent sample.
+    </div>
+</section>
+
+<section>
     <h3>Multivariate Brownian motion</h3>
 
     <ul class="spaced" style="width:85%">
-        <li>So far, PIC handles <b>one trait at a time</b>. What if two traits evolve <i>together</i>?</li>
+        <li>PIC handles <b>one trait at a time</b>. What if two traits evolve <i>together</i>?</li>
 
         <li>Multivariate BM: $r$ traits with a <b>rate matrix</b> $\mathbf{R}$:
             $$\mathbf{R} = \begin{pmatrix} \sigma_x^2 &amp; \sigma_{xy} \\ \sigma_{xy} &amp; \sigma_y^2 \end{pmatrix}$$
@@ -694,28 +748,65 @@ lecture_num: 12
             </ul>
         </li>
 
-        <li>Full tip-trait covariance combines $\mathbf{R}$ with the phylogenetic $\mathbf{C}$:
-            $$\mathbf{V} = \mathbf{R} \otimes \mathbf{C}$$
+        <li>The joint distribution of all tip values pairs $\mathbf{R}$ (how traits co-evolve) with $\mathbf{C}$ (how taxa share ancestry). For one trait at a time, the tip variance is $\sigma^2 \cdot \mathbf{C}$. For two traits, the cross-trait covariance is $\sigma_{xy} \cdot \mathbf{C}$, same shape, scaled.</li>
+
+        <li>$\sigma_{xy} \ne 0$ means the traits have a real evolutionary tendency to change together, <i>beyond</i> the patterns shared ancestry alone produces.</li>
+    </ul>
+</section>
+
+<section>
+    <h3>How do we actually use $\mathbf{V}$?</h3>
+
+    <ul class="spaced" style="width:88%">
+        <li>The stacked tip vector $\mathbf{d} = (X_A, \ldots, X_n, Y_A, \ldots, Y_n)^\top$ has a closed-form distribution:
+            $$\mathbf{d} \sim \mathrm{MVN}(\boldsymbol{0},\; \mathbf{V})$$
+            so we can write down the likelihood $L(\mathbf{R}, \mathrm{tree} \mid \mathbf{d})$ directly.
         </li>
 
-        <li>$\sigma_{xy} \ne 0$ means the traits have a real evolutionary tendency to change together, beyond shared ancestry.</li>
+        <li><b>Estimate the rate matrix.</b> Given a tree and the observed tips, find the $\mathbf{R}$ (the three numbers $\sigma_x^2, \sigma_y^2, \sigma_{xy}$) that maximises this likelihood. The MLE of $\sigma_{xy}$ <i>is</i> the estimate of evolutionary covariance.</li>
+
+        <li><b>Test for evolutionary correlation.</b> Compare two nested models with a likelihood-ratio test:
+            <ul>
+                <li>$H_0$: $\sigma_{xy} = 0$ (independent evolution).</li>
+                <li>$H_1$: $\sigma_{xy}$ free.</li>
+            </ul>
+            One free parameter, so $\Delta \sim \chi^2_1$ (recall L11).
+        </li>
+
+        <li><b>Simulate.</b> Sample from $\mathrm{MVN}(\boldsymbol{0},\mathbf{V})$ to generate synthetic data under a null, or to check a fitted model.</li>
+
+        <li><b>Regress $Y$ on $X$.</b> Take one trait as response, the other as predictor: this is <b>PGLS</b> (next slide), and it uses just $\mathbf{C}$, not the full $\mathbf{V}$.</li>
     </ul>
 </section>
 
 <section>
     <h3>Evolutionary correlation vs. spurious correlation</h3>
 
-    <div style="text-align:center;margin-top:0.3em">
-        <img data-src="figures/figure5-1.png" style="max-width:90%;max-height:380px">
+    <div style="text-align:center;margin-top:0.2em">
+        <img data-src="figures/figure5-1.png" style="max-width:88%;max-height:340px">
     </div>
 
-    <div style="display:flex;gap:1.5em;width:90%;margin:0.5em auto;font-size:0.78em">
-        <div style="flex:1;text-align:center"><b>A.</b> Phylogenetic structure alone &rarr; <i>spurious</i> pattern</div>
-        <div style="flex:1;text-align:center"><b>B.</b> Genuine positive evolutionary covariance ($\sigma_{xy} &gt; 0$)</div>
-        <div style="flex:1;text-align:center"><b>C.</b> Genuine negative evolutionary covariance ($\sigma_{xy} &lt; 0$)</div>
+    <p style="font-size:0.72em;text-align:center;margin:0.4em auto;width:90%">
+        Each point is one species. <b>$x$-axis</b>: tip value of trait $X$. <b>$y$-axis</b>: tip value of trait $Y$.<br>
+        $n = 100$ species simulated under multivariate BM on a pure-birth tree, with $\sigma_x^2 = \sigma_y^2 = 1$.
+    </p>
+
+    <div style="display:flex;gap:1em;width:95%;margin:0.3em auto;font-size:0.72em">
+        <div style="flex:1;text-align:center;background:#fef3c7;padding:0.3em;border-radius:4px">
+            <b>A.</b> $\sigma_{xy} = 0$<br>
+            <span style="font-size:0.92em">No evolutionary covariance, but clustering by clade can still produce apparent patterns: <i>spurious</i>.</span>
+        </div>
+        <div style="flex:1;text-align:center;background:#dcfce7;padding:0.3em;border-radius:4px">
+            <b>B.</b> $\sigma_{xy} = +0.8$<br>
+            <span style="font-size:0.92em">Genuine positive co-evolution: large $X$ predicts large $Y$.</span>
+        </div>
+        <div style="flex:1;text-align:center;background:#dbeafe;padding:0.3em;border-radius:4px">
+            <b>C.</b> $\sigma_{xy} = -0.8$<br>
+            <span style="font-size:0.92em">Genuine negative co-evolution: large $X$ predicts small $Y$.</span>
+        </div>
     </div>
 
-    <div style="font-size:0.6em; margin-top:0.8em; text-align:right; opacity:0.7">
+    <div style="font-size:0.55em; margin-top:0.5em; text-align:right; opacity:0.7">
         Harmon (2019) <i>Phylogenetic Comparative Methods</i>, Fig 5.1 (CC-BY-4.0).
     </div>
 </section>
@@ -723,19 +814,20 @@ lecture_num: 12
 <section>
     <h3>Phylogenetic GLS (PGLS)</h3>
 
-    <ul class="spaced" style="width:85%">
-        <li><b>Idea:</b> use standard regression $\mathbf{y} = \beta_0 + \beta_1 \mathbf{x} + \varepsilon$, but let the residuals $\varepsilon$ be correlated according to the phylogeny.</li>
+    <ul class="spaced" style="width:88%">
+        <li><b>OLS regression</b> picks $\beta_0, \beta_1$ to minimise $\sum_i (y_i - \beta_0 - \beta_1 x_i)^2$. Every species counts as <b>one independent data point</b>.</li>
 
-        <li>Generalised least squares:
-            $$\hat{\boldsymbol{\beta}} = (\mathbf{X}^\top \mathbf{C}^{-1} \mathbf{X})^{-1} \mathbf{X}^\top \mathbf{C}^{-1} \mathbf{y}$$
-            where $\mathbf{C}$ is the phylogenetic variance&ndash;covariance matrix.
-        </li>
+        <li><b>PGLS</b> minimises the same residuals, but weighted by $\mathbf{C}^{-1}$:
+            $$\textstyle (\mathbf{y} - \mathbf{Z}\boldsymbol{\beta})^\top \, \mathbf{C}^{-1} \, (\mathbf{y} - \mathbf{Z}\boldsymbol{\beta})$$
+            where $\mathbf{Z}$ is the design matrix (column of 1s for the intercept, column of $x$-values for the slope). Closely related species share off-diagonal entries in $\mathbf{C}$; $\mathbf{C}^{-1}$ <b>down-weights</b> them so they count for less than one independent observation each.</li>
 
-        <li><b>Equivalence:</b> for a single predictor under BM, PGLS gives the same slope as PIC, but also recovers an <b>intercept</b>.</li>
+        <li>Solving the minimisation gives the closed-form estimator
+            $$\hat{\boldsymbol{\beta}} = (\mathbf{Z}^\top \mathbf{C}^{-1} \mathbf{Z})^{-1}\, \mathbf{Z}^\top \mathbf{C}^{-1} \mathbf{y}$$
+            This is just standard GLS, not phylogeny-specific algebra. It is <b>not</b> extracting a block of $\mathbf{V}$: a single-response regression only needs $\mathbf{C}$.</li>
 
-        <li>Easily extends to multiple predictors, categorical variables, mixed effects.</li>
+        <li><b>Equivalence:</b> for a single predictor under BM, PGLS gives the same slope as PIC, but also recovers an intercept.</li>
 
-        <li>Modern PCM software (e.g., <span style="font-family:monospace;font-size:0.95em">ape</span>, <span style="font-family:monospace;font-size:0.95em">caper</span>, <span style="font-family:monospace;font-size:0.95em">phylolm</span>) defaults to PGLS-style frameworks.</li>
+        <li>Modern PCM software (<span style="font-family:monospace;font-size:0.95em">ape</span>, <span style="font-family:monospace;font-size:0.95em">caper</span>, <span style="font-family:monospace;font-size:0.95em">phylolm</span>) defaults to PGLS-style frameworks.</li>
     </ul>
 </section>
 
@@ -954,6 +1046,40 @@ lecture_num: 12
 
     <p style="font-size:0.7em;margin-top:0.3em;text-align:center;opacity:0.8">
         Set $\sigma_{xy} \approx 0$, hit re-sample several times: OLS often shows a strong slope just from shared ancestry.
+    </p>
+</section>
+
+<section>
+    <h3>PCMs in the wild: three case studies</h3>
+
+    <div style="display:flex;gap:1em;width:97%;margin:0.3em auto;align-items:stretch">
+        <div style="flex:1;background:#eff6ff;border-left:4px solid #1d4ed8;padding:0.7em 0.9em;border-radius:4px">
+            <div style="font-size:0.78em;font-weight:700;color:#1d4ed8;letter-spacing:0.05em">PIC</div>
+            <div style="font-size:0.95em;font-weight:700;margin:0.2em 0">Home range vs. body mass in mammals</div>
+            <div style="font-size:0.78em;margin:0.3em 0">49 mammal species. After contrasts, home range still scales with body mass, but with a <i>shallower</i> slope than naive regression suggested.</div>
+            <div style="font-size:0.78em;font-weight:600;margin-top:0.3em">$\Rightarrow$ phylogeny inflated the apparent scaling exponent.</div>
+            <div style="font-size:0.7em;margin-top:0.5em;opacity:0.7">Garland, Harvey &amp; Ives (1992) <i>Syst Biol</i> 41:18.</div>
+        </div>
+
+        <div style="flex:1;background:#fef3c7;border-left:4px solid #ca8a04;padding:0.7em 0.9em;border-radius:4px">
+            <div style="font-size:0.78em;font-weight:700;color:#ca8a04;letter-spacing:0.05em">PGLS</div>
+            <div style="font-size:0.95em;font-weight:700;margin:0.2em 0">Gut morphology vs. diet in birds and mammals</div>
+            <div style="font-size:0.78em;margin:0.3em 0">Birds (flying) and non-flying mammals fit with OLS, PGLS, and OU-residual PGLS. Birds have shorter small intestines than mass-matched mammals once phylogeny is accounted for.</div>
+            <div style="font-size:0.78em;font-weight:600;margin-top:0.3em">$\Rightarrow$ shows a real PGLS workflow on a biological question.</div>
+            <div style="font-size:0.7em;margin-top:0.5em;opacity:0.7">Lavin et al. (2008) <i>Physiol Biochem Zool</i> 81:526.</div>
+        </div>
+
+        <div style="flex:1;background:#dcfce7;border-left:4px solid #15803d;padding:0.7em 0.9em;border-radius:4px">
+            <div style="font-size:0.78em;font-weight:700;color:#15803d;letter-spacing:0.05em">MULTIVARIATE BM</div>
+            <div style="font-size:0.95em;font-weight:700;margin:0.2em 0">Anolis ecomorph convergence on four islands</div>
+            <div style="font-size:0.78em;margin:0.3em 0">~100 Anolis species, six body-shape traits. A multivariate evolutionary model identifies convergent peaks in trait-space across the four Greater Antilles islands.</div>
+            <div style="font-size:0.78em;font-weight:600;margin-top:0.3em">$\Rightarrow$ adaptive radiation reproduces similar morphs again and again.</div>
+            <div style="font-size:0.7em;margin-top:0.5em;opacity:0.7">Mahler et al. (2013) <i>Science</i> 341:292.</div>
+        </div>
+    </div>
+
+    <p style="font-size:0.78em;margin-top:0.7em;text-align:center;width:90%;margin-left:auto;margin-right:auto;opacity:0.9">
+        Common thread: each study would have given a misleading answer with naive (non-phylogenetic) analysis.
     </p>
 </section>
 
