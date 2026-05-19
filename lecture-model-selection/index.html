@@ -2,11 +2,11 @@
 lecture_num: 11
 ---
 
-<section class="center">
-    <h2 style="margin-bottom:0.2em">All models are wrong.</h2>
-    <h2 style="margin-top:0.2em;color:#1d4ed8;font-style:italic">Some are useful.</h2>
-    <p style="font-size:0.55em;margin-top:0.5em;opacity:0.75">(G. E. P. Box, 1979)</p>
-    <p style="font-size:0.95em;margin-top:1.8em;font-weight:600">How do we tell which?</p>
+<section class="center" style="text-align:center">
+    <p style="font-size:2.1em;font-weight:600;margin:0;line-height:1.2;text-align:center">All models are wrong.</p>
+    <p style="font-size:2.1em;font-weight:600;font-style:italic;color:#1d4ed8;margin:0.15em 0 0 0;line-height:1.2;text-align:center">Some are useful.</p>
+    <p style="font-size:0.7em;margin-top:0.9em;opacity:0.7;text-align:center">(G. E. P. Box, 1979)</p>
+    <p style="font-size:1.15em;margin-top:1.8em;font-weight:500;opacity:0.9;text-align:center">How do we tell which?</p>
 </section>
 
 <section>
@@ -293,7 +293,7 @@ lecture_num: 11
     <h3>Worked example: choosing a substitution model</h3>
 
     <p style="font-size:0.78em;margin:0 0 0.4em 0;width:92%">
-        A typical alignment fit by maximum likelihood under four nucleotide models. More-parameterised models fit better, but do they fit <i>enough</i> better?
+        A typical alignment fit by maximum likelihood under four nucleotide models. More-parameterised models fit better, but do they fit <i>enough</i> better? Here $k$ counts <i>substitution-model</i> free parameters; branch lengths are separate.
     </p>
 
     <table style="font-size:0.82em;width:88%;margin:0 auto;border-collapse:collapse">
@@ -305,21 +305,21 @@ lecture_num: 11
             <th style="text-align:right;padding:0.3em 0.5em">$\Delta$AIC</th>
             <th style="text-align:right;padding:0.3em 0.5em">weight $w_i$</th>
         </tr>
-        <tr style="border-bottom:1px solid #ddd"><td style="padding:0.25em 0.5em">JC</td><td style="text-align:right;padding:0.25em 0.5em">1</td><td style="text-align:right;padding:0.25em 0.5em">$-2100.0$</td><td style="text-align:right;padding:0.25em 0.5em">4202.0</td><td style="text-align:right;padding:0.25em 0.5em">35.0</td><td style="text-align:right;padding:0.25em 0.5em">$\approx 0$</td></tr>
-        <tr style="border-bottom:1px solid #ddd"><td style="padding:0.25em 0.5em">K80</td><td style="text-align:right;padding:0.25em 0.5em">2</td><td style="text-align:right;padding:0.25em 0.5em">$-2085.0$</td><td style="text-align:right;padding:0.25em 0.5em">4174.0</td><td style="text-align:right;padding:0.25em 0.5em">7.0</td><td style="text-align:right;padding:0.25em 0.5em">0.022</td></tr>
-        <tr style="background:#fef3c7;border-bottom:1px solid #ddd"><td style="padding:0.25em 0.5em"><b>HKY</b></td><td style="text-align:right;padding:0.25em 0.5em">4</td><td style="text-align:right;padding:0.25em 0.5em">$-2079.5$</td><td style="text-align:right;padding:0.25em 0.5em"><b>4167.0</b></td><td style="text-align:right;padding:0.25em 0.5em"><b>0.0</b></td><td style="text-align:right;padding:0.25em 0.5em"><b>0.715</b></td></tr>
-        <tr><td style="padding:0.25em 0.5em">GTR</td><td style="text-align:right;padding:0.25em 0.5em">8</td><td style="text-align:right;padding:0.25em 0.5em">$-2076.5$</td><td style="text-align:right;padding:0.25em 0.5em">4169.0</td><td style="text-align:right;padding:0.25em 0.5em">2.0</td><td style="text-align:right;padding:0.25em 0.5em">0.263</td></tr>
+        <tr style="border-bottom:1px solid #ddd"><td style="padding:0.25em 0.5em">JC</td><td style="text-align:right;padding:0.25em 0.5em">0</td><td style="text-align:right;padding:0.25em 0.5em">$-2100.0$</td><td style="text-align:right;padding:0.25em 0.5em">4200.0</td><td style="text-align:right;padding:0.25em 0.5em">33.0</td><td style="text-align:right;padding:0.25em 0.5em">$\approx 0$</td></tr>
+        <tr style="border-bottom:1px solid #ddd"><td style="padding:0.25em 0.5em">K80</td><td style="text-align:right;padding:0.25em 0.5em">1</td><td style="text-align:right;padding:0.25em 0.5em">$-2085.0$</td><td style="text-align:right;padding:0.25em 0.5em">4172.0</td><td style="text-align:right;padding:0.25em 0.5em">5.0</td><td style="text-align:right;padding:0.25em 0.5em">0.057</td></tr>
+        <tr style="background:#fef3c7;border-bottom:1px solid #ddd"><td style="padding:0.25em 0.5em"><b>HKY</b></td><td style="text-align:right;padding:0.25em 0.5em">4</td><td style="text-align:right;padding:0.25em 0.5em">$-2079.5$</td><td style="text-align:right;padding:0.25em 0.5em"><b>4167.0</b></td><td style="text-align:right;padding:0.25em 0.5em"><b>0.0</b></td><td style="text-align:right;padding:0.25em 0.5em"><b>0.690</b></td></tr>
+        <tr><td style="padding:0.25em 0.5em">GTR</td><td style="text-align:right;padding:0.25em 0.5em">8</td><td style="text-align:right;padding:0.25em 0.5em">$-2076.5$</td><td style="text-align:right;padding:0.25em 0.5em">4169.0</td><td style="text-align:right;padding:0.25em 0.5em">2.0</td><td style="text-align:right;padding:0.25em 0.5em">0.254</td></tr>
     </table>
 
     <div style="display:flex;gap:0.8em;width:96%;margin:0.7em auto;font-size:0.74em">
         <div style="flex:1;background:#eff6ff;border-left:4px solid #1d4ed8;padding:0.45em 0.65em;border-radius:4px">
-            <b>HKY wins by parsimony.</b> GTR's extra 3 lnL units of flexibility cost 4 extra parameters; HKY beats it by 2 AIC units.
+            <b>HKY wins the AIC trade-off.</b> GTR's extra 3 lnL units of flexibility cost 4 extra parameters; HKY beats it by 2 AIC units.
         </div>
         <div style="flex:1;background:#dcfce7;border-left:4px solid #15803d;padding:0.45em 0.65em;border-radius:4px">
-            <b>Weights are graded.</b> Read as "HKY 72%, GTR 26%, K80 2%, JC effectively 0%": the data's relative support among these four.
+            <b>Weights are graded.</b> Read as "HKY 69%, GTR 25%, K80 6%, JC effectively 0%": the data's relative support among these four.
         </div>
         <div style="flex:1;background:#fdf4ff;border-left:4px solid #a21caf;padding:0.45em 0.65em;border-radius:4px">
-            <b>LRT agrees, where it can.</b> JC$\to$K80: $\Delta = 30$ ($p \ll 0.001$). K80$\to$HKY: $\Delta = 11$ ($p = 0.004$). HKY$\to$GTR: $\Delta = 6$ on $\chi^2_4$, $p = 0.20$. Keep HKY.
+            <b>LRT agrees, where it can.</b> JC$\to$K80: $\Delta = 30$ on $\chi^2_1$ ($p \ll 0.001$). K80$\to$HKY: $\Delta = 11$ on $\chi^2_3$ ($p = 0.012$). HKY$\to$GTR: $\Delta = 6$ on $\chi^2_4$ ($p = 0.20$). Keep HKY.
         </div>
     </div>
 

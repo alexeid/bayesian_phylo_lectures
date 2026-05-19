@@ -1093,20 +1093,20 @@ lecture_num: 12
             <div style="font-size:0.7em;margin-top:0.5em;opacity:0.7">Garland, Harvey &amp; Ives (1992) <i>Syst Biol</i> 41:18.</div>
         </div>
 
-        <div style="flex:1;background:#fef3c7;border-left:4px solid #ca8a04;padding:0.7em 0.9em;border-radius:4px">
-            <div style="font-size:0.78em;font-weight:700;color:#ca8a04;letter-spacing:0.05em">PGLS</div>
-            <div style="font-size:0.95em;font-weight:700;margin:0.2em 0">Gut morphology vs. diet in birds and mammals</div>
-            <div style="font-size:0.78em;margin:0.3em 0">Birds (flying) and non-flying mammals fit with OLS, PGLS, and OU-residual PGLS. Birds have shorter small intestines than mass-matched mammals once phylogeny is accounted for.</div>
-            <div style="font-size:0.78em;font-weight:600;margin-top:0.3em">$\Rightarrow$ shows a real PGLS workflow on a biological question.</div>
-            <div style="font-size:0.7em;margin-top:0.5em;opacity:0.7">Lavin et al. (2008) <i>Physiol Biochem Zool</i> 81:526.</div>
-        </div>
-
         <div style="flex:1;background:#dcfce7;border-left:4px solid #15803d;padding:0.7em 0.9em;border-radius:4px">
-            <div style="font-size:0.78em;font-weight:700;color:#15803d;letter-spacing:0.05em">MULTIVARIATE BM</div>
+            <div style="font-size:0.78em;font-weight:700;color:#15803d;letter-spacing:0.05em">MULTIPEAK OU</div>
             <div style="font-size:0.95em;font-weight:700;margin:0.2em 0">Anolis ecomorph convergence on four islands</div>
             <div style="font-size:0.78em;margin:0.3em 0">100 Anolis species, 11 traits $\to$ 4 pPC axes. A multipeak OU model fit by stepwise AIC identifies convergent peaks in trait-space across the four Greater Antilles islands.</div>
             <div style="font-size:0.78em;font-weight:600;margin-top:0.3em">$\Rightarrow$ adaptive radiation reproduces similar morphs again and again. See next slides.</div>
             <div style="font-size:0.7em;margin-top:0.5em;opacity:0.7">Mahler et al. (2013) <i>Science</i> 341:292.</div>
+        </div>
+
+        <div style="flex:1;background:#fef3c7;border-left:4px solid #ca8a04;padding:0.7em 0.9em;border-radius:4px">
+            <div style="font-size:0.78em;font-weight:700;color:#ca8a04;letter-spacing:0.05em">CONVERGENCE AT SCALE</div>
+            <div style="font-size:0.95em;font-weight:700;margin:0.2em 0">Form maps to function across 9,963 birds</div>
+            <div style="font-size:0.78em;margin:0.3em 0">9 traits across &gt;99% of extant birds $\to$ 4-D morphospace. Bayesian phylogenetic analysis recovers 91 phenotypically matched family pairs (e.g. toucans &amp; hornbills) that are geographically disjunct: convergence, not shared ancestry.</div>
+            <div style="font-size:0.78em;font-weight:600;margin-top:0.3em">$\Rightarrow$ Same kind of question, different machinery, vertebrate-class scale.</div>
+            <div style="font-size:0.7em;margin-top:0.5em;opacity:0.7">Pigot et al. (2020) <i>Nat Ecol Evol</i> 4:230.</div>
         </div>
     </div>
 
@@ -1201,17 +1201,17 @@ lecture_num: 12
                 <circle cx="170" cy="80" r="6" fill="#1d4ed8" stroke="#fff" stroke-width="1.5"/>
                 <circle cx="170" cy="180" r="6" fill="#1d4ed8" stroke="#fff" stroke-width="1.5"/>
                 <!-- tip labels -->
-                <text x="245" y="44" font-size="11">$\theta_1$</text>
-                <text x="245" y="84" font-size="11">$\theta_2$</text>
-                <text x="245" y="184" font-size="11">$\theta_2$</text>
-                <text x="245" y="224" font-size="11">$\theta_1$</text>
+                <text x="245" y="44" font-size="13">&#952;&#8321;</text>
+                <text x="245" y="84" font-size="13">&#952;&#8322;</text>
+                <text x="245" y="184" font-size="13">&#952;&#8322;</text>
+                <text x="245" y="224" font-size="13">&#952;&#8321;</text>
                 <!-- legend -->
                 <rect x="20" y="230" width="14" height="6" fill="#ca8a04"/>
-                <text x="38" y="237" font-size="10">regime 1 ($\theta_1$)</text>
+                <text x="38" y="237" font-size="10">regime 1 (&#952;&#8321;)</text>
                 <rect x="140" y="230" width="14" height="6" fill="#1d4ed8"/>
-                <text x="158" y="237" font-size="10">regime 2 ($\theta_2$)</text>
+                <text x="158" y="237" font-size="10">regime 2 (&#952;&#8322;)</text>
                 <text x="20" y="20" font-size="11" font-weight="bold">Two regimes painted on a 4-tip tree</text>
-                <text x="20" y="252" font-size="9" opacity="0.7">Two independent shifts to regime 2: <i>convergence</i> if they share $\theta_2$.</text>
+                <text x="20" y="252" font-size="9" opacity="0.7">Two independent shifts to regime 2: <tspan font-style="italic">convergence</tspan> if they share &#952;&#8322;.</text>
             </svg>
         </div>
     </div>
@@ -1263,8 +1263,32 @@ lecture_num: 12
             </ul>
 
             <div style="background:#fef3c7;border-left:4px solid #ca8a04;padding:0.4em 0.7em;border-radius:4px;margin-top:0.7em;font-size:0.82em">
-                <b>Callback to slide 2.</b> <i>Is evolution repeatable?</i> Within this adaptive radiation (30&ndash;50 Myr, one ecological setting), $\Delta\mathrm{AIC}_c = 162.6$ says yes. Gould's deeper claim (replay the entire tape of life) is not what this number tests; it is the easier version of the question, and the formal answer required every tool in today's lectures.
+                <b>Is evolution repeatable?</b> Within this adaptive radiation (30&ndash;50 Myr, one ecological setting), $\Delta\mathrm{AIC}_c = 162.6$ says yes. Gould's deeper claim (replay the entire tape of life) is not what this number tests; it is the easier version of the question, and the formal answer required every tool in today's lectures.
             </div>
+        </div>
+    </div>
+</section>
+
+<section>
+    <h3>And at scale: 9,963 birds, same logic</h3>
+
+    <div style="display:flex;gap:1em;width:97%;margin:0.2em auto;align-items:center">
+        <div style="flex:1.25;text-align:center">
+            <img data-src="figures/pigot_fig4.png" style="max-width:100%;max-height:440px;border-radius:4px">
+            <div style="font-size:0.55em;opacity:0.7;margin-top:0.3em">
+                Pigot et al. (2020) <i>Nat Ecol Evol</i> 4:230, Fig 4. (a) Lines connect 91 phenotypically matched family pairs across the avian tree. (b, c) Matched pairs are predominantly geographically disjunct and ecologically similar.
+            </div>
+        </div>
+        <div style="flex:0.95;font-size:0.78em">
+            <ul class="spaced">
+                <li><b>Data.</b> 9 morphological traits for <b>9,963 bird species</b> ($&gt;99\%$ of extant birds, all 233 families). $\to$ 4-D morphospace.</li>
+
+                <li><b>Method.</b> BAMM (reversible-jump Bayesian MCMC over trait-rate regimes) + random-forest niche prediction + Monte-Carlo tests against a phylogenetic null.</li>
+
+                <li><b>Result.</b> 91 family pairs reach the same region of morphospace from independent origins, typically in disjunct biogeographical realms: toucans (Neotropics) and hornbills (palaeotropics); antpittas and pittas; swifts and swallows.</li>
+
+                <li><b>Same question, different methods.</b> Mahler picks among competing OU models by $\mathrm{AIC}_c$. Pigot fits a Bayesian rate-shift model and tests convergence against a simulated null. Statistically comparing competing evolutionary hypotheses is genuinely hard, and methods continue to evolve.</li>
+            </ul>
         </div>
     </div>
 </section>
@@ -1301,9 +1325,10 @@ lecture_num: 12
         <ul class="spaced" style="margin-top:0.3em; margin-left:1em">
             <li><b>Chapters 1, 3, 5</b>: macroevolutionary research, Brownian motion, multivariate BM</li>
         </ul>
-        <div class="title" style="margin-top:0.5em">Case study paper</div>
+        <div class="title" style="margin-top:0.5em">Case study papers</div>
         <ul class="spaced" style="margin-top:0.3em; margin-left:1em">
             <li>Mahler, Ingram, Revell &amp; Losos (2013). <a href="https://www.science.org/doi/10.1126/science.1232392" style="color:inherit;text-decoration:underline">Exceptional convergence on the macroevolutionary landscape in island lizard radiations.</a> <i>Science</i> 341:292.</li>
+            <li>Pigot et al. (2020). <a href="https://doi.org/10.1038/s41559-019-1070-4" style="color:inherit;text-decoration:underline">Macroevolutionary convergence connects morphological form to ecological function in birds.</a> <i>Nat Ecol Evol</i> 4:230.</li>
         </ul>
     </div>
 </section>
