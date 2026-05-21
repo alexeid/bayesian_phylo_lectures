@@ -810,7 +810,7 @@ lecture_num: 12
 
         <li><b>Simulate.</b> Sample from $\mathrm{MVN}(\boldsymbol{0},\mathbf{V})$ to generate synthetic data under a null, or to check a fitted model.</li>
 
-        <li><b>Regress $Y$ on $X$.</b> Take one trait as response, the other as predictor: this is <b>PGLS</b> (next slide), and it uses just $\mathbf{C}$, not the full $\mathbf{V}$.</li>
+        <li><b>Regress $Y$ on $X$.</b> Take one trait as response, the other as predictor: this is <b>PGLS</b> (next slide). Unlike the symmetric covariance above, regression is <b>asymmetric</b>: here $X$ predicts $Y$. It uses just $\mathbf{C}$, not the full $\mathbf{V}$.</li>
     </ul>
 </section>
 
@@ -847,23 +847,112 @@ lecture_num: 12
 </section>
 
 <section>
-    <h3>Phylogenetic GLS (PGLS)</h3>
+    <h3>Phylogenetic GLS (PGLS): related species count for less</h3>
 
-    <ul class="spaced" style="width:88%">
-        <li><b>OLS regression</b> picks $\beta_0, \beta_1$ to minimise $\sum_i (y_i - \beta_0 - \beta_1 x_i)^2$. Every species counts as <b>one independent data point</b>.</li>
+    <div style="background:#eff6ff;border-left:4px solid #1d4ed8;padding:0.55em 0.9em;border-radius:4px;width:88%;margin:0.2em auto 0.6em">
+        <b>OLS</b> treats every species as one independent data point.
+        <b>PGLS</b> lets the phylogeny decide how much each species really counts:
+        two near-identical relatives can't both vote at full strength.
+    </div>
 
-        <li><b>PGLS</b> minimises the same residuals, but weighted by $\mathbf{C}^{-1}$:
-            $$\textstyle (\mathbf{y} - \mathbf{Z}\boldsymbol{\beta})^\top \, \mathbf{C}^{-1} \, (\mathbf{y} - \mathbf{Z}\boldsymbol{\beta})$$
-            where $\mathbf{Z}$ is the design matrix (column of 1s for the intercept, column of $x$-values for the slope). Closely related species share off-diagonal entries in $\mathbf{C}$; $\mathbf{C}^{-1}$ <b>down-weights</b> them so they count for less than one independent observation each.</li>
+    <div style="display:flex;gap:1.5em;width:92%;margin:0 auto;align-items:center">
+        <div style="flex:1;font-size:0.86em">
+            <p style="margin:0 0 0.3em">Same residuals, measured two ways:</p>
+            <p style="margin:0.2em 0">OLS minimises the plain sum of squares:
+                $$\textstyle\sum_i (y_i - \hat{y}_i)^2$$</p>
+            <p style="margin:0.2em 0">PGLS measures them in the metric set by $\mathbf{C}^{-1}$:
+                $$(\mathbf{y} - \mathbf{X}\boldsymbol{\beta})^\top \, \mathbf{C}^{-1} \, (\mathbf{y} - \mathbf{X}\boldsymbol{\beta})$$</p>
+        </div>
+        <div style="flex:0.9;font-size:0.82em;background:#f8fafc;border-radius:6px;padding:0.6em 0.8em">
+            <p style="margin:0 0 0.3em;font-weight:700">Recall $\mathbf{C}^{-1}$ (two slides back)</p>
+            <p style="margin:0.2em 0">The sister pair A,&nbsp;B got the big negative entry $-5/13$: shared ancestry, so they partly cancel.</p>
+            <p style="margin:0.2em 0">D, related to no one, kept a clean $1/3$: it counts as one full independent sample.</p>
+        </div>
+    </div>
 
-        <li>Solving the minimisation gives the closed-form estimator
-            $$\hat{\boldsymbol{\beta}} = (\mathbf{Z}^\top \mathbf{C}^{-1} \mathbf{Z})^{-1}\, \mathbf{Z}^\top \mathbf{C}^{-1} \mathbf{y}$$
-            This is just standard GLS, not phylogeny-specific algebra. It is <b>not</b> extracting a block of $\mathbf{V}$: a single-response regression only needs $\mathbf{C}$.</li>
+    <div style="width:88%;margin:0.6em auto 0;font-size:0.85em;background:#dcfce7;border-left:4px solid #15803d;padding:0.45em 0.8em;border-radius:4px">
+        <b>Punchline:</b> for one predictor under BM, PGLS gives the <i>same slope as PIC</i> (the stepper you saw), and also recovers an intercept. Same idea, two routes.
+    </div>
+</section>
 
-        <li><b>Equivalence:</b> for a single predictor under BM, PGLS gives the same slope as PIC, but also recovers an intercept.</li>
+<section>
+    <h3>PGLS: where the slope comes from</h3>
 
-        <li>Modern PCM software (<span style="font-family:monospace;font-size:0.95em">ape</span>, <span style="font-family:monospace;font-size:0.95em">caper</span>, <span style="font-family:monospace;font-size:0.95em">phylolm</span>) defaults to PGLS-style frameworks.</li>
+    <ul class="spaced" style="width:86%">
+        <li>Minimising that weighted sum of squares has a closed-form answer:
+            <div style="text-align:center;background:#f3f4f6;border-radius:6px;padding:0.3em;margin:0.4em auto;width:70%">
+                $$\hat{\boldsymbol{\beta}} = (\mathbf{X}^\top \mathbf{C}^{-1} \mathbf{X})^{-1}\, \mathbf{X}^\top \mathbf{C}^{-1} \mathbf{y}$$
+            </div>
+            <span style="font-size:0.85em;opacity:0.85">This is textbook <b>generalised least squares</b>: the same formula used whenever errors are correlated. Your software computes it; you never do it by hand. Phylogeny enters only through $\mathbf{C}$, the known covariance structure due to shared ancestry.</span>
+        </li>
+
+        <li>$\mathbf{X}$ is the predictor (design) matrix: a column of 1s for the intercept and a column of the predictor values $x$ for the slope.</li>
+
+        <li>Software defaults to this: <span style="font-family:monospace;font-size:0.95em">caper::pgls</span>, <span style="font-family:monospace;font-size:0.95em">phylolm</span>, <span style="font-family:monospace;font-size:0.95em">nlme::gls</span>.</li>
     </ul>
+
+    <p style="font-size:0.72em;opacity:0.75;width:84%;margin:0.6em auto 0">
+        A single-response regression needs only $\mathbf{C}$, not the full multi-trait $\mathbf{V}$ from the correlation slides.
+    </p>
+</section>
+
+<section>
+    <h3>A concrete phylogenetic regression</h3>
+
+    <div style="display:flex;gap:1.2em;width:97%;margin:0 auto;align-items:flex-start">
+        <div style="flex:0 0 200px;text-align:center;font-size:0.82em">
+            <svg viewBox="0 0 280 250" style="width:100%;height:140px">
+                <line x1="40"  y1="178" x2="110" y2="125" stroke="#333" stroke-width="3"/>
+                <line x1="110" y1="125" x2="180" y2="80"  stroke="#333" stroke-width="3"/>
+                <line x1="180" y1="80"  x2="250" y2="50"  stroke="#333" stroke-width="3"/>
+                <line x1="180" y1="80"  x2="250" y2="110" stroke="#333" stroke-width="3"/>
+                <line x1="110" y1="125" x2="250" y2="170" stroke="#333" stroke-width="3"/>
+                <line x1="40"  y1="178" x2="250" y2="230" stroke="#333" stroke-width="3"/>
+                <circle cx="250" cy="50"  r="15" fill="#dbeafe" stroke="#1e40af" stroke-width="2"/>
+                <text x="250" y="56"  text-anchor="middle" font-size="16" font-weight="700" fill="#1e40af">A</text>
+                <circle cx="250" cy="110" r="15" fill="#dbeafe" stroke="#1e40af" stroke-width="2"/>
+                <text x="250" y="116" text-anchor="middle" font-size="16" font-weight="700" fill="#1e40af">B</text>
+                <circle cx="250" cy="170" r="15" fill="#dbeafe" stroke="#1e40af" stroke-width="2"/>
+                <text x="250" y="176" text-anchor="middle" font-size="16" font-weight="700" fill="#1e40af">C</text>
+                <circle cx="250" cy="230" r="15" fill="#dbeafe" stroke="#1e40af" stroke-width="2"/>
+                <text x="250" y="236" text-anchor="middle" font-size="16" font-weight="700" fill="#1e40af">D</text>
+            </svg>
+            <div style="font-size:0.78em;opacity:0.7;margin-top:-0.2em">same tree as the $\mathbf{C}$ slide</div>
+            <table style="margin:0.3em auto 0;border-collapse:collapse">
+                <tr style="border-bottom:1px solid #ccc"><th style="padding:1px 10px">sp</th><th style="padding:1px 10px">$x$</th><th style="padding:1px 10px">$y$</th></tr>
+                <tr><td style="padding:1px 10px">A</td><td style="padding:1px 10px">1</td><td style="padding:1px 10px">2</td></tr>
+                <tr><td style="padding:1px 10px">B</td><td style="padding:1px 10px">2</td><td style="padding:1px 10px">5</td></tr>
+                <tr><td style="padding:1px 10px">C</td><td style="padding:1px 10px">3</td><td style="padding:1px 10px">8</td></tr>
+                <tr><td style="padding:1px 10px">D</td><td style="padding:1px 10px">7</td><td style="padding:1px 10px">10</td></tr>
+            </table>
+            <div style="margin-top:0.1em">$$\mathbf{X} = \begin{pmatrix}1 &amp; 1\\ 1 &amp; 2\\ 1 &amp; 3\\ 1 &amp; 7\end{pmatrix}$$</div>
+        </div>
+
+        <div style="flex:1;font-size:0.84em">
+            <p style="margin:0 0 0.2em">Fit an intercept and a slope, with the phylogeny in the errors:</p>
+            $$y = \beta_0 + \beta_1 x + \varepsilon, \qquad \varepsilon \sim \mathrm{MVN}(\mathbf{0},\, \sigma^2\mathbf{C}).$$
+
+            <p style="margin:0.3em 0 0.2em">Software solves the now $2\times2$ sandwich $\hat{\boldsymbol{\beta}} = (\mathbf{X}^\top\mathbf{C}^{-1}\mathbf{X})^{-1}\mathbf{X}^\top\mathbf{C}^{-1}\mathbf{y}$:</p>
+
+            <div style="display:flex;gap:0.6em;margin:0.2em 0 0.4em">
+                <div style="flex:1;background:#dcfce7;border-left:4px solid #15803d;padding:0.35em 0.6em;border-radius:4px">
+                    <b>PGLS</b><br>$\hat{\beta}_1 = \tfrac{4}{3} \approx 1.33$<br>$\hat{\beta}_0 \approx 1.84$
+                </div>
+                <div style="flex:1;background:#f3f4f6;border-left:4px solid #9ca3af;padding:0.35em 0.6em;border-radius:4px">
+                    <b>naive OLS</b><br>$\hat{\beta}_1 \approx 1.19$<br>$\hat{\beta}_0 \approx 2.37$
+                </div>
+            </div>
+
+            <ul class="spaced" style="margin:0.1em 0 0 1em;font-size:0.96em">
+                <li><b>Slope</b> $\hat{\beta}_1$: each one-unit rise in $x$ goes with a ~1.33-unit rise in $y$, shared ancestry removed.</li>
+                <li><b>Intercept</b> $\hat{\beta}_0$: fitted $y$ at $x=0$. The line pivots through the phylogenetic centroid $(\bar{x}_w,\bar{y}_w) = (4,\,7.18)$.</li>
+            </ul>
+        </div>
+    </div>
+
+    <div style="width:92%;margin:0.4em auto 0;font-size:0.84em;background:#fef3c7;border-left:4px solid #ca8a04;padding:0.4em 0.8em;border-radius:4px">
+        $\mathbf{X}$ (the known predictors) sets <i>what</i> we estimate: here an intercept and a slope. $\mathbf{C}$ (the known covariance structure from shared ancestry) sets <i>who counts</i>. Down-weighting the correlated A,&nbsp;B,&nbsp;C clade moves <b>both</b> coefficients away from naive OLS. <span style="opacity:0.75">(Which way they move depends on how the trait variation maps onto the tree.)</span>
+    </div>
 </section>
 
 <section>
