@@ -229,6 +229,117 @@ lecture_num: 14
 </section>
 
 <section>
+    <h3>Try it yourself: Pagel's $\kappa$</h3>
+
+    <div style="display:flex;gap:1.5em;width:98%;margin:0 auto;align-items:flex-start;justify-content:center">
+        <div style="flex:0 0 250px;font-size:0.8em">
+            <p style="margin-bottom:0.5em">$\kappa$ raises <b>each branch length</b> to the power $\kappa$. The horizontal axis is now <b>expected change</b>, not time.</p>
+
+            <label style="display:block;margin-top:0.6em">$\kappa$: <span id="kapVal">1.00</span></label>
+            <input id="kapSlider" type="range" min="0" max="1" step="0.01" value="1" style="width:100%">
+
+            <div id="kapStats" style="margin-top:0.8em;padding:0.5em;background:#f3f4f6;border-radius:6px;font-size:0.85em"></div>
+
+            <div style="margin-top:0.8em;font-size:0.82em">
+                <div style="background:#dcfce7;border-left:4px solid #15803d;padding:0.3em 0.5em;border-radius:4px;margin-bottom:0.3em"><b>$\kappa=1$</b>: gradual. Change accumulates with time; tips line up at the present.</div>
+                <div style="background:#fee2e2;border-left:4px solid #dc2626;padding:0.3em 0.5em;border-radius:4px"><b>$\kappa=0$</b>: speciational. Every branch counts the same; change tracks the number of splits, not time.</div>
+            </div>
+        </div>
+        <svg id="kapTree" viewBox="0 0 480 360" style="width:560px;height:420px;background:#fafafa;border-radius:8px"></svg>
+    </div>
+
+    <p style="font-size:0.7em;margin-top:0.3em;text-align:center;opacity:0.85">
+        As $\kappa\to0$ the long deep branches shrink toward the short ones, and tips reached through more speciation events end up further along the change axis: a model of punctuated evolution.
+    </p>
+
+    <script>
+    (function() {
+        // same fixed tree as the lambda widget: ((A,B),((C,D),(E,F))), T=3
+        var T = 3;
+        var nodes = {
+            A:{tip:true, y:0}, B:{tip:true, y:1}, C:{tip:true, y:2},
+            D:{tip:true, y:3}, E:{tip:true, y:4}, F:{tip:true, y:5},
+            AB:{tip:false, depth:1.7, children:['A','B']},
+            CD:{tip:false, depth:2.1, children:['C','D']},
+            EF:{tip:false, depth:2.1, children:['E','F']},
+            CF:{tip:false, depth:1.1, children:['CD','EF']},
+            root:{tip:false, depth:0, children:['AB','CF']}
+        };
+        var tipColor = {A:'#1f77b4',B:'#1f77b4',C:'#2ca02c',D:'#2ca02c',E:'#d62728',F:'#d62728'};
+        function origDepth(id){ return nodes[id].tip ? T : nodes[id].depth; }
+        function tipY(id){ return nodes[id].y; }
+        function nodeY(id){
+            if (nodes[id].tip) return nodes[id].y;
+            var c=nodes[id].children, s=0; for (var i=0;i<c.length;i++) s+=nodeY(c[i]); return s/c.length;
+        }
+        // transformed position = cumulative sum of (branch length)^kappa from the root
+        function tpos(kappa){
+            var out={};
+            (function walk(id, acc){
+                out[id]=acc;
+                if (nodes[id].tip) return;
+                var ch=nodes[id].children;
+                for (var i=0;i<ch.length;i++){
+                    var bl=origDepth(ch[i])-origDepth(id);
+                    walk(ch[i], acc+Math.pow(bl,kappa));
+                }
+            })('root',0);
+            return out;
+        }
+        function draw() {
+            var kap = parseFloat(document.getElementById('kapSlider').value);
+            document.getElementById('kapVal').textContent = kap.toFixed(2);
+            var pos = tpos(kap);
+            var svg = document.getElementById('kapTree'); svg.innerHTML='';
+            var NS='http://www.w3.org/2000/svg';
+            function add(tag,attrs,text){var el=document.createElementNS(NS,tag);for(var k in attrs)el.setAttribute(k,attrs[k]);if(text!=null)el.textContent=text;svg.appendChild(el);return el;}
+            var L=50, R=420, Wd=R-L;
+            var top=30, bot=330, Ht=bot-top;
+            var Xmax=3.0; // longest root-to-tip path stays <= 3 for kappa in [0,1]
+            function px(p){ return L + (p/Xmax)*Wd; }
+            function py(y){ return top + (y/5)*Ht; }
+            function drawNode(id){
+                var nd=nodes[id];
+                if (nd.tip) return;
+                var pyHere = py(nodeY(id));
+                var xHere = px(pos[id]);
+                for (var i=0;i<nd.children.length;i++){
+                    var c=nd.children[i];
+                    var cy=py(nodeY(c)), cx=px(pos[c]);
+                    add('line',{x1:xHere,y1:pyHere,x2:xHere,y2:cy,stroke:'#333','stroke-width':2});
+                    add('line',{x1:xHere,y1:cy,x2:cx,y2:cy,stroke:'#333','stroke-width':2.5});
+                    drawNode(c);
+                }
+            }
+            drawNode('root');
+            add('line',{x1:px(0)-14,y1:py(nodeY('root')),x2:px(0),y2:py(nodeY('root')),stroke:'#333','stroke-width':2.5});
+            var tips=['A','B','C','D','E','F'];
+            for (var i=0;i<tips.length;i++){
+                var t=tips[i], cy=py(tipY(t)), cx=px(pos[t]);
+                add('circle',{cx:cx,cy:cy,r:8,fill:tipColor[t],stroke:'#222','stroke-width':1.5});
+                add('text',{x:cx+16,y:cy+5,'font-size':'15','font-weight':'700',fill:'#222'},t);
+            }
+            // reference line at the present (where tips sit only when kappa=1)
+            add('line',{x1:px(T),y1:top-8,x2:px(T),y2:bot+8,stroke:'#bbb','stroke-width':1,'stroke-dasharray':'3,3'});
+            add('text',{x:px(T),y:top-12,'text-anchor':'middle','font-size':'11',fill:'#888'}, kap>=0.999?'present':'max change');
+            add('text',{x:px(0)-14,y:py(nodeY('root'))-10,'text-anchor':'start','font-size':'11',fill:'#888'},'root');
+            add('text',{x:(px(0)+px(T))/2,y:bot+28,'text-anchor':'middle','font-size':'12',fill:'#666'},'expected change');
+
+            var aligned = kap>=0.999;
+            var regime = kap>=0.999?'gradual (change ∝ time)':(kap<=0.001?'speciational (change ∝ number of splits)':'intermediate');
+            document.getElementById('kapStats').innerHTML =
+                'each branch <b>b &rarr; b<sup>'+kap.toFixed(2)+'</sup></b><br>'+
+                'e.g. the 1.7 root branch &rarr; <b>'+Math.pow(1.7,kap).toFixed(2)+'</b><br>'+
+                'regime: <b>'+regime+'</b><br>'+
+                'tips aligned at present: <b>'+(aligned?'yes':'no')+'</b>';
+        }
+        document.getElementById('kapSlider').addEventListener('input', draw);
+        draw();
+    })();
+    </script>
+</section>
+
+<section>
     <h3>Different rates in different clades</h3>
 
     <div style="display:flex;gap:1.2em;width:96%;margin:0 auto;align-items:center">
