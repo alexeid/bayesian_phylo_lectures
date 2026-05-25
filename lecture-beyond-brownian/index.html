@@ -3,324 +3,908 @@ lecture_num: 14
 ---
 
 <section class="center">
-    <h2>Transforming the Variance-Covariance Matrix</h2>
-    <p style="font-size:0.8em">Pagel's branch-length transformations</p>
+    <h2 style="margin-bottom:0.2em">When does evolution leave Brownian motion behind?</h2>
+    <p style="font-size:0.62em;margin:0.2em auto 0.6em;opacity:0.85;max-width:82%">In the lab, <span style="font-family:monospace">fitContinuous</span> compared BM, OU, EB and $\lambda$ by AIC. Why four models, and what does each one actually mean?</p>
+    <img data-src="figures/figure6-1.png" style="max-height:340px;border-radius:8px;box-shadow:0 4px 24px rgba(0,0,0,0.2);background:#fff;padding:6px">
+    <div style="font-size:0.5em;margin-top:0.3em;opacity:0.7">The same tree under three branch-length transformations. Harmon (2019) <i>PCM</i>, Fig 6.1 (CC-BY-4.0).</div>
 </section>
 
 <section>
-    <h3>Pagel's transformations</h3>
+    <h3>What this lecture is for</h3>
 
-    <ul class="spaced" style="width:80%">
-        <li>Pagel developed three transformations that modify the variance-covariance matrix $\mathbf{C}$ to test for deviations from Brownian motion.</li>
+    <div style="display:flex;gap:1.5em;width:96%;margin:0.3em auto;align-items:flex-start">
+        <div style="flex:1.15;font-size:0.82em">
+            <p style="margin:0 0 0.3em 0">Brownian motion is the <b>null</b>. It says a trait wanders with no destination, at one constant rate, everywhere on the tree. Real traits often do something more interesting:</p>
 
-        <li>Each transformation has a parameter that, when equal to 1, recovers the original BM tree.</li>
-
-        <li>The three transformations:
-            <ul>
-                <li>$\lambda$ (lambda) &mdash; phylogenetic signal</li>
-                <li>$\delta$ (delta) &mdash; tempo of evolution</li>
-                <li>$\kappa$ (kappa) &mdash; speciation vs. gradual change</li>
+            <ul class="spaced" style="margin:0.3em 0 0.4em 1em">
+                <li><b>Constraint.</b> A trait is held near an optimum and stops wandering: the <b>Ornstein&ndash;Uhlenbeck</b> model.</li>
+                <li><b>Bursts.</b> A trait diversifies fast early then slows: the <b>early-burst</b> model.</li>
+                <li><b>Lost signal.</b> Relatives resemble each other less than the tree predicts: <b>Pagel's transformations</b>.</li>
             </ul>
-        </li>
-    </ul>
-</section>
 
-<section>
-    <h3>Pagel's $\lambda$ (lambda)</h3>
+            <p style="margin:0.3em 0">Each is BM plus one extra parameter. Setting that parameter to its default value recovers BM exactly, so each is a <b>testable</b> departure from the null.</p>
+        </div>
 
-    <ul class="spaced" style="width:80%">
-        <li>Multiplies all <b>off-diagonal</b> (shared branch) elements of $\mathbf{C}$ by a value from 0 to 1.</li>
-
-        <li>This compresses the internal (deeper) branches; tips remain unaffected.</li>
-
-        <li>Interpretation:
-            <ul>
-                <li>$\lambda = 1$: no change &mdash; trait evolves as expected under BM on the true tree.</li>
-                <li>$\lambda = 0$: star phylogeny &mdash; every tip is effectively independent (no phylogenetic signal).</li>
-            </ul>
-        </li>
-
-        <li>Often used to measure <b>phylogenetic signal</b>: how much does the phylogeny predict trait similarity?</li>
-    </ul>
-</section>
-
-<section>
-    <h3>Pagel's $\delta$ (delta)</h3>
-
-    <ul class="spaced" style="width:80%">
-        <li>All elements of $\mathbf{C}$ are raised to the power $\delta$. This changes node heights.</li>
-
-        <li>Interpretation:
-            <ul>
-                <li>$\delta = 1$: unchanged BM tree.</li>
-                <li>$\delta &lt; 1$: node heights compressed &mdash; deep branches reduced less than shallow ones.</li>
-                <li>$\delta &gt; 1$: shallower branches stretched more than deeper ones.</li>
-            </ul>
-        </li>
-
-        <li>Designed to capture <b>variation in rates of evolution through time</b>:
-            <ul>
-                <li>$\delta &lt; 1$ suggests trait evolution was faster early in the phylogeny.</li>
-                <li>$\delta &gt; 1$ suggests trait evolution accelerated more recently.</li>
-            </ul>
-        </li>
-    </ul>
-</section>
-
-<section>
-    <h3>Pagel's $\kappa$ (kappa)</h3>
-
-    <ul class="spaced" style="width:80%">
-        <li>Raises all branch lengths to the power $\kappa$.</li>
-
-        <li>Effect depends on $\kappa$ and the number of branches between root and MRCA of each pair of tips.</li>
-
-        <li>Interpretation:
-            <ul>
-                <li>$\kappa = 1$: standard BM tree.</li>
-                <li>$\kappa = 0$: all branch lengths become 1 &mdash; only topology matters.</li>
-            </ul>
-        </li>
-
-        <li>Interpreted as a model where characters mostly change during <b>speciation events</b> (punctuated evolution) rather than gradually along branches.</li>
-    </ul>
-</section>
-
-<section class="center">
-    <h2>Rate Variation Across Clades</h2>
-</section>
-
-<section>
-    <h3>Testing for different rates across clades</h3>
-
-    <ul class="spaced" style="width:80%">
-        <li>BM assumes $\sigma^2$ is <b>constant</b> across the whole tree. What if this is wrong?</li>
-
-        <li>These methods ask whether specific clades have different $\sigma^2$.</li>
-
-        <li>Three approaches:
-            <ol>
-                <li><b>PIC-based rate test</b>: compare magnitudes of squared contrasts between clades.</li>
-                <li><b>ML + AIC</b>: fit multi-rate BM models with separate $\sigma^2$ for each clade; compare via AIC.</li>
-                <li><b>Bayesian MCMC</b>: each branch can have its own rate, with posteriors identifying rate shifts.</li>
+        <div style="flex:0.95;font-size:0.78em;background:#f8fafc;border-radius:6px;padding:0.7em 0.9em">
+            <p style="margin:0 0 0.3em 0;font-weight:700">Three families of model</p>
+            <ol class="spaced" style="margin:0.3em 0 0 1em">
+                <li><b>Reshape the tree.</b> Pagel's $\lambda$, $\delta$, $\kappa$; multi-rate models.</li>
+                <li><b>Change the process.</b> Ornstein&ndash;Uhlenbeck; early burst.</li>
+                <li><b>Discrete traits.</b> The Mk model and stochastic mapping.</li>
             </ol>
+            <p style="font-size:0.85em;opacity:0.8;margin:0.6em 0 0 0">Choosing between them is a model-selection problem: fit each, then compare with AIC, exactly the <span style="font-family:monospace">aicw()</span> step from the lab.</p>
+        </div>
+    </div>
+</section>
+
+<section>
+    <h3>Every model here is compared against the null</h3>
+
+    <ul class="spaced" style="width:84%">
+        <li>Each model returns a <b>log-likelihood</b> and a <b>parameter count</b> $k$. From these, recall (lecture 11):
+            $$\mathrm{AIC} = 2k - 2\ln L, \qquad \mathrm{AIC_c} = \mathrm{AIC} + \frac{2k(k+1)}{n-k-1}$$
         </li>
 
-        <li>Note: methods typically require <b>pre-defined groups</b> suspected of having different rates.</li>
+        <li>Because BM is nested inside most of these models (set $\alpha=0$, $r=0$, or $\lambda=1$), we can also use a <b>likelihood-ratio test</b>.</li>
+
+        <li>AIC turns the fits into <b>weights</b>: the relative probability that each model is the best in the set. That is what <span style="font-family:monospace;font-size:0.9em">geiger::aicw()</span> reports.</li>
+
+        <li>Keep this frame in mind: the rest of the lecture is a menu of alternatives, and the last ingredient is always "compared to what?"</li>
     </ul>
 </section>
 
 <section class="center">
-    <h2>Beyond Brownian Motion</h2>
+    <h2>Reshaping the tree: Pagel's transformations</h2>
 </section>
 
 <section>
-    <h3>Ornstein-Uhlenbeck (OU) model</h3>
+    <h3>Three transformations of $\mathbf{C}$</h3>
 
-    <ul class="spaced" style="width:80%">
-        <li>A Brownian-like model where the trait is drawn towards a <b>fitness optimum</b> $\theta$.</li>
+    <div style="display:flex;gap:1.2em;width:96%;margin:0 auto;align-items:center">
+        <div style="flex:1;font-size:0.86em">
+            <ul class="spaced">
+                <li>Pagel proposed three ways to stretch and squeeze the variance&ndash;covariance matrix $\mathbf{C}$ before fitting BM.</li>
+                <li>Each has one parameter that, set to <b>1</b>, recovers the original BM tree:
+                    <ul>
+                        <li>$\lambda$ (lambda): phylogenetic signal,</li>
+                        <li>$\delta$ (delta): the tempo of evolution through time,</li>
+                        <li>$\kappa$ (kappa): gradual versus speciational change.</li>
+                    </ul>
+                </li>
+                <li>Fitting the parameter and comparing to $1$ tests whether the trait obeys BM on the true tree.</li>
+            </ul>
+        </div>
+        <div style="flex:0 0 340px;text-align:center">
+            <img data-src="figures/figure6-1.png" style="width:340px;background:#fff;border-radius:4px;padding:4px">
+            <div style="font-size:0.55em;margin-top:0.2em;opacity:0.7">Each transformation at parameter value 0.3.<br>Harmon (2019) <i>PCM</i>, Fig 6.1 (CC-BY-4.0).</div>
+        </div>
+    </div>
+</section>
 
-        <li>Analogous to stabilizing selection &mdash; but more precisely, models tracking the movement of an adaptive optimum.</li>
+<section>
+    <h3>Try it yourself: Pagel's $\lambda$ and phylogenetic signal</h3>
 
-        <li>Adds a <b>pull parameter</b> $\alpha$ that determines how strongly the trait is attracted to $\theta$:
-            $$dX = \alpha(\theta - X)\,dt + \sigma\,dW$$
-        </li>
+    <div style="display:flex;gap:1.5em;width:98%;margin:0 auto;align-items:flex-start;justify-content:center">
+        <div style="flex:0 0 250px;font-size:0.8em">
+            <p style="margin-bottom:0.5em">$\lambda$ multiplies the <b>internal</b> (shared) branches, leaving the tips at the present.</p>
 
-        <li>Key properties:
+            <label style="display:block;margin-top:0.6em">$\lambda$: <span id="lamVal">1.00</span></label>
+            <input id="lamSlider" type="range" min="0" max="1" step="0.01" value="1" style="width:100%">
+
+            <div id="lamStats" style="margin-top:0.8em;padding:0.5em;background:#f3f4f6;border-radius:6px;font-size:0.85em"></div>
+
+            <div style="margin-top:0.8em;font-size:0.82em">
+                <div style="background:#dcfce7;border-left:4px solid #15803d;padding:0.3em 0.5em;border-radius:4px;margin-bottom:0.3em"><b>$\lambda=1$</b>: full phylogenetic signal. The trait tracks the tree (plain BM).</div>
+                <div style="background:#fee2e2;border-left:4px solid #dc2626;padding:0.3em 0.5em;border-radius:4px"><b>$\lambda=0$</b>: a star. Every species is independent; the tree predicts nothing.</div>
+            </div>
+        </div>
+        <svg id="lamTree" viewBox="0 0 480 360" style="width:560px;height:420px;background:#fafafa;border-radius:8px"></svg>
+    </div>
+
+    <p style="font-size:0.7em;margin-top:0.3em;text-align:center;opacity:0.85">
+        $\lambda$ was one of the four models you fit in the lab. A fitted $\lambda<1$ says the trait carries <b>less</b> phylogenetic signal than Brownian motion on this tree would produce.
+    </p>
+
+    <script>
+    (function() {
+        // fixed ultrametric tree, 6 tips: ((A,B),((C,D),(E,F)))
+        // node depths from root (total depth T = 3)
+        var T = 3;
+        var nodes = {
+            A:{tip:true, y:0}, B:{tip:true, y:1}, C:{tip:true, y:2},
+            D:{tip:true, y:3}, E:{tip:true, y:4}, F:{tip:true, y:5},
+            AB:{tip:false, depth:1.7, children:['A','B']},
+            CD:{tip:false, depth:2.1, children:['C','D']},
+            EF:{tip:false, depth:2.1, children:['E','F']},
+            CF:{tip:false, depth:1.1, children:['CD','EF']},
+            root:{tip:false, depth:0, children:['AB','CF']}
+        };
+        var tipColor = {A:'#1f77b4',B:'#1f77b4',C:'#2ca02c',D:'#2ca02c',E:'#d62728',F:'#d62728'};
+        function tipY(id){ return nodes[id].y; }
+        function nodeY(id){
+            if (nodes[id].tip) return nodes[id].y;
+            var c=nodes[id].children, s=0; for (var i=0;i<c.length;i++) s+=nodeY(c[i]); return s/c.length;
+        }
+        function draw() {
+            var lam = parseFloat(document.getElementById('lamSlider').value);
+            document.getElementById('lamVal').textContent = lam.toFixed(2);
+            var svg = document.getElementById('lamTree'); svg.innerHTML='';
+            var NS='http://www.w3.org/2000/svg';
+            function add(tag,attrs,text){var el=document.createElementNS(NS,tag);for(var k in attrs)el.setAttribute(k,attrs[k]);if(text!=null)el.textContent=text;svg.appendChild(el);return el;}
+            var L=50, R=420, Wd=R-L;
+            var top=30, bot=330, Ht=bot-top;
+            function px(depth){ return L + (depth/T)*Wd; }
+            function py(y){ return top + (y/5)*Ht; }
+            // transformed depth: internal nodes scaled by lambda; tips stay at T
+            function tdepth(id){ return nodes[id].tip ? T : nodes[id].depth*lam; }
+            // draw edges parent->child
+            function drawNode(id){
+                var nd=nodes[id];
+                if (nd.tip) return;
+                var pyHere = py(nodeY(id));
+                var xHere = px(tdepth(id));
+                for (var i=0;i<nd.children.length;i++){
+                    var c=nd.children[i];
+                    var cy=py(nodeY(c)), cx=px(tdepth(c));
+                    // vertical connector at xHere
+                    add('line',{x1:xHere,y1:pyHere,x2:xHere,y2:cy,stroke:'#333','stroke-width':2});
+                    // horizontal branch
+                    add('line',{x1:xHere,y1:cy,x2:cx,y2:cy,stroke:'#333','stroke-width':2.5});
+                    drawNode(c);
+                }
+            }
+            drawNode('root');
+            // root stub
+            add('line',{x1:px(0)-14,y1:py(nodeY('root')),x2:px(0),y2:py(nodeY('root')),stroke:'#333','stroke-width':2.5});
+            // tips
+            var tips=['A','B','C','D','E','F'];
+            for (var i=0;i<tips.length;i++){
+                var t=tips[i], cy=py(tipY(t)), cx=px(T);
+                add('circle',{cx:cx,cy:cy,r:8,fill:tipColor[t],stroke:'#222','stroke-width':1.5});
+                add('text',{x:cx+16,y:cy+5,'font-size':'15','font-weight':'700',fill:'#222'},t);
+            }
+            // present-day line
+            add('line',{x1:px(T),y1:top-8,x2:px(T),y2:bot+8,stroke:'#bbb','stroke-width':1,'stroke-dasharray':'3,3'});
+            add('text',{x:px(T),y:top-12,'text-anchor':'middle','font-size':'11',fill:'#888'},'present');
+            add('text',{x:px(0)-14,y:py(nodeY('root'))-10,'text-anchor':'start','font-size':'11',fill:'#888'},'root');
+
+            var signal = lam>=0.999?'maximal':(lam<=0.001?'none':(lam<0.5?'weak':'moderate'));
+            document.getElementById('lamStats').innerHTML =
+                'off-diagonal of <b>C</b> &times; <b>'+lam.toFixed(2)+'</b><br>'+
+                'phylogenetic signal: <b>'+signal+'</b><br>'+
+                '<span style="color:#666">At &lambda;=0 the internal branches vanish and the tree becomes a star.</span>';
+        }
+        document.getElementById('lamSlider').addEventListener('input', draw);
+        draw();
+    })();
+    </script>
+</section>
+
+<section>
+    <h3>Phylogenetic signal, in one number</h3>
+
+    <ul class="spaced" style="width:84%">
+        <li><b>Phylogenetic signal</b> is the tendency for related species to resemble one another. Pagel's $\lambda$ is one way to quantify it.</li>
+
+        <li>Interpreting a fitted $\lambda$:
             <ul>
-                <li>$\alpha = 0$: pure Brownian motion.</li>
-                <li>Large $\alpha$: trait tightly constrained near $\theta$.</li>
-                <li>Variance reaches a <b>stationary value</b> $\sigma^2/(2\alpha)$ rather than growing indefinitely.</li>
+                <li>$\lambda \approx 1$: relatives are as similar as BM on the tree predicts.</li>
+                <li>$\lambda \approx 0$: the trait is effectively independent of the phylogeny.</li>
+                <li>$\lambda > 1$ is occasionally seen and usually signals model misfit.</li>
             </ul>
         </li>
 
-        <li>Can be used within ML or Bayesian frameworks to test whether stabilizing selection fits better than BM.</li>
+        <li><b>Blomberg's $K$</b> is a related statistic: $K>1$ means relatives are <i>more</i> similar than BM predicts (conserved); $K<1$ means less.</li>
+
+        <li>Low signal is itself informative: it suggests strong selection, measurement error, or a trait responding fast to the current environment, the very situation where ignoring phylogeny is least harmful (recall Felsenstein's caveat).</li>
     </ul>
 </section>
 
 <section>
-    <h3>Early burst models</h3>
+    <h3>Pagel's $\delta$ and $\kappa$</h3>
 
-    <ul class="spaced" style="width:80%">
-        <li>Models of <b>adaptive radiation</b>: some phenomenon creates an opportunity (migration, evolution of a new trait, extinction of competitors).</li>
+    <div style="display:flex;gap:1em;width:96%;margin:0.3em auto">
+        <div style="flex:1;background:#eff6ff;border-left:4px solid #1d4ed8;padding:0.7em 1em;border-radius:4px;font-size:0.86em">
+            <div style="font-weight:700;color:#1d4ed8">$\delta$ (delta): tempo through time</div>
+            <p style="margin:0.4em 0">Raises node heights to the power $\delta$, rescaling <i>when</i> change happens.</p>
+            <ul style="margin:0.3em 0 0 1em">
+                <li>$\delta=1$: unchanged BM.</li>
+                <li>$\delta<1$: change concentrated <b>early</b> (deep branches do more work).</li>
+                <li>$\delta>1$: change concentrated <b>late</b> (recent branches do more).</li>
+            </ul>
+        </div>
+        <div style="flex:1;background:#fef3c7;border-left:4px solid #ca8a04;padding:0.7em 1em;border-radius:4px;font-size:0.86em">
+            <div style="font-weight:700;color:#ca8a04">$\kappa$ (kappa): gradual vs speciational</div>
+            <p style="margin:0.4em 0">Raises each branch length to the power $\kappa$.</p>
+            <ul style="margin:0.3em 0 0 1em">
+                <li>$\kappa=1$: standard BM (change $\propto$ time).</li>
+                <li>$\kappa=0$: all branches length 1; change depends only on the <b>number of speciation events</b>, not on time (punctuated evolution).</li>
+            </ul>
+        </div>
+    </div>
 
-        <li>Taxa rapidly evolve and diversify to fill available niches, then slow down as niches fill up.</li>
-
-        <li>These models start from BM and attach a <b>decay parameter</b> that slows the evolutionary rate over time:
-            $$\sigma^2(t) = \sigma^2_0 \, e^{rt}$$
-            where $r &lt; 0$ produces the "early burst" pattern.
-        </li>
-
-        <li>Evolution starts rapidly near the root and gradually slows to the rate at the tips.</li>
-
-        <li>Can be compared to BM using AIC or Bayes Factors.</li>
-    </ul>
+    <p style="width:88%;margin:0.6em auto 0;font-size:0.85em;text-align:center;opacity:0.9">
+        Compare the $\delta=0.3$ and $\kappa=0.3$ panels in the figure two slides back: $\delta$ moves the splits in time, while $\kappa$ pushes the model toward "change happens at speciation."
+    </p>
 </section>
 
 <section>
-    <h3>Peak shift models</h3>
+    <h3>Different rates in different clades</h3>
 
-    <ul class="spaced" style="width:80%">
-        <li>Models of <b>punctuated evolution</b>: long periods of relative stasis punctuated by brief periods of intense change.</li>
+    <div style="display:flex;gap:1.2em;width:96%;margin:0 auto;align-items:center">
+        <div style="flex:1;font-size:0.86em">
+            <ul class="spaced">
+                <li>BM assumes a <b>single</b> rate $\sigma^2$ across the whole tree. What if one clade evolves faster?</li>
+                <li>Three ways to test:
+                    <ol>
+                        <li><b>Contrast-based rate test</b>: compare the spread of squared contrasts between clades.</li>
+                        <li><b>ML + AIC</b>: fit a model with a separate $\sigma^2$ per clade and compare to single-rate BM.</li>
+                        <li><b>Bayesian MCMC</b>: let every branch have its own rate; the posterior flags rate shifts.</li>
+                    </ol>
+                </li>
+                <li>Caveat: methods 1 and 2 need the clades to be <b>specified in advance</b>. Scanning every clade and keeping the most significant inflates false positives.</li>
+            </ul>
+        </div>
+        <div style="flex:0 0 320px;text-align:center">
+            <img data-src="figures/figure6-2.png" style="width:320px;background:#fff;border-radius:4px">
+            <div style="font-size:0.55em;margin-top:0.2em;opacity:0.7">Rate test: carnivores (black) vs other mammals (red), Garland (1992) data.<br>Harmon (2019) <i>PCM</i>, Fig 6.2 (CC-BY-4.0).</div>
+        </div>
+    </div>
+</section>
 
-        <li>These periods of change are often associated with adaptive radiations or shifts in selective regime.</li>
+<section class="center">
+    <h2>Constraint: the Ornstein&ndash;Uhlenbeck model</h2>
+</section>
 
-        <li>The punctuated periods can follow one of three regimes:
+<section>
+    <h3>A rubber band toward an optimum</h3>
+
+    <div style="display:flex;gap:1.2em;width:96%;margin:0 auto;align-items:center">
+        <div style="flex:1.1;font-size:0.86em">
+            <ul class="spaced">
+                <li>The <b>Ornstein&ndash;Uhlenbeck (OU)</b> model is BM plus a pull toward an optimum $\theta$:
+                    $$dX = \underbrace{\alpha(\theta - X)\,dt}_{\text{pull to optimum}} + \underbrace{\sigma\,dW}_{\text{random walk}}$$
+                </li>
+                <li>$\alpha$ is the <b>strength</b> of the pull. The further $X$ strays from $\theta$, the harder it is pulled back.</li>
+                <li>This is the model of <b>stabilizing selection</b>: a trait kept near an adaptive peak (right).</li>
+                <li>Special case: $\alpha=0$ removes the pull and OU collapses to plain BM. So OU nests BM.</li>
+            </ul>
+        </div>
+        <div style="flex:0 0 300px;text-align:center">
+            <img data-src="figures/figure6-3.png" style="width:300px;background:#fff;border-radius:4px">
+            <div style="font-size:0.55em;margin-top:0.2em;opacity:0.7">A fitness landscape producing stabilizing selection: fitness peaks at the optimum trait value.<br>Harmon (2019) <i>PCM</i>, Fig 6.3 (CC-BY-4.0).</div>
+        </div>
+    </div>
+</section>
+
+<section>
+    <h3>Try it yourself: the OU pull</h3>
+
+    <div style="display:flex;gap:1.5em;width:98%;margin:0 auto;align-items:flex-start;justify-content:center">
+        <div style="flex:0 0 230px;font-size:0.78em">
+            <p style="margin-bottom:0.5em">Lineages start away from the optimum $\theta$ (green line) and are pulled toward it as they wander.</p>
+
+            <label style="display:block;margin-top:0.5em">Pull strength $\alpha$: <span id="ouAlVal">1.0</span></label>
+            <input id="ouAl" type="range" min="0" max="6" step="0.1" value="1.0" style="width:100%">
+
+            <label style="display:block;margin-top:0.4em">Optimum $\theta$: <span id="ouThVal">2.0</span></label>
+            <input id="ouTh" type="range" min="-3" max="3" step="0.5" value="2" style="width:100%">
+
+            <label style="display:block;margin-top:0.4em">Rate $\sigma^2$: <span id="ouSigVal">1.0</span></label>
+            <input id="ouSig" type="range" min="0.2" max="3" step="0.1" value="1.0" style="width:100%">
+
+            <button id="ouReroll" style="margin-top:0.6em;padding:4px 12px;font-size:0.9em">Re-simulate</button>
+
+            <div id="ouStats" style="margin-top:0.8em;padding:0.5em;background:#f3f4f6;border-radius:6px;font-size:0.82em"></div>
+        </div>
+        <div id="ouPlot" style="width:560px;height:420px"></div>
+    </div>
+
+    <p style="font-size:0.7em;margin-top:0.3em;text-align:center;opacity:0.85">
+        Set $\alpha=0$ for pure BM (the spread keeps growing). Increase $\alpha$ and the variance reaches a <b>ceiling</b> $\sigma^2/2\alpha$: the past is forgotten.
+    </p>
+
+    <script>
+    (function() {
+        function rnorm() {
+            var u=0,v=0; while(u===0)u=Math.random(); while(v===0)v=Math.random();
+            return Math.sqrt(-2*Math.log(u))*Math.cos(2*Math.PI*v);
+        }
+        var STEPS=240, T=3, X0=-2.5, N=20;
+        var palette=['#1f77b4','#ff7f0e','#9467bd','#8c564b','#e377c2','#17becf','#bcbd22','#7f7f7f'];
+        function go() {
+            var al=parseFloat(document.getElementById('ouAl').value);
+            var th=parseFloat(document.getElementById('ouTh').value);
+            var sig2=parseFloat(document.getElementById('ouSig').value);
+            document.getElementById('ouAlVal').textContent=al.toFixed(1);
+            document.getElementById('ouThVal').textContent=th.toFixed(1);
+            document.getElementById('ouSigVal').textContent=sig2.toFixed(1);
+            var dt=T/STEPS, sd=Math.sqrt(sig2*dt);
+            var ts=[]; for(var i=0;i<=STEPS;i++) ts.push(i*dt);
+            var traces=[], finals=[];
+            for (var k=0;k<N;k++){
+                var y=[X0], cur=X0;
+                for (i=1;i<=STEPS;i++){ cur += al*(th-cur)*dt + sd*rnorm(); y.push(cur); }
+                finals.push(cur);
+                traces.push({x:ts,y:y,mode:'lines',showlegend:false,line:{color:palette[k%palette.length],width:1},opacity:0.5,hoverinfo:'skip'});
+            }
+            // theoretical mean and +/-2sd band
+            var mean=[], up=[], lo=[];
+            for (i=0;i<=STEPS;i++){
+                var t=ts[i];
+                var m = th + (X0-th)*Math.exp(-al*t);
+                var vv = al>1e-6 ? (sig2/(2*al))*(1-Math.exp(-2*al*t)) : sig2*t;
+                var s=2*Math.sqrt(vv);
+                mean.push(m); up.push(m+s); lo.push(m-s);
+            }
+            traces.push({x:ts.concat(ts.slice().reverse()),y:up.concat(lo.slice().reverse()),fill:'toself',
+                fillcolor:'rgba(120,120,120,0.16)',line:{width:0},showlegend:false,hoverinfo:'skip'});
+            traces.push({x:ts,y:mean,mode:'lines',line:{color:'#444',width:2,dash:'dot'},showlegend:false,hoverinfo:'skip'});
+            traces.push({x:[0,T],y:[th,th],mode:'lines',line:{color:'#15803d',width:2.5},name:'optimum &theta;',showlegend:false,hoverinfo:'skip'});
+
+            Plotly.react('ouPlot', traces, {
+                xaxis:{title:'time',range:[0,T],zeroline:false},
+                yaxis:{title:'trait value',range:[-5,5]},
+                margin:{t:10,b:42,l:48,r:12}
+            }, {displayModeBar:false, staticPlot:true});
+
+            var statVar = al>1e-6 ? sig2/(2*al) : Infinity;
+            var halflife = al>1e-6 ? Math.log(2)/al : Infinity;
+            document.getElementById('ouStats').innerHTML =
+                'stationary variance &sigma;&sup2;/2&alpha; = <b>'+(isFinite(statVar)?statVar.toFixed(2):'&infin; (BM)')+'</b><br>'+
+                'phylogenetic half-life ln2/&alpha; = <b>'+(isFinite(halflife)?halflife.toFixed(2):'&infin; (BM)')+'</b><br>'+
+                '<span style="color:#666">Half-life is how long it takes to forget half of where the lineage started.</span>';
+        }
+        document.getElementById('ouAl').addEventListener('input', go);
+        document.getElementById('ouTh').addEventListener('input', go);
+        document.getElementById('ouSig').addEventListener('input', go);
+        document.getElementById('ouReroll').addEventListener('click', go);
+        go();
+    })();
+    </script>
+</section>
+
+<section>
+    <h3>What OU buys you</h3>
+
+    <div style="display:flex;gap:1em;width:95%;margin:1em auto">
+        <div style="flex:1;background:#eff6ff;border-left:4px solid #1d4ed8;padding:0.8em 1em;border-radius:4px">
+            <div style="font-weight:700;color:#1d4ed8">Bounded variance</div>
+            <p style="font-size:0.85em;margin:0.4em 0 0">Unlike BM, the variance does not grow forever; it settles at $\sigma^2/2\alpha$. Distantly related species are no more different than close ones.</p>
+        </div>
+        <div style="flex:1;background:#dcfce7;border-left:4px solid #15803d;padding:0.8em 1em;border-radius:4px">
+            <div style="font-weight:700;color:#15803d">A measurable memory</div>
+            <p style="font-size:0.85em;margin:0.4em 0 0">The phylogenetic half-life $\ln 2/\alpha$ says how fast ancestry is forgotten. Large $\alpha$ means the tree barely matters.</p>
+        </div>
+        <div style="flex:1;background:#fef3c7;border-left:4px solid #ca8a04;padding:0.8em 1em;border-radius:4px">
+            <div style="font-weight:700;color:#ca8a04">Handle with care</div>
+            <p style="font-size:0.85em;margin:0.4em 0 0">OU is easy to over-fit on small trees, and measurement error mimics a high $\alpha$. A favourable AIC is not proof of an optimum.</p>
+        </div>
+    </div>
+
+    <p style="width:88%;margin:0.6em auto 0;font-size:0.85em;text-align:center;opacity:0.9">
+        OU was the model most often favoured in the lab's finch-beak comparison: beak dimensions behave as if held near an adaptive optimum.
+    </p>
+</section>
+
+<section>
+    <h3>Multi-peak OU: many optima on one tree</h3>
+
+    <div style="display:flex;gap:1.2em;width:95%;margin:0.2em auto;align-items:flex-start">
+        <div style="flex:1.1;font-size:0.84em">
+            <ul class="spaced">
+                <li>Let different parts of the tree be pulled toward <b>different</b> optima $\theta_1,\theta_2,\dots$ This is the <b>Hansen model</b>.</li>
+                <li>Paint the branches with <b>regimes</b>; each regime has its own peak in trait space. Lineages sharing a regime are drawn to the same point.</li>
+                <li>This formalises Simpson's "adaptive zones": shifts between peaks are shifts between adaptive strategies.</li>
+                <li>When independent lineages are pulled to the <b>same</b> peak, the model captures <b>convergence</b>, exactly the test behind the Caribbean <i>Anolis</i> result from last lecture (Mahler et al. 2013).</li>
+            </ul>
+        </div>
+        <div style="flex:1">
+            <svg viewBox="0 0 320 250" style="width:100%;max-height:280px;font-family:inherit">
+                <line x1="40" y1="130" x2="100" y2="130" stroke="#ca8a04" stroke-width="6"/>
+                <line x1="100" y1="60" x2="100" y2="200" stroke="#ca8a04" stroke-width="6"/>
+                <line x1="100" y1="60" x2="170" y2="60" stroke="#ca8a04" stroke-width="6"/>
+                <line x1="170" y1="40" x2="170" y2="80" stroke="#ca8a04" stroke-width="6"/>
+                <line x1="170" y1="40" x2="240" y2="40" stroke="#ca8a04" stroke-width="6"/>
+                <line x1="170" y1="80" x2="240" y2="80" stroke="#1d4ed8" stroke-width="6"/>
+                <line x1="100" y1="200" x2="170" y2="200" stroke="#ca8a04" stroke-width="6"/>
+                <line x1="170" y1="180" x2="170" y2="220" stroke="#ca8a04" stroke-width="6"/>
+                <line x1="170" y1="180" x2="240" y2="180" stroke="#1d4ed8" stroke-width="6"/>
+                <line x1="170" y1="220" x2="240" y2="220" stroke="#ca8a04" stroke-width="6"/>
+                <circle cx="170" cy="80" r="6" fill="#1d4ed8" stroke="#fff" stroke-width="1.5"/>
+                <circle cx="170" cy="180" r="6" fill="#1d4ed8" stroke="#fff" stroke-width="1.5"/>
+                <text x="245" y="44" font-size="13">&#952;&#8321;</text>
+                <text x="245" y="84" font-size="13">&#952;&#8322;</text>
+                <text x="245" y="184" font-size="13">&#952;&#8322;</text>
+                <text x="245" y="224" font-size="13">&#952;&#8321;</text>
+                <rect x="20" y="230" width="14" height="6" fill="#ca8a04"/>
+                <text x="38" y="237" font-size="10">regime 1 (&#952;&#8321;)</text>
+                <rect x="150" y="230" width="14" height="6" fill="#1d4ed8"/>
+                <text x="168" y="237" font-size="10">regime 2 (&#952;&#8322;)</text>
+                <text x="20" y="18" font-size="11" font-weight="bold">Two regimes painted on a 4-tip tree</text>
+                <text x="20" y="250" font-size="9" opacity="0.7">Two independent shifts to &#952;&#8322;: convergence if they share the same optimum.</text>
+            </svg>
+        </div>
+    </div>
+</section>
+
+<section class="center">
+    <h2>Bursts: adaptive radiation</h2>
+</section>
+
+<section>
+    <h3>The early-burst model</h3>
+
+    <div style="display:flex;gap:1.5em;width:98%;margin:0 auto;align-items:flex-start;justify-content:center">
+        <div style="flex:0 0 260px;font-size:0.8em">
+            <ul class="spaced">
+                <li>An opportunity opens (a new island, a key innovation, a mass extinction). Lineages diversify fast to fill empty niches, then slow as niches fill.</li>
+                <li>The rate <b>decays</b> through time:
+                    $$\sigma^2(t) = \sigma^2_0\, e^{rt}, \quad r<0$$
+                </li>
+                <li>Most disparity accumulates early; the tips are relatively similar.</li>
+            </ul>
+            <label style="display:block;margin-top:0.6em">Decay $r$: <span id="ebRVal">-2.0</span></label>
+            <input id="ebR" type="range" min="-6" max="0" step="0.1" value="-2" style="width:100%">
+            <div id="ebStats" style="margin-top:0.6em;padding:0.5em;background:#f3f4f6;border-radius:6px;font-size:0.82em"></div>
+        </div>
+        <div id="ebPlot" style="width:540px;height:380px"></div>
+    </div>
+
+    <p style="font-size:0.7em;margin-top:0.3em;text-align:center;opacity:0.85">
+        $r=0$ is constant-rate BM. As $r$ becomes more negative, the rate collapses early and the accumulated disparity flattens off: the signature of an early burst.
+    </p>
+
+    <script>
+    (function() {
+        function go() {
+            var r=parseFloat(document.getElementById('ebR').value);
+            document.getElementById('ebRVal').textContent=r.toFixed(1);
+            var s0=1, T=1, M=200;
+            var ts=[], rate=[], disp=[];
+            for (var i=0;i<=M;i++){
+                var t=T*i/M; ts.push(t);
+                rate.push(s0*Math.exp(r*t));
+                // cumulative disparity = integral_0^t s0 e^{r u} du
+                var d = Math.abs(r)<1e-6 ? s0*t : s0*(Math.exp(r*t)-1)/r;
+                disp.push(d);
+            }
+            var totalDisp = disp[M];
+            var dispNorm = disp.map(function(d){return totalDisp>0?d/totalDisp:0;});
+            Plotly.react('ebPlot', [
+                {x:ts,y:rate,mode:'lines',name:'rate &sigma;&sup2;(t)',line:{color:'#d62728',width:3},hoverinfo:'skip'},
+                {x:ts,y:dispNorm,mode:'lines',name:'disparity (cumulative, scaled)',line:{color:'#1f77b4',width:3},hoverinfo:'skip'}
+            ], {
+                xaxis:{title:'time (root → present)',range:[0,1]},
+                yaxis:{title:'rate / scaled disparity',range:[0,1.05]},
+                legend:{x:0.4,y:0.99,font:{size:11}},
+                margin:{t:10,b:42,l:48,r:12}
+            }, {displayModeBar:false, staticPlot:true});
+            // fraction of disparity in first 20% of time
+            var idx20=Math.round(0.2*M);
+            var frac = totalDisp>0 ? disp[idx20]/totalDisp : 0;
+            document.getElementById('ebStats').innerHTML =
+                'disparity in first 20% of time: <b>'+(100*frac).toFixed(0)+'%</b><br>'+
+                '<span style="color:#666">'+(r<-0.05?'An early burst: most divergence happened near the root.':'Near-constant rate (BM-like).')+'</span>';
+        }
+        document.getElementById('ebR').addEventListener('input', go);
+        go();
+    })();
+    </script>
+</section>
+
+<section>
+    <h3>Peak shifts and punctuated change</h3>
+
+    <ul class="spaced" style="width:84%">
+        <li><b>Punctuated</b> models picture long stasis broken by brief bursts of change, often at speciation or at a shift in selective regime.</li>
+
+        <li>The bursts can be modelled as occurring:
             <ul>
-                <li>Random</li>
-                <li>Fixed interval</li>
-                <li>Associated with changes in other traits on the tree</li>
+                <li>at <b>random</b> points,</li>
+                <li>at <b>fixed intervals</b>, or</li>
+                <li>linked to <b>changes in another trait</b> on the tree.</li>
             </ul>
         </li>
 
-        <li>Can identify parts of the tree evolving differently from the rest.</li>
+        <li>Like the multi-rate methods, these identify parts of the tree evolving differently from the rest.</li>
 
-        <li>Approach is similar to the multi-rate methods described earlier.</li>
+        <li>Linking a peak shift in one trait to changes in another is powerful but risky: with enough traits, some apparent association is almost guaranteed by chance.</li>
     </ul>
 </section>
 
 <section class="center">
-    <h2>Discrete Character Evolution</h2>
+    <h2>Choosing among the models</h2>
+    <p style="font-size:0.75em;margin-top:0.8em">The lab's <span style="font-family:monospace">fitContinuous</span> + <span style="font-family:monospace">aicw</span> step, formalised</p>
+</section>
+
+<section>
+    <h3>Try it yourself: AIC weights</h3>
+
+    <div style="display:flex;gap:1.5em;width:98%;margin:0 auto;align-items:flex-start;justify-content:center">
+        <div style="flex:0 0 260px;font-size:0.78em">
+            <p style="margin-bottom:0.4em">Four models fit to one trait. Set each log-likelihood; weights update live.</p>
+            <div style="font-size:0.82em">
+                <label style="display:block;margin-top:0.4em">BM ($k=2$) lnL: <span id="awBM">-20.0</span></label>
+                <input id="awBMs" type="range" min="-30" max="-10" step="0.5" value="-20" style="width:100%">
+                <label style="display:block;margin-top:0.3em">OU ($k=3$) lnL: <span id="awOU">-15.5</span></label>
+                <input id="awOUs" type="range" min="-30" max="-10" step="0.5" value="-15.5" style="width:100%">
+                <label style="display:block;margin-top:0.3em">EB ($k=3$) lnL: <span id="awEB">-19.5</span></label>
+                <input id="awEBs" type="range" min="-30" max="-10" step="0.5" value="-19.5" style="width:100%">
+                <label style="display:block;margin-top:0.3em">$\lambda$ ($k=3$) lnL: <span id="awLA">-17.0</span></label>
+                <input id="awLAs" type="range" min="-30" max="-10" step="0.5" value="-17" style="width:100%">
+            </div>
+            <div id="awStats" style="margin-top:0.6em;padding:0.5em;background:#f3f4f6;border-radius:6px;font-size:0.82em"></div>
+        </div>
+        <div id="awPlot" style="width:520px;height:380px"></div>
+    </div>
+
+    <p style="font-size:0.7em;margin-top:0.3em;text-align:center;opacity:0.85">
+        $w_i = \dfrac{e^{-\Delta_i/2}}{\sum_j e^{-\Delta_j/2}}$ where $\Delta_i = \mathrm{AIC}_i - \mathrm{AIC}_{\min}$. A higher likelihood helps, but the extra parameter in OU/EB/$\lambda$ must improve the fit enough to offset its AIC penalty.
+    </p>
+
+    <script>
+    (function() {
+        var models=[
+            {name:'BM',k:2,id:'awBMs',lab:'awBM',color:'#9ca3af'},
+            {name:'OU',k:3,id:'awOUs',lab:'awOU',color:'#15803d'},
+            {name:'EB',k:3,id:'awEBs',lab:'awEB',color:'#ca8a04'},
+            {name:'&lambda;',k:3,id:'awLAs',lab:'awLA',color:'#1d4ed8'}
+        ];
+        function go() {
+            var aic=[], minA=Infinity;
+            for (var i=0;i<models.length;i++){
+                var ll=parseFloat(document.getElementById(models[i].id).value);
+                document.getElementById(models[i].lab).textContent=ll.toFixed(1);
+                var a=2*models[i].k-2*ll; aic.push(a); if (a<minA) minA=a;
+            }
+            var w=[], sum=0;
+            for (i=0;i<aic.length;i++){ var e=Math.exp(-(aic[i]-minA)/2); w.push(e); sum+=e; }
+            for (i=0;i<w.length;i++) w[i]/=sum;
+            var names=models.map(function(m){return m.name;});
+            var colors=models.map(function(m){return m.color;});
+            Plotly.react('awPlot',[{
+                x:names, y:w, type:'bar', marker:{color:colors},
+                text:w.map(function(x){return (100*x).toFixed(0)+'%';}), textposition:'outside', hoverinfo:'skip'
+            }],{
+                yaxis:{title:'Akaike weight',range:[0,1.1]},
+                xaxis:{title:'model'},
+                margin:{t:10,b:42,l:52,r:12}
+            },{displayModeBar:false,staticPlot:true});
+
+            var best=0; for (i=1;i<w.length;i++) if (w[i]>w[best]) best=i;
+            var second=-1; for (i=0;i<w.length;i++){ if (i!==best && (second<0 || w[i]>w[second])) second=i; }
+            var er = w[second]>0 ? (w[best]/w[second]) : Infinity;
+            document.getElementById('awStats').innerHTML =
+                'best model: <b>'+names[best]+'</b> (w = '+(w[best]).toFixed(2)+')<br>'+
+                'evidence ratio vs 2nd: <b>'+(isFinite(er)?er.toFixed(1):'&infin;')+'&times;</b><br>'+
+                '<span style="color:#666">A weight near 1 is decisive; several similar weights mean the data cannot separate the models.</span>';
+        }
+        for (var i=0;i<models.length;i++) document.getElementById(models[i].id).addEventListener('input', go);
+        go();
+    })();
+    </script>
+</section>
+
+<section>
+    <h3>Model selection: cautions</h3>
+
+    <ul class="spaced" style="width:84%">
+        <li><b>The best model in a set is not necessarily a good model.</b> AIC ranks the candidates you supplied; it cannot point to a model you did not fit.</li>
+
+        <li><b>OU and early burst are easily over-fit</b> on small trees, and measurement error can masquerade as OU. Treat a modest AIC advantage with scepticism.</li>
+
+        <li><b>Check model adequacy</b>, not just relative fit: simulate data under the winning model and ask whether it reproduces features of the real data.</li>
+
+        <li><b>Report the weights, not just the winner.</b> Two models within a couple of AIC units are effectively tied; choosing one and ignoring the other overstates certainty.</li>
+    </ul>
+</section>
+
+<section class="center">
+    <h2>Discrete characters</h2>
+</section>
+
+<section>
+    <h3>When the trait is a category, not a number</h3>
+
+    <div style="display:flex;gap:1.2em;width:96%;margin:0 auto;align-items:center">
+        <div style="flex:1;font-size:0.88em">
+            <ul class="spaced">
+                <li>Many traits are <b>discrete</b>: present/absent, 2/3/4 colour morphs, diet category, limbed/limbless.</li>
+                <li>These have no meaningful average, so BM and contrasts do not apply.</li>
+                <li>Instead, model evolution as <b>jumps</b> between states along the branches, using a continuous-time Markov chain.</li>
+                <li>This is the same modelling approach used for DNA substitution earlier in the course, now applied to phenotypes.</li>
+            </ul>
+        </div>
+        <div style="flex:0 0 330px;text-align:center">
+            <img data-src="figures/figure7-3.png" style="width:330px;background:#fff;border-radius:4px">
+            <div style="font-size:0.55em;margin-top:0.2em;opacity:0.7">Discrete characters with $k=2$, $3$, and $4$ states.<br>Harmon (2019) <i>PCM</i>, Fig 7.3 (CC-BY-4.0).</div>
+        </div>
+    </div>
 </section>
 
 <section>
     <h3>The Mk model</h3>
 
-    <ul class="spaced" style="width:80%">
-        <li><b>Discrete traits</b> have fixed states (e.g., 0/1, red/yellow/blue, legs/no legs) &mdash; these do not work with continuous-trait methods like BM.</li>
+    <div style="display:flex;gap:1.2em;width:96%;margin:0 auto;align-items:center">
+        <div style="flex:1.15;font-size:0.85em">
+            <ul class="spaced">
+                <li>The <b>Mk model</b> (Lewis 2001) describes a character with $k$ states changing at constant rates, a direct generalisation of the Jukes&ndash;Cantor model for DNA.</li>
+                <li>Rates live in a <b>transition matrix</b> $\mathbf{Q}$. For $k=2$:
+                    $$\mathbf{Q} = \begin{pmatrix} -q_{01} & q_{01} \\ q_{10} & -q_{10} \end{pmatrix}$$
+                </li>
+                <li>The two flavours you fit in the lab:
+                    <ul>
+                        <li><b>ER</b> (equal rates): $q_{01}=q_{10}$, one rate.</li>
+                        <li><b>ARD</b> (all rates different): each transition its own rate.</li>
+                    </ul>
+                </li>
+                <li>More states or asymmetric rates simply add parameters to $\mathbf{Q}$; compare them with AIC, as before.</li>
+            </ul>
+        </div>
+        <div style="flex:0 0 300px;text-align:center">
+            <img data-src="figures/figure7-4.png" style="width:300px;background:#fff;border-radius:4px">
+            <div style="font-size:0.55em;margin-top:0.2em;opacity:0.7">Mk simulations of limbed (black) vs limbless (red) on a squamate tree: slow, fast, and asymmetric rates.<br>Harmon (2019) <i>PCM</i>, Fig 7.4 (CC-BY-4.0).</div>
+        </div>
+    </div>
+</section>
 
-        <li>The <b>Mk model</b> (Lewis, 2001) provides a general approach to modelling discrete character evolution on phylogenies.</li>
+<section>
+    <h3>Try it yourself: simulate Mk on a tree</h3>
 
-        <li>Properties:
+    <div style="display:flex;gap:1.5em;width:98%;margin:0 auto;align-items:flex-start;justify-content:center">
+        <div style="flex:0 0 230px;font-size:0.78em">
+            <p style="margin-bottom:0.5em">A binary trait (state <span style="color:#1f77b4;font-weight:700">0</span> / state <span style="color:#d62728;font-weight:700">1</span>) evolves down the branches. Each branch is coloured by its current state.</p>
+
+            <label style="display:block;margin-top:0.5em">Rate $q$: <span id="mkRVal">1.0</span></label>
+            <input id="mkR" type="range" min="0.1" max="6" step="0.1" value="1.0" style="width:100%">
+
+            <label style="display:block;margin-top:0.4em"><input type="checkbox" id="mkArd"> ARD (asymmetric): bias toward state 0</label>
+
+            <button id="mkReroll" style="margin-top:0.6em;padding:4px 12px;font-size:0.9em">Re-simulate</button>
+
+            <div id="mkStats" style="margin-top:0.8em;padding:0.5em;background:#f3f4f6;border-radius:6px;font-size:0.82em"></div>
+        </div>
+        <svg id="mkTree" viewBox="0 0 480 360" style="width:560px;height:420px;background:#fafafa;border-radius:8px"></svg>
+    </div>
+
+    <p style="font-size:0.7em;margin-top:0.3em;text-align:center;opacity:0.85">
+        Raise $q$ and transitions pile up; the same state can be reached independently on different branches (<b>homoplasy</b>). With ARD, state 1 tends to revert to state 0.
+    </p>
+
+    <script>
+    (function() {
+        // same 6-tip topology as lambda demo
+        var T=3;
+        var nodes={
+            A:{tip:true,y:0},B:{tip:true,y:1},C:{tip:true,y:2},
+            D:{tip:true,y:3},E:{tip:true,y:4},F:{tip:true,y:5},
+            AB:{tip:false,depth:1.7,children:['A','B']},
+            CD:{tip:false,depth:2.1,children:['C','D']},
+            EF:{tip:false,depth:2.1,children:['E','F']},
+            CF:{tip:false,depth:1.1,children:['CD','EF']},
+            root:{tip:false,depth:0,children:['AB','CF']}
+        };
+        function nodeY(id){ if(nodes[id].tip) return nodes[id].y; var c=nodes[id].children,s=0; for(var i=0;i<c.length;i++)s+=nodeY(c[i]); return s/c.length; }
+        var stateColor=['#1f77b4','#d62728'];
+        function go() {
+            var q=parseFloat(document.getElementById('mkR').value);
+            var ard=document.getElementById('mkArd').checked;
+            document.getElementById('mkRVal').textContent=q.toFixed(1);
+            var q01=q, q10=ard? q*2.5 : q; // ARD: faster 1->0
+            var svg=document.getElementById('mkTree'); svg.innerHTML='';
+            var NS='http://www.w3.org/2000/svg';
+            function add(tag,attrs,text){var el=document.createElementNS(NS,tag);for(var k in attrs)el.setAttribute(k,attrs[k]);if(text!=null)el.textContent=text;svg.appendChild(el);return el;}
+            var L=50,R=420,Wd=R-L,top=30,bot=330,Ht=bot-top;
+            function px(d){return L+(d/T)*Wd;}
+            function py(y){return top+(y/5)*Ht;}
+            var nTrans=0, tipStates={};
+            // simulate a branch from parent state over duration dur starting at depth d0; draw colored segments at vertical position yPix
+            function simBranch(state,dur,d0,yPix){
+                var t=0;
+                while (true){
+                    var rate = state===0? q01 : q10;
+                    var wait = rate>0 ? -Math.log(Math.random())/rate : Infinity;
+                    if (t+wait>=dur){
+                        add('line',{x1:px(d0+t),y1:yPix,x2:px(d0+dur),y2:yPix,stroke:stateColor[state],'stroke-width':5});
+                        break;
+                    } else {
+                        add('line',{x1:px(d0+t),y1:yPix,x2:px(d0+t+wait),y2:yPix,stroke:stateColor[state],'stroke-width':5});
+                        t+=wait; state=1-state; nTrans++;
+                        add('circle',{cx:px(d0+t),cy:yPix,r:3,fill:'#fff',stroke:'#222','stroke-width':1});
+                    }
+                }
+                return state; // end state
+            }
+            var rootState = Math.random()<0.5?0:1;
+            function walk(id,inState){
+                var nd=nodes[id];
+                var d0 = nd.tip ? null : nd.depth;
+                if (id==='root'){
+                    // draw root stub
+                    var yr=py(nodeY('root'));
+                    add('line',{x1:px(0)-14,y1:yr,x2:px(0),y2:yr,stroke:stateColor[inState],'stroke-width':5});
+                    // vertical spine connecting the root's children
+                    var rcys=nd.children.map(function(c){return py(nodeY(c));});
+                    add('line',{x1:px(0),y1:Math.min.apply(null,rcys),x2:px(0),y2:Math.max.apply(null,rcys),stroke:stateColor[inState],'stroke-width':2,opacity:0.5});
+                    for (var i=0;i<nd.children.length;i++) walk(nd.children[i], inState);
+                    return;
+                }
+                // branch from parent depth to this node depth, drawn at this node's y
+                var parentDepth = parentDepthOf(id);
+                var yPix=py(nodeY(id));
+                var endDepth = nd.tip? T : nd.depth;
+                var endState = simBranch(inState, endDepth-parentDepth, parentDepth, yPix);
+                // vertical connector to children drawn in parent color (endState), handled by children using endState
+                if (nd.tip){ tipStates[id]=endState;
+                    add('circle',{cx:px(T),cy:yPix,r:8,fill:stateColor[endState],stroke:'#222','stroke-width':1.5});
+                    add('text',{x:px(T)+16,y:yPix+5,'font-size':'15','font-weight':'700',fill:'#222'},id);
+                } else {
+                    // vertical line connecting children at this node's x
+                    var xh=px(nd.depth);
+                    var cys=nd.children.map(function(c){return py(nodeY(c));});
+                    add('line',{x1:xh,y1:Math.min.apply(null,cys),x2:xh,y2:Math.max.apply(null,cys),stroke:stateColor[endState],'stroke-width':2,opacity:0.5});
+                    for (var j=0;j<nd.children.length;j++) walk(nd.children[j], endState);
+                }
+            }
+            function parentDepthOf(id){
+                for (var p in nodes){ if (!nodes[p].tip && nodes[p].children.indexOf(id)>=0) return nodes[p].depth; }
+                return 0;
+            }
+            walk('root', rootState);
+            // present line
+            add('line',{x1:px(T),y1:top-8,x2:px(T),y2:bot+8,stroke:'#bbb','stroke-width':1,'stroke-dasharray':'3,3'});
+            // legend
+            add('rect',{x:55,y:340,width:12,height:12,fill:stateColor[0]}); add('text',{x:72,y:350,'font-size':'12'},'state 0');
+            add('rect',{x:135,y:340,width:12,height:12,fill:stateColor[1]}); add('text',{x:152,y:350,'font-size':'12'},'state 1');
+
+            var n1=0; for (var t in tipStates) if (tipStates[t]===1) n1++;
+            document.getElementById('mkStats').innerHTML =
+                'root state: <b style="color:'+stateColor[rootState]+'">'+rootState+'</b><br>'+
+                'transitions on tree: <b>'+nTrans+'</b><br>'+
+                'tips in state 1: <b>'+n1+' / 6</b><br>'+
+                '<span style="color:#666">'+(ard?'ARD: state 1 reverts faster, so it stays rare.':'ER: states 0 and 1 are symmetric.')+'</span>';
+        }
+        document.getElementById('mkR').addEventListener('input', go);
+        document.getElementById('mkArd').addEventListener('change', go);
+        document.getElementById('mkReroll').addEventListener('click', go);
+        go();
+    })();
+    </script>
+</section>
+
+<section>
+    <h3>Computing the likelihood: pruning</h3>
+
+    <div style="display:flex;gap:1.2em;width:96%;margin:0 auto;align-items:center">
+        <div style="flex:1;font-size:0.85em">
+            <ul class="spaced">
+                <li>A single simulation is easy; the <b>likelihood</b> sums over <i>all</i> possible histories, which is astronomically many.</li>
+                <li>Felsenstein's <b>pruning algorithm</b> makes it tractable: work from the <b>tips to the root</b>, storing at each node the probability of the data below it, for each possible state.</li>
+                <li>At each node, combine the two daughter probabilities using $\mathbf{Q}$ and the branch lengths; recurse down to the root.</li>
+                <li>This is the <b>same algorithm</b> used for DNA substitution models earlier in the course; only the states and $\mathbf{Q}$ differ.</li>
+            </ul>
+        </div>
+        <div style="flex:0 0 360px;text-align:center">
+            <img data-src="figures/figure8-4A.png" style="width:360px;background:#fff;border-radius:4px;padding:4px">
+            <div style="font-size:0.55em;margin-top:0.2em;opacity:0.7">Each node stores per-state probabilities; pruning fills them from tips to root.<br>Harmon (2019) <i>PCM</i>, Fig 8.4 (CC-BY-4.0).</div>
+        </div>
+    </div>
+</section>
+
+<section>
+    <h3>A real example: the evolution of limblessness</h3>
+
+    <div style="display:flex;gap:1.2em;width:96%;margin:0 auto;align-items:center">
+        <div style="flex:1;font-size:0.86em">
+            <ul class="spaced">
+                <li>Squamate reptiles (lizards and snakes) have lost their limbs <b>many times independently</b>: snakes, but also numerous lizard lineages.</li>
+                <li>Fitting an Mk model and reconstructing ancestral states shows limblessness (red) scattered across the tree, not confined to one clade.</li>
+                <li>Each red patch on a black background is an independent transition: a striking case of <b>convergent</b> evolution in a discrete trait.</li>
+                <li>The same fit also estimates whether the limbed&rarr;limbless transition is effectively <b>irreversible</b>: regaining limbs is rare or impossible.</li>
+            </ul>
+        </div>
+        <div style="flex:0 0 280px;text-align:center">
+            <img data-src="figures/figure8-2.png" style="max-height:420px;background:#fff;border-radius:4px">
+            <div style="font-size:0.55em;margin-top:0.2em;opacity:0.7">Reconstructed limbed (black) vs limbless (red) across squamates (data: Bergmann et al. 2012).<br>Harmon (2019) <i>PCM</i>, Fig 8.2 (CC-BY-4.0).</div>
+        </div>
+    </div>
+</section>
+
+<section>
+    <h3>Stochastic character mapping</h3>
+
+    <ul class="spaced" style="width:84%">
+        <li>Point estimates of ancestral states hide their uncertainty. <b>Stochastic character mapping</b> (SIMMAP) samples <b>entire histories</b> consistent with the tips and the fitted $\mathbf{Q}$.</li>
+
+        <li>In the lab you ran <span style="font-family:monospace;font-size:0.9em">make.simmap(..., nsim = 100)</span>: 100 sampled histories, each a complete painting of states along every branch.</li>
+
+        <li>Summarising the 100 maps gives, at every node, the <b>posterior probability</b> of each state, shown as <b>pie charts</b> on the tree.</li>
+
+        <li>Why it matters: a single reconstruction can look confident even when the data barely constrain a node. The spread across sampled maps is the honest measure of what we know.</li>
+
+        <li>The same idea underlies counting how many times a trait was gained or lost: average those counts over the sampled histories rather than trusting one reconstruction.</li>
+    </ul>
+</section>
+
+<section>
+    <h3>State-dependent diversification (SSE)</h3>
+
+    <ul class="spaced" style="width:84%">
+        <li>Does a trait change the <b>rate of speciation or extinction</b>? SSE models join an Mk model to a birth&ndash;death model so the diversification rate can depend on the state.</li>
+
+        <li>An alphabet of variants:
             <ul>
-                <li><b>Unordered</b>: traits can change to any other state without intermediate steps.</li>
-                <li>Transitions are independent across branches.</li>
-                <li>All transition rates are equal (in the simplest version).</li>
+                <li><b>BiSSE</b>: binary-state speciation and extinction,</li>
+                <li><b>HiSSE</b>: adds a <b>hidden</b> state to absorb unmeasured rate variation,</li>
+                <li><b>MuSSE</b>: multiple states.</li>
             </ul>
         </li>
 
-        <li>Extended versions relax the equal-rates assumption.</li>
+        <li>Use when the question is explicitly "does having this trait make a lineage diversify faster?"</li>
 
-        <li>Analogous to the Jukes-Cantor model for DNA, but for arbitrary discrete characters.</li>
+        <li><b>Caution:</b> SSE models are prone to <b>false positives</b>. Any clade that happens to be both species-rich and trait-biased can trigger a spurious signal. HiSSE and careful null models exist precisely because of this.</li>
     </ul>
 </section>
 
 <section>
-    <h3>Simulating Mk on a tree</h3>
+    <h3>Summary: a menu of models beyond BM</h3>
 
-    <ul class="spaced" style="width:80%">
-        <li>The simulation process:
-            <ol>
-                <li>Assign a state to the root (equal probability of all states, or from observed proportions).</li>
-                <li>Assign that value to all daughter branches.</li>
-                <li>For each branch, "roll the dice" &mdash; determine if a transition occurs (probability depends on branch length and rate).</li>
-                <li>Repeat down the tree to the tips.</li>
-            </ol>
-        </li>
-
-        <li>These simulated trees allow us to calculate <b>likelihoods</b> for comparative data.</li>
-
-        <li>But uncertainty makes exact computation difficult. Felsenstein's <b>pruning algorithm</b> works backwards from tips to root, making likelihood calculation tractable.</li>
-    </ul>
-</section>
-
-<section>
-    <h3>State-dependent speciation and extinction (SSE) models</h3>
-
-    <ul class="spaced" style="width:80%">
-        <li>SSE models test correlations between <b>trait evolution</b> and <b>speciation/extinction rates</b>.</li>
-
-        <li>An "alphabet soup" of methods:
-            <ul>
-                <li><b>BiSSE</b>: Binary State Speciation and Extinction</li>
-                <li><b>HiSSE</b>: Hidden State SSE &mdash; allows for hidden (unmeasured) states</li>
-                <li><b>MuSSE</b>: Multiple State SSE</li>
-            </ul>
-        </li>
-
-        <li>When you are interested in whether a particular trait affects the rate of diversification and/or extinction, SSE models provide a formal framework.</li>
-
-        <li>Caution: these models can be sensitive to model violations and have known issues with false positives.</li>
-    </ul>
-</section>
-
-<section>
-    <h3>Summary of models beyond BM</h3>
-
-    <table style="font-size:0.65em; width:90%">
-        <tr>
-            <th>Model</th>
-            <th>What it captures</th>
-            <th>Key parameter(s)</th>
+    <table style="font-size:0.62em; width:94%; margin:0 auto; border-collapse:collapse">
+        <tr style="border-bottom:2px solid #444">
+            <th style="text-align:left;padding:0.3em 0.5em">Model</th>
+            <th style="text-align:left;padding:0.3em 0.5em">What it captures</th>
+            <th style="text-align:left;padding:0.3em 0.5em">Key parameter(s)</th>
+            <th style="text-align:left;padding:0.3em 0.5em">Recovers BM when</th>
         </tr>
-        <tr>
-            <td>Pagel's $\lambda$</td>
-            <td>Phylogenetic signal</td>
-            <td>$\lambda \in [0,1]$</td>
-        </tr>
-        <tr>
-            <td>Pagel's $\delta$</td>
-            <td>Tempo of evolution</td>
-            <td>$\delta$ (node height scaling)</td>
-        </tr>
-        <tr>
-            <td>Pagel's $\kappa$</td>
-            <td>Punctuated vs. gradual change</td>
-            <td>$\kappa$ (branch length scaling)</td>
-        </tr>
-        <tr>
-            <td>OU</td>
-            <td>Stabilizing selection</td>
-            <td>$\alpha$ (pull strength), $\theta$ (optimum)</td>
-        </tr>
-        <tr>
-            <td>Early Burst</td>
-            <td>Adaptive radiation</td>
-            <td>$r$ (rate decay)</td>
-        </tr>
-        <tr>
-            <td>Mk</td>
-            <td>Discrete character evolution</td>
-            <td>Transition rate(s)</td>
-        </tr>
-        <tr>
-            <td>SSE (BiSSE, HiSSE, ...)</td>
-            <td>Trait-dependent diversification</td>
-            <td>State-specific $\lambda$, $\mu$</td>
-        </tr>
+        <tr style="border-bottom:1px solid #ddd"><td style="padding:0.25em 0.5em">Pagel's $\lambda$</td><td style="padding:0.25em 0.5em">Phylogenetic signal</td><td style="padding:0.25em 0.5em">$\lambda \in [0,1]$</td><td style="padding:0.25em 0.5em">$\lambda=1$</td></tr>
+        <tr style="border-bottom:1px solid #ddd"><td style="padding:0.25em 0.5em">Pagel's $\delta$</td><td style="padding:0.25em 0.5em">Tempo through time</td><td style="padding:0.25em 0.5em">$\delta$ (node-height power)</td><td style="padding:0.25em 0.5em">$\delta=1$</td></tr>
+        <tr style="border-bottom:1px solid #ddd"><td style="padding:0.25em 0.5em">Pagel's $\kappa$</td><td style="padding:0.25em 0.5em">Gradual vs speciational</td><td style="padding:0.25em 0.5em">$\kappa$ (branch-length power)</td><td style="padding:0.25em 0.5em">$\kappa=1$</td></tr>
+        <tr style="border-bottom:1px solid #ddd"><td style="padding:0.25em 0.5em">Multi-rate BM</td><td style="padding:0.25em 0.5em">Rate varies across clades</td><td style="padding:0.25em 0.5em">$\sigma^2_1,\sigma^2_2,\dots$</td><td style="padding:0.25em 0.5em">all rates equal</td></tr>
+        <tr style="border-bottom:1px solid #ddd"><td style="padding:0.25em 0.5em">OU</td><td style="padding:0.25em 0.5em">Stabilizing selection</td><td style="padding:0.25em 0.5em">$\alpha$ (pull), $\theta$ (optimum)</td><td style="padding:0.25em 0.5em">$\alpha=0$</td></tr>
+        <tr style="border-bottom:1px solid #ddd"><td style="padding:0.25em 0.5em">Early burst</td><td style="padding:0.25em 0.5em">Adaptive radiation</td><td style="padding:0.25em 0.5em">$r$ (rate decay)</td><td style="padding:0.25em 0.5em">$r=0$</td></tr>
+        <tr style="border-bottom:1px solid #ddd"><td style="padding:0.25em 0.5em">Mk</td><td style="padding:0.25em 0.5em">Discrete-character evolution</td><td style="padding:0.25em 0.5em">transition rate(s) in $\mathbf{Q}$</td><td style="padding:0.25em 0.5em">(continuous analogue)</td></tr>
+        <tr><td style="padding:0.25em 0.5em">SSE (BiSSE, HiSSE...)</td><td style="padding:0.25em 0.5em">Trait-dependent diversification</td><td style="padding:0.25em 0.5em">state-specific $\lambda,\mu$</td><td style="padding:0.25em 0.5em">(birth&ndash;death analogue)</td></tr>
     </table>
+
+    <p style="width:90%;margin:0.7em auto 0;font-size:0.8em;text-align:center;opacity:0.9">
+        Each continuous model is BM plus one parameter. Fit them, read off log-likelihoods, and let AIC weights decide, exactly the lab workflow.
+    </p>
 </section>
 
 <section>
     <h3>Discussion</h3>
 
-    <ul class="spaced" style="width:80%">
-        <li>If you do not know <i>a priori</i> which clade has a different evolutionary rate, what are the obstacles and risks of testing every clade?</li>
+    <ul class="spaced" style="width:82%">
+        <li>If you do not know in advance which clade evolves at a different rate, what are the risks of testing every clade and keeping the most significant?</li>
 
-        <li>Do you think it is a good idea to link punctuated evolution of one trait to changes in other traits?</li>
+        <li>A fitted OU model beats BM by a few AIC units on a tree of 20 species. What would you check before believing the trait is under stabilizing selection?</li>
 
-        <li>For what reasons might Pagel's statistics be less popular today than in the past?</li>
+        <li>For what reasons might Pagel's $\lambda$, $\delta$ and $\kappa$ be less popular today than process-based models like OU?</li>
 
-        <li>Under the early burst model, why would we expect evolutionary rates to slow down over time?</li>
+        <li>Under the early-burst model, why do we expect the rate to slow over time, and what would the tips look like if it did?</li>
+
+        <li>Stochastic mapping returns 100 different histories for the same data. Why is that spread more useful than a single "best" reconstruction?</li>
     </ul>
 </section>
 
 <section>
     <h3>Recommended Reading</h3>
 
-    <div style="display:inline-block;vertical-align:middle;margin-top:2em">
-        <img data-src="../lecture-substitution-models/dg_cover.png" style="height:350px">
+    <div style="display:inline-block;vertical-align:middle;margin-top:0.5em">
+        <img data-src="../lecture-substitution-models/dg_cover.png" style="height:300px">
     </div>
 
-    <div class="textbox" style="width: 55%; display:inline-block; vertical-align:middle; margin-left:2em; margin-top:2em">
+    <div class="textbox" style="width: 55%; display:inline-block; vertical-align:middle; margin-left:2em; margin-top:0.5em">
         <div class="title"><a href="https://decodinggenomes.org/" style="color:inherit; text-decoration:underline">Decoding Genomes</a> (Stadler et al., 2024)</div>
-        <ul class="spaced" style="margin-top:1em; margin-left:1em">
+        <ul class="spaced" style="margin-top:0.5em; margin-left:1em">
             <li><b>Chapter 8</b>: Traits and Comparative Methods</li>
         </ul>
-        <div class="title" style="margin-top:1em"><a href="https://lukejharmon.github.io/pcm/" style="color:inherit; text-decoration:underline">Phylogenetic Comparative Methods</a> (Harmon, 2019)</div>
-        <ul class="spaced" style="margin-top:1em; margin-left:1em">
-            <li><b>Chapter 5</b>: Beyond Brownian Motion</li>
-            <li><b>Chapter 7</b>: Models for discrete character evolution</li>
+        <div class="title" style="margin-top:0.8em"><a href="https://lukejharmon.github.io/pcm/" style="color:inherit; text-decoration:underline">Phylogenetic Comparative Methods</a> (Harmon, 2019)</div>
+        <ul class="spaced" style="margin-top:0.5em; margin-left:1em">
+            <li><b>Chapter 6</b>: Beyond Brownian Motion (OU, early burst)</li>
+            <li><b>Chapter 7</b>: Introduction to Discrete Characters</li>
+            <li><b>Chapter 8</b>: Fitting Models of Discrete Character Evolution</li>
         </ul>
     </div>
 </section>

@@ -3,270 +3,802 @@ lecture_num: 13
 ---
 
 <section class="center">
-    <h2>Brownian Motion</h2>
+    <h2 style="margin-bottom:0.2em">Before you can fit a model, you need a model</h2>
+    <p style="font-size:0.62em;margin:0.2em auto 0.6em;opacity:0.85;max-width:80%">Last week in the lab, one line of R fit Brownian motion to finch beaks. This lecture is what that line assumes.</p>
+    <img data-src="figures/figure3-1.png" style="max-height:330px;border-radius:8px;box-shadow:0 4px 24px rgba(0,0,0,0.25);background:#fff">
+    <div style="font-size:0.5em;margin-top:0.3em;opacity:0.7">100 independent Brownian-motion paths from a common start. Harmon (2019) <i>PCM</i>, Fig 3.1 (CC-BY-4.0).</div>
+</section>
+
+<section>
+    <h3>What this lecture is for</h3>
+
+    <div style="display:flex;gap:1.5em;width:96%;margin:0.3em auto;align-items:flex-start">
+        <div style="flex:1.15;font-size:0.82em">
+            <p style="margin:0 0 0.3em 0">In the lab you ran lines like:</p>
+
+            <div style="background:#eff6ff;border-left:4px solid #1d4ed8;padding:0.55em 0.8em;border-radius:4px;margin:0.3em 0 0.6em 0;font-family:monospace;font-size:0.82em">
+                pic(beakD, tree)<br>
+                fitContinuous(tree, beakD, model = "BM")
+            </div>
+
+            <p style="margin:0.3em 0">Both rest on a single assumption: that the trait performs a <b>random walk in continuous time</b> along the branches of the tree. That random walk is Brownian motion (BM).</p>
+            <p style="font-size:0.85em;opacity:0.85;margin:0.3em 0">BM is the <b>null model</b> of trait evolution: the baseline that the contrast methods of last lecture assume, and the reference that every model next lecture is compared against.</p>
+
+            <p style="margin:0.6em 0 0.2em 0;font-weight:700;color:#1d4ed8">One question to keep in mind:</p>
+            <p style="font-size:0.95em;margin-top:0">When a trait "wanders" with no destination, what pattern does it leave at the tips of a tree, and how do we read the rate of wandering back out?</p>
+        </div>
+
+        <div style="flex:0.95;font-size:0.78em;background:#f8fafc;border-radius:6px;padding:0.7em 0.9em">
+            <p style="margin:0 0 0.3em 0;font-weight:700">Three steps in this lecture</p>
+            <ol class="spaced" style="margin:0.3em 0 0 1em">
+                <li><b>BM as a process.</b> A random walk, its rate $\sigma^2$, and why endpoints are normal.</li>
+                <li><b>BM on a tree.</b> Shared ancestry becomes the variance&ndash;covariance matrix $\mathbf{C}$; tips are multivariate normal.</li>
+                <li><b>Estimating the rate.</b> Contrasts, maximum likelihood, and REML recover $\sigma^2$ from the tips.</li>
+            </ol>
+            <p style="font-size:0.85em;opacity:0.8;margin:0.6em 0 0 0">Step 2 is exactly the $\mathbf{C}$ you met in the comparative-methods lecture, now derived from first principles.</p>
+        </div>
+    </div>
 </section>
 
 <section>
     <h3>Brownian motion: the random walk</h3>
 
-    <ul class="spaced" style="width:80%">
-        <li>The classic <b>random walk</b>: each step is in a random direction.</li>
-
-        <li>Core idea:
-            <ul>
-                <li>There is no bias towards any direction.</li>
-                <li>Each step is independent of every other step.</li>
-                <li>Steps occur in continuous time (not discrete generations).</li>
-            </ul>
-        </li>
-
-        <li>After many steps, the distribution of endpoints follows a <b>normal distribution</b>.
-            <ul>
-                <li>The mean equals the starting value.</li>
-                <li>The variance grows linearly with time.</li>
-            </ul>
-        </li>
-    </ul>
-</section>
-
-<section>
-    <h3>Brownian motion: the rate parameter</h3>
-
-    <div style="width:100%">
-        <div style="width:55%;display:inline-block;vertical-align:middle">
+    <div style="display:flex;gap:1.2em;width:94%;margin:0 auto;align-items:center">
+        <div style="flex:1;font-size:0.9em">
             <ul class="spaced">
-                <li>The evolutionary rate parameter $\sigma^2$ governs how much change per unit time occurs.</li>
-
-                <li>After time $t$, the distribution of trait values is:
-                    $$X(t) \sim N\!\left(X(0),\; \sigma^2 t\right)$$
+                <li>The classic <b>random walk</b>: each instant the trait takes a small step in a random direction.</li>
+                <li>Three rules define it:
+                    <ul>
+                        <li>No bias toward any direction (steps average to zero).</li>
+                        <li>Each step is independent of every other step.</li>
+                        <li>Steps occur in continuous time, not discrete generations.</li>
+                    </ul>
                 </li>
-
-                <li>Higher $\sigma^2$ $\Rightarrow$ greater spread of values (more variance).</li>
-
-                <li>But the <b>mean</b> remains at the starting value, regardless of $\sigma^2$.</li>
+                <li>Add up many small independent steps and, by the central limit theorem, the displacement is <b>normally distributed</b>.</li>
             </ul>
         </div>
-        <div style="width:400px;height:350px;display:inline-block;vertical-align:middle" id="bmPlot">
-        <script>
-            var bmTraces = [];
-            var sigmas = [0.5, 1.0, 2.0];
-            var colors = ['#1f77b4', '#ff7f0e', '#2ca02c'];
-            var t = 10;
-
-            for (var s = 0; s < sigmas.length; s++) {
-                var trace = {x: [], y: [], mode: 'lines', name: 'rate=' + sigmas[s]};
-                var variance = sigmas[s] * t;
-                var sd = Math.sqrt(variance);
-                for (var i = 0; i <= 100; i++) {
-                    var x = -4*Math.sqrt(2*t) + 8*Math.sqrt(2*t)*i/100;
-                    var pdf = Math.exp(-x*x/(2*variance)) / Math.sqrt(2*Math.PI*variance);
-                    trace.x[i] = x;
-                    trace.y[i] = pdf;
-                }
-                bmTraces.push(trace);
-            }
-
-            Plotly.newPlot('bmPlot', bmTraces, {
-                showlegend: true,
-                legend: {x: 0.65, y: 0.95},
-                xaxis: {title: 'Trait value'},
-                yaxis: {title: 'Density'},
-                margin: {t: 10}
-            }, {displayModeBar: false, staticPlot: true});
-        </script>
+        <div style="flex:0 0 300px;text-align:center">
+            <img data-src="figures/figure3-1.png" style="width:300px;background:#fff;border-radius:4px">
+            <div style="font-size:0.55em;margin-top:0.2em;opacity:0.7">Four runs of 100 BM paths, same $\sigma^2=1$.<br>Harmon (2019) <i>PCM</i>, Fig 3.1 (CC-BY-4.0).</div>
         </div>
     </div>
-    <p style="font-size:0.7em;margin-top:0.5em">Distribution of trait values after $t=10$ time units, starting at $X(0)=0$, for three different rates.</p>
 </section>
 
 <section>
-    <h3>Brownian motion and genetics</h3>
+    <h3>Try it yourself: watch the walk spread</h3>
 
-    <ul class="spaced" style="width:80%">
-        <li>Brownian motion is mathematically very similar to <b>genetic drift</b>.</li>
+    <div style="display:flex;gap:1.5em;width:98%;margin:0 auto;align-items:flex-start;justify-content:center">
+        <div style="flex:0 0 230px;font-size:0.78em">
+            <p style="margin-bottom:0.5em"><b>Independent lineages</b> from a common ancestor at value 0.</p>
 
-        <li>When evolutionary change is neutral &mdash; traits changing only due to random luck:
-            <ul>
-                <li>If a trait is influenced by many genes, each with small effect.</li>
-                <li>And the character does not affect fitness.</li>
-                <li>Then trait evolution approximates Brownian motion.</li>
+            <label style="display:block;margin-top:0.5em">Rate $\sigma^2$: <span id="bwSigVal">1.0</span></label>
+            <input id="bwSig" type="range" min="0.1" max="4" step="0.1" value="1.0" style="width:100%">
+
+            <label style="display:block;margin-top:0.4em">Number of lineages: <span id="bwNVal">20</span></label>
+            <input id="bwN" type="range" min="3" max="60" step="1" value="20" style="width:100%">
+
+            <label style="display:block;margin-top:0.4em">Trend $\mu$ (per unit time): <span id="bwMuVal">0.00</span></label>
+            <input id="bwMu" type="range" min="-1.5" max="1.5" step="0.1" value="0" style="width:100%">
+
+            <button id="bwReroll" style="margin-top:0.6em;padding:4px 12px;font-size:0.9em">Re-simulate</button>
+
+            <div id="bwStats" style="margin-top:0.8em;padding:0.5em;background:#f3f4f6;border-radius:6px;font-size:0.85em"></div>
+        </div>
+        <div id="bwPlot" style="width:560px;height:420px"></div>
+    </div>
+
+    <p style="font-size:0.7em;margin-top:0.3em;text-align:center;opacity:0.85">
+        The grey band is the theoretical $\pm 2\sqrt{\sigma^2 t}$ envelope. The spread grows with $\sqrt{t}$; the mean stays put unless you add a trend $\mu$.
+    </p>
+
+    <script>
+    (function() {
+        function rnorm() {
+            var u=0,v=0; while(u===0)u=Math.random(); while(v===0)v=Math.random();
+            return Math.sqrt(-2*Math.log(u))*Math.cos(2*Math.PI*v);
+        }
+        var STEPS = 100, T = 1.0;
+        var palette = ['#1f77b4','#ff7f0e','#2ca02c','#d62728','#9467bd','#8c564b','#e377c2','#17becf'];
+        function go() {
+            var sig2 = parseFloat(document.getElementById('bwSig').value);
+            var n = parseInt(document.getElementById('bwN').value);
+            var mu = parseFloat(document.getElementById('bwMu').value);
+            document.getElementById('bwSigVal').textContent = sig2.toFixed(1);
+            document.getElementById('bwNVal').textContent = n;
+            document.getElementById('bwMuVal').textContent = mu.toFixed(2);
+
+            var dt = T/STEPS;
+            var sd = Math.sqrt(sig2*dt);
+            var ts = []; for (var i=0;i<=STEPS;i++) ts.push(i*dt);
+            var traces = [];
+            var finals = [];
+            for (var k=0;k<n;k++){
+                var y=[0], cur=0;
+                for (i=1;i<=STEPS;i++){ cur += mu*dt + sd*rnorm(); y.push(cur); }
+                finals.push(cur);
+                traces.push({x:ts, y:y, mode:'lines', type:'scatter', showlegend:false,
+                    line:{color:palette[k%palette.length], width:1}, opacity:0.55, hoverinfo:'skip'});
+            }
+            // theoretical envelope
+            var up=[], lo=[], mid=[];
+            for (i=0;i<=STEPS;i++){ var s=2*Math.sqrt(sig2*ts[i]); up.push(mu*ts[i]+s); lo.push(mu*ts[i]-s); mid.push(mu*ts[i]); }
+            traces.push({x:ts.concat(ts.slice().reverse()), y:up.concat(lo.slice().reverse()),
+                fill:'toself', fillcolor:'rgba(120,120,120,0.18)', line:{width:0}, type:'scatter',
+                showlegend:false, hoverinfo:'skip'});
+            traces.push({x:ts, y:mid, mode:'lines', line:{color:'#444', width:2, dash:'dot'},
+                showlegend:false, hoverinfo:'skip'});
+
+            Plotly.react('bwPlot', traces, {
+                xaxis:{title:'time', range:[0,T], zeroline:false},
+                yaxis:{title:'trait value', zeroline:true},
+                margin:{t:10,b:42,l:48,r:12}
+            }, {displayModeBar:false, staticPlot:true});
+
+            var mean=0; for (i=0;i<finals.length;i++) mean+=finals[i]; mean/=finals.length;
+            var vr=0; for (i=0;i<finals.length;i++) vr+=(finals[i]-mean)*(finals[i]-mean); vr/=Math.max(1,finals.length-1);
+            document.getElementById('bwStats').innerHTML =
+                'At t = 1:<br>predicted variance &sigma;<sup>2</sup>t = <b>'+(sig2*T).toFixed(2)+'</b><br>'+
+                'observed variance = <b>'+vr.toFixed(2)+'</b><br>'+
+                'predicted mean = <b>'+(mu*T).toFixed(2)+'</b><br>'+
+                'observed mean = <b>'+mean.toFixed(2)+'</b>';
+        }
+        document.getElementById('bwSig').addEventListener('input', go);
+        document.getElementById('bwN').addEventListener('input', go);
+        document.getElementById('bwMu').addEventListener('input', go);
+        document.getElementById('bwReroll').addEventListener('click', go);
+        go();
+    })();
+    </script>
+</section>
+
+<section>
+    <h3>Many steps add up to a normal distribution</h3>
+
+    <div style="display:flex;gap:1.2em;width:95%;margin:0 auto;align-items:center">
+        <div style="flex:1;font-size:0.9em">
+            <ul class="spaced">
+                <li>Run the walk for time $t$ and record where each lineage ends up.</li>
+                <li>The endpoints are <b>normally distributed</b>:
+                    $$X(t) \sim N\!\left(X(0),\; \sigma^2 t\right)$$
+                </li>
+                <li>The mean equals the starting value $X(0)$.</li>
+                <li>The variance grows <b>linearly</b> with time: $\operatorname{Var}=\sigma^2 t$.</li>
+                <li>This single result is the engine behind everything that follows.</li>
             </ul>
-        </li>
+        </div>
+        <div style="flex:0 0 360px;text-align:center">
+            <img data-src="figures/figure3-2.png" style="width:360px;background:#fff;border-radius:4px">
+            <div style="font-size:0.55em;margin-top:0.2em;opacity:0.7">Endpoints of 100,000 BM runs ($t=100$, $\sigma^2=1$): histogram (A) matches the normal density (B).<br>Harmon (2019) <i>PCM</i>, Fig 3.2 (CC-BY-4.0).</div>
+        </div>
+    </div>
+</section>
 
-        <li>But a trait evolving under BM is <b>not necessarily neutral</b> &mdash; at least three selection regimes also produce BM-like patterns (when selection is weak).</li>
+<section>
+    <h3>The rate parameter $\sigma^2$</h3>
+
+    <div style="width:100%">
+        <div style="width:52%;display:inline-block;vertical-align:middle">
+            <ul class="spaced">
+                <li>$\sigma^2$ sets how much change accumulates per unit time. It is the one number BM has to estimate.</li>
+                <li>After time $t$, the spread of trait values is $N(X(0),\,\sigma^2 t)$: higher $\sigma^2$ means a wider distribution.</li>
+                <li>The <b>mean</b> stays at the starting value whatever the rate.</li>
+                <li>Units matter: $\sigma^2$ is in (trait units)$^2$ per unit of branch length, so log-transforming a trait changes what $\sigma^2$ means.</li>
+            </ul>
+        </div>
+        <div style="width:46%;display:inline-block;vertical-align:middle;text-align:center">
+            <div id="rateStats" style="font-size:0.8em;margin-bottom:0.3em"></div>
+            <div id="ratePlot" style="width:430px;height:330px;display:inline-block"></div>
+            <div style="font-size:0.7em">Rate $\sigma^2$: <span id="rateVal">1.0</span></div>
+            <input id="rateSig" type="range" min="0.2" max="4" step="0.1" value="1.0" style="width:80%">
+        </div>
+    </div>
+
+    <script>
+    (function() {
+        function draw() {
+            var sig2 = parseFloat(document.getElementById('rateSig').value);
+            document.getElementById('rateVal').textContent = sig2.toFixed(1);
+            var t = 10;
+            var fixed = [0.5, 1.0, 2.0];
+            var colors = ['#9ecae1','#6baed6','#3182bd'];
+            var traces = [];
+            for (var s=0;s<fixed.length;s++){
+                var variance = fixed[s]*t, x=[], y=[];
+                for (var i=0;i<=120;i++){
+                    var xv = -16 + 32*i/120;
+                    x.push(xv); y.push(Math.exp(-xv*xv/(2*variance))/Math.sqrt(2*Math.PI*variance));
+                }
+                traces.push({x:x,y:y,mode:'lines',name:'&sigma;&sup2;='+fixed[s].toFixed(1),
+                    line:{color:colors[s],width:1.5,dash:'dot'}, hoverinfo:'skip'});
+            }
+            var variance2 = sig2*t, x2=[], y2=[];
+            for (i=0;i<=120;i++){ var xv2=-16+32*i/120; x2.push(xv2); y2.push(Math.exp(-xv2*xv2/(2*variance2))/Math.sqrt(2*Math.PI*variance2)); }
+            traces.push({x:x2,y:y2,mode:'lines',name:'your &sigma;&sup2;',
+                line:{color:'#d62728',width:3}, hoverinfo:'skip'});
+
+            Plotly.react('ratePlot', traces, {
+                showlegend:true, legend:{x:0.62,y:0.97,font:{size:10}},
+                xaxis:{title:'trait value after t=10'}, yaxis:{title:'density'},
+                margin:{t:8,b:38,l:44,r:8}
+            }, {displayModeBar:false, staticPlot:true});
+            document.getElementById('rateStats').innerHTML =
+                'Variance at t=10: <b>'+(sig2*t).toFixed(1)+'</b>';
+        }
+        document.getElementById('rateSig').addEventListener('input', draw);
+        draw();
+    })();
+    </script>
+</section>
+
+<section>
+    <h3>Three defining properties of BM</h3>
+
+    <div style="display:flex;gap:1em;width:95%;margin:1em auto">
+        <div style="flex:1;background:#eff6ff;border-left:4px solid #1d4ed8;padding:0.8em 1em;border-radius:4px">
+            <div style="font-weight:700;color:#1d4ed8">1. No trend</div>
+            <p style="font-size:0.85em;margin:0.4em 0 0">The expected value never moves from $X(0)$. The walk has no destination.</p>
+        </div>
+        <div style="flex:1;background:#dcfce7;border-left:4px solid #15803d;padding:0.8em 1em;border-radius:4px">
+            <div style="font-weight:700;color:#15803d">2. Variance grows with time</div>
+            <p style="font-size:0.85em;margin:0.4em 0 0">$\operatorname{Var}=\sigma^2 t$. Long branches accumulate more change; the uncertainty fans out as $\sqrt{t}$.</p>
+        </div>
+        <div style="flex:1;background:#fef3c7;border-left:4px solid #ca8a04;padding:0.8em 1em;border-radius:4px">
+            <div style="font-weight:700;color:#ca8a04">3. Independent increments</div>
+            <p style="font-size:0.85em;margin:0.4em 0 0">Change in one interval is independent of, and normal like, change in any other. Non-overlapping branches evolve independently.</p>
+        </div>
+    </div>
+
+    <p style="width:88%;margin:0.6em auto 0;font-size:0.86em;text-align:center;opacity:0.9">
+        Property 3 is what makes <b>independent contrasts</b> work: differences between sister taxa are independent normal draws.
+    </p>
+</section>
+
+<section>
+    <h3>Why would a trait evolve by Brownian motion?</h3>
+
+    <ul class="spaced" style="width:84%">
+        <li>BM is the mathematical twin of <b>genetic drift</b>. When change is neutral:
+            <ul>
+                <li>a trait is influenced by many genes, each of small effect, and</li>
+                <li>the trait does not affect fitness,</li>
+            </ul>
+            then its mean drifts as a random walk and trait evolution approximates BM.</li>
+
+        <li>But a BM-like pattern does <b>not</b> imply neutrality. Several selective regimes also produce BM at the macroevolutionary scale (next slide).</li>
+
+        <li>This is why BM is a sensible <b>null</b>: it is what we expect from drift, and a useful baseline even when selection is at work.</li>
     </ul>
 </section>
 
 <section>
-    <h3>Brownian motion under selection</h3>
+    <h3>Brownian motion can also arise under selection</h3>
 
-    <ul class="spaced" style="width:80%">
-        <li>Three regimes where selection produces a Brownian-like result (all assume selection is weak):</li>
+    <ul class="spaced" style="width:84%">
+        <li>Three regimes produce a Brownian-like result across a phylogeny (each assumes selection is weak relative to drift over macroevolutionary time):</li>
 
-        <li><b>1. Fluctuating directional selection</b>:
-            <ul><li>The direction (and possibly strength) of selection varies randomly every generation.</li></ul>
-        </li>
+        <li><b>1. Fluctuating directional selection.</b> The direction (and strength) of selection varies randomly from generation to generation, so over long spans it averages to a random walk.</li>
 
-        <li><b>2. Stabilizing selection with a moving optimum</b>:
-            <ul><li>The optimum itself moves randomly, and the population tracks it.</li></ul>
-        </li>
+        <li><b>2. Stabilizing selection toward a moving optimum.</b> The optimum itself wanders randomly and the population tracks it.</li>
 
-        <li><b>3. Genetic drift with weak selection</b>:
-            <ul><li>Selection is present but too weak relative to drift to produce a consistent directional trend.</li></ul>
-        </li>
+        <li><b>3. Drift with weak selection.</b> Selection is present but too weak relative to drift to leave a consistent directional trend.</li>
 
-        <li>When selection is much stronger than drift, selection completely dominates and BM is no longer appropriate.</li>
+        <li>When selection is <b>strong and persistent</b>, it dominates drift and BM is no longer appropriate. That is the case for the Ornstein&ndash;Uhlenbeck model next lecture.</li>
     </ul>
 </section>
 
 <section>
     <h3>Brownian motion with a trend</h3>
 
-    <ul class="spaced" style="width:80%">
-        <li>We are usually estimating the ancestral (root) value from an incomplete sample of extant values.</li>
-
-        <li>If a trend is slow enough, how can we distinguish a shift in the mean from statistical noise?</li>
-
-        <li>A BM model with a trend adds a <b>drift parameter</b> $\mu$:
-            $$X(t) \sim N\!\left(X(0) + \mu t,\; \sigma^2 t\right)$$
-        </li>
-
-        <li>Detecting trends requires either long time spans or strong trends relative to the rate of random change.</li>
-    </ul>
-</section>
-
-<section>
-    <h3>BM and phylogenetic trees</h3>
-
-    <ul class="spaced" style="width:80%">
-        <li>We can "wind back the clock" to infer <b>ancestral states</b> on a tree under Brownian motion.
-            <ul>
-                <li>This applies to other models too.</li>
+    <div style="display:flex;gap:1.2em;width:92%;margin:0 auto;align-items:center">
+        <div style="flex:1;font-size:0.9em">
+            <ul class="spaced">
+                <li>Add a directional <b>drift parameter</b> $\mu$ and the endpoints become:
+                    $$X(t) \sim N\!\left(X(0) + \mu t,\; \sigma^2 t\right)$$
+                </li>
+                <li>The mean now slides at rate $\mu$ while the spread still grows as $\sigma^2 t$ (try $\mu \ne 0$ in the simulator three slides back).</li>
+                <li><b>The catch:</b> on an ultrametric tree of living species only, all tips have the same age, so a trend in the mean and a shifted root value are <b>confounded</b>. The trend cannot be estimated from extant tips alone.</li>
+                <li>Detecting a trend needs <b>fossils</b> (tips of different ages) or a strong trend relative to $\sigma^2$.</li>
             </ul>
-        </li>
-
-        <li>These procedures generalise to <b>multivariate distributions</b>.
-            <ul>
-                <li>Both univariate and multivariate approaches use the same BM framework.</li>
-            </ul>
-        </li>
-
-        <li>The shared branch lengths in a phylogeny define a <b>variance-covariance matrix</b> $\mathbf{C}$:
-            <ul>
-                <li>Diagonal: total branch length from root to each tip (variance).</li>
-                <li>Off-diagonal: shared branch length between pairs of tips (covariance).</li>
-            </ul>
-        </li>
-    </ul>
+        </div>
+        <div style="flex:0 0 250px;background:#fef3c7;border-left:4px solid #ca8a04;padding:0.7em 0.9em;border-radius:4px;font-size:0.82em">
+            <b>A subtle identifiability problem.</b> Slow trends look just like noise. This is why a "directional BM" model is rarely the default, and why palaeontological time series are so valuable for studying evolutionary trends.
+        </div>
+    </div>
 </section>
 
 <section class="center">
-    <h2>Estimating Rates of Brownian Motion</h2>
+    <h2>Brownian motion on a phylogeny</h2>
+    <p style="font-size:0.75em;margin-top:0.8em">From a single walk to a tree of correlated walks</p>
 </section>
 
 <section>
-    <h3>Estimating rates using independent contrasts</h3>
+    <h3>Evolving a trait down a tree</h3>
 
-    <ul class="spaced" style="width:80%">
-        <li>Each contrast is an amount of change, divided by the branch length.</li>
+    <div style="display:flex;gap:1.2em;width:95%;margin:0 auto;align-items:center">
+        <div style="flex:1;font-size:0.88em">
+            <ul class="spaced">
+                <li>On a single branch (A), the trait performs BM from the ancestral value $\bar{z}(0)$ to $\bar{z}(t_1)$.</li>
+                <li>At a speciation event (B), the two daughter lineages start from the <b>same</b> ancestral value, then evolve <b>independently</b>.</li>
+                <li>So two species share all the change that happened <b>before</b> they split, and nothing after.</li>
+                <li>Shared history creates <b>covariance</b>; independent history after the split creates <b>variance</b>. This single idea builds the whole tip distribution.</li>
+            </ul>
+        </div>
+        <div style="flex:0 0 360px;text-align:center">
+            <img data-src="figures/figure3-4.png" style="width:360px;background:#fff;border-radius:4px;padding:6px">
+            <div style="font-size:0.55em;margin-top:0.2em;opacity:0.7">BM on a single lineage (A) and across a speciation event (B).<br>Harmon (2019) <i>PCM</i>, Fig 3.4 (CC-BY-4.0).</div>
+        </div>
+    </div>
+</section>
 
-        <li>For a single trait, we can estimate the evolutionary rate under BM:
-            $$\hat{\sigma}^2_{PIC} = \frac{\sum s^2_{ij}}{n-1}$$
-            This estimates the variance of the (standardised) contrasts, which equals $\sigma^2$.
+<section>
+    <h3>Try it yourself: BM on a 8-tip tree (a traitgram)</h3>
+
+    <div style="display:flex;gap:1.5em;width:98%;margin:0 auto;align-items:flex-start;justify-content:center">
+        <div style="flex:0 0 230px;font-size:0.78em">
+            <p style="margin-bottom:0.5em">Each lineage does its own BM down the branches. Sister lineages share their path until they split, then diverge.</p>
+
+            <label style="display:block;margin-top:0.5em">Rate $\sigma^2$: <span id="tgSigVal">1.0</span></label>
+            <input id="tgSig" type="range" min="0.2" max="4" step="0.1" value="1.0" style="width:100%">
+
+            <button id="tgReroll" style="margin-top:0.6em;padding:4px 12px;font-size:0.9em">Re-simulate</button>
+
+            <div id="tgStats" style="margin-top:0.8em;padding:0.5em;background:#f3f4f6;border-radius:6px;font-size:0.82em"></div>
+            <p style="font-size:0.72em;margin-top:0.5em;opacity:0.78">Time runs left to right; the vertical axis is the trait value. Colour marks the two deep clades.</p>
+        </div>
+        <div id="tgPlot" style="width:560px;height:420px"></div>
+    </div>
+
+    <p style="font-size:0.7em;margin-top:0.3em;text-align:center;opacity:0.85">
+        Notice how the two same-coloured tips in each "cherry" end up close together: shared ancestry makes related species resemble one another, even with no selection.
+    </p>
+
+    <script>
+    (function() {
+        function rnorm() {
+            var u=0,v=0; while(u===0)u=Math.random(); while(v===0)v=Math.random();
+            return Math.sqrt(-2*Math.log(u))*Math.cos(2*Math.PI*v);
+        }
+        // balanced 8-tip ultrametric tree, depth 1, three internal levels => branch = 1/3
+        // node = {t0, x0 (value at start), tEnd, children:[]}
+        function buildTree() {
+            var bl = 1/3;
+            function node(depth, t0, label, clade){
+                var nd = {t0:t0, dur:bl, label:label, clade:clade, children:[]};
+                if (depth>0){
+                    nd.children.push(node(depth-1, t0+bl, label, clade));
+                    nd.children.push(node(depth-1, t0+bl, label, clade));
+                }
+                return nd;
+            }
+            var root = {t0:0, dur:0, children:[], clade:-1};
+            root.children.push(node(2, 0, 'L', 0));
+            root.children.push(node(2, 0, 'R', 1));
+            return root;
+        }
+        function go() {
+            var sig2 = parseFloat(document.getElementById('tgSig').value);
+            document.getElementById('tgSigVal').textContent = sig2.toFixed(1);
+            var STEPS=24;
+            var traces=[];
+            var tips=[];
+            var cladeColors=['#1f77b4','#d62728'];
+            function evolve(nd, startVal){
+                if (nd.dur>0){
+                    var dt = nd.dur/STEPS, sd=Math.sqrt(sig2*dt);
+                    var xs=[nd.t0], ys=[startVal], cur=startVal;
+                    for (var i=1;i<=STEPS;i++){ cur += sd*rnorm(); xs.push(nd.t0+i*dt); ys.push(cur); }
+                    traces.push({x:xs,y:ys,mode:'lines',type:'scatter',showlegend:false,
+                        line:{color: nd.clade>=0?cladeColors[nd.clade]:'#888', width:1.6}, opacity:0.85, hoverinfo:'skip'});
+                    startVal = cur;
+                }
+                if (nd.children.length===0){ tips.push({val:startVal, clade:nd.clade, t:nd.t0+nd.dur}); }
+                for (var c=0;c<nd.children.length;c++) evolve(nd.children[c], startVal);
+            }
+            var root = buildTree();
+            evolve(root, 0);
+            // tip markers
+            var lx=[],ly=[],rx=[],ry=[];
+            for (var k=0;k<tips.length;k++){
+                if (tips[k].clade===0){lx.push(tips[k].t);ly.push(tips[k].val);} else {rx.push(tips[k].t);ry.push(tips[k].val);}
+            }
+            traces.push({x:lx,y:ly,mode:'markers',type:'scatter',name:'clade L',marker:{color:'#1f77b4',size:10,line:{color:'#0c4a87',width:1}}});
+            traces.push({x:rx,y:ry,mode:'markers',type:'scatter',name:'clade R',marker:{color:'#d62728',size:10,line:{color:'#7f1410',width:1}}});
+
+            Plotly.react('tgPlot', traces, {
+                xaxis:{title:'time (root → present)', range:[0,1.05], zeroline:false},
+                yaxis:{title:'trait value'},
+                margin:{t:10,b:42,l:48,r:12},
+                legend:{x:0.02,y:0.98,bgcolor:'rgba(255,255,255,0.8)',font:{size:11}}
+            }, {displayModeBar:false, staticPlot:true});
+
+            function mean(a){var s=0;for(var i=0;i<a.length;i++)s+=a[i];return s/a.length;}
+            var mL=mean(ly), mR=mean(ry);
+            document.getElementById('tgStats').innerHTML =
+                'clade L mean: <b>'+mL.toFixed(2)+'</b><br>'+
+                'clade R mean: <b>'+mR.toFixed(2)+'</b><br>'+
+                'between-clade gap: <b>'+Math.abs(mL-mR).toFixed(2)+'</b><br>'+
+                '<span style="color:#666">A big gap from a single deep split is exactly the non-independence problem from last lecture.</span>';
+        }
+        document.getElementById('tgSig').addEventListener('input', go);
+        document.getElementById('tgReroll').addEventListener('click', go);
+        go();
+    })();
+    </script>
+</section>
+
+<section>
+    <h3>Shared ancestry becomes a covariance matrix $\mathbf{C}$</h3>
+
+    <div style="display:flex;gap:1em;width:99%;margin:0 auto;align-items:center">
+        <div style="flex:0 0 260px;text-align:center">
+            <svg id="cTree" viewBox="0 0 280 280" style="width:100%;height:280px">
+                <!-- Tree (((A,B):1, C:2):1, D:3), ultrametric depth 3 -->
+                <line id="e_rootD" x1="40" y1="178" x2="250" y2="230" stroke="#333" stroke-width="3"/>
+                <line id="e_rootAC" x1="40" y1="178" x2="110" y2="125" stroke="#333" stroke-width="3"/>
+                <line id="e_ABC_C" x1="110" y1="125" x2="250" y2="170" stroke="#333" stroke-width="3"/>
+                <line id="e_ABC_AB" x1="110" y1="125" x2="180" y2="80" stroke="#333" stroke-width="3"/>
+                <line id="e_AB_A" x1="180" y1="80" x2="250" y2="50" stroke="#333" stroke-width="3"/>
+                <line id="e_AB_B" x1="180" y1="80" x2="250" y2="110" stroke="#333" stroke-width="3"/>
+                <circle cx="250" cy="50" r="13" fill="#dbeafe" stroke="#1e40af" stroke-width="2"/>
+                <text x="250" y="55" text-anchor="middle" font-size="15" font-weight="700" fill="#1e40af">A</text>
+                <circle cx="250" cy="110" r="13" fill="#dbeafe" stroke="#1e40af" stroke-width="2"/>
+                <text x="250" y="115" text-anchor="middle" font-size="15" font-weight="700" fill="#1e40af">B</text>
+                <circle cx="250" cy="170" r="13" fill="#dbeafe" stroke="#1e40af" stroke-width="2"/>
+                <text x="250" y="175" text-anchor="middle" font-size="15" font-weight="700" fill="#1e40af">C</text>
+                <circle cx="250" cy="230" r="13" fill="#dbeafe" stroke="#1e40af" stroke-width="2"/>
+                <text x="250" y="235" text-anchor="middle" font-size="15" font-weight="700" fill="#1e40af">D</text>
+            </svg>
+            <div style="font-size:0.72em;opacity:0.8;margin-top:0.2em">Hover a matrix cell to light up the shared path.</div>
+        </div>
+
+        <div style="flex:1;text-align:center">
+            <p style="font-size:0.85em;margin:0 0 0.3em"><b>$\mathbf{C}_{ij}$ = shared branch length from the root to the common ancestor of $i$ and $j$</b></p>
+            <table id="cTable" style="margin:0 auto;border-collapse:collapse;font-size:1.1em">
+                <tr><td></td>
+                    <td style="padding:4px 12px;font-weight:700;color:#1e40af">A</td>
+                    <td style="padding:4px 12px;font-weight:700;color:#1e40af">B</td>
+                    <td style="padding:4px 12px;font-weight:700;color:#1e40af">C</td>
+                    <td style="padding:4px 12px;font-weight:700;color:#1e40af">D</td></tr>
+            </table>
+            <p style="font-size:0.82em;opacity:0.9;margin-top:0.5em">Diagonal = root-to-tip length (the <b>variance</b> of that tip). Off-diagonal = shared path (the <b>covariance</b> between two tips). A and B share the most; D shares nothing.</p>
+        </div>
+    </div>
+
+    <div style="margin-top:0.4em;width:90%;margin-left:auto;margin-right:auto;font-size:0.8em;background:#eff6ff;border-left:4px solid #1d4ed8;padding:0.4em 0.8em;border-radius:4px">
+        This is the same $\mathbf{C}$ that powered PIC and PGLS last lecture. BM is what gives it meaning: covariance is literally shared evolutionary time.
+    </div>
+
+    <script>
+    (function() {
+        // C matrix and, for each (i,j), the list of shared edge ids (root -> MRCA path)
+        var labels = ['A','B','C','D'];
+        var C = [[3,2,1,0],[2,3,1,0],[1,1,3,0],[0,0,0,3]];
+        // edges from root downward
+        var pathRootTip = {
+            A: ['e_rootAC','e_ABC_AB','e_AB_A'],
+            B: ['e_rootAC','e_ABC_AB','e_AB_B'],
+            C: ['e_rootAC','e_ABC_C'],
+            D: ['e_rootD']
+        };
+        // shared path (root -> MRCA) per pair
+        function shared(i,j){
+            var pi=pathRootTip[labels[i]], pj=pathRootTip[labels[j]], out=[];
+            for (var a=0;a<pi.length;a++){ if (pj.indexOf(pi[a])>=0) out.push(pi[a]); }
+            if (i===j) return pi.slice();
+            return out;
+        }
+        function setHighlight(ids, color){
+            var all = ['e_rootD','e_rootAC','e_ABC_C','e_ABC_AB','e_AB_A','e_AB_B'];
+            for (var k=0;k<all.length;k++){
+                var el=document.getElementById(all[k]);
+                var on = ids.indexOf(all[k])>=0;
+                el.setAttribute('stroke', on?color:'#333');
+                el.setAttribute('stroke-width', on?6:3);
+            }
+        }
+        var tbl = document.getElementById('cTable');
+        for (var i=0;i<4;i++){
+            var tr = document.createElement('tr');
+            var th = document.createElement('td');
+            th.textContent = labels[i];
+            th.style.cssText='padding:4px 12px;font-weight:700;color:#1e40af';
+            tr.appendChild(th);
+            for (var j=0;j<4;j++){
+                var td=document.createElement('td');
+                td.textContent = C[i][j];
+                td.style.cssText='padding:4px 14px;border:1px solid #ccc;cursor:pointer;'+
+                    (i===j?'background:#fee2e2;font-weight:700;':(C[i][j]>0?'background:#dbeafe;':'background:#f8fafc;color:#aaa;'));
+                (function(ii,jj){
+                    td.addEventListener('mouseenter', function(){ setHighlight(shared(ii,jj), ii===jj?'#dc2626':'#ea580c'); });
+                    td.addEventListener('mouseleave', function(){ setHighlight([], '#333'); });
+                })(i,j);
+                tr.appendChild(td);
+            }
+            tbl.appendChild(tr);
+        }
+    })();
+    </script>
+</section>
+
+<section>
+    <h3>The tips are one big multivariate normal</h3>
+
+    <div style="display:flex;gap:1.2em;width:94%;margin:0 auto;align-items:center">
+        <div style="flex:1;font-size:0.9em">
+            <ul class="spaced">
+                <li>Stack the tip values into a vector $\mathbf{x}=(X_A,\dots,X_n)^\top$. Under BM they follow a <b>multivariate normal</b>:
+                    $$\mathbf{x} \sim \mathrm{MVN}\!\left(X(0)\,\mathbf{1},\; \sigma^2\,\mathbf{C}\right)$$
+                </li>
+                <li>Two parameters only: the root state $X(0)$ and the rate $\sigma^2$. The tree fixes $\mathbf{C}$.</li>
+                <li>This <b>is</b> the likelihood. Everything else (contrasts, ML, REML, PGLS) is a different route to the same multivariate normal.</li>
+                <li>For several traits at once, replace $\sigma^2$ with a rate matrix $\mathbf{R}$ (the multivariate BM of last lecture).</li>
+            </ul>
+        </div>
+        <div style="flex:0 0 300px;text-align:center">
+            <img data-src="figures/figure3-5.jpeg" style="width:300px;background:#fff;border-radius:4px">
+            <div style="font-size:0.55em;margin-top:0.2em;opacity:0.7">A tree and its phylogenetic VCV matrix $\mathbf{C}$.<br>Harmon (2019) <i>PCM</i>, Fig 3.5 (CC-BY-4.0).</div>
+        </div>
+    </div>
+</section>
+
+<section>
+    <h3>Winding back the clock: ancestral states</h3>
+
+    <div style="display:flex;gap:1.3em;width:96%;margin:0 auto;align-items:flex-start">
+        <div style="flex:1.25">
+            <ul class="spaced" style="font-size:0.92em">
+                <li>Because the tips are multivariate normal, we can also estimate what the <b>internal nodes</b> most likely were.</li>
+
+                <li>A node's estimate is an <b>inverse-variance weighted average</b> of its descendants: a <b>short</b>-branch descendant has drifted little, so it reflects the ancestor closely and counts <b>more</b>; a long-branch descendant counts less.</li>
+
+                <li>Uncertainty <b>grows toward the root</b>: deeper nodes have wider intervals, and the root state is hardest to estimate.</li>
+
+                <li>The same logic extends to <b>multivariate</b> traits, and to other models (OU, early burst) by swapping $\mathbf{C}$ for the model's own covariance.</li>
+            </ul>
+        </div>
+
+        <div style="flex:0.95;font-size:0.78em">
+            <div style="background:#fef3c7;border-left:4px solid #ca8a04;padding:0.5em 0.85em;border-radius:4px;margin-bottom:0.6em">
+                <b>Caveat.</b> BM ancestral states pull strongly toward the mean of the tips, and can be badly wrong if evolution was directional. Reconstructed values are estimates, not observations.
+            </div>
+            <div style="background:#eff6ff;border-left:4px solid #1d4ed8;padding:0.5em 0.85em;border-radius:4px">
+                <b>Not the same as last lecture's down-weighting.</b> There, two near-identical relatives count as roughly <b>one independent data point</b> for a regression (redundancy <i>between</i> tips). Here we ask what their <b>shared ancestor</b> was, and sitting close to it makes them <i>better</i> estimators of that node.
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="center">
+    <h2>Estimating the rate of evolution</h2>
+    <p style="font-size:0.75em;margin-top:0.8em">Three routes to $\sigma^2$: contrasts, maximum likelihood, REML</p>
+</section>
+
+<section>
+    <h3>Route 1: independent contrasts</h3>
+
+    <ul class="spaced" style="width:84%">
+        <li>Recall from last lecture: a standardised contrast between sister taxa $i,j$ is
+            $$c_{ij} = \frac{X_i - X_j}{\sqrt{v_i + v_j}} \sim N(0,\,\sigma^2)$$
         </li>
 
-        <li>Simple, direct, and computationally efficient.</li>
+        <li>The contrasts are independent draws from $N(0,\sigma^2)$, so the rate is just their (mean) squared size:
+            $$\hat{\sigma}^2_{\text{PIC}} = \frac{1}{n-1}\sum_k c_k^2$$
+        </li>
+
+        <li>Simple, fast, and exact under BM. This is what <span style="font-family:monospace;font-size:0.9em">ape::pic()</span> computes for you, and what you regressed in the lab.</li>
+
+        <li>One subtlety: dividing by $n-1$ (not $n$) is the REML correction, accounting for having estimated the root state. More on that shortly.</li>
     </ul>
 </section>
 
 <section>
-    <h3>Estimating rates with maximum likelihood</h3>
+    <h3>Route 2: maximum likelihood</h3>
 
     <div style="width:100%">
-        <div style="width:55%;display:inline-block;vertical-align:middle">
+        <div style="width:54%;display:inline-block;vertical-align:middle">
             <ul class="spaced">
-                <li>BM tip states are drawn from a multivariate normal whose covariance matrix depends on the tree.</li>
-
-                <li>The likelihood depends on two parameters: the rate $\sigma^2$ and the root state $\bar{z}(0)$.</li>
-
-                <li>The ML estimate is the $(\sigma^2, \bar{z}(0))$ at the peak of this surface.</li>
+                <li>Write down the multivariate-normal likelihood and find the $(\sigma^2, X(0))$ that maximise it.</li>
+                <li>The likelihood surface (right) has a single peak: the maximum-likelihood estimate.</li>
+                <li>This is what <span style="font-family:monospace;font-size:0.9em">geiger::fitContinuous(model="BM")</span> reports: <span style="font-family:monospace;font-size:0.9em">sigsq</span> ($\hat{\sigma}^2$) and <span style="font-family:monospace;font-size:0.9em">z0</span> ($\hat{X}(0)$), plus the log-likelihood and AIC.</li>
+                <li>The log-likelihood and parameter count are exactly what feed the AIC model comparison you will do next lecture.</li>
             </ul>
         </div>
-        <div style="width:42%;display:inline-block;vertical-align:middle;text-align:center">
-            <img data-src="figures/figure4-3.png" style="max-width:100%; max-height:380px">
-            <div style="font-size:0.6em; margin-top:0.3em">
-                Likelihood surface for BM on mammal body mass (Garland 1992).
-            </div>
+        <div style="width:44%;display:inline-block;vertical-align:middle;text-align:center">
+            <img data-src="figures/figure4-3.png" style="max-width:100%;max-height:380px">
+            <div style="font-size:0.6em;margin-top:0.3em">Likelihood surface for BM on mammal body mass (Garland 1992 data).<br>Harmon (2019) <i>PCM</i>, Fig 4.3 (CC-BY-4.0).</div>
         </div>
-    </div>
-
-    <div style="font-size:0.55em; margin-top:0.8em; text-align:right; opacity:0.7">
-        Harmon (2019) <i>Phylogenetic Comparative Methods</i>, Fig 4.3 (CC-BY-4.0).
     </div>
 </section>
 
 <section>
-    <h3>Hill-climbing to the MLE</h3>
+    <h3>Try it yourself: where is the likelihood peak?</h3>
+
+    <div style="display:flex;gap:1.5em;width:98%;margin:0 auto;align-items:flex-start;justify-content:center">
+        <div style="flex:0 0 230px;font-size:0.78em">
+            <p style="margin-bottom:0.5em">Data simulated under a true rate, then we plot the log-likelihood as a function of the candidate rate $\sigma^2$.</p>
+
+            <label style="display:block;margin-top:0.5em">True $\sigma^2$: <span id="mlSigVal">1.0</span></label>
+            <input id="mlSig" type="range" min="0.2" max="3" step="0.1" value="1.0" style="width:100%">
+
+            <label style="display:block;margin-top:0.4em">Number of contrasts $n-1$: <span id="mlNVal">15</span></label>
+            <input id="mlN" type="range" min="3" max="60" step="1" value="15" style="width:100%">
+
+            <button id="mlReroll" style="margin-top:0.6em;padding:4px 12px;font-size:0.9em">Re-sample data</button>
+
+            <div id="mlStats" style="margin-top:0.8em;padding:0.5em;background:#f3f4f6;border-radius:6px;font-size:0.82em"></div>
+        </div>
+        <div id="mlPlot" style="width:560px;height:400px"></div>
+    </div>
+
+    <p style="font-size:0.7em;margin-top:0.3em;text-align:center;opacity:0.85">
+        The MLE (red) is the rate that makes the observed contrasts most probable. With few contrasts it scatters widely around the truth; with many it homes in.
+    </p>
+
+    <script>
+    (function() {
+        function rnorm() {
+            var u=0,v=0; while(u===0)u=Math.random(); while(v===0)v=Math.random();
+            return Math.sqrt(-2*Math.log(u))*Math.cos(2*Math.PI*v);
+        }
+        var contrasts=[];
+        function resample() {
+            var trueSig = parseFloat(document.getElementById('mlSig').value);
+            var m = parseInt(document.getElementById('mlN').value);
+            contrasts=[]; var sd=Math.sqrt(trueSig);
+            for (var i=0;i<m;i++) contrasts.push(sd*rnorm());
+        }
+        function loglik(s) {
+            // contrasts ~ N(0, s) with unit branch variances
+            var ll=0;
+            for (var i=0;i<contrasts.length;i++){
+                ll += -0.5*Math.log(2*Math.PI*s) - contrasts[i]*contrasts[i]/(2*s);
+            }
+            return ll;
+        }
+        function go(newData) {
+            var trueSig = parseFloat(document.getElementById('mlSig').value);
+            var m = parseInt(document.getElementById('mlN').value);
+            document.getElementById('mlSigVal').textContent = trueSig.toFixed(1);
+            document.getElementById('mlNVal').textContent = m;
+            if (newData || contrasts.length!==m) resample();
+
+            var ss2=0; for (var i=0;i<contrasts.length;i++) ss2+=contrasts[i]*contrasts[i];
+            var mle = ss2/contrasts.length;
+
+            var xs=[], ys=[];
+            for (var k=0;k<=200;k++){ var s=0.05 + 4*k/200; xs.push(s); ys.push(loglik(s)); }
+            var peak = loglik(mle);
+
+            Plotly.react('mlPlot', [
+                {x:xs,y:ys,mode:'lines',line:{color:'#1f77b4',width:2.5},showlegend:false,hoverinfo:'skip'},
+                {x:[mle,mle],y:[peak-12,peak],mode:'lines',line:{color:'#d62728',width:2,dash:'dash'},showlegend:false,hoverinfo:'skip'},
+                {x:[mle],y:[peak],mode:'markers',marker:{color:'#d62728',size:11},name:'MLE',showlegend:false,hoverinfo:'skip'},
+                {x:[trueSig,trueSig],y:[peak-12,peak+0.5],mode:'lines',line:{color:'#15803d',width:2,dash:'dot'},showlegend:false,hoverinfo:'skip'}
+            ], {
+                xaxis:{title:'candidate rate &sigma;&sup2;', range:[0,4]},
+                yaxis:{title:'log-likelihood', range:[peak-12, peak+1]},
+                margin:{t:10,b:42,l:52,r:12},
+                annotations:[
+                    {x:mle,y:peak,text:'MLE = '+mle.toFixed(2),showarrow:true,arrowhead:0,ax:30,ay:-25,font:{color:'#d62728',size:12}},
+                    {x:trueSig,y:peak-11,text:'truth',showarrow:false,font:{color:'#15803d',size:11},yanchor:'bottom'}
+                ]
+            }, {displayModeBar:false, staticPlot:true});
+
+            document.getElementById('mlStats').innerHTML =
+                'true &sigma;&sup2; = <b>'+trueSig.toFixed(2)+'</b><br>'+
+                'MLE &sigma;&#770;&sup2; = <b>'+mle.toFixed(2)+'</b><br>'+
+                '<span style="color:#666">The MLE here is the mean of the squared contrasts. Re-sample to see it bounce around the truth.</span>';
+        }
+        document.getElementById('mlSig').addEventListener('input', function(){go(true);});
+        document.getElementById('mlN').addEventListener('input', function(){go(true);});
+        document.getElementById('mlReroll').addEventListener('click', function(){go(true);});
+        go(true);
+    })();
+    </script>
+</section>
+
+<section>
+    <h3>Hill-climbing to the maximum</h3>
 
     <div style="width:100%">
         <div style="width:50%;display:inline-block;vertical-align:middle">
             <ul class="spaced">
-                <li>Hill-climbing algorithms take iterative steps uphill toward the peak.</li>
-
-                <li>On a smooth, unimodal surface (right), the algorithm converges in a handful of steps.</li>
-
-                <li>Risk: getting <b>trapped on local optima</b> if the surface is rugged.</li>
-
+                <li>For most models there is no formula for the peak, so software takes iterative steps <b>uphill</b>.</li>
+                <li>On a smooth, single-peaked surface (right), it converges in a handful of steps.</li>
+                <li><b>Risk:</b> getting trapped on a <b>local optimum</b> when the surface is rugged (common for OU and multi-rate models next lecture).</li>
                 <li>Mitigations:
                     <ul>
-                        <li>Multiple random starting points.</li>
-                        <li>Simulated annealing.</li>
-                        <li>Bayesian MCMC (explores the full landscape).</li>
+                        <li>multiple random starting points,</li>
+                        <li>simulated annealing,</li>
+                        <li>Bayesian MCMC, which explores the whole landscape rather than climbing one hill.</li>
                     </ul>
                 </li>
             </ul>
         </div>
-        <div style="width:47%;display:inline-block;vertical-align:middle;text-align:center">
-            <img data-src="figures/figure4-4.png" style="max-width:100%; max-height:400px">
-            <div style="font-size:0.6em; margin-top:0.3em">
-                Path of a Newton's-method optimiser climbing the BM likelihood surface (Garland 1992 mammal data).
-            </div>
+        <div style="width:48%;display:inline-block;vertical-align:middle;text-align:center">
+            <img data-src="figures/figure4-4.png" style="max-width:100%;max-height:400px">
+            <div style="font-size:0.6em;margin-top:0.3em">An optimiser climbing the BM likelihood surface (Garland 1992 data).<br>Harmon (2019) <i>PCM</i>, Fig 4.4 (CC-BY-4.0).</div>
         </div>
-    </div>
-
-    <div style="font-size:0.55em; margin-top:0.6em; text-align:right; opacity:0.7">
-        Harmon (2019) <i>Phylogenetic Comparative Methods</i>, Fig 4.4 (CC-BY-4.0).
     </div>
 </section>
 
 <section>
-    <h3>Restricted Maximum Likelihood (REML)</h3>
+    <h3>Route 3: restricted maximum likelihood (REML)</h3>
 
-    <ul class="spaced" style="width:80%">
-        <li>A problem with ML: computing the full covariance matrix is expensive for large trees.</li>
+    <ul class="spaced" style="width:84%">
+        <li>Ordinary ML estimates the rate and the root state together, and the rate estimate comes out slightly <b>biased</b> (too small), because it does not pay for having estimated the root.</li>
 
-        <li><b>REML</b> maximises a likelihood function based on <b>contrasts</b> rather than the full data:
+        <li><b>REML</b> maximises the likelihood of the <b>contrasts</b> instead of the raw data:
             <ul>
-                <li>Calculating contrasts is much faster than the full matrix computation.</li>
-                <li>Ignores nuisance parameters like the root state.</li>
+                <li>it sidesteps the nuisance root-state parameter, and</li>
+                <li>it gives a less biased estimate of the variance parameter $\sigma^2$.</li>
             </ul>
         </li>
 
-        <li>Generally considered to give better (less biased) estimates of variance parameters than standard ML.</li>
+        <li>The contrast estimator $\hat{\sigma}^2_{\text{PIC}}=\frac{1}{n-1}\sum c_k^2$ <b>is</b> the REML estimate. Routes 1 and 3 are the same thing.</li>
 
-        <li>Widely used in phylogenetic comparative analyses.</li>
+        <li>REML is also cheaper: contrasts avoid inverting the full $n\times n$ matrix $\mathbf{C}$, which matters for large trees.</li>
+    </ul>
+</section>
+
+<section>
+    <h3>A worked fit: what fitContinuous returns</h3>
+
+    <div style="display:flex;gap:1.2em;width:96%;margin:0.2em auto;align-items:flex-start">
+        <div style="flex:1.05;font-size:0.82em">
+            <p style="margin:0 0 0.4em">Fitting BM to a single continuous trait (here, log body size on a lizard phylogeny) returns four numbers that summarise the whole fit:</p>
+            <table style="font-size:0.92em;border-collapse:collapse;width:100%">
+                <tr style="border-bottom:2px solid #444"><th style="text-align:left;padding:0.25em 0.5em">output</th><th style="text-align:left;padding:0.25em 0.5em">meaning</th></tr>
+                <tr style="border-bottom:1px solid #ddd"><td style="padding:0.25em 0.5em;font-family:monospace">sigsq</td><td style="padding:0.25em 0.5em">$\hat{\sigma}^2$, the rate of evolution</td></tr>
+                <tr style="border-bottom:1px solid #ddd"><td style="padding:0.25em 0.5em;font-family:monospace">z0</td><td style="padding:0.25em 0.5em">$\hat{X}(0)$, the estimated root state</td></tr>
+                <tr style="border-bottom:1px solid #ddd"><td style="padding:0.25em 0.5em;font-family:monospace">lnL</td><td style="padding:0.25em 0.5em">maximised log-likelihood</td></tr>
+                <tr><td style="padding:0.25em 0.5em;font-family:monospace">AIC / AICc</td><td style="padding:0.25em 0.5em">fit penalised by parameter count, for model comparison</td></tr>
+            </table>
+            <p style="margin:0.5em 0 0">Two free parameters here ($\sigma^2$ and $X(0)$), so $\mathrm{AIC}=2\cdot 2 - 2\ln L$.</p>
+        </div>
+        <div style="flex:0.95;font-size:0.82em">
+            <div style="background:#dcfce7;border-left:4px solid #15803d;padding:0.6em 0.8em;border-radius:4px;margin-bottom:0.6em">
+                <b>Reading $\hat{\sigma}^2$.</b> A larger rate means faster divergence: tips spread further from the root per unit of branch length. Comparing $\hat{\sigma}^2$ across traits only makes sense if they share units (hence log-transforming size, mass, length).
+            </div>
+            <div style="background:#fef3c7;border-left:4px solid #ca8a04;padding:0.6em 0.8em;border-radius:4px">
+                <b>On its own, the BM fit is not a verdict.</b> A rate and a root state always come back, even if BM is the wrong model. The number only becomes meaningful once BM is compared with alternatives, which is the entire point of next lecture.
+            </div>
+        </div>
+    </div>
+</section>
+
+<section>
+    <h3>Is Brownian motion a reasonable model?</h3>
+
+    <ul class="spaced" style="width:84%">
+        <li>BM is a strong set of assumptions: no trend, a constant rate everywhere on the tree, and independent increments.</li>
+
+        <li>Reasons it may <b>fail</b>:
+            <ul>
+                <li>stabilizing selection holds a trait near an optimum (variance stops growing): use <b>OU</b>;</li>
+                <li>a rate that slows after a radiation: use <b>early burst</b>;</li>
+                <li>some clades evolve faster than others: use a <b>multi-rate</b> model;</li>
+                <li>phylogenetic signal weaker than BM predicts: estimate <b>Pagel's $\lambda$</b>.</li>
+            </ul>
+        </li>
+
+        <li>How to decide: fit the alternatives and compare with <b>AIC</b> or Bayes factors. Never accept BM just because it ran.</li>
+
+        <li>That comparison is exactly the workflow you used in the lab, and the subject of the next lecture.</li>
     </ul>
 </section>
 
 <section>
     <h3>Discussion</h3>
 
-    <ul class="spaced" style="width:80%">
-        <li>If we can use the PIC method to estimate evolutionary rate, why did we also cover ML and Bayesian approaches?</li>
+    <ul class="spaced" style="width:82%">
+        <li>If the PIC estimator $\frac{1}{n-1}\sum c_k^2$ gives the rate directly, why bother with maximum likelihood or Bayesian approaches at all?</li>
 
-        <li>What are the arguments for log-transforming biological data before comparative analysis?</li>
+        <li>What are the arguments for log-transforming sizes, masses, and lengths before a comparative analysis?</li>
 
-        <li>Can you think of a few ways to decrease the risk of hill-climbing algorithms getting stuck on local optima?</li>
+        <li>On a tree of only living species, a slow evolutionary trend cannot be distinguished from noise. Why, and what kind of data would break the tie?</li>
+
+        <li>Ancestral states under BM are pulled toward the mean of the tips. When would that make a reconstructed root state misleading?</li>
 
         <li>How would you decide whether Brownian motion is a reasonable model for a given trait?</li>
     </ul>
@@ -275,18 +807,18 @@ lecture_num: 13
 <section>
     <h3>Recommended Reading</h3>
 
-    <div style="display:inline-block;vertical-align:middle;margin-top:2em">
-        <img data-src="../lecture-substitution-models/dg_cover.png" style="height:350px">
+    <div style="display:inline-block;vertical-align:middle;margin-top:1em">
+        <img data-src="../lecture-substitution-models/dg_cover.png" style="height:330px">
     </div>
 
-    <div class="textbox" style="width: 55%; display:inline-block; vertical-align:middle; margin-left:2em; margin-top:2em">
+    <div class="textbox" style="width: 55%; display:inline-block; vertical-align:middle; margin-left:2em; margin-top:1em">
         <div class="title"><a href="https://decodinggenomes.org/" style="color:inherit; text-decoration:underline">Decoding Genomes</a> (Stadler et al., 2024)</div>
         <ul class="spaced" style="margin-top:1em; margin-left:1em">
             <li><b>Chapter 8</b>: Traits and Comparative Methods</li>
         </ul>
         <div class="title" style="margin-top:1em"><a href="https://lukejharmon.github.io/pcm/" style="color:inherit; text-decoration:underline">Phylogenetic Comparative Methods</a> (Harmon, 2019)</div>
         <ul class="spaced" style="margin-top:1em; margin-left:1em">
-            <li><b>Chapter 3</b>: Brownian Motion</li>
+            <li><b>Chapter 3</b>: Introduction to Brownian Motion</li>
             <li><b>Chapter 4</b>: Fitting Brownian Motion Models to Single Characters</li>
         </ul>
     </div>
