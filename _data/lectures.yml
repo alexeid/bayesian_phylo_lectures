@@ -121,6 +121,13 @@
   lecturer: Alexei Drummond
   section: advanced
 -
+  title: Birth-death models, macroevolution and the species tree
+  folder: lecture-macroevolution
+  lecturer: Alexei Drummond
+  date: 2026-08-14
+  section: biosci322
+
+-
   title: Python Programming Primer
   folder: lecture-python
   lecturer: Alexei Drummond

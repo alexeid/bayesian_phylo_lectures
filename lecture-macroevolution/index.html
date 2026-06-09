@@ -1,0 +1,181 @@
+---
+lecture_num: 12
+---
+
+<section class="center">
+    <h2 style="margin-bottom:0.2em">From the genealogy within a species to the tree of species</h2>
+    <p style="font-size:0.62em;margin:0.2em auto 0.6em;opacity:0.85;max-width:80%">Last lecture the multispecies coalescent nested gene trees inside a species tree. This lecture asks where the species tree itself comes from, and what its shape records about speciation and extinction.</p>
+    <img data-src="../lecture-birth-death/reconstructed_bds_tree.svg" style="max-height:300px;background:#fff;border-radius:8px;padding:0.5em;box-shadow:0 4px 24px rgba(0,0,0,0.25)">
+    <div style="font-size:0.5em;margin-top:0.3em;opacity:0.7">A full birth-death tree (left) and the reconstructed tree of survivors we actually observe (right). After Stadler (2010).</div>
+</section>
+
+<section>
+    <h3>Why is the tree of life so uneven?</h3>
+    <div style="display:flex;gap:1.4em;width:96%;margin:0.2em auto;align-items:center">
+        <div style="flex:1.25">
+            <img data-src="figures/figure10-1.png" style="width:100%;background:#fff;border-radius:6px;padding:0.3em">
+            <div style="font-size:0.5em;margin-top:0.2em;opacity:0.7;text-align:center">Living diversity of the major land-plant lineages. Harmon (2019), <i>PCM</i>, Fig. 10.1 (CC-BY 4.0).</div>
+        </div>
+        <div style="flex:0.85;font-size:0.84em">
+            <p style="margin:0 0 0.5em 0">About 300,000 flowering-plant species share the planet with a few hundred horsetails. Comparable imbalance appears across the tree of life.</p>
+            <p style="margin:0.4em 0">Two processes set the balance: the rate at which lineages <b>split</b> (speciation) and the rate at which they <b>die out</b> (extinction).</p>
+            <p style="margin:0.4em 0;font-weight:600;color:#1d4ed8">This lecture builds the model that links those rates to the shape of a phylogeny, and asks how much of the history we can read back out.</p>
+        </div>
+    </div>
+</section>
+
+<section>
+    <h3>Two directions in time</h3>
+    <div style="display:flex;gap:1.4em;width:95%;margin:0.4em auto;align-items:stretch;font-size:0.82em">
+        <div style="flex:1;background:#eef2ff;border-radius:8px;padding:0.8em 1em">
+            <p style="font-weight:700;color:#1d4ed8;margin:0 0 0.3em 0">Backward: the coalescent</p>
+            <p style="margin:0.2em 0">Start from sampled lineages in the present and merge them back to common ancestors. This is the natural view <b>within</b> a population, where we sample the survivors.</p>
+        </div>
+        <div style="flex:1;background:#fff7ed;border-radius:8px;padding:0.8em 1em">
+            <p style="font-weight:700;color:#c2410c;margin:0 0 0.3em 0">Forward: the birth-death process</p>
+            <p style="margin:0.2em 0">Start from one lineage in the past. It <b>splits</b> (a birth, speciation) and it <b>dies</b> (a death, extinction). Run the process forward and a tree of species grows.</p>
+        </div>
+    </div>
+    <p style="font-size:0.8em;width:90%;margin:0.5em auto 0;text-align:center;opacity:0.9">Both describe the same kind of object, a rooted tree, from opposite ends of time. For species, where extinction matters, the forward birth-death view is the more natural starting point.</p>
+</section>
+
+<section>
+    <h3>The Yule process: speciation as a birth</h3>
+    <p style="font-size:0.74em;width:92%;margin:0.1em auto 0.2em;text-align:center;opacity:0.9">Every lineage splits independently at a constant rate $\lambda$. With more lineages, more splits happen, so diversity grows geometrically: $E[\,n(t)\,]=e^{\lambda t}$. Individual histories scatter around that expectation.</p>
+    <div id="yule-plot" style="width:720px;height:430px;margin:0.1em auto"></div>
+    <p style="font-size:0.62em;text-align:center;opacity:0.7;margin-top:0.1em">Choose a speciation rate. Pure birth (no extinction); a simulated realisation against the deterministic expectation, log scale.</p>
+</section>
+
+<section>
+    <h3>Adding extinction: the birth-death process</h3>
+    <div style="display:flex;gap:1.3em;width:96%;margin:0.2em auto;align-items:center">
+        <div style="flex:1.05">
+            <img data-src="figures/figure10-2.png" style="width:100%;background:#fff;border-radius:6px;padding:0.3em">
+            <div style="font-size:0.5em;margin-top:0.2em;opacity:0.7;text-align:center">A: speciation. B: a lineage going extinct. C: waiting times are exponential. D: a full tree; lineages marked <b>x</b> leave no survivors. Harmon (2019), <i>PCM</i>, Fig. 10.2 (CC-BY 4.0).</div>
+        </div>
+        <div style="flex:0.92;font-size:0.8em">
+            <p style="margin:0 0 0.4em 0">Each lineage now also goes extinct at a constant rate $\mu$. Two combinations summarise the process:</p>
+            <ul class="spaced" style="margin:0.2em 0 0.4em 1em">
+                <li><b>Net diversification</b> $r=\lambda-\mu$: how fast surviving diversity accumulates.</li>
+                <li><b>Relative extinction</b> $\varepsilon=\mu/\lambda$: extinction as a fraction of speciation, from 0 (Yule) to 1.</li>
+            </ul>
+            <div style="background:#fff7ed;border-radius:6px;padding:0.5em 0.7em;font-size:0.92em;color:#c2410c">
+                A clade can be rich today through fast speciation, slow extinction, or both. Separating $\lambda$ from $\mu$ is the central difficulty.
+            </div>
+        </div>
+    </div>
+</section>
+
+<section>
+    <h3>Extinction is hidden: the reconstructed tree</h3>
+    <div style="display:flex;gap:1.3em;width:96%;margin:0.2em auto;align-items:center">
+        <div style="flex:0.95">
+            <img data-src="../lecture-birth-death/bds_tree.png" style="width:100%;background:#fff;border-radius:6px;padding:0.3em">
+        </div>
+        <div style="flex:1.05;font-size:0.82em">
+            <p style="margin:0 0 0.4em 0">A lineage that goes extinct leaves no living descendants, so it is absent from a tree built only from species alive today.</p>
+            <p style="margin:0.4em 0">What we estimate is the <b>reconstructed tree</b>: the full birth-death tree with every extinct branch pruned away. This is the exact macroevolutionary parallel of the coalescent, where we only see the survivors of a population.</p>
+            <p style="margin:0.4em 0;font-weight:600;color:#c2410c">The signal of extinction is therefore indirect. It must be read from the spacing of the branching events that remain.</p>
+        </div>
+    </div>
+</section>
+
+<section>
+    <h3>Reading the process from the shape</h3>
+    <p style="font-size:0.74em;width:92%;margin:0.1em auto 0.2em;text-align:center;opacity:0.9">A <b>lineage-through-time</b> plot counts lineages in the reconstructed tree as it grows toward the present, here scaled to the final diversity. Raise $\varepsilon$ and watch the curve bend upward near the present.</p>
+    <div id="ltt-plot" style="width:720px;height:430px;margin:0.1em auto"></div>
+    <p style="font-size:0.62em;text-align:center;opacity:0.72;margin-top:0.1em">All curves share the same net rate $r$, so the same deep slope. Extinction steepens only the recent past: the <b>pull of the present</b>. Recent lineages have had little time to die, so survivors over-represent them.</p>
+</section>
+
+<section>
+    <h3>Estimating diversification: the role of the prior</h3>
+    <div style="display:flex;gap:1.3em;width:96%;margin:0.2em auto;align-items:center">
+        <div style="flex:1.05">
+            <img data-src="figures/figure11-3.png" style="width:100%;background:#fff;border-radius:6px;padding:0.3em">
+            <div style="font-size:0.5em;margin-top:0.2em;opacity:0.7;text-align:center">Posterior estimates for one tree: net rate $r$ (red) is well constrained, relative extinction $\varepsilon$ (blue) is not. Harmon (2019), <i>PCM</i>, Fig. 11.3 (CC-BY 4.0).</div>
+        </div>
+        <div style="flex:0.95;font-size:0.78em">
+            <p style="margin:0 0 0.4em 0">Fitting a birth-death model to a dated tree of living species returns $\lambda$ and $\mu$, and so $r$ and $\varepsilon$. The net rate $r$ is recovered well; teasing $\lambda$ and $\mu$ apart is harder, since the data carry little direct information about extinction.</p>
+            <div style="background:#eff6ff;border-left:4px solid #1d4ed8;padding:0.5em 0.8em;border-radius:4px;margin:0.4em 0;font-size:0.95em">
+                Louca and Pennell (2020) showed that, with rates free to vary arbitrarily in time, infinitely many histories fit the same extant tree. That set is dominated by biologically implausible, wildly fluctuating histories. A reasonable prior favouring smooth variation, or fossil evidence, makes estimation well posed; the estimates then lean partly on that prior, which should be made explicit.
+            </div>
+        </div>
+    </div>
+</section>
+
+<section>
+    <h3>Macroevolution: rates are not constant</h3>
+    <div style="display:flex;gap:1.3em;width:96%;margin:0.2em auto;align-items:center">
+        <div style="flex:0.78">
+            <img data-src="figures/figure12-4.png" style="max-height:430px;background:#fff;border-radius:6px;padding:0.3em">
+            <div style="font-size:0.46em;margin-top:0.2em;opacity:0.7;text-align:center">Estimated diversification rate across a real tree; arrows mark rate shifts. Harmon (2019), <i>PCM</i>, Fig. 12.4 (CC-BY 4.0).</div>
+        </div>
+        <div style="flex:1.22;font-size:0.8em">
+            <p style="margin:0 0 0.4em 0">A constant-rate model is the baseline. The biologically interesting questions are where and when rates <b>change</b>:</p>
+            <ul class="spaced" style="margin:0.2em 0 0 1em">
+                <li><b>Adaptive radiations:</b> a burst of early speciation, often after a key innovation or new habitat, seen as a steep early rise that later flattens.</li>
+                <li><b>Mass extinctions:</b> short intervals of very high extinction that prune many lineages at once.</li>
+                <li><b>Rate shifts on a branch:</b> one lineage acquires a faster or slower rate, leaving part of the tree far richer than its sisters (the arrows opposite).</li>
+            </ul>
+            <p style="margin:0.4em 0 0 0;opacity:0.9">These connect directly to the macroevolution and adaptive-radiation lectures later in the course.</p>
+        </div>
+    </div>
+</section>
+
+<section>
+    <h3>Fossils restore the missing half</h3>
+    <div style="display:flex;gap:1.3em;width:96%;margin:0.2em auto;align-items:center">
+        <div style="flex:1.05;font-size:0.82em">
+            <p style="margin:0 0 0.4em 0">Fossils are direct observations of lineages that, in most cases, have gone extinct. They carry exactly the information the reconstructed tree of living species lacks.</p>
+            <p style="margin:0.4em 0">The <b>fossilised birth-death</b> process adds a third rate, the recovery of fossil samples through time, and treats living tips, fossils, and their ages within one generative model.</p>
+            <p style="margin:0.4em 0">With morphological and molecular data together, this supports <b>total-evidence dating</b>: estimating the timing of the tree and its rates from extinct and living species jointly.</p>
+        </div>
+        <div style="flex:0.95">
+            <img data-src="../lecture-darwins-computer/fbdModel1.png" style="width:100%;background:#fff;border-radius:6px;padding:0.3em">
+            <div style="font-size:0.5em;margin-top:0.2em;opacity:0.7;text-align:center">The fossilised birth-death process: speciation, extinction and fossil sampling through time.</div>
+        </div>
+    </div>
+</section>
+
+<section>
+    <h3>Putting the two lectures together</h3>
+    <p style="font-size:0.8em;width:92%;margin:0.2em auto 0.5em;text-align:center;opacity:0.9">The birth-death process is the prior on the species tree. The multispecies coalescent and the substitution model then build the data on top of it. One nested generative story runs from speciation to sequence.</p>
+    <div style="display:flex;align-items:center;justify-content:center;gap:0.6em;width:96%;margin:0.3em auto;font-size:0.78em">
+        <div style="flex:1;background:#fff7ed;border:2px solid #c2410c;border-radius:8px;padding:0.7em 0.6em;text-align:center">
+            <div style="font-weight:700;color:#c2410c">Birth-death</div>
+            <div style="opacity:0.85;margin-top:0.2em">generates the <b>species tree</b></div>
+        </div>
+        <div style="font-size:1.6em;color:#64748b">&rsaquo;</div>
+        <div style="flex:1;background:#eef2ff;border:2px solid #1d4ed8;border-radius:8px;padding:0.7em 0.6em;text-align:center">
+            <div style="font-weight:700;color:#1d4ed8">Multispecies coalescent</div>
+            <div style="opacity:0.85;margin-top:0.2em">nests <b>gene trees</b> inside it</div>
+        </div>
+        <div style="font-size:1.6em;color:#64748b">&rsaquo;</div>
+        <div style="flex:1;background:#ecfdf5;border:2px solid #047857;border-radius:8px;padding:0.7em 0.6em;text-align:center">
+            <div style="font-weight:700;color:#047857">Substitution model</div>
+            <div style="opacity:0.85;margin-top:0.2em">turns gene trees into <b>sequences</b></div>
+        </div>
+    </div>
+    <p style="font-size:0.78em;width:88%;margin:0.6em auto 0;text-align:center">Bayesian inference runs this story in reverse: from observed sequences, back through gene trees, to the species tree and the speciation and extinction rates that shaped it.</p>
+</section>
+
+<section>
+    <h3>Summary</h3>
+    <ul class="spaced" style="margin-top:3%;width:88%;font-size:0.88em">
+        <li>A <b>birth-death process</b> models a species tree as lineages that speciate at rate $\lambda$ and go extinct at rate $\mu$; the Yule process is the special case with no extinction.</li>
+        <li>We observe only the <b>reconstructed tree</b> of survivors, so extinction is inferred indirectly, chiefly from the <b>pull of the present</b> in lineage-through-time plots.</li>
+        <li>The net diversification rate is recovered well; separating $\lambda$ and $\mu$ from living species alone is only <b>weakly identifiable</b>, so estimates lean on fossils or an explicit, biologically reasonable prior.</li>
+        <li><b>Fossils</b>, through the fossilised birth-death process, supply that evidence and underpin total-evidence dating.</li>
+        <li>The birth-death model is the <b>species-tree prior</b> beneath last lecture's multispecies coalescent, completing one generative model from speciation to sequence.</li>
+    </ul>
+</section>
+
+<section>
+    <h3>Further reading</h3>
+    <ul class="spaced" style="margin-top:5%;width:85%;font-size:0.8em">
+        <li><a class="cite" href="https://lukejharmon.github.io/pcm/">Harmon, <i>Phylogenetic Comparative Methods</i> (2019)</a>, chapters 10 to 12 on diversification. Open access, CC-BY 4.0; source of several figures here.</li>
+        <li><a class="cite" href="http://dx.doi.org/10.1146/annurev.ecolsys.37.091305.110035">Nee, <i>Birth-death models in macroevolution</i>, Annu. Rev. Ecol. Evol. Syst. (2006)</a>.</li>
+        <li><a class="cite" href="http://dx.doi.org/10.1038/s41586-020-2176-1">Louca and Pennell, <i>Extant timetrees are consistent with a myriad of diversification histories</i>, Nature (2020)</a>.</li>
+        <li><a class="cite" href="http://dx.doi.org/10.1016/j.jtbi.2010.09.010">Stadler, <i>Sampling through time in birth-death trees</i>, J. Theor. Biol. (2010)</a>.</li>
+    </ul>
+</section>
