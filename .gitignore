@@ -2,3 +2,34 @@
 /.sass-cache
 textbook/.venv/
 _data/textbook/
+
+# --- added during laptop migration 2026 (regenerable / build output) ---
+textbook/*.pdf
+.DS_Store
+node_modules/
+.venv/
+venv/
+__pycache__/
+*.pyc
+.Rhistory
+.Rapp.history
+_site/
+.pytest_cache/
+*.aux
+*.toc
+*.out
+*.blg
+*.bbl
+*.fls
+*.fdb_latexmk
+*.nav
+*.snm
+*.vrb
+*.synctex.gz
+
+# Decoding Genomes ebook and any text extracted from it - copyrighted, do not commit
+textbook/*.pdf
+textbook/chapters/
+
+# third-party teaching materials (not ours to publish)
+matthew_fullmer/
