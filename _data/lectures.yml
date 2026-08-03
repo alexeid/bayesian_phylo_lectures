@@ -121,6 +121,13 @@
   lecturer: Alexei Drummond
   section: advanced
 -
+  title: Bayesian phylogenetic inference
+  folder: lecture-bayesian-phylogenetics-322
+  lecturer: Alexei Drummond
+  date: 2026-08-05
+  section: biosci322
+
+-
   title: Birth-death models, macroevolution and the species tree
   folder: lecture-macroevolution
   lecturer: Alexei Drummond

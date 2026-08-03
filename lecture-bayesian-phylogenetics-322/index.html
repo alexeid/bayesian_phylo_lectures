@@ -1,0 +1,716 @@
+---
+lecture_num: 7
+---
+
+<!-- BIOSCI 322 version of the Bayesian phylogenetics lecture.
+     Self-contained: the general Bayesian inference material is folded into
+     Part 1, because this class does not receive that lecture separately.
+     The two "Basic MCMC theory" slides of the BIOSCI 700 deck are replaced by
+     a cartoon, a simple statement of the acceptance rule, and two live
+     simulations (see bayes322.js). -->
+
+<section>
+    <h2>Where we are going</h2>
+
+    <ul class="spaced" style="width:88%">
+        <li>A phylogeny is something we <b>estimate</b>, not something we observe.
+            Any estimate comes with uncertainty, and we would like to measure it.</li>
+        <li><b>Part 1.</b> Probability as a measure of belief, and Bayes' theorem.</li>
+        <li><b>Part 2.</b> What a Bayesian phylogenetic analysis is actually asking.</li>
+        <li><b>Part 3.</b> How a computer answers the question: Markov chain Monte
+            Carlo (MCMC).</li>
+        <li><b>Part 4.</b> Reading the output, and what a posterior probability on a
+            branch means.</li>
+    </ul>
+
+    <blockquote style="width:80%;margin-left:10%;margin-top:1em">
+        Later lectures fill in the biology of the tree priors: the coalescent (L9, L10),
+        the multispecies coalescent (L11) and birth-death models (L12).
+    </blockquote>
+</section>
+
+<section class="center">
+    <h2>Part 1: Reasoning under uncertainty</h2>
+</section>
+
+<section class="center">
+    <blockquote style="text-align:justify;width:85%;margin-left:7%">
+        Suppose some dark night a policeman walks down a street. He hears a burglar
+        alarm, looks across the street, and sees a jewelry store with a broken window.
+        Then a gentleman wearing a mask comes crawling out of the window, carrying a
+        bag full of jewelry. The policeman decides immediately that the gentleman is a
+        thief. How does he decide this?
+        <div class="cite">E. T. Jaynes, <i>Probability Theory: The Logic of Science</i></div>
+    </blockquote>
+</section>
+
+<section>
+    <h3>Strict logic is not enough</h3>
+
+    <p>Deductive logic only licenses conclusions of this form:</p>
+
+    <blockquote style="text-align:center;width:60%;margin-left:20%">
+        if $A$ is true, then $B$ is true<br>
+        $A$ is true
+        <hr>
+        $B$ is true
+    </blockquote>
+
+    <p class="fragment">The policeman has no such certainty. What he actually uses is:</p>
+
+    <blockquote class="fragment" style="text-align:center;width:60%;margin-left:20%">
+        if $A$ is true, then $B$ is <b>likely</b><br>
+        $B$ is true
+        <hr>
+        $A$ is <b>likely</b>
+    </blockquote>
+
+    <p class="fragment" style="text-align:center"><i>This is exactly the situation of a
+    biologist with an alignment and a question about ancestry.</i></p>
+</section>
+
+<section>
+    <h3>Probability as degree of belief</h3>
+
+    <div class="textbox" style="width:80%;margin-left:10%">
+        <div class="title">The Bayesian reading of probability</div>
+        <p style="padding:0.5em">$P(A \mid B)$ is <b>how strongly we should believe $A$,
+        given that we know $B$</b>. It is a measure of the state of our knowledge, not a
+        property of the world.</p>
+    </div>
+
+    <ul class="spaced" style="margin-top:1.5em;width:85%">
+        <li class="fragment">$P = 0$ means certainly false, $P = 1$ means certainly true,
+            and everything in between is a degree of confidence.</li>
+        <li class="fragment">The same statement can have different probabilities for
+            different people, if they know different things.</li>
+        <li class="fragment">This is what lets us say "the probability that gorillas are
+            the sister group to humans and chimpanzees is 0.93". There is no repeatable
+            experiment there, only one history and our uncertainty about it.</li>
+    </ul>
+</section>
+
+<section>
+    <h3>Bayes' theorem</h3>
+
+    <p>One equation connects what we believed before the data to what we should
+    believe after:</p>
+
+    <blockquote style="font-size:1.15em;margin-top:0.6em">
+        $$\color{cyan}{P(H \mid D)} = \frac{\color{orange}{P(D \mid H)}\;\color{#ff9c9c}{P(H)}}{\color{lime}{P(D)}}$$
+    </blockquote>
+
+    <dl style="width:88%;margin-top:1em;font-size:0.92em">
+        <dt style="color:#0e7490">Posterior, $P(H \mid D)$</dt>
+        <dd>How plausible the hypothesis $H$ is once we have seen the data. This is the answer we want.</dd>
+        <dt style="color:#c2410c">Likelihood, $P(D \mid H)$</dt>
+        <dd>If $H$ were true, how probable would these data be? This is where the evolutionary model enters.</dd>
+        <dt style="color:#b91c1c">Prior, $P(H)$</dt>
+        <dd>How plausible $H$ was before we looked at the data.</dd>
+        <dt style="color:#047857">Marginal likelihood, $P(D)$</dt>
+        <dd>A normalising constant. It does not depend on $H$, and Part 3 shows we never need to compute it.</dd>
+    </dl>
+</section>
+
+<section>
+    <h3>The same idea in words</h3>
+
+    <blockquote style="font-size:1.3em;width:80%;margin-left:10%;margin-top:2em;text-align:center">
+        posterior $\;\propto\;$ likelihood $\times$ prior
+    </blockquote>
+
+    <ul class="spaced" style="margin-top:2em;width:85%">
+        <li class="fragment">Hypotheses that explain the data well are promoted.</li>
+        <li class="fragment">Hypotheses that were implausible to begin with are demoted.</li>
+        <li class="fragment">The posterior is the compromise, and it is a full distribution,
+            not a single answer. That distribution <b>is</b> the measure of uncertainty.</li>
+    </ul>
+</section>
+
+<section>
+    <h3>Try it yourself: updating a belief</h3>
+
+    <p style="font-size:0.82em;margin-bottom:0.4em">You want the frequency of an allele in
+    a population. You have some prior expectation, and you genotype $n$ individuals, of
+    which $k$ carry the allele.</p>
+
+    <div style="display:flex;gap:0.7em;width:100%;align-items:flex-start">
+        <div style="flex:0 0 248px;font-size:0.68em;text-align:left">
+            <div class="textbox" style="padding:0.6em">
+                <div class="title" style="font-size:1.05em">Prior</div>
+                <label style="display:block;margin-top:0.3em">Expected frequency:
+                    <b id="buGuessVal">0.60</b></label>
+                <input id="buGuess" type="range" min="0.02" max="0.98" step="0.01"
+                       value="0.6" style="width:100%">
+                <label style="display:block;margin-top:0.3em">Strength of prior belief:
+                    <b id="buStrengthVal">15</b></label>
+                <input id="buStrength" type="range" min="0" max="60" step="1"
+                       value="15" style="width:100%">
+            </div>
+
+            <div class="textbox" style="padding:0.6em;margin-top:0.8em">
+                <div class="title" style="font-size:1.05em">Data</div>
+                <label style="display:block;margin-top:0.3em">Individuals genotyped $n$:
+                    <b id="buNVal">20</b></label>
+                <input id="buN" type="range" min="0" max="200" step="1"
+                       value="20" style="width:100%">
+                <label style="display:block;margin-top:0.3em">Carrying the allele $k$:
+                    <b id="buKVal">6</b></label>
+                <input id="buK" type="range" min="0" max="200" step="1"
+                       value="6" style="width:100%">
+            </div>
+
+            <p style="margin-top:0.8em;line-height:1.3">With little data the prior dominates.
+            With plenty of data the likelihood dominates and the choice of prior stops
+            mattering.</p>
+        </div>
+        <div style="flex:0 0 640px">
+            <canvas id="buCanvas"></canvas>
+        </div>
+    </div>
+</section>
+
+<section>
+    <h3>A word about priors</h3>
+
+    <ul class="spaced" style="width:88%">
+        <li>A prior is not an optional extra. Inference without assumptions is not
+            possible, and the prior is where the assumptions are written down honestly.</li>
+        <li class="fragment">Priors are how existing knowledge enters an analysis: fossil
+            ages, known mutation rates, plausible population sizes.</li>
+        <li class="fragment">A prior that is too confident will not be overturned by weak
+            data. This is a feature when the prior is well founded, and a problem when it
+            is not.</li>
+        <li class="fragment">In phylogenetics the most consequential prior is the
+            <b>tree prior</b>, which we come to next.</li>
+    </ul>
+
+    <blockquote class="fragment" style="width:70%;margin-left:15%;margin-top:1em;text-align:center">
+        Always report your priors, and always check whether they matter.
+    </blockquote>
+</section>
+
+<section class="center">
+    <h2>Part 2: The Bayesian phylogenetics question</h2>
+</section>
+
+<section>
+    <h3>What are the unknowns?</h3>
+
+    <p>The data are an alignment. Essentially everything else is unknown:</p>
+
+    <div style="display:flex;gap:1.5em;width:95%;align-items:center">
+        <div style="flex:1 1 auto">
+            <dl style="font-size:0.9em">
+                <dt>The tree topology, $T$</dt>
+                <dd>Who is related to whom. A discrete unknown with an enormous number of possible values.</dd>
+                <dt>Branch lengths or divergence times</dt>
+                <dd>How much evolution, or how much time, separates the lineages.</dd>
+                <dt>Substitution model parameters, $\mu$</dt>
+                <dd>Relative rates of the different nucleotide changes, rate variation among sites.</dd>
+                <dt>Tree prior parameters, $\theta$</dt>
+                <dd>Population sizes, speciation and extinction rates, migration rates.</dd>
+            </dl>
+        </div>
+        <div style="flex:0 0 250px">
+            <img data-src="../lecture-bayesian-phylogenetics/SIRTree.svg" style="width:100%">
+        </div>
+    </div>
+
+    <p class="fragment" style="text-align:center"><i>We want a posterior distribution over
+    all of it at once.</i></p>
+</section>
+
+<section>
+    <h3>The likelihood of a tree</h3>
+
+    <blockquote style="font-size:1.6em;margin-top:1em;text-align:center">
+        $$\Pr(D \mid T, \mu)$$
+    </blockquote>
+
+    <ul class="spaced" style="width:88%;margin-top:1em">
+        <li>In words: <b>if this tree, with these branch lengths and this substitution
+            model, were the truth, how probable would the observed alignment be?</b></li>
+        <li class="fragment">It is computed site by site, and multiplied across sites, using
+            Felsenstein's pruning algorithm. Each site contributes a small number, and a
+            tree that requires fewer improbable changes scores higher.</li>
+        <li class="fragment">On its own the likelihood gives no probability distribution over
+            trees, and no measure of uncertainty. For that we need Bayes' theorem, and so we
+            need a prior on trees.</li>
+    </ul>
+</section>
+
+<section>
+    <h3>The phylogenetic posterior</h3>
+
+    <p>Applying Bayes' theorem, and using the fact that $\theta$ affects the alignment only
+    through the tree:</p>
+
+    <blockquote style="font-size:1.05em;margin-top:0.5em">
+        $$\underbrace{P(T,\mu,\theta \mid D)}_{\text{posterior}} \;\propto\;
+          \underbrace{\Pr(D \mid T,\mu)}_{\text{likelihood}}\;
+          \underbrace{P(T \mid \theta)}_{\text{tree prior}}\;
+          \underbrace{P(\mu,\theta)}_{\text{parameter priors}}$$
+    </blockquote>
+
+    <ul class="spaced" style="width:88%;margin-top:1.2em">
+        <li class="fragment">The <b>tree prior</b> $P(T \mid \theta)$ is a generative model
+            for how the tree itself came to be: a birth-death process for species trees, or
+            a coalescent process for gene trees within a population.</li>
+        <li class="fragment">This is the slot where biology enters the analysis, and it is
+            the subject of most of the rest of this module.</li>
+    </ul>
+</section>
+
+<section>
+    <h3>Tree priors: coming up in this module</h3>
+
+    <div style="display:flex;gap:1.2em;width:96%;align-items:flex-start;font-size:0.85em">
+        <div style="flex:1 1 0">
+            <div class="textbox" style="padding:0.5em;height:100%">
+                <div class="title">L9, L10: the coalescent</div>
+                <p style="padding:0.4em">Gene trees within a population. Links the shape of a
+                tree to <b>population size</b> and how it changed through time.</p>
+            </div>
+        </div>
+        <div style="flex:1 1 0">
+            <div class="textbox" style="padding:0.5em;height:100%">
+                <div class="title">L11: multispecies coalescent</div>
+                <p style="padding:0.4em">Gene trees embedded inside a species tree. Explains
+                why different genes give different trees.</p>
+            </div>
+        </div>
+        <div style="flex:1 1 0">
+            <div class="textbox" style="padding:0.5em;height:100%">
+                <div class="title">L12: birth-death models</div>
+                <p style="padding:0.4em">The species tree itself, generated by
+                <b>speciation and extinction</b>.</p>
+            </div>
+        </div>
+    </div>
+
+    <img data-src="../lecture-bayesian-phylogenetics/MEPs.svg" style="width:58%;margin-top:0.5em">
+    <div style="text-align:right;font-size:0.7em">
+        <a class="cite" href="http://dx.doi.org/10.1016/S0169-5347(03)00216-7">Drummond et al., TREE, 2003</a>
+    </div>
+</section>
+
+<section>
+    <h3>A hidden assumption: neutrality</h3>
+
+    <p style="font-size:0.9em">Splitting the model into "a process that makes the tree" and
+    "a process that evolves sequences down the tree" implies that the sequences did not
+    influence the shape of the tree:</p>
+
+    <div style="width:100%; height:330px; position:relative">
+        <img class="fragment" data-src="../lecture-bayesian-phylogenetics/neutrality1.svg"
+             style="position:absolute;top:0;left:0;width:950px">
+        <img class="fragment" data-src="../lecture-bayesian-phylogenetics/neutrality2.svg"
+             style="position:absolute;top:0;left:0;width:950px;background-color:white">
+        <img class="fragment" data-src="../lecture-bayesian-phylogenetics/neutrality3.svg"
+             style="position:absolute;top:0;left:0;width:950px;background-color:white">
+    </div>
+
+    <p class="fragment" style="text-align:center"><i>Standard phylogenetic models therefore
+    assume the sequenced sites are evolving neutrally.</i></p>
+</section>
+
+<section class="center">
+    <h2>Part 3: How the computer answers</h2>
+</section>
+
+<section>
+    <h3>Why not simply score every tree?</h3>
+
+    <p>The number of possible rooted trees grows faster than almost anything else in biology:</p>
+
+    <table style="width:70%;margin-left:15%;margin-top:0.5em;font-size:0.95em">
+        <tr><th style="text-align:left">Species</th><th style="text-align:right">Rooted trees</th></tr>
+        <tr><td>4</td><td style="text-align:right">15</td></tr>
+        <tr class="fragment"><td>10</td><td style="text-align:right">34,459,425</td></tr>
+        <tr class="fragment"><td>20</td><td style="text-align:right">$8.2 \times 10^{21}$</td></tr>
+        <tr class="fragment"><td>50</td><td style="text-align:right">$2.8 \times 10^{76}$</td></tr>
+    </table>
+
+    <blockquote class="fragment" style="width:80%;margin-left:10%;margin-top:1.2em">
+        For 50 species there are more possible trees than there are atoms in the Earth,
+        by a factor of about $10^{26}$. Enumeration is not an option, now or ever.
+    </blockquote>
+
+    <p class="fragment" style="text-align:center">And each tree carries continuous unknowns
+    (branch lengths, rates) on top of that.</p>
+</section>
+
+<section>
+    <h3>Walking a landscape in fog</h3>
+
+    <div style="width:96%;margin:0 auto">
+    <svg viewBox="0 0 800 300" style="width:100%;height:auto">
+        <defs>
+            <marker id="ah" markerWidth="8" markerHeight="8" refX="6" refY="3"
+                    orient="auto" markerUnits="strokeWidth">
+                <path d="M0,0 L6,3 L0,6 z" fill="#1f2937"/>
+            </marker>
+        </defs>
+
+        <!-- the landscape -->
+        <path d="M 20 254.8 L 28 254.6 L 36 254.3 L 44 253.8 L 52 252.9 L 60 251.5 L 68 249.3 L 76 246.0 L 84 241.4 L 92 235.0 L 100 226.6 L 108 216.1 L 116 203.3 L 124 188.7 L 132 172.6 L 140 156.1 L 148 140.1 L 156 125.9 L 164 114.7 L 172 107.5 L 180 105.0 L 188 107.5 L 196 114.7 L 204 125.9 L 212 140.1 L 220 156.1 L 228 172.6 L 236 188.6 L 244 203.2 L 252 215.8 L 260 226.0 L 268 233.7 L 276 238.8 L 284 241.2 L 292 240.9 L 300 237.5 L 308 231.2 L 316 222.1 L 324 210.8 L 332 198.6 L 340 187.1 L 348 178.1 L 356 173.1 L 364 173.1 L 372 178.1 L 380 187.1 L 388 198.7 L 396 211.0 L 404 222.4 L 412 231.9 L 420 238.8 L 428 243.1 L 436 244.9 L 444 244.6 L 452 242.5 L 460 238.7 L 468 233.2 L 476 226.3 L 484 217.7 L 492 207.8 L 500 196.6 L 508 184.5 L 516 171.9 L 524 159.6 L 532 148.0 L 540 138.0 L 548 130.2 L 556 125.0 L 564 123.0 L 572 124.2 L 580 128.6 L 588 135.8 L 596 145.3 L 604 156.4 L 612 168.4 L 620 180.5 L 628 191.8 L 636 201.5 L 644 208.9 L 652 213.4 L 660 214.7 L 668 212.8 L 676 208.5 L 684 203.1 L 692 198.1 L 700 195.2 L 708 195.6 L 716 199.5 L 724 206.6 L 732 215.5 L 740 225.0 L 748 233.8 L 756 241.1 L 764 246.5 L 772 250.1 L 780 252.4 L 780 275 L 20 275 Z"
+              fill="#dbeafe" stroke="#1d4ed8" stroke-width="2.5"/>
+
+        <!-- fog over everything except a narrow lit band -->
+        <rect x="0" y="0" width="452" height="278" fill="#ffffff" opacity="0.86"/>
+        <rect x="548" y="0" width="252" height="278" fill="#ffffff" opacity="0.86"/>
+        <text x="150" y="60" font-size="17" fill="#6b7280" font-style="italic">fog</text>
+        <text x="640" y="60" font-size="17" fill="#6b7280" font-style="italic">fog</text>
+
+        <!-- the walker, standing at x = 500 -->
+        <g stroke="#1f2937" stroke-width="3" fill="none" stroke-linecap="round">
+            <line x1="500" y1="180" x2="491" y2="197"/>
+            <line x1="500" y1="180" x2="509" y2="197"/>
+            <line x1="500" y1="156" x2="500" y2="180"/>
+            <line x1="486" y1="166" x2="514" y2="166"/>
+        </g>
+        <circle cx="500" cy="148" r="8" fill="#ffffff" stroke="#1f2937" stroke-width="3"/>
+
+        <!-- candidate steps -->
+        <path d="M 478 202 L 450 228" stroke="#1f2937" stroke-width="2" fill="none"
+              stroke-dasharray="5,4" marker-end="url(#ah)"/>
+        <path d="M 522 188 L 548 150" stroke="#1f2937" stroke-width="2" fill="none"
+              stroke-dasharray="5,4" marker-end="url(#ah)"/>
+        <text x="432" y="248" font-size="21" font-weight="700" fill="#b91c1c">?</text>
+        <text x="554" y="144" font-size="21" font-weight="700" fill="#047857">?</text>
+
+        <text x="500" y="296" font-size="15" fill="#1f2937" text-anchor="middle">
+            you can measure the height exactly where you stand, and nowhere else</text>
+        <text x="20" y="24" font-size="13" fill="#6b7280" font-style="italic">
+            the faint outline is drawn for our benefit; the walker cannot see it</text>
+    </svg>
+    </div>
+
+    <ul style="width:92%;font-size:0.86em;margin-top:0.3em">
+        <li>Height above the ground $=$ posterior score of an answer: likelihood $\times$ prior.</li>
+        <li>Position $=$ one complete answer: a tree, its branch lengths, and all parameters.</li>
+        <li>We cannot draw the landscape. We can only evaluate one point at a time.</li>
+    </ul>
+</section>
+
+<section>
+    <h3>The rule for taking a step</h3>
+
+    <div class="textbox" style="width:88%;margin-left:6%">
+        <div class="title">Metropolis' rule</div>
+        <ol class="spaced" style="margin:0.8em 1em">
+            <li>From where you are, <b>propose</b> a nearby point at random.</li>
+            <li>Work out the <b>ratio</b> of the new height to the current height.</li>
+            <li>If the proposal is <b>higher</b>, move there.</li>
+            <li>If it is <b>lower</b>, still move there, but only with probability equal to
+                that ratio. Otherwise stay where you are and record your current position again.</li>
+        </ol>
+    </div>
+
+    <blockquote class="fragment" style="width:70%;margin-left:15%;margin-top:1.2em;text-align:center">
+        $$\alpha = \min\left[1,\; \frac{\text{score of proposed}}{\text{score of current}}\right]$$
+    </blockquote>
+
+    <p class="fragment" style="text-align:center;margin-top:0.8em">That is the only equation
+    you need for this lecture.</p>
+</section>
+
+<section>
+    <h3>Why the rule is enough</h3>
+
+    <ul class="spaced" style="width:88%">
+        <li><b>Only a ratio appears.</b> The impossible normalising constant $P(D)$ cancels,
+            because it is the same above and below the line. We never have to compute it.</li>
+        <li class="fragment"><b>Downhill moves are allowed.</b> If they were not, the walker
+            would climb the nearest hill and stop, reporting a single best tree with no
+            measure of uncertainty.</li>
+        <li class="fragment"><b>The record is the answer.</b> Run the walk long enough and the
+            proportion of time spent at each point is proportional to its posterior
+            probability. The list of visited positions <i>is</i> a sample from the posterior.</li>
+    </ul>
+
+    <blockquote class="fragment" style="width:78%;margin-left:11%;margin-top:1em;text-align:center">
+        Markov chain (each step depends only on the last) Monte Carlo (the steps are random).
+    </blockquote>
+</section>
+
+<section>
+    <h3>Try it yourself: MCMC on a landscape</h3>
+
+    <div style="display:flex;gap:0.7em;width:100%;align-items:flex-start">
+        <div style="flex:0 0 246px;font-size:0.66em;text-align:left">
+            <div style="display:flex;gap:0.3em;flex-wrap:wrap">
+                <button id="mlOne" style="padding:3px 6px;font-size:1em">Take one step</button>
+                <button id="mlRun" style="padding:3px 6px;font-size:1em">Run</button>
+                <button id="mlReset" style="padding:3px 6px;font-size:1em">Reset</button>
+            </div>
+
+            <label style="display:block;margin-top:0.55em">Step size: <b id="mlStepVal">2.0</b></label>
+            <input id="mlStep" type="range" min="0.2" max="8" step="0.1" value="2"
+                   style="width:100%">
+
+            <label style="display:block;margin-top:0.35em">Steps per second: <b id="mlSpeedVal">6</b></label>
+            <input id="mlSpeed" type="range" min="1" max="400" step="1" value="6"
+                   style="width:100%">
+
+            <label style="display:block;margin-top:0.35em">Landscape:</label>
+            <select id="mlLandscape" style="width:100%;font-size:1em">
+                <option value="simple">One hill</option>
+                <option value="twopeaks">Two separated hills</option>
+            </select>
+
+            <div id="mlReadout" style="margin-top:0.7em;padding:0.5em;background:#f3f4f6;
+                 border-radius:6px;line-height:1.45;min-height:8.5em"></div>
+            <div id="mlStats" style="margin-top:0.4em"></div>
+        </div>
+        <div style="flex:0 0 640px">
+            <canvas id="mlCanvas"></canvas>
+        </div>
+    </div>
+</section>
+
+<section>
+    <h3>What that simulation shows</h3>
+
+    <ul class="spaced" style="width:88%">
+        <li>The chain starts in a poor region and climbs. Those early samples are not from
+            the posterior and must be discarded. This is the <b>burn-in</b>.</li>
+        <li class="fragment"><b>Small steps</b> are nearly always accepted, but the walker
+            creeps and the histogram fills in slowly.</li>
+        <li class="fragment"><b>Large steps</b> are nearly always rejected, and the walker
+            stands still. In practice an acceptance rate around 20 to 40 percent works well.</li>
+        <li class="fragment">Try <b>two separated hills</b> with a small step size. The chain
+            finds one hill and never crosses to the other, and its answer looks confident and
+            is wrong. Multiple peaks are the main practical danger in phylogenetics.</li>
+    </ul>
+</section>
+
+<section>
+    <h3>The same idea, but the landscape is trees</h3>
+
+    <p style="font-size:0.9em">Take five apes. There are 15 possible unrooted trees. A short
+    alignment of 40 sites gives each one a score, and MCMC will walk among them.</p>
+
+    <div style="font-family:monospace;font-size:0.66em;line-height:1.5;text-align:left;
+                width:74%;margin:0.8em auto;background:#f3f4f6;padding:0.7em 1.2em;border-radius:6px">
+        <div>Human&nbsp;&nbsp;&nbsp;&nbsp; CATATATCTTACGTAGGTGCGCGCCGCAAAATTGATTTCA</div>
+        <div>Chimp&nbsp;&nbsp;&nbsp;&nbsp; CATATATCTTACGTGGGAGCGTGGCTCAAAATTGATTTCA</div>
+        <div>Gorilla&nbsp;&nbsp; AATATATCTAACGTAGGAGGGCGGCACAAAATCGATTCCA</div>
+        <div>Orangutan AATAGTGCTGACGTAGTAGCGCGGCACAAACTTGATTGTA</div>
+        <div>Gibbon&nbsp;&nbsp;&nbsp;&nbsp;AATATATCTTCCGTAGCTGAGCGTCATAAAATTGATTGCA</div>
+    </div>
+
+    <ul style="width:88%;font-size:0.86em">
+        <li>A <b>proposal</b> is now a small rearrangement of the tree: detach a branch and
+            reattach it next door.</li>
+        <li>The <b>score</b> of a tree is its posterior probability, here its likelihood under
+            the Jukes-Cantor model with a uniform prior over the 15 trees.</li>
+        <li>The acceptance rule is unchanged.</li>
+    </ul>
+</section>
+
+<section>
+    <h3>Try it yourself: MCMC in tree space</h3>
+
+    <div style="display:flex;gap:0.7em;width:100%;align-items:flex-start">
+        <div style="flex:0 0 246px;font-size:0.66em;text-align:left">
+            <div style="display:flex;gap:0.3em;flex-wrap:wrap">
+                <button id="tmOne" style="padding:3px 6px;font-size:1em">Take one step</button>
+                <button id="tmRun" style="padding:3px 6px;font-size:1em">Run</button>
+                <button id="tmReset" style="padding:3px 6px;font-size:1em">Reset</button>
+            </div>
+
+            <label style="display:block;margin-top:0.55em">Steps per second: <b id="tmSpeedVal">3</b></label>
+            <input id="tmSpeed" type="range" min="1" max="300" step="1" value="3"
+                   style="width:100%">
+
+            <div id="tmReadout" style="margin-top:0.6em;padding:0.5em;background:#f3f4f6;
+                 border-radius:6px;line-height:1.45;min-height:8em"></div>
+            <div id="tmStats" style="margin-top:0.4em"></div>
+            <div id="tmClade" style="margin-top:0.7em;padding:0.5em;background:#dbeafe;
+                 border-radius:6px;line-height:1.4"></div>
+        </div>
+        <div style="flex:0 0 640px">
+            <canvas id="tmCanvas"></canvas>
+        </div>
+    </div>
+</section>
+
+<section>
+    <h3>What that simulation shows</h3>
+
+    <ul class="spaced" style="width:88%">
+        <li>No single tree is "the answer". The best tree holds only about 42 percent of the
+            posterior, and the second best about 35 percent.</li>
+        <li class="fragment">But the three leading trees all place <b>human and chimpanzee
+            together</b>. Adding up their probabilities gives roughly 93 percent support for
+            that grouping, even though the rest of the tree is poorly resolved.</li>
+        <li class="fragment">This is the central practical point: <b>ask about the feature you
+            care about, not about the single best tree</b>. Support for a clade is a sum over
+            all the trees that contain it, and MCMC estimates it simply by counting.</li>
+        <li class="fragment">With 40 sites the resolution is genuinely poor. More data would
+            sharpen the posterior, and this small example is not evidence about ape phylogeny.</li>
+    </ul>
+</section>
+
+<section>
+    <h3>Proposals on real trees</h3>
+
+    <blockquote style="width:82%;margin-left:9%">
+        With more than five species we need a set of rearrangements that can, in principle,
+        reach every tree, and that also change branch lengths and node times.
+    </blockquote>
+
+    <img data-src="../lecture-bayesian-phylogenetics/TreeOperators.svg" style="width:44%">
+
+    <p style="font-size:0.85em;width:88%">A real analysis mixes many proposal types, some
+    changing topology and some changing times or rates. Designing efficient proposals is a
+    substantial part of what phylogenetics software does.</p>
+</section>
+
+<section>
+    <h3>Burn-in: throwing away the start</h3>
+
+    <p>The chain has to start somewhere, and that starting point is not a draw from the
+    posterior:</p>
+
+    <img data-src="../lecture-bayesian-inference/MCMC_burnin.svg" style="width:96%">
+
+    <ul style="width:88%;font-size:0.88em;margin-top:0.5em">
+        <li class="fragment">Discard everything before the trace flattens out.</li>
+        <li class="fragment">Neighbouring samples are also <b>correlated</b>, so a run of a
+            million steps does not give a million independent answers.</li>
+    </ul>
+</section>
+
+<section>
+    <h3>Has it run long enough?</h3>
+
+    <p>There is no test that proves convergence. There are only tests that can reveal failure.</p>
+
+    <dl class="spaced" style="width:90%;margin-top:0.8em;font-size:0.93em">
+        <dt>Effective sample size (ESS)</dt>
+        <dd>An estimate of how many <i>independent</i> samples the chain has really produced.
+            A common rule of thumb is to keep running until the ESS exceeds 200 for every
+            parameter of interest.</dd>
+        <dt class="fragment">Independent chains</dt>
+        <dd class="fragment">Start several chains from different random trees. If they
+            disagree, at least one has not converged. If they agree, they may still all be
+            stuck on the same wrong hill, so this is necessary but not sufficient.
+            <b>Always do it.</b></dd>
+    </dl>
+
+    <blockquote class="fragment" style="width:78%;margin-left:11%;text-align:center">
+        A chain that has not converged can look perfectly calm.
+    </blockquote>
+</section>
+
+<section class="center">
+    <h2>Part 4: Reading the output</h2>
+</section>
+
+<section>
+    <h3>Parameter samples</h3>
+
+    <p style="font-size:0.9em">Each logged parameter is a sample from its own posterior
+    distribution. Plot them, and summarise with a median and a 95% credible interval.</p>
+
+    <img data-src="../lecture-bayesian-phylogenetics/tracer.png" style="width:78%;margin-top:0">
+</section>
+
+<section>
+    <h3>Tree samples</h3>
+
+    <ul class="spaced" style="width:90%">
+        <li>Any question with a yes or no answer can be answered by counting: the posterior
+            probability that a clade exists is the fraction of sampled trees containing it.</li>
+        <li class="fragment">Any quantity can be summarised the same way, for example the age
+            of the common ancestor of two species, which has a full posterior distribution.</li>
+        <li class="fragment">Summary trees condense the sample into one picture. Common
+            choices are the <b>majority-rule consensus</b> tree (clades in more than half of
+            the sampled trees) and the <b>maximum clade credibility</b> tree, which BEAST
+            produces with TreeAnnotator.</li>
+    </ul>
+
+    <blockquote class="fragment" style="width:82%;margin-left:9%;margin-top:1em">
+        A summary tree is a summary, not the result. Branches with low posterior probability
+        are drawn just as solidly as branches with high posterior probability, so always
+        read the support values.
+    </blockquote>
+</section>
+
+<section>
+    <h3>What a posterior probability on a branch means</h3>
+
+    <div class="textbox" style="width:82%;margin-left:9%;margin-top:1em">
+        <div class="title">Reading the number</div>
+        <p style="padding:0.5em">A posterior probability of 0.93 on a branch means: <b>given
+        this alignment, this evolutionary model and these priors, there is a 93 percent
+        chance that this grouping is real.</b></p>
+    </div>
+
+    <ul class="spaced" style="width:88%;margin-top:1.2em;font-size:0.95em">
+        <li class="fragment">This is a more direct statement than a bootstrap value, which
+            describes how often the grouping recurs in resampled data rather than how probable
+            it is.</li>
+        <li class="fragment">The qualification matters. The number is conditional on the model
+            being adequate. If the model is wrong, a high posterior probability can be
+            confidently wrong.</li>
+    </ul>
+</section>
+
+<section>
+    <h3>Software</h3>
+
+    <dl class="spaced" style="width:88%;font-size:0.88em">
+        <dt>BEAST 2 (Bouckaert et al., 2014)</dt>
+        <dd>Dated trees, coalescent and birth-death tree priors, molecular clocks. This is what
+            you will meet in the laboratory.</dd>
+        <dt>MrBayes (Huelsenbeck and Ronquist, 2001)</dt>
+        <dd>Long-established program for Bayesian phylogenetics.</dd>
+        <dt>RevBayes (H&ouml;hna et al., 2016)</dt>
+        <dd>Models are written out explicitly in a scripting language.</dd>
+    </dl>
+
+    <img data-src="../lecture-darwins-computer/beastSoftware.png" style="width:44%;margin-top:0.3em">
+</section>
+
+<section>
+    <h3>Summary</h3>
+
+    <ul class="spaced" style="width:90%;font-size:0.95em">
+        <li>Bayesian inference combines a prior with a likelihood to give a posterior
+            distribution, which represents what we believe after seeing the data, uncertainty
+            included.</li>
+        <li>In phylogenetics the posterior covers the tree, the branch lengths and the model
+            parameters together. It requires a <b>tree prior</b>, which is where the biology
+            of speciation or of populations enters.</li>
+        <li>There are far too many trees to enumerate, so we use <b>MCMC</b>: propose a small
+            change, accept it if it improves the score, and accept it with probability equal
+            to the score ratio if it does not.</li>
+        <li>Only ratios of scores are needed, which is what makes the calculation possible at all.</li>
+        <li>The output is a <b>sample of trees</b>. Posterior support for any feature is
+            obtained by counting how often it appears.</li>
+        <li>Convergence can be disproved but never proved. Run several chains, check ESS
+            values, and be suspicious of a chain that looks too calm.</li>
+    </ul>
+</section>
+
+<section>
+    <h3>Recommended Reading</h3>
+
+    <div class="textbox" style="width: 80%; margin-left:10%; margin-top:2em">
+        <div class="title"><a href="https://decodinggenomes.org/" style="color:inherit; text-decoration:underline">Decoding Genomes</a> (Stadler et al., 2024)</div>
+        <ul class="spaced" style="margin-top:1em; margin-left:1em">
+            <li><b>Chapter 10</b>: Bayesian inference, MCMC and Bayesian phylogenetics</li>
+        </ul>
+    </div>
+
+    <p style="margin-top:1.5em; font-size:0.8em">Also useful:</p>
+    <ul style="font-size:0.8em">
+        <li>Nascimento, Reis &amp; Yang (2017), "A biologist's guide to Bayesian phylogenetic
+            analysis", <i>Nature Ecology &amp; Evolution</i> 1:1446&ndash;1454.</li>
+        <li>Drummond &amp; Bouckaert (2015), <i>Bayesian Evolutionary Analysis with BEAST</i>.</li>
+    </ul>
+</section>
