@@ -54,6 +54,21 @@
         {% endfor %}
         <script>var LECTURE_HOMES = {{ site.lecture_homes | jsonify }};</script>
         <script src="{{site.baseurl}}/js/lecture-home.js"></script>
+
+        <!-- Turn off MathJax's fast-preview. The preview is a crude HTML approximation
+             that cannot draw stretchy symbols, so \underbrace showed as a small squiggle
+             rather than a horizontal brace. MathJax is supposed to hide the preview once
+             the real output is ready, but the reveal math plugin leaves the Hub queue
+             pending, so the preview stayed on screen on top of the finished SVG.
+             MathJax reads x-mathjax-config blocks at startup, so this must sit in the
+             head, before the math plugin injects MathJax. -->
+        <script type="text/x-mathjax-config">
+            MathJax.Hub.Config({
+                "fast-preview": { disabled: true },
+                "HTML-CSS": { EqnChunk: 1000000, EqnChunkFactor: 1 },
+                SVG: { EqnChunk: 1000000, EqnChunkFactor: 1 }
+            });
+        </script>
 	</head>
 
 	<body>
@@ -121,8 +136,15 @@
                 transition: '{{page.reveal.transition}}',
 
                 math: {
-                    mathjax: 'https://cdn.mathjax.org/mathjax/latest/MathJax.js',
-                    config: 'TeX-AMS_HTML-full'  // See http://docs.mathjax.org/en/latest/config-files.html
+                    // SVG output, not HTML-CSS. HTML-CSS falls back to locally installed
+                    // fonts (macOS ships STIX), which lack the extensible glyphs used to
+                    // build stretchy symbols, so \underbrace and friends rendered as a
+                    // tiny squiggle instead of a horizontal brace. SVG embeds the glyph
+                    // outlines in the JS and needs no fonts at all.
+                    // Pinned to the last MathJax 2 release on a live CDN; the previous
+                    // cdn.mathjax.org URL was retired in 2017 and only worked via a shim.
+                    mathjax: 'https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/MathJax.js',
+                    config: 'TeX-AMS_SVG-full'   // -full keeps \color and the other extensions
                 },
 
 				// More info https://github.com/hakimel/reveal.js#dependencies
