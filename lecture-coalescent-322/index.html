@@ -1,0 +1,423 @@
+---
+lecture_num: 10
+---
+
+<!-- BIOSCI 322 version. Merges lecture-coalescent and lecture-skyline into one
+     lecture and replaces the derivations (geometric to exponential, the
+     diffusion limit, the Griffiths-Tavare integral, the coalescent density
+     product) with two live simulations. See coalescent322.js. -->
+
+<section>
+    <h2>Where we are going</h2>
+
+    <ul class="spaced" style="width:88%">
+        <li>A gene tree is not just a record of who is related to whom. Its
+            <b>shape</b> carries information about the population the sample came
+            from.</li>
+        <li><b>Part 1.</b> The coalescent: where gene trees come from, and why the
+            size of a population controls how deep its trees are.</li>
+        <li><b>Part 2.</b> Running the argument backwards: reading a population's
+            history off the trees, and what that has revealed about humans and
+            about epidemics.</li>
+    </ul>
+
+    <blockquote style="width:82%;margin-left:9%;margin-top:1.2em;text-align:center">
+        In Lecture 8 the tree prior was an empty slot in the model.
+        This lecture fills it.
+    </blockquote>
+</section>
+
+<section>
+    <h2>The setting</h2>
+
+    <div style="display:flex;gap:1.5em;width:94%;align-items:center">
+        <div style="flex:1 1 auto">
+            <p>Data: a <b>small genetic sample</b> from a <b>large background
+            population</b>.</p>
+            <ul class="spaced" style="margin-top:0.8em">
+                <li>We will never sequence the whole population, and we do not
+                    need to.</li>
+                <li>The coalescent is a model of the ancestry of a sample, traced
+                    backwards in time until every lineage has met.</li>
+                <li>It gives a probability distribution over trees, given a
+                    population history. That makes it exactly the kind of
+                    <b>tree prior</b> that Lecture 8 needed.</li>
+                <li>Being a model of genealogies rather than of sequences, it
+                    assumes the sampled sites are evolving neutrally.</li>
+            </ul>
+        </div>
+        <div style="flex:0 0 250px">
+            <img data-src="../lecture-coalescent/wfCoalescent3.png" style="width:100%">
+        </div>
+    </div>
+</section>
+
+<section>
+    <h3>The Wright-Fisher population</h3>
+
+    <div style="display:flex;gap:1.5em;width:94%;align-items:center">
+        <div style="flex:1 1 auto">
+            <p>Almost all of theoretical population genetics starts from one
+            deliberately simple picture of a population:</p>
+            <ul class="spaced" style="margin-top:0.6em">
+                <li>Constant size $N$.</li>
+                <li>Discrete, non-overlapping generations.</li>
+                <li>Complete mixing: every individual in one generation picks its
+                    parent at random from the generation before.</li>
+            </ul>
+            <p style="margin-top:0.8em">That last rule is the whole model. Everything
+            else follows from it.</p>
+            <p style="font-size:0.85em">We will treat the population as haploid,
+            which is the natural case for many pathogens and for mitochondrial DNA.</p>
+        </div>
+        <div style="flex:0 0 240px">
+            <img data-src="../lecture-coalescent/wrightFisher.png" style="width:100%">
+        </div>
+    </div>
+</section>
+
+<section>
+    <h3>Try it yourself: tracing a sample back</h3>
+
+    <div style="display:flex;gap:0.7em;width:100%;align-items:flex-start">
+        <div style="flex:0 0 242px;font-size:0.66em;text-align:left">
+            <div style="display:flex;gap:0.3em;flex-wrap:wrap">
+                <button id="wfNew" style="padding:3px 6px;font-size:1em">New sample</button>
+                <button id="wfRun" style="padding:3px 6px;font-size:1em">Run 200</button>
+                <button id="wfReset" style="padding:3px 6px;font-size:1em">Reset</button>
+            </div>
+
+            <label style="display:block;margin-top:0.6em">Population size $N$:
+                <b id="wfNVal">14</b></label>
+            <input id="wfN" type="range" min="6" max="32" step="1" value="14"
+                   style="width:100%">
+
+            <label style="display:block;margin-top:0.4em">Sample size $k$:
+                <b id="wfKVal">3</b></label>
+            <input id="wfK" type="range" min="2" max="6" step="1" value="3"
+                   style="width:100%">
+
+            <div style="margin-top:0.8em;padding:0.5em;background:#f3f4f6;border-radius:6px;
+                        line-height:1.45">
+                <b>Try this.</b> Set $k=2$ and press <b>Run 200</b>. Then double $N$
+                and run again. The wait until the two lineages meet roughly doubles
+                as well.
+            </div>
+        </div>
+        <div style="flex:0 0 640px">
+            <canvas id="wfCanvas"></canvas>
+        </div>
+    </div>
+</section>
+
+<section>
+    <h3>The one rule that matters</h3>
+
+    <div class="textbox" style="width:86%;margin-left:7%">
+        <div class="title">Coalescence</div>
+        <p style="padding:0.5em">Two lineages have the same parent in the previous
+        generation with probability $1/N$. So a pair of lineages <b>coalesces at rate
+        $1/N$ per generation</b>, and a sample of $k$ lineages, which contains
+        $k(k-1)/2$ pairs, coalesces that much faster.</p>
+    </div>
+
+    <ul class="spaced" style="width:88%;margin-top:1.2em">
+        <li class="fragment">The waiting time is longer in a <b>large</b> population
+            and shorter in a <b>small</b> one. This is the link between tree shape and
+            population size, and it runs in both directions.</li>
+        <li class="fragment">With many lineages there are many pairs, so early
+            coalescences come thick and fast. As lineages are used up, the waits get
+            longer.</li>
+        <li class="fragment">Coalescent trees are therefore <b>lopsided</b>: crowded
+            near the tips, with one very long branch pair at the root. Half the total
+            depth of the tree is spent waiting for the last two lineages to meet.</li>
+    </ul>
+</section>
+
+<section>
+    <h3>From a population to a tree</h3>
+
+    <p>Strip away everyone who left no descendants in the sample, and what remains
+    is a tree:</p>
+
+    <img data-src="../lecture-coalescent/wrightFisherToTree.png" style="width:62%">
+
+    <blockquote class="fragment" style="width:82%;margin-left:9%;margin-top:0.5em">
+        The coalescent gives the probability of any such tree, given the population
+        history. In a Bayesian analysis that is precisely $P(T \mid \theta)$: the tree
+        prior.
+    </blockquote>
+</section>
+
+<section class="center">
+    <h2>Part 2: Reading history off a tree</h2>
+</section>
+
+<section>
+    <h3>A changing population leaves a signature</h3>
+
+    <p>If population size controls the waiting times, then a population whose size
+    <i>changed</i> leaves trees of a characteristic shape:</p>
+
+    <dl class="spaced" style="width:90%;margin-top:0.8em;font-size:0.95em">
+        <dt>Constant size</dt>
+        <dd>The familiar coalescent tree: crowded tips, long root branches.</dd>
+        <dt class="fragment">A population that grew recently</dt>
+        <dd class="fragment">Going backwards, the population shrinks, so coalescence
+            speeds up in the past. Every lineage meets at almost the same time and the
+            tree looks like a <b>star</b>, with long parallel tips.</dd>
+        <dt class="fragment">A bottleneck</dt>
+        <dd class="fragment">While the population is small, coalescence is very fast.
+            Lineages pile into the bottleneck and the tree shows a burst of branching
+            at that depth.</dd>
+    </dl>
+</section>
+
+<section>
+    <h3>Try it yourself: history in, trees out, history back</h3>
+
+    <div style="display:flex;gap:0.7em;width:100%;align-items:flex-start">
+        <div style="flex:0 0 228px;font-size:0.64em;text-align:left">
+            <div style="margin-bottom:0.5em">
+                <b>Population history</b><br>
+                <button id="sk_constant" style="padding:3px 6px;font-size:1em;margin-top:0.25em;width:100%">Constant size</button>
+                <button id="sk_growth" style="padding:3px 6px;font-size:1em;margin-top:0.2em;width:100%">Recent growth</button>
+                <button id="sk_bottleneck" style="padding:3px 6px;font-size:1em;margin-top:0.2em;width:100%">Bottleneck</button>
+            </div>
+
+            <label style="display:block;margin-top:0.4em">Sequences sampled:
+                <b id="skNVal">30</b></label>
+            <input id="skN" type="range" min="8" max="80" step="1" value="30"
+                   style="width:100%">
+
+            <label style="display:block;margin-top:0.35em">Trees used:
+                <b id="skTreesVal">1</b></label>
+            <input id="skTrees" type="range" min="1" max="60" step="1" value="1"
+                   style="width:100%">
+
+            <button id="skGo" style="padding:3px 6px;font-size:1em;margin-top:0.5em;width:100%">Simulate again</button>
+
+            <div style="margin-top:0.7em;padding:0.5em;background:#f3f4f6;border-radius:6px;
+                        line-height:1.45">
+                <b>Try this.</b> With one tree the estimate is wild. Slide
+                <b>trees used</b> up and watch it settle onto the truth. That is what
+                a Bayesian analysis is doing when it averages over the posterior.
+            </div>
+        </div>
+        <div style="flex:0 0 660px">
+            <canvas id="skCanvas"></canvas>
+        </div>
+    </div>
+</section>
+
+<section>
+    <h3>What that simulation shows</h3>
+
+    <ul class="spaced" style="width:88%">
+        <li>The estimate in each time window is just <b>number of pairs $\times$ how
+            long we waited</b>, averaged over the coalescences that fell in that
+            window. A long wait means a large population.</li>
+        <li class="fragment"><b>A single tree tells you very little.</b> Each window
+            rests on one or two branching events, so the estimate jumps around. This
+            is why the answer has to be a posterior distribution rather than a single
+            curve.</li>
+        <li class="fragment"><b>The deep past can be unreachable.</b> Once every
+            lineage has coalesced, the sample carries no information about earlier
+            times. Try the bottleneck: coalescence during the bottleneck is so fast
+            that the history before it is erased.</li>
+        <li class="fragment">Sampling more sequences helps mostly with the
+            <i>recent</i> past. Reaching further back needs more independent
+            <b>loci</b>, not more individuals.</li>
+    </ul>
+</section>
+
+<section>
+    <h3>The skyline plot</h3>
+
+    <p style="font-size:0.9em">Pybus and Strimmer (2001) turned this into a standard
+    picture: take an estimated tree, walk down it, and convert each waiting time into
+    an estimate of population size at that depth.</p>
+
+    <div style="display:flex;gap:1em;width:70%;margin:0.4em auto 0">
+        <div style="flex:1 1 0;text-align:center">
+            <img data-src="../lecture-skyline/genSkylineConstant.png" style="width:100%">
+            <div style="font-size:0.75em">Constant population size</div>
+        </div>
+        <div style="flex:1 1 0;text-align:center">
+            <img data-src="../lecture-skyline/genSkylineExponential.png" style="width:100%">
+            <div style="font-size:0.75em">Exponential growth</div>
+        </div>
+    </div>
+
+    <p class="fragment" style="font-size:0.88em;width:90%;margin-top:0.4em">Adjacent
+    intervals are grouped together to control the noise, which is the same thing the
+    simulation above does with its time windows.</p>
+</section>
+
+<section>
+    <h3>The Bayesian skyline plot</h3>
+
+    <div style="display:flex;gap:1.2em;width:96%;align-items:center">
+        <div style="flex:1 1 0;font-size:0.9em">
+            <ul class="spaced">
+                <li>The tree is not known either. It is estimated from the same
+                    sequences, and it is uncertain.</li>
+                <li>The Bayesian skyline plot (Drummond et al., 2005) samples trees
+                    <b>and</b> population histories together with MCMC, so the shaded
+                    band shows genuine uncertainty in the history.</li>
+                <li>The population history is allowed a fixed number of steps, and the
+                    analysis integrates over where the steps fall.</li>
+            </ul>
+        </div>
+        <div style="flex:0 0 380px">
+            <img data-src="../lecture-skyline/dengueBSP.png" style="width:100%">
+        </div>
+    </div>
+</section>
+
+<section>
+    <h3>Human population history from mitochondrial DNA</h3>
+
+    <img data-src="../common/images/mtDNAHumanCoalescent.jpg" style="width:62%">
+
+    <div style="text-align:right;font-size:0.75em">
+        <a class="cite" href="https://doi.org/10.1093/molbev/msm277">Atkinson, Gray and
+        Drummond, Mol. Biol. Evol., 2008</a>
+    </div>
+
+    <p style="font-size:0.85em;width:90%">Mitochondrial sequences alone recover the
+    expansion of human populations out of Africa, with the timing and the relative
+    sizes of regional populations falling out of the tree shapes.</p>
+</section>
+
+<section>
+    <h3>The origin of the HIV-1 pandemic</h3>
+
+    <div style="display:flex;gap:1em;width:96%;align-items:center">
+        <div style="flex:1 1 0">
+            <img data-src="../lecture-skyline/skylinePlotHIV.png" style="width:100%">
+        </div>
+        <div style="flex:1 1 0">
+            <img data-src="../lecture-skyline/skylineTreeHIV.png" style="width:100%">
+        </div>
+    </div>
+
+    <p style="font-size:0.85em;width:92%;margin-top:0.4em">HIV-1 group M. The star-like
+    tree on the right is the signature of a population that grew explosively, and the
+    skyline plot on the left dates the start of that growth to the early twentieth
+    century, decades before the disease was recognised.</p>
+</section>
+
+<section>
+    <h3>Seasonal influenza</h3>
+
+    <img data-src="../lecture-skyline/Rambaut2008_Figure1.png" style="width:58%">
+
+    <div style="text-align:right;font-size:0.75em">
+        <a class="cite" href="https://doi.org/10.1038/nature06945">Rambaut et al.,
+        Nature, 2008</a>
+    </div>
+
+    <p style="font-size:0.85em;width:92%">Genetic diversity in influenza A rises and
+    falls every year. Each winter epidemic is a bottleneck, and the virus that seeds
+    the next season descends from a small fraction of the previous one.</p>
+</section>
+
+<section>
+    <h3>Does it agree with what we already know?</h3>
+
+    <p style="font-size:0.9em">Dengue 4 in Puerto Rico. The blue band is estimated from
+    virus genomes alone; the bars are reported cases:</p>
+
+    <img data-src="../lecture-skyline/dengue4_BSP.png" style="width:70%">
+
+    <p class="fragment" style="font-size:0.88em;width:92%;margin-top:0.3em">Genomes and
+    surveillance data are independent sources, and they agree. That is the strongest
+    kind of check available for a method whose answer concerns the unobserved past.</p>
+</section>
+
+<section>
+    <h3>How much data does it take?</h3>
+
+    <div style="display:flex;gap:0.8em;width:98%;align-items:flex-start">
+        <div style="flex:1 1 0;text-align:center">
+            <img data-src="../lecture-skyline/EBSP_detectingBottlenecks1.png" style="width:100%">
+            <div style="font-size:0.7em">480 sequences, <b>1 locus</b></div>
+        </div>
+        <div style="flex:1 1 0;text-align:center">
+            <img data-src="../lecture-skyline/EBSP_detectingBottlenecks2.png" style="width:100%">
+            <div style="font-size:0.7em">16 sequences from each of <b>32 loci</b></div>
+        </div>
+    </div>
+
+    <blockquote style="width:88%;margin-left:6%;margin-top:0.6em;font-size:0.95em">
+        A single locus gives you one tree, and one tree is one realisation of a random
+        process. Many independent loci give many trees, and only then does a bottleneck
+        become clearly detectable.
+    </blockquote>
+</section>
+
+<section>
+    <h3>What can go wrong</h3>
+
+    <ul class="spaced" style="width:90%;font-size:0.95em">
+        <li><b>Population structure looks like population decline.</b> If a sample
+            comes from several subpopulations that rarely exchange migrants, lineages
+            cannot coalesce until they meet, which stretches the deep tree and mimics a
+            large ancestral population.</li>
+        <li class="fragment"><b>Selection breaks the assumptions.</b> A selective sweep
+            drags a whole region to a recent common ancestor, which looks exactly like
+            a bottleneck.</li>
+        <li class="fragment"><b>Sampling is rarely random.</b> Sequences from an
+            outbreak investigation are collected because they are related to each
+            other.</li>
+        <li class="fragment"><b>What is estimated is the effective population size.</b>
+            It is the size of an idealised Wright-Fisher population that would produce
+            the observed variation, and it is usually much smaller than a census count.</li>
+    </ul>
+</section>
+
+<section>
+    <h3>Summary</h3>
+
+    <ul class="spaced" style="width:90%;font-size:0.95em">
+        <li>The coalescent traces a sample backwards in time. A pair of lineages meets
+            at rate $1/N$ per generation, so <b>waiting times are long in large
+            populations and short in small ones</b>.</li>
+        <li>This makes the coalescent a tree prior: it assigns a probability to any
+            genealogy, given a population history.</li>
+        <li>Run the argument the other way and the shape of a tree becomes an estimate
+            of population size through time. A long wait between branching events means
+            the population was large then.</li>
+        <li>A single tree is a single realisation of a random process, so the answer
+            must be a distribution. The <b>Bayesian skyline plot</b> samples trees and
+            histories together.</li>
+        <li>This has recovered human expansion out of Africa, dated the origin of the
+            HIV pandemic, and tracked seasonal influenza bottlenecks, from sequence
+            data alone.</li>
+        <li>The assumptions matter: neutrality, random sampling and a well-mixed
+            population. Structure and selection can both counterfeit a demographic
+            signal.</li>
+    </ul>
+</section>
+
+<section>
+    <h3>Recommended Reading</h3>
+
+    <div class="textbox" style="width: 80%; margin-left:10%; margin-top:2em">
+        <div class="title"><a href="https://decodinggenomes.org/" style="color:inherit; text-decoration:underline">Decoding Genomes</a> (Stadler et al., 2024)</div>
+        <ul class="spaced" style="margin-top:1em; margin-left:1em">
+            <li><b>Chapter 9.2</b>: The coalescent</li>
+        </ul>
+    </div>
+
+    <p style="margin-top:1.5em; font-size:0.8em">Also useful:</p>
+    <ul style="font-size:0.8em">
+        <li>Rosenberg &amp; Nordborg (2002), "Genealogical trees, coalescent theory and
+            the analysis of genetic polymorphisms", <i>Nature Reviews Genetics</i>
+            3:380&ndash;390.</li>
+        <li>Ho &amp; Shapiro (2011), "Skyline-plot methods for estimating demographic
+            history from nucleotide sequences", <i>Molecular Ecology Resources</i>
+            11:423&ndash;434.</li>
+    </ul>
+</section>

@@ -124,7 +124,21 @@
   title: Bayesian phylogenetic inference
   folder: lecture-bayesian-phylogenetics-322
   lecturer: Alexei Drummond
-  date: 2026-08-05
+  date: 2026-08-06
+  section: biosci322
+
+-
+  title: The coalescent and population history
+  folder: lecture-coalescent-322
+  lecturer: Alexei Drummond
+  date: 2026-08-12
+  section: biosci322
+
+-
+  title: Gene trees and the multispecies coalescent
+  folder: lecture-multispecies-coalescent-322
+  lecturer: Alexei Drummond
+  date: 2026-08-13
   section: biosci322
 
 -

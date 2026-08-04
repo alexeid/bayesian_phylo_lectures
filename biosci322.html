@@ -380,7 +380,7 @@ layout: null
         <!-- Course Information -->
         <div class="info-card">
             <h2><i class="fas fa-circle-info"></i> Phylogenetics and Coalescence module</h2>
-            <p class="intro">These six lectures form Alexei Drummond's contribution to BIOSCI 322. They build from how phylogenies are estimated, through the coalescent and what it reveals about population history, to the relationship between gene trees and species trees.</p>
+            <p class="intro">These six lectures form Alexei Drummond's contribution to BIOSCI 322. They open with an overview of what computational evolutionary biology can do, then build from how phylogenies are estimated, through the coalescent and what it reveals about population history, to the relationship between gene trees and species trees.</p>
             <div class="info-grid">
                 <div class="info-item">
                     <i class="fas fa-calendar"></i>
@@ -421,14 +421,11 @@ layout: null
                             <div>
                                 <span class="lecture-num">L7</span>
                                 {% assign found_l7 = false %}
-                                {% for page in site.pages %}{% if page.url == "/lecture-bayesian-phylogenetics-322/" %}{% assign found_l7 = true %}{% endif %}{% endfor %}
-                                {% if found_l7 %}<a href="{{site.baseurl}}/lecture-bayesian-phylogenetics-322/" class="lecture-title">Bayesian phylogenetic inference</a>{% else %}<span class="lecture-unavailable">Bayesian phylogenetic inference</span>{% endif %}
+                                {% for page in site.pages %}{% if page.url == "/lecture-darwins-computer/" %}{% assign found_l7 = true %}{% endif %}{% endfor %}
+                                {% if found_l7 %}<a href="{{site.baseurl}}/lecture-darwins-computer/" class="lecture-title">Darwin's Computer: an overview</a>{% else %}<span class="lecture-unavailable">Darwin's Computer: an overview</span>{% endif %}
                             </div>
                             <div class="lecture-links">
-                                {% if found_l7 %}<a href="{{site.baseurl}}/lecture-bayesian-phylogenetics-322/" class="lecture-link slides-link">Slides</a>{% endif %}
-                                {% assign found_l7n = false %}
-                                {% for page in site.pages %}{% if page.url == "/lecture-bayesian-phylogenetics-322/notes/" %}{% assign found_l7n = true %}{% endif %}{% endfor %}
-                                {% if found_l7n %}<a href="{{site.baseurl}}/lecture-bayesian-phylogenetics-322/notes/" class="lecture-link notes-link">Notes</a>{% endif %}
+                                {% if found_l7 %}<a href="{{site.baseurl}}/lecture-darwins-computer/" class="lecture-link slides-link">Slides</a>{% endif %}
                             </div>
                         </li>
                     </ul>
@@ -440,14 +437,14 @@ layout: null
                             <div>
                                 <span class="lecture-num">L8</span>
                                 {% assign found_l8 = false %}
-                                {% for page in site.pages %}{% if page.url == "/lecture-relaxed-phylogenetics/" %}{% assign found_l8 = true %}{% endif %}{% endfor %}
-                                {% if found_l8 %}<a href="{{site.baseurl}}/lecture-relaxed-phylogenetics/" class="lecture-title">Molecular clocks and dated phylogenies</a>{% else %}<span class="lecture-unavailable">Molecular clocks and dated phylogenies</span>{% endif %}
+                                {% for page in site.pages %}{% if page.url == "/lecture-bayesian-phylogenetics-322/" %}{% assign found_l8 = true %}{% endif %}{% endfor %}
+                                {% if found_l8 %}<a href="{{site.baseurl}}/lecture-bayesian-phylogenetics-322/" class="lecture-title">Bayesian phylogenetic inference</a>{% else %}<span class="lecture-unavailable">Bayesian phylogenetic inference</span>{% endif %}
                             </div>
                             <div class="lecture-links">
-                                {% if found_l8 %}<a href="{{site.baseurl}}/lecture-relaxed-phylogenetics/" class="lecture-link slides-link">Slides</a>{% endif %}
+                                {% if found_l8 %}<a href="{{site.baseurl}}/lecture-bayesian-phylogenetics-322/" class="lecture-link slides-link">Slides</a>{% endif %}
                                 {% assign found_l8n = false %}
-                                {% for page in site.pages %}{% if page.url == "/lecture-relaxed-phylogenetics/notes/" %}{% assign found_l8n = true %}{% endif %}{% endfor %}
-                                {% if found_l8n %}<a href="{{site.baseurl}}/lecture-relaxed-phylogenetics/notes/" class="lecture-link notes-link">Notes</a>{% endif %}
+                                {% for page in site.pages %}{% if page.url == "/lecture-bayesian-phylogenetics-322/notes/" %}{% assign found_l8n = true %}{% endif %}{% endfor %}
+                                {% if found_l8n %}<a href="{{site.baseurl}}/lecture-bayesian-phylogenetics-322/notes/" class="lecture-link notes-link">Notes</a>{% endif %}
                             </div>
                         </li>
                     </ul>
@@ -467,14 +464,14 @@ layout: null
                             <div>
                                 <span class="lecture-num">L9</span>
                                 {% assign found_l9 = false %}
-                                {% for page in site.pages %}{% if page.url == "/lecture-coalescent/" %}{% assign found_l9 = true %}{% endif %}{% endfor %}
-                                {% if found_l9 %}<a href="{{site.baseurl}}/lecture-coalescent/" class="lecture-title">The coalescent</a>{% else %}<span class="lecture-unavailable">The coalescent</span>{% endif %}
+                                {% for page in site.pages %}{% if page.url == "/lecture-relaxed-phylogenetics/" %}{% assign found_l9 = true %}{% endif %}{% endfor %}
+                                {% if found_l9 %}<a href="{{site.baseurl}}/lecture-relaxed-phylogenetics/" class="lecture-title">Molecular clocks and dated phylogenies</a>{% else %}<span class="lecture-unavailable">Molecular clocks and dated phylogenies</span>{% endif %}
                             </div>
                             <div class="lecture-links">
-                                {% if found_l9 %}<a href="{{site.baseurl}}/lecture-coalescent/" class="lecture-link slides-link">Slides</a>{% endif %}
+                                {% if found_l9 %}<a href="{{site.baseurl}}/lecture-relaxed-phylogenetics/" class="lecture-link slides-link">Slides</a>{% endif %}
                                 {% assign found_l9n = false %}
-                                {% for page in site.pages %}{% if page.url == "/lecture-coalescent/notes/" %}{% assign found_l9n = true %}{% endif %}{% endfor %}
-                                {% if found_l9n %}<a href="{{site.baseurl}}/lecture-coalescent/notes/" class="lecture-link notes-link">Notes</a>{% endif %}
+                                {% for page in site.pages %}{% if page.url == "/lecture-relaxed-phylogenetics/notes/" %}{% assign found_l9n = true %}{% endif %}{% endfor %}
+                                {% if found_l9n %}<a href="{{site.baseurl}}/lecture-relaxed-phylogenetics/notes/" class="lecture-link notes-link">Notes</a>{% endif %}
                             </div>
                         </li>
                     </ul>
@@ -496,14 +493,14 @@ layout: null
                             <div>
                                 <span class="lecture-num">L10</span>
                                 {% assign found_l10 = false %}
-                                {% for page in site.pages %}{% if page.url == "/lecture-skyline/" %}{% assign found_l10 = true %}{% endif %}{% endfor %}
-                                {% if found_l10 %}<a href="{{site.baseurl}}/lecture-skyline/" class="lecture-title">Inferring population history</a>{% else %}<span class="lecture-unavailable">Inferring population history</span>{% endif %}
+                                {% for page in site.pages %}{% if page.url == "/lecture-coalescent-322/" %}{% assign found_l10 = true %}{% endif %}{% endfor %}
+                                {% if found_l10 %}<a href="{{site.baseurl}}/lecture-coalescent-322/" class="lecture-title">The coalescent and population history</a>{% else %}<span class="lecture-unavailable">The coalescent and population history</span>{% endif %}
                             </div>
                             <div class="lecture-links">
-                                {% if found_l10 %}<a href="{{site.baseurl}}/lecture-skyline/" class="lecture-link slides-link">Slides</a>{% endif %}
+                                {% if found_l10 %}<a href="{{site.baseurl}}/lecture-coalescent-322/" class="lecture-link slides-link">Slides</a>{% endif %}
                                 {% assign found_l10n = false %}
-                                {% for page in site.pages %}{% if page.url == "/lecture-skyline/notes/" %}{% assign found_l10n = true %}{% endif %}{% endfor %}
-                                {% if found_l10n %}<a href="{{site.baseurl}}/lecture-skyline/notes/" class="lecture-link notes-link">Notes</a>{% endif %}
+                                {% for page in site.pages %}{% if page.url == "/lecture-coalescent-322/notes/" %}{% assign found_l10n = true %}{% endif %}{% endfor %}
+                                {% if found_l10n %}<a href="{{site.baseurl}}/lecture-coalescent-322/notes/" class="lecture-link notes-link">Notes</a>{% endif %}
                             </div>
                         </li>
                     </ul>
@@ -515,11 +512,11 @@ layout: null
                             <div>
                                 <span class="lecture-num">L11</span>
                                 {% assign found_l11 = false %}
-                                {% for page in site.pages %}{% if page.url == "/lecture-multispecies-coalescent/" %}{% assign found_l11 = true %}{% endif %}{% endfor %}
-                                {% if found_l11 %}<a href="{{site.baseurl}}/lecture-multispecies-coalescent/" class="lecture-title">Gene trees and the multispecies coalescent</a>{% else %}<span class="lecture-unavailable">Gene trees and the multispecies coalescent</span>{% endif %}
+                                {% for page in site.pages %}{% if page.url == "/lecture-multispecies-coalescent-322/" %}{% assign found_l11 = true %}{% endif %}{% endfor %}
+                                {% if found_l11 %}<a href="{{site.baseurl}}/lecture-multispecies-coalescent-322/" class="lecture-title">Gene trees and the multispecies coalescent</a>{% else %}<span class="lecture-unavailable">Gene trees and the multispecies coalescent</span>{% endif %}
                             </div>
                             <div class="lecture-links">
-                                {% if found_l11 %}<a href="{{site.baseurl}}/lecture-multispecies-coalescent/" class="lecture-link slides-link">Slides</a>{% endif %}
+                                {% if found_l11 %}<a href="{{site.baseurl}}/lecture-multispecies-coalescent-322/" class="lecture-link slides-link">Slides</a>{% endif %}
                             </div>
                         </li>
                     </ul>

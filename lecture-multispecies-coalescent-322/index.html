@@ -1,0 +1,374 @@
+---
+lecture_num: 11
+---
+
+<!-- BIOSCI 322 version of the multispecies coalescent lecture. The population
+     size priors, the coalescent density integrals and the full joint posterior
+     are removed; the argument is carried by figures and by a live simulation of
+     incomplete lineage sorting (see msc322.js). -->
+
+<section>
+    <h2>One species, many trees</h2>
+
+    <blockquote style="width:86%;margin-left:7%;margin-top:1em">
+        Sequence two different genes from the same set of species and you will
+        often get two different trees. Neither of them has to be wrong.
+    </blockquote>
+
+    <ul class="spaced" style="width:88%;margin-top:1.5em">
+        <li class="fragment">Last lecture: within a single population, the coalescent
+            makes gene trees a <b>random</b> product of the population's history.</li>
+        <li class="fragment">That randomness does not stop at the species boundary. A
+            gene's ancestry runs back through ancestral species that were themselves
+            populations with variation in them.</li>
+        <li class="fragment">The <b>multispecies coalescent</b> is the model that puts
+            gene trees inside a species tree and treats the difference between them as
+            something to be expected rather than explained away.</li>
+    </ul>
+</section>
+
+<section>
+    <h3>The boundary between population genetics and phylogenetics</h3>
+
+    <p>Closely related species are exactly where the two fields collide:</p>
+
+    <ul class="spaced" style="width:90%;margin-top:0.6em;font-size:0.95em">
+        <li>Different genes give different tree topologies, through <b>incomplete
+            lineage sorting</b>.</li>
+        <li class="fragment">Divergence times between species are systematically
+            <b>overestimated</b> if you read them straight off a gene tree.</li>
+        <li class="fragment">Sometimes the species identity of an individual is not
+            known, and sometimes species are delimited from a split in a single gene
+            tree, which is a fragile basis.</li>
+    </ul>
+
+    <img data-src="../lecture-multispecies-coalescent/GeneAndSpeciesTrees.png"
+         style="width:40%;margin-top:0.3em">
+</section>
+
+<section>
+    <h3>Where the disagreement comes from</h3>
+
+    <p style="font-size:0.9em">Inside a single population, lineages drift. Some leave
+    many descendants, some leave none, and which lineages survive is largely luck:</p>
+
+    <div style="display:flex;gap:0.8em;width:50%;margin:0.4em auto 0">
+        <div style="flex:1 1 0"><img data-src="../lecture-multispecies-coalescent/LineageDrift1.png" style="width:100%"></div>
+        <div style="flex:1 1 0"><img data-src="../lecture-multispecies-coalescent/LineageDrift2.png" style="width:100%"></div>
+        <div style="flex:1 1 0"><img data-src="../lecture-multispecies-coalescent/LineageDrift3.png" style="width:100%"></div>
+    </div>
+
+    <p style="font-size:0.9em;margin-top:0.5em">When a species splits, the variation
+    that was present in the ancestor is divided between the daughter species. Two
+    gene copies that end up in different species may have <b>separated long before the
+    species did</b>.</p>
+</section>
+
+<section>
+    <h3>Ancestral polymorphism</h3>
+
+    <img data-src="../lecture-multispecies-coalescent/WhyAncestral.png" style="width:48%">
+
+    <blockquote class="fragment" style="width:86%;margin-left:7%;margin-top:0.5em">
+        If two species split faster than the ancestral population could sort its own
+        variation, the gene lineages carry no memory of the order in which the species
+        separated.
+    </blockquote>
+</section>
+
+<section>
+    <h3>Try it yourself: incomplete lineage sorting</h3>
+
+    <div style="display:flex;gap:0.7em;width:100%;align-items:flex-start">
+        <div style="flex:0 0 232px;font-size:0.64em;text-align:left">
+            <div style="display:flex;gap:0.3em;flex-wrap:wrap">
+                <button id="ilsOne" style="padding:3px 6px;font-size:1em">One gene</button>
+                <button id="ilsMany" style="padding:3px 6px;font-size:1em">500 genes</button>
+                <button id="ilsReset" style="padding:3px 6px;font-size:1em">Reset</button>
+            </div>
+
+            <label style="display:block;margin-top:0.6em">Internal branch length:
+                <b id="ilsTVal">0.80</b></label>
+            <input id="ilsT" type="range" min="0.05" max="3" step="0.05" value="0.8"
+                   style="width:100%">
+            <div style="opacity:0.75;margin-top:0.2em">measured in multiples of the
+            ancestral population size: how many generations the branch lasted,
+            divided by how many individuals were in it</div>
+
+            <div style="margin-top:0.7em;padding:0.5em;background:#f3f4f6;border-radius:6px;
+                        line-height:1.45">
+                <b>Try this.</b> Press <b>500 genes</b>. Then drag the internal branch
+                down to 0.1 and press it again. When the branch is short compared with
+                the population, all three tree shapes become almost equally likely.
+            </div>
+        </div>
+        <div style="flex:0 0 660px">
+            <canvas id="ilsCanvas"></canvas>
+        </div>
+    </div>
+</section>
+
+<section>
+    <h3>What that simulation shows</h3>
+
+    <ul class="spaced" style="width:88%">
+        <li>Two gene lineages can only be sorted by a species split if they
+            <b>coalesce inside the ancestral branch</b>. If they do not, they enter the
+            older ancestral population still separate, and there they meet at random.</li>
+        <li class="fragment">Then each of the three possible groupings is equally
+            likely, so <b>two thirds of unsorted genes disagree</b> with the species
+            tree.</li>
+        <li class="fragment">What decides this is not the length of the branch in years
+            but its length <b>relative to the population size</b>. A long branch in a
+            small population sorts cleanly; a short branch in a large population does
+            not.</li>
+        <li class="fragment">Disagreement between gene trees is therefore not noise or
+            error. It is a prediction of the model, and its <b>frequency is
+            informative</b> about ancestral population sizes and divergence times.</li>
+    </ul>
+</section>
+
+<section>
+    <h3>This is not a hypothetical</h3>
+
+    <div class="textbox" style="width:86%;margin-left:7%;margin-top:1em">
+        <div class="title">Human, chimpanzee and gorilla</div>
+        <p style="padding:0.5em">Humans and chimpanzees are each other's closest living
+        relatives. Even so, Scally et al. (2012) estimated that for roughly
+        <b>30% of the gorilla genome</b>, the gorilla sequence is closer to the human
+        or the chimpanzee sequence than those two are to each other.</p>
+    </div>
+
+    <ul class="spaced" style="width:88%;margin-top:1.2em;font-size:0.95em">
+        <li class="fragment">The human and chimpanzee lineages separated only a few
+            million years after the gorilla lineage did, and the ancestral ape
+            population was large. That is exactly the regime the simulation shows.</li>
+        <li class="fragment">A single gene, or a single genomic region, is therefore a
+            poor witness to a species tree. Consistency across <b>many independent
+            loci</b> is what carries the signal.</li>
+    </ul>
+
+    <div style="text-align:right;font-size:0.75em;margin-top:0.5em">
+        <a class="cite" href="https://doi.org/10.1038/nature10842">Scally et al.,
+        Nature, 2012</a>
+    </div>
+</section>
+
+<section>
+    <h3>Monophyly is not guaranteed</h3>
+
+    <img data-src="../lecture-multispecies-coalescent/Phyly.png" style="width:74%">
+
+    <p style="font-size:0.9em;width:90%;margin-top:0.4em">Sample several individuals
+    per species and a species may come out <b>monophyletic, paraphyletic or
+    polyphyletic</b> in a given gene tree, purely through incomplete sorting. A species
+    that fails to be monophyletic in one gene tree has not thereby been refuted.</p>
+</section>
+
+<section>
+    <h3>Divergence times come out too old</h3>
+
+    <div style="display:flex;gap:1.2em;width:96%;align-items:center">
+        <div style="flex:1 1 0;font-size:0.95em">
+            <ul class="spaced">
+                <li>Two gene copies in different species must have separated
+                    <b>at or before</b> the species split, never after.</li>
+                <li>So the depth of a gene tree overshoots the depth of the species
+                    tree, by an amount that depends on the ancestral population size.</li>
+                <li>The error is worst exactly where it matters most: recent, rapid
+                    radiations.</li>
+            </ul>
+        </div>
+        <div style="flex:0 0 400px">
+            <img data-src="../lecture-multispecies-coalescent/DivergenceTimes1.png" style="width:100%">
+        </div>
+    </div>
+</section>
+
+<section>
+    <h3>How large is the error?</h3>
+
+    <img data-src="../lecture-multispecies-coalescent/DivergenceTimes2.png" style="width:62%">
+
+    <div style="text-align:right;font-size:0.75em">
+        <a class="cite">Edwards and Beerli, Evolution, 2000</a>
+    </div>
+</section>
+
+<section class="center">
+    <h2>The multispecies coalescent</h2>
+</section>
+
+<section>
+    <h3>Trees inside trees</h3>
+
+    <div style="display:flex;gap:1.2em;width:96%;align-items:center">
+        <div style="flex:1 1 0;font-size:0.93em">
+            <ul class="spaced">
+                <li>The <b>species tree</b> is a set of populations joined by
+                    speciation events. Each branch has a duration and a population
+                    size.</li>
+                <li>Each <b>gene tree</b> is generated by running the coalescent
+                    <i>inside</i> those populations. Lineages can only meet once they
+                    are in the same branch.</li>
+                <li>Every gene sees the same species tree but gets its own independent
+                    draw, which is why they disagree.</li>
+            </ul>
+        </div>
+        <div style="flex:0 0 380px">
+            <img data-src="../lecture-multispecies-coalescent/geneTreeSpeciesTree.png" style="width:100%">
+        </div>
+    </div>
+
+    <blockquote class="fragment" style="width:88%;margin-left:6%;margin-top:0.5em">
+        In the language of the Bayesian lecture: the species tree is the prior on gene
+        trees, and each gene's alignment is the data for its own gene tree.
+    </blockquote>
+</section>
+
+<section>
+    <h3>What a multispecies coalescent analysis estimates</h3>
+
+    <dl class="spaced" style="width:90%;margin-top:0.5em;font-size:0.95em">
+        <dt>The species tree topology and divergence times</dt>
+        <dd>Corrected for ancestral polymorphism, so no longer systematically too old.</dd>
+        <dt class="fragment">Ancestral population sizes</dt>
+        <dd class="fragment">Estimated from how much the gene trees disagree. A branch
+            with many discordant genes had a large population, or was short, or both.</dd>
+        <dt class="fragment">A separate tree for every gene</dt>
+        <dd class="fragment">Each with its own uncertainty, all constrained to fit
+            inside the same species tree.</dd>
+    </dl>
+
+    <blockquote class="fragment" style="width:82%;margin-left:9%;margin-top:0.8em;text-align:center">
+        All of it sampled jointly by MCMC, exactly as in Lecture 8.
+    </blockquote>
+</section>
+
+<section>
+    <h3>Four gene trees inside a three-species tree</h3>
+
+    <img data-src="../lecture-multispecies-coalescent/b1_speciesTree.png" style="width:60%">
+
+    <p style="font-size:0.88em;width:90%;margin-top:0.3em">The species tree is the
+    shaded outline. The four gene trees inside it are each a valid history, and they do
+    not have to agree with one another.</p>
+</section>
+
+<section>
+    <h3>Why concatenating genes is a bad idea</h3>
+
+    <div style="display:flex;gap:1em;width:72%;margin:0 auto;align-items:center">
+        <div style="flex:0 0 130px;text-align:center">
+            <img data-src="../lecture-multispecies-coalescent/sp2.png" style="width:100%">
+            <div style="font-size:0.75em">the true species tree</div>
+        </div>
+        <div style="flex:1 1 0;text-align:center">
+            <img data-src="../lecture-multispecies-coalescent/concatTree.png" style="width:100%">
+            <div style="font-size:0.75em">one tree from all the genes glued together</div>
+        </div>
+    </div>
+
+    <blockquote class="fragment" style="width:88%;margin-left:6%;margin-top:0.5em">
+        Gluing the alignments together forces one tree on genes that genuinely have
+        different histories. The result can be confidently wrong: strong support for a
+        tree that is not the species tree.
+    </blockquote>
+</section>
+
+<section>
+    <h3>A rapid radiation of seven species</h3>
+
+    <div style="display:flex;gap:1em;width:96%">
+        <div style="flex:1 1 0;text-align:center">
+            <img data-src="../lecture-multispecies-coalescent/run1_sptree.png" style="width:100%">
+            <div style="font-size:0.75em">species tree</div>
+        </div>
+        <div style="flex:1 1 0;text-align:center">
+            <img data-src="../lecture-multispecies-coalescent/run1_sptreeand1loci.png" style="width:100%">
+            <div style="font-size:0.75em">species tree with one gene tree inside it</div>
+        </div>
+    </div>
+
+    <p style="font-size:0.88em;width:92%;margin-top:0.3em">Short internal branches leave
+    almost no opportunity for sorting, so the gene tree wanders freely inside the
+    species tree.</p>
+</section>
+
+<section>
+    <h3>Pocket gophers</h3>
+
+    <div style="display:flex;gap:1.2em;width:96%;align-items:center">
+        <div style="flex:1 1 0;font-size:0.9em">
+            <ul class="spaced">
+                <li>27 individuals, 7 loci (Belfiore, 2008).</li>
+                <li>Analysed jointly under the multispecies coalescent in BEAST
+                    (Heled and Drummond, 2010).</li>
+                <li>The result is a species tree with credible intervals on its
+                    divergence times, and branch widths showing estimated population
+                    sizes.</li>
+            </ul>
+        </div>
+        <div style="flex:0 0 400px">
+            <img data-src="../lecture-multispecies-coalescent/go4.png" style="width:100%">
+        </div>
+    </div>
+</section>
+
+<section>
+    <h3>What this changes in practice</h3>
+
+    <ul class="spaced" style="width:90%;font-size:0.95em">
+        <li><b>Do not concatenate.</b> Analyse loci as separate genes sharing one
+            species tree.</li>
+        <li class="fragment"><b>Do not read a species tree off one gene.</b> A single
+            gene tree, however well supported, is one draw from a random process.</li>
+        <li class="fragment"><b>Disagreement is data.</b> The proportion of discordant
+            loci is what identifies ancestral population sizes.</li>
+        <li class="fragment"><b>Not all discordance is lineage sorting.</b> Hybridisation,
+            introgression and horizontal transfer also produce conflicting gene trees,
+            and the multispecies coalescent alone cannot distinguish them. Network
+            models extend it to try.</li>
+        <li class="fragment"><b>It is expensive.</b> Every gene tree is an unknown, so
+            the state space grows quickly with the number of loci.</li>
+    </ul>
+</section>
+
+<section>
+    <h3>Summary</h3>
+
+    <ul class="spaced" style="width:90%;font-size:0.95em">
+        <li>Gene trees and species trees are different objects. A gene tree is
+            generated by the coalescent running inside the branches of a species tree.</li>
+        <li>When a species branch is short relative to its population size, lineages
+            fail to sort within it, and the gene tree disagrees with the species tree.
+            Two thirds of unsorted genes will disagree.</li>
+        <li>This is common in real data: roughly 30% of the gorilla genome does not
+            follow the human and chimpanzee grouping.</li>
+        <li>Reading divergence times off gene trees makes species look older than they
+            are, by an amount set by the ancestral population size.</li>
+        <li>The multispecies coalescent estimates the species tree, its divergence
+            times and its ancestral population sizes from many loci at once, using the
+            disagreement rather than being misled by it.</li>
+    </ul>
+</section>
+
+<section>
+    <h3>Recommended Reading</h3>
+
+    <div class="textbox" style="width: 80%; margin-left:10%; margin-top:2em">
+        <div class="title"><a href="https://decodinggenomes.org/" style="color:inherit; text-decoration:underline">Decoding Genomes</a> (Stadler et al., 2024)</div>
+        <ul class="spaced" style="margin-top:1em; margin-left:1em">
+            <li><b>Chapter 9</b>: Gene trees, species trees and the coalescent</li>
+        </ul>
+    </div>
+
+    <p style="margin-top:1.5em; font-size:0.8em">Also useful:</p>
+    <ul style="font-size:0.8em">
+        <li>Degnan &amp; Rosenberg (2009), "Gene tree discordance, phylogenetic
+            inference and the multispecies coalescent", <i>Trends in Ecology &amp;
+            Evolution</i> 24:332&ndash;340.</li>
+        <li>Edwards (2009), "Is a new and general theory of molecular systematics
+            emerging?", <i>Evolution</i> 63:1&ndash;19.</li>
+    </ul>
+</section>
