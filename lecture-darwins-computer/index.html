@@ -257,7 +257,7 @@ reveal:
     </div>
 
     <div style="margin-top:0.3em">
-        $$p(g,\color{green}{Q},\color{blue}{\Theta}|D) \propto \Pr\{D|\mu g,\color{green}{Q}\} \; p(g|\color{blue}{\Theta}) \; \color{green}{p(Q)} \; \color{blue}{p(\Theta)}$$
+        $$p(g,\color{green}{Q},\color{blue}{\Theta},\color{red}{\mu}|D) \propto \Pr\{D|\color{red}{\mu} g,\color{green}{Q}\} \; p(g|\color{blue}{\Theta}) \; \color{green}{p(Q)} \; \color{blue}{p(\Theta)} \; \color{red}{p(\mu)}$$
     </div>
 </section>
 
@@ -285,10 +285,14 @@ reveal:
     </div>
 
     <div style="clear:both; margin-top:0.3em; font-size:0.85em">
-        $$p(T,\color{purple}{S}|D) \propto \Pr\{D|T\} \; p(T|\color{purple}{S}) \; \color{purple}{p(S)}$$
+        $$p(g,\color{purple}{S}|D) \propto \Pr\{D|g\} \; p(g|\color{purple}{S}) \; \color{purple}{p(S)}$$
         <div style="margin-top:0.5em">
-        $$p(t_1,t_2,\ldots,t_N,\color{purple}{S}|D) \propto \prod_i \Pr\{D_i|t_i\} \; p(t_i|\color{purple}{S}) \; \color{purple}{p(S)}$$
+        $$p(g_1,g_2,\ldots,g_N,\color{purple}{S}|D) \propto \prod_i \Pr\{D_i|g_i\} \; p(g_i|\color{purple}{S}) \; \color{purple}{p(S)}$$
         </div>
+        <p style="font-size:0.6em; margin-top:0.4em; text-align:center">
+            The substitution model $Q$ and clock rate $\mu$ are suppressed here for simplicity;
+            they remain part of the full model.
+        </p>
     </div>
 </section>
 
