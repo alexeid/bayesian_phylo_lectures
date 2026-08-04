@@ -1,0 +1,394 @@
+---
+lecture_num: 7
+
+reveal:
+    history: true
+---
+
+<!-- Slide 1: Visual opener - Darwin portrait + Origin illustration -->
+<section>
+    <h2>Darwin's Computer</h2>
+
+   <div style="width:30%;float:left;top:2em;">
+            <img data-src="../lecture-darwins-computer/Charles_Darwin_by_G_Richmond.jpg">
+   </div>
+
+   <div style="margin-left:32%;width:68%;top:2em;">
+            <img data-src="../lecture-darwins-computer/Origin_of_Species.svg">
+            <p style="font-size:0.6em; margin-top:0.3em; text-align:center">
+                Detail from the only illustration in the <i>Origin of Species</i> (Darwin, 1859)
+            </p>
+   </div>
+</section>
+
+<!-- Slide 2: Tree of Life -->
+<section>
+    <div style="overflow:hidden">
+        <img data-src="../lecture-darwins-computer/treeOfLife_evogeneao.png" style="width:90%; margin-bottom:-6%">
+    </div>
+    <p style="font-size:0.6em; margin-top:0.3em; text-align:center">
+        <a href="https://www.evogeneao.com/en/explore/tree-of-life-explorer">https://www.evogeneao.com/en/explore/tree-of-life-explorer</a>
+    </p>
+</section>
+
+<!-- Slide 3: Descent with modification -->
+<section>
+    <h2>Descent with modification in populations</h2>
+
+    <div style="overflow:hidden; margin-top:0.3em">
+        <img data-src="../lecture-darwins-computer/descentWithModification.png" style="width:90%; margin-top:-8%">
+    </div>
+</section>
+
+<!-- Slide 4: 15 trees of 4 taxa -->
+<section>
+    <div style="overflow:hidden">
+        <img data-src="../lecture-darwins-computer/15trees4taxa.png" style="width:90%; margin-bottom:-8%">
+    </div>
+    <p style="font-size:0.8em; margin-top:0.3em; text-align:center">15 possible trees of 4 individuals/species</p>
+</section>
+
+<!-- Slide 5: 105 trees of 5 taxa -->
+<section>
+    <div style="overflow:hidden">
+        <img data-src="../lecture-darwins-computer/105trees5taxa.png" style="width:90%; margin-bottom:-8%">
+    </div>
+    <p style="font-size:0.8em; margin-top:0.3em; text-align:center">105 possible trees of 5 individuals/species</p>
+</section>
+
+<!-- Slide 6: 945 trees of 6 taxa -->
+<section>
+    <div style="overflow:hidden">
+        <img data-src="../lecture-darwins-computer/945trees6taxa.png" style="width:90%; margin-bottom:-8%">
+    </div>
+    <p style="font-size:0.8em; margin-top:0.3em; text-align:center">945 possible trees of 6 individuals/species</p>
+</section>
+
+<!-- Slide 7: How many trees are there? -->
+<section>
+    <h2>How many trees are there?</h2>
+
+    <table class="noborders" style="font-size:0.9em; border-collapse:collapse">
+    <tr><td style="border-bottom: solid 1px; border-top: solid 1px;">$n$</td><td style="border-bottom: solid 1px; border-top: solid 1px;"># rooted trees</td><td style="border-bottom: solid 1px; border-top: solid 1px;"></td></tr>
+    <tr><td>4</td><td>15</td><td>enumerable by hand</td></tr>
+    <tr><td>5</td><td>105</td><td>enumerable by hand on a rainy day</td></tr>
+    <tr><td>6</td><td>945</td><td>enumerable by computer</td></tr>
+    <tr><td>7</td><td>10395</td><td>still searchable very quickly on computer</td></tr>
+    <tr><td>8</td><td>135135</td><td>about the number of hairs on your head</td></tr>
+    <tr><td>9</td><td>2027025</td><td>greater than the population of Auckland</td></tr>
+    <tr><td>10</td><td>34459425</td><td>$\approx$ upper limit for exhaustive search</td></tr>
+    <tr><td>20</td><td>$8.2 \times 10^{21}$</td><td>$\approx$ upper limit of branch-and-bound searching</td></tr>
+    <tr><td>48</td><td>$2.99 \times 10^{72}$</td><td>$\approx 10^{22}$ times the number of atoms in the Earth</td></tr>
+    <tr><td style="border-bottom: solid 1px;">136</td><td style="border-bottom: solid 1px;">$5.69 \times 10^{269}$</td><td style="border-bottom: solid 1px;">number of trees to choose from in the &ldquo;Out of Africa&rdquo; data (Vigilant <i>et al.</i> 1991)</td></tr>
+    </table>
+</section>
+
+<!-- Slide 8: Computing Darwin's Tree of Life -->
+<section>
+    <h2>Computing Darwin's Tree of Life</h2>
+
+    <img data-src="../common/images/treeoflife.jpg" style="width:45%">
+</section>
+
+<!-- Slide 9: Bayesian reconstruction of phylogenetic trees -->
+<section>
+    <h2>Bayesian reconstruction of phylogenetic trees</h2>
+    <p style="font-size:0.7em; text-align:center"><a class="cite">Yang &amp; Rannala (1997), Mau, Newton &amp; Larget (1998)</a></p>
+
+    <div style="margin-top:0.5em; text-align:left; width:85%; margin-left:7.5%">
+        <p>What we really want is the <b>probability of the tree</b> given the data.</p>
+
+        <p>We can compute that from the likelihood using <b>Bayes Theorem</b>:</p>
+    </div>
+
+    <img data-src="../common/images/PosteriorProbability.png" style="width:65%; margin-top:0.5em">
+
+    <div style="margin-top:0.5em; text-align:left; width:85%; margin-left:7.5%; font-size:0.9em">
+        <p>This is known as the <b>Posterior probability</b> of the tree. Using the
+        <b>Markov chain Monte Carlo algorithm</b> we can produce a sample
+        of trees that have high posterior probability.</p>
+    </div>
+
+    <blockquote style="width:80%; margin-left:10%; margin-top:0.6em; font-size:0.75em">
+        Today is the overview. Every term here, prior, likelihood, posterior and MCMC,
+        is unpacked from first principles in the next lecture.
+    </blockquote>
+</section>
+
+<!-- Slide 10: The posterior distribution on Darwin's Finches -->
+<section>
+    <h2>The posterior distribution on Darwin's Finches</h2>
+
+    <img data-src="../common/images/FinchPosteriorPNG.png" style="width:45%">
+
+    <p style="font-size:0.7em; margin-top:0.5em; text-align:left; width:85%; margin-left:7.5%">
+        This posterior probability distribution was computed using
+        <b>Markov chain Monte Carlo</b> implemented in the <b>BEAST</b>
+        software package (Drummond <i>et al</i>, 2012).
+    </p>
+</section>
+
+<!-- Slide 11: The posterior distribution of larger trees -->
+<section>
+    <h2>The posterior distribution of larger trees</h2>
+
+    <img data-src="../common/images/densitreespace.png" style="width:70%">
+
+    <p style="font-size:0.7em; margin-top:0.5em">
+        <a class="cite">Produced using DensiTree (Bouckaert, 2012)</a>
+    </p>
+</section>
+
+<!-- Slide 12: Elaborations of the phylogenetic model -->
+<section>
+    <h2>Elaborations of the phylogenetic model</h2>
+
+    <div style="text-align:left; width:85%; margin-left:7.5%; margin-top:1em">
+        <p>Basic model: (posterior proportional to likelihood &times; prior)</p>
+        $$P(\color{red}{g}|D) \propto \Pr(D|\color{red}{g}) \; P(\color{red}{g})$$
+
+        <p style="margin-top:1em">Substitution model:</p>
+        $$P(\color{red}{g},\color{#b8860b}{Q}|D) \propto \Pr(D|\color{red}{g},\color{#b8860b}{Q}) \; P(\color{red}{g}) \; \color{#b8860b}{P(Q)}$$
+
+        <p style="margin-top:1em">Substitution model and tree branching process prior:</p>
+        $$P(\color{red}{g},\color{#b8860b}{Q},\color{blue}{\Theta}|D) \propto \Pr(D|\color{red}{g},\color{#b8860b}{Q}) \; P(\color{red}{g}|\color{blue}{\Theta}) \; \color{#b8860b}{P(Q)} \; \color{blue}{P(\Theta)}$$
+    </div>
+
+    <p style="font-size:0.6em; margin-top:0.8em; text-align:center">
+        $\color{red}{g}$ the tree &nbsp;&middot;&nbsp;
+        $\color{#b8860b}{Q}$ substitution model &nbsp;&middot;&nbsp;
+        $\color{blue}{\Theta}$ tree prior parameters &nbsp;&middot;&nbsp;
+        $D$ the sequence data
+    </p>
+</section>
+
+<!-- Slide 13: Evolution is happening right now -->
+<section>
+    <h2>Elaborations of the model: Evolution is happening right now!</h2>
+
+    <p style="font-size:0.7em; text-align:center">Modelling phylogenetic data sampled through time</p>
+    <p style="font-size:0.6em; text-align:center"><a class="cite">Drummond and Rodrigo (2000), Drummond <i>et al</i> (2002)</a></p>
+
+    <div style="float:left; width:65%">
+        <img data-src="../common/images/serialTree.png" style="width:100%">
+    </div>
+
+    <div style="margin-left:67%; width:30%; text-align:left; font-size:0.8em; margin-top:1em">
+        <ul class="spaced">
+            <li>Rapidly evolving microbes</li>
+            <li>Ancient DNA</li>
+            <li>Cancer</li>
+            <li>Somatic evolution</li>
+            <li>Languages</li>
+            <li><i>et cetera</i></li>
+        </ul>
+    </div>
+
+    <div style="clear:both; margin-top:0.5em">
+        $$P(\color{red}{g},\color{#b8860b}{Q},\color{blue}{\Theta},\color{darkgreen}{\mu}|D) \propto \Pr\{D|\color{darkgreen}{\mu}\color{red}{g},\color{#b8860b}{Q}\} \; P(\color{red}{g}|\color{blue}{\Theta}) \; \color{#b8860b}{P(Q)} \; \color{blue}{P(\Theta)} \; \color{darkgreen}{P(\mu)}$$
+    </div>
+
+    <p style="font-size:0.6em; margin-top:0.2em; text-align:center">
+        Sampling through time adds a <b>clock rate</b> $\color{darkgreen}{\mu}$, which converts
+        the time tree $\color{red}{g}$ into the genetic distances the data actually record.
+    </p>
+</section>
+
+<!-- Slide 14: A calibrated phylogenetic inference -->
+<section>
+    <h2>A calibrated phylogenetic inference</h2>
+    <p style="font-size:0.6em; text-align:center"><a class="cite">Origin of the HIV epidemic in the Americas, Gilbert <i>et al</i> (2007)</a></p>
+
+    <img data-src="../common/images/2007Gilbert_Figure2.png" style="width:60%">
+
+    <p style="font-size:1em; margin-top:0.5em; text-align:left; width:85%; margin-left:7.5%">
+        A phylogenetic reconstruction of samples of HIV-1 virus. Each tip represents
+        a single infected individual from whom a blood sample has been taken.
+    </p>
+</section>
+
+<!-- Slide 15: BEAST software -->
+<section>
+    <img data-src="../lecture-darwins-computer/beast25_header.png" style="width:75%">
+
+    <div style="display:flex; width:85%; margin:0.3em auto 0; text-align:left; align-items:flex-start">
+        <div style="flex:1; font-size:1em">
+            <p style="margin:0 0 0.3em 0"><b>Estimation of</b></p>
+            <ul style="margin:0; line-height:1.4">
+                <li>evolutionary trees</li>
+                <li>divergence times</li>
+                <li>evolutionary rates</li>
+                <li>population history</li>
+                <li>infectious disease parameters</li>
+                <li>migration rates</li>
+                <li>and more&hellip;</li>
+            </ul>
+        </div>
+        <div style="flex:0 0 48%">
+            <img data-src="../lecture-darwins-computer/beastSoftware_figures.jpg" style="width:100%">
+        </div>
+    </div>
+
+    <p style="font-size:0.55em; margin-top:0.3em; text-align:center; color:#555">
+        <b style="color:#333">Also:</b>
+        Drummond &amp; Rambaut, 2007;
+        Drummond <i>et al.</i>, 2012;
+        Bouckaert <i>et al.</i>, 2014;
+        Suchard <i>et al.</i>, 2018;
+        Baele <i>et al.</i>, <i>Nat Methods</i>, 2025
+    </p>
+
+    <p style="font-size:0.7em; margin-top:0.3em; text-align:center">
+        &gt;42,000 scientific studies have cited the six BEAST papers,<br>
+        &gt;3,200 last year alone (2025)
+    </p>
+</section>
+
+<!-- Slide 16: Phylodynamics (converted from image to HTML) -->
+<section>
+    <h2>Phylodynamics</h2>
+
+    <div style="overflow:hidden; margin-top:0.3em">
+        <img data-src="../lecture-darwins-computer/phylodynamics.png" style="width:85%; margin-top:-13%; margin-bottom:-19%">
+    </div>
+
+    <div style="display:flex; justify-content:space-between; width:65%; margin:0.3em auto 0; font-size:0.7em">
+        <p style="text-align:center">Statistical phylogenetics and<br>population genetics models</p>
+        <p style="text-align:center; margin-right:6%">Mathematical epidemiology,<br>non-linear dynamical models</p>
+    </div>
+
+    <p style="font-size:1em; margin-top:0.5em; text-align:left; width:85%; margin-left:7.5%">
+        <b>Goal:</b> the integration of immunological, genomic and
+        epidemiological data in a single coherent predictive model.
+    </p>
+</section>
+
+<!-- Slide 17: Coalescent theory -->
+<section>
+    <h2>Coalescent theory: $P(g|\Theta)$</h2>
+
+    <div style="position:relative; display:inline-block; width:65%">
+        <img data-src="../lecture-darwins-computer/coalescentTheory.png" style="width:100%">
+        <span style="position:absolute; left:12.5%; top:12.5%; font-size:1.5em; color:blue; font-style:italic">$\Theta$</span>
+        <span style="position:absolute; left:12.5%; top:87.5%; font-size:1.5em; font-style:italic; color:red; transform:translateY(-100%)">$g$</span>
+    </div>
+
+    <div style="margin-top:0.3em">
+        $$P(\color{red}{g},\color{#b8860b}{Q},\color{blue}{\Theta},\color{darkgreen}{\mu}|D) \propto \Pr\{D|\color{darkgreen}{\mu}\color{red}{g},\color{#b8860b}{Q}\} \; P(\color{red}{g}|\color{blue}{\Theta}) \; \color{#b8860b}{P(Q)} \; \color{blue}{P(\Theta)} \; \color{darkgreen}{P(\mu)}$$
+    </div>
+
+    <p style="font-size:0.6em; margin-top:0.2em; text-align:center">
+        The same posterior as the previous slide. What is new is the identity of one factor:
+        the coalescent supplies the tree prior $P(\color{red}{g}|\color{blue}{\Theta})$, and
+        $\color{blue}{\Theta}$ becomes <b>population size</b> through time. (L10)
+    </p>
+</section>
+
+<!-- Slide 18: mtDNA — moved to lecture-coalescent -->
+<!-- Slides 19-20: Seasonal flu, influenza dynamics — moved to lecture-skyline -->
+
+<!-- Slide 21: Trees inside trees (converted from image to HTML) -->
+<section>
+    <h2>Trees inside trees</h2>
+
+    <div style="float:left; width:48%; text-align:left; font-size:1em; margin-top:0.5em; margin-left:0.5em">
+        <ul class="spaced">
+            <li>Modelling <b>diversity and divergence</b></li>
+            <li>Central to understanding diverse areas including
+                <b>speciation genomics</b> and <b>host-symbiont co-evolution</b>
+                is building up a statistically rigorous model of the patterns
+                of divergence and diversity spanning multiple species/hosts,
+                multiple genes / gene families and multiple individuals per
+                species/host.</li>
+        </ul>
+    </div>
+
+    <div style="margin-left:50%; width:50%">
+        <img data-src="../lecture-multispecies-coalescent/geneTreeSpeciesTree.png" style="width:100%">
+    </div>
+
+    <div style="clear:both; margin-top:0.3em; font-size:0.85em">
+        $$P(\color{red}{g},\color{purple}{S}|D) \propto \Pr\{D|\color{red}{g}\} \; P(\color{red}{g}|\color{purple}{S}) \; \color{purple}{P(S)}$$
+        <div style="margin-top:0.5em">
+        $$P(\color{red}{g_1},\color{red}{g_2},\ldots,\color{red}{g_N},\color{purple}{S}|D) \propto \prod_i \Pr\{D_i|\color{red}{g_i}\} \; P(\color{red}{g_i}|\color{purple}{S}) \; \color{purple}{P(S)}$$
+        </div>
+        <p style="font-size:0.6em; margin-top:0.4em; text-align:center">
+            Now the tree prior on each gene tree $\color{red}{g_i}$ is itself supplied by a
+            <b>species tree</b> $\color{purple}{S}$. (L11) The substitution model
+            $\color{#b8860b}{Q}$ and clock rate $\color{darkgreen}{\mu}$ are suppressed here
+            for simplicity; they remain part of the full model.
+        </p>
+    </div>
+</section>
+
+<!-- Slide 22: Multispecies coalescent — moved to lecture-multispecies-coalescent -->
+<!-- Slides 23-24: HIV dynamics, transmission trees — moved to lecture-skyline -->
+
+<!-- Slide 25: Phylogenies and the fossil record -->
+<section>
+    <h2>Phylogenies and the fossil record</h2>
+
+    <div style="overflow:hidden">
+        <img data-src="../lecture-darwins-computer/phylogeniesFossilRecord.png" style="width:90%; margin-top:-11%; margin-bottom:-7%">
+    </div>
+
+    <p style="font-size:0.6em; margin-top:0.3em; text-align:center">
+        An example of <b>node dating</b> with BEAST from Subramanian et al (Biology Letters, 2013)
+    </p>
+</section>
+
+<!-- Slides 26-28: Total evidence fossil dating, FBD models — moved to lecture-birth-death -->
+<!-- Slides 29-36: Fossil dating case studies — moved to lecture_sa -->
+
+<!-- Slide 37: Perspectives -->
+<section>
+    <h2>Perspectives</h2>
+
+    <ul class="spaced" style="margin-top:3%; width:85%">
+        <li><b>Evolutionary biology has become a multidisciplinary analytical
+            science</b>, with major input from computer scientists, statisticians,
+            mathematicians and physicists.</li>
+        <li><b>Evolutionary biology is not just an historical science</b>. Rapidly
+            evolving natural systems, low-cost high-throughput sequencing
+            and high-throughput automated experimental evolution platforms,
+            all add up to the potential to close the loop between experimental
+            and theoretical evolutionary biology.</li>
+        <li><b>A common set of evolutionary modelling principles can inform</b>
+            us on diverse questions including human population history,
+            the spread of viral epidemics and the age of fossils.</li>
+    </ul>
+</section>
+
+<!-- Where this module goes next -->
+<section>
+    <h2>Where this module goes</h2>
+
+    <p style="font-size:0.85em">Every equation today was a variation on one theme: a
+    <b>posterior</b> over a tree, built from a likelihood and a <b>tree prior</b>. The rest
+    of the module fills in that pattern.</p>
+
+    <dl style="width:92%; font-size:0.82em; text-align:left; margin-top:0.5em">
+        <dt><b>L8</b> Bayesian phylogenetic inference</dt>
+        <dd>What prior, likelihood and posterior actually mean, and how MCMC computes them.</dd>
+        <dt><b>L9</b> Molecular clocks and dated phylogenies</dt>
+        <dd>The clock rate $\color{darkgreen}{\mu}$: how a tree gets a time axis in years.</dd>
+        <dt><b>L10</b> The coalescent and population history</dt>
+        <dd>The tree prior $P(\color{red}{g}|\color{blue}{\Theta})$ when $\color{blue}{\Theta}$ is population size.</dd>
+        <dt><b>L11</b> Gene trees and the multispecies coalescent</dt>
+        <dd>Gene trees $\color{red}{g_i}$ inside a species tree $\color{purple}{S}$.</dd>
+        <dt><b>L12</b> Birth-death models and macroevolution</dt>
+        <dd>Where the species tree $\color{purple}{S}$ itself comes from: speciation and extinction.</dd>
+    </dl>
+</section>
+
+<!-- Recommended Reading -->
+<section>
+    <h3>Recommended Reading</h3>
+
+    <div class="textbox" style="width: 80%; margin-left:10%; margin-top:2em">
+        <div class="title"><a href="https://decodinggenomes.org/" style="color:inherit; text-decoration:underline">Decoding Genomes</a> (Stadler et al., 2024)</div>
+        <ul class="spaced" style="margin-top:1em; margin-left:1em">
+            <li><b>Chapter 1</b>: Introduction</li>
+        </ul>
+    </div>
+</section>

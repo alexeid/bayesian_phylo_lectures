@@ -1,5 +1,5 @@
 ---
-lecture_num: 7
+lecture_num: 8
 ---
 
 <!-- BIOSCI 322 version of the Bayesian phylogenetics lecture.
@@ -24,8 +24,9 @@ lecture_num: 7
     </ul>
 
     <blockquote style="width:80%;margin-left:10%;margin-top:1em">
-        Later lectures fill in the biology of the tree priors: the coalescent (L10),
-        the multispecies coalescent (L11) and birth-death models (L12).
+        Later lectures add the time axis (molecular clocks, L9) and then fill in the biology
+        of the tree priors: the coalescent (L10), the multispecies coalescent (L11) and
+        birth-death models (L12).
     </blockquote>
 </section>
 
@@ -84,9 +85,10 @@ lecture_num: 7
             and everything in between is a degree of confidence.</li>
         <li class="fragment">The same statement can have different probabilities for
             different people, if they know different things.</li>
-        <li class="fragment">This is what lets us say "the probability that gorillas are
-            the sister group to humans and chimpanzees is 0.93". There is no repeatable
-            experiment there, only one history and our uncertainty about it.</li>
+        <li class="fragment">This is what lets us say "the probability that humans and
+            chimpanzees are each other's closest relatives is 0.93". There is no repeatable
+            experiment there, only one history and our uncertainty about it. We will compute
+            exactly that number in Part 3.</li>
     </ul>
 </section>
 
@@ -202,13 +204,13 @@ lecture_num: 7
     <div style="display:flex;gap:1.5em;width:95%;align-items:center">
         <div style="flex:1 1 auto">
             <dl style="font-size:0.9em">
-                <dt>The tree topology, $T$</dt>
-                <dd>Who is related to whom. A discrete unknown with an enormous number of possible values.</dd>
-                <dt>Branch lengths or divergence times</dt>
-                <dd>How much evolution, or how much time, separates the lineages.</dd>
-                <dt>Substitution model parameters, $\mu$</dt>
+                <dt>The tree, $\color{red}{g}$</dt>
+                <dd>Its <b>topology</b>, who is related to whom, a discrete unknown with an
+                    enormous number of possible values; and its <b>branch lengths</b>, how much
+                    evolution or how much time separates the lineages.</dd>
+                <dt>Substitution model parameters, $\color{#b8860b}{Q}$</dt>
                 <dd>Relative rates of the different nucleotide changes, rate variation among sites.</dd>
-                <dt>Tree prior parameters, $\theta$</dt>
+                <dt>Tree prior parameters, $\color{blue}{\Theta}$</dt>
                 <dd>Population sizes, speciation and extinction rates, migration rates.</dd>
             </dl>
         </div>
@@ -224,9 +226,9 @@ lecture_num: 7
 <section>
     <h3>The likelihood of a tree</h3>
 
-    <blockquote style="font-size:1.6em;margin-top:1em;text-align:center">
-        $$\Pr(D \mid T, \mu)$$
-    </blockquote>
+    <div style="font-size:1.6em;margin-top:1em;text-align:center">
+        $$\Pr(D \mid \color{red}{g}, \color{#b8860b}{Q})$$
+    </div>
 
     <ul class="spaced" style="width:88%;margin-top:1em">
         <li>In words: <b>if this tree, with these branch lengths and this substitution
@@ -243,18 +245,19 @@ lecture_num: 7
 <section>
     <h3>The phylogenetic posterior</h3>
 
-    <p>Applying Bayes' theorem, and using the fact that $\theta$ affects the alignment only
-    through the tree:</p>
+    <p>Applying Bayes' theorem, and using the fact that $\color{blue}{\Theta}$ affects the
+    alignment only through the tree:</p>
 
-    <blockquote style="font-size:1.05em;margin-top:0.5em">
-        $$\underbrace{P(T,\mu,\theta \mid D)}_{\text{posterior}} \;\propto\;
-          \underbrace{\Pr(D \mid T,\mu)}_{\text{likelihood}}\;
-          \underbrace{P(T \mid \theta)}_{\text{tree prior}}\;
-          \underbrace{P(\mu,\theta)}_{\text{parameter priors}}$$
-    </blockquote>
+    <div style="font-size:1.05em;margin-top:0.5em">
+        $$\underbrace{P(\color{red}{g},\color{#b8860b}{Q},\color{blue}{\Theta} \mid D)}_{\text{posterior}} \;\propto\;
+          \underbrace{\Pr(D \mid \color{red}{g},\color{#b8860b}{Q})}_{\text{likelihood}}\;
+          \underbrace{P(\color{red}{g} \mid \color{blue}{\Theta})}_{\text{tree prior}}\;
+          \underbrace{\color{#b8860b}{P(Q)}\;\color{blue}{P(\Theta)}}_{\text{parameter priors}}$$
+    </div>
 
     <ul class="spaced" style="width:88%;margin-top:1.2em">
-        <li class="fragment">The <b>tree prior</b> $P(T \mid \theta)$ is a generative model
+        <li class="fragment">This is exactly the third equation from L7. The
+            <b>tree prior</b> $P(\color{red}{g} \mid \color{blue}{\Theta})$ is a generative model
             for how the tree itself came to be: a birth-death process for species trees, or
             a coalescent process for gene trees within a population.</li>
         <li class="fragment">This is the slot where biology enters the analysis, and it is
@@ -263,9 +266,16 @@ lecture_num: 7
 </section>
 
 <section>
-    <h3>Tree priors: coming up in this module</h3>
+    <h3>Coming up in this module</h3>
 
-    <div style="display:flex;gap:1.2em;width:96%;align-items:flex-start;font-size:0.85em">
+    <div style="display:flex;gap:0.9em;width:98%;align-items:flex-start;font-size:0.78em">
+        <div style="flex:1 1 0">
+            <div class="textbox" style="padding:0.5em;height:100%">
+                <div class="title">L9: molecular clocks</div>
+                <p style="padding:0.4em">Not a tree prior, but the step that gives the tree a
+                <b>time axis</b>: the clock rate $\color{darkgreen}{\mu}$.</p>
+            </div>
+        </div>
         <div style="flex:1 1 0">
             <div class="textbox" style="padding:0.5em;height:100%">
                 <div class="title">L10: the coalescent</div>

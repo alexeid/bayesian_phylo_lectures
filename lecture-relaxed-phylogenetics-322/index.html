@@ -1,0 +1,303 @@
+---
+lecture_num: 9
+---
+
+<!-- BIOSCI 322 version of the molecular clock lecture. Notation follows L7 and L8:
+     g is the tree in time units (red), mu is the clock rate (dark green), Theta is the
+     tree prior parameter (blue), Q is the substitution model (orange). The TikZ figures
+     in ../lecture-relaxed-phylogenetics already draw g in red and mu in dark green. -->
+
+<section>
+    <h2>Where we are going</h2>
+
+    <ul class="spaced" style="width:88%">
+        <li>So far a tree has had branch lengths, but no <b>units</b>. Today they get one:
+            <b>time</b>.</li>
+        <li class="fragment">The sequence data do not record time. They record
+            <b>genetic distance</b>, which is rate multiplied by time. Those two cannot be
+            separated by sequences alone.</li>
+        <li class="fragment">A <b>calibration</b>, a dated fossil or a dated sample, breaks
+            the tie and puts the tree on a scale of years.</li>
+        <li class="fragment">Real lineages do not all evolve at one rate, so we let the rate
+            vary across the tree: a <b>relaxed clock</b>.</li>
+    </ul>
+
+    <div class="textbox" style="width:86%;margin-left:7%;margin-top:1em;font-size:0.8em">
+        <div class="title">Notation, carried over from L7 and L8</div>
+        <p style="padding:0.5em">
+            $\color{red}{g}$ is the <b>time tree</b>: the tree whose branch lengths are
+            durations. This is the tree the tree prior $P(\color{red}{g}|\color{blue}{\Theta})$
+            acts on, and the one we have been drawing all along.<br>
+            $T$ is the <b>substitution tree</b>: the same tree, but with branch lengths in
+            expected substitutions per site. This is the only tree the likelihood
+            $\Pr(D|T)$ can see.<br>
+            $\color{darkgreen}{\mu}$ is the <b>clock rate</b> that converts one into the other.
+        </p>
+    </div>
+</section>
+
+<section>
+    <h2>Tree space</h2>
+
+    <img data-src="../lecture-relaxed-phylogenetics/fig_1_treesubspace.svg" style="width:52%">
+    
+    <ul>
+    <li>A two-dimensional space representing all
+possible time-trees for the topology ((1,2),3). 
+<li>x and y, are the two inter-coalescent intervals($t_{root} = x + y$). 
+<li>Three trees are displayed, with their arithmetic mean tree. 
+<li>Dashed lines show the shortest distances to mean (i.e. deviations from the mean).
+
+</ul>
+
+</section>
+
+<section>
+    <h2>Tree space</h2>
+    
+    <img data-src="../lecture-relaxed-phylogenetics/fig_2_treespace.svg" style="width:55%">
+
+
+<ul>
+<li>The simplest non-trivial tree space for time-trees ($n=3$)
+<li> Each non-degenerate tree topology is a two-dimensional space.
+<li> These subspaces meet at a shared edge representing the star
+tree, which is a one-dimensional subspace (parameter is the age of the root)
+<li> Dashed lines are shortest distances between the four displayed trees.
+</ul>
+</section>
+
+<section>
+
+<h2>Another space of tip-labeled time-trees</h2>
+
+    <img data-src="../lecture-relaxed-phylogenetics/tSpace2d.svg" style="height:80%">
+
+
+</section>
+
+<section>
+
+<h2>Projection of tree space on 4 taxa</h2>
+
+    <img data-src="../lecture-relaxed-phylogenetics/tauSpace.svg" style="height:80%">
+
+<p>This is a projection of a part of 4-taxa tree space. The full number of subspaces is actually 18, but we only show 6  of them here. Also each subspace is actually a cube, but we show them as squares by fixing the tip-most interval.</p>
+
+</section>
+
+<section>
+<h2>Tree space</h2>
+<ul class="spaced" style="margin-top:5%; width:85%">
+<li> Tree space is a complex space made up of a subspace for each tree topology.
+<li> For time trees of $n$ taxa each subspace is positive $R^{n-1}$ or an $(n-1)$-dimensional <a href="https://en.wikipedia.org/wiki/Simplex">simplex</a>, depending on the parameterization.
+<li> Tree space has a combinatorial component that can be described by a graph whose vertices are distinct tree topologies and whose edges connect topologies whose subspaces share a face.
+<li> Tree space can be explored by random walks on the graph connecting tree topologies, but also by larger jumps like subtree-prune-and-regraft (SPR).
+<li> The continuous component of tree space describe the divergence times on each tree must also be explored in Bayesian phylogenetic inference. 
+</ul>
+
+</section>
+
+<section>
+
+<h2>Genetic distance = rate $\times$ time</h2>
+
+<p> The strict molecular clock parameterization </p>
+
+    <img data-src="../lecture-relaxed-phylogenetics/fig_StrictClockParam.svg" style="width:90%">
+
+<p> The "substitution tree" is in units of expected substitutions, i.e. genetic distances.</p>
+
+</section>
+
+<section>
+
+<h2>Non-identifiability of rate and time</h2>
+
+    <img data-src="../lecture-relaxed-phylogenetics/fig_NonidentifiabilityRateTime.svg" style="width:85%">
+
+</section>
+
+<section>
+
+<h2>Identifiability via node calibrations</h2>
+
+  <p>Suppose fossil evidence shows the common ancestor of species A, B and C lived 25-35 Mya.</p>
+
+    <img data-src="../lecture-relaxed-phylogenetics/fig_NodeCalibration.png" style="width:85%">
+
+  <p>With a strict molecular clock, only the age (range) of a single node in the tree is needed in order to
+  interpolate and extrapolate the ages of all other divergence times. 
+  <p>Once a known node age like this "calibrates" the tree, the
+  genetic distances can be separated into an absolute rate and divergence times.</p>
+</section>
+
+<section>
+
+<h2>Identifiability via leaf calibrations</h2>
+
+  <p>Suppose sample C is ancient DNA from subfossil remains dated to 20 thousand years ago.</p>
+
+    <img data-src="../lecture-relaxed-phylogenetics/fig_LeafCalibration.png" style="width:85%">
+
+  <p>With a strict molecular clock, calibration is possible with data from non-contemporaneous taxa (e.g. ancient DNA, or samples from different years in a rapidly evolving virus). 
+  <p>Again, once one or more non-contemporaneous leaf nodes like this "calibrate" the time scale of the tree, the
+  genetic distances can be separated into an absolute rate and divergence times.</p>
+</section>
+
+
+<section>
+<h2>Genetic distance = rate $\times$ time</h2>
+
+<p> The relaxed molecular clock parameterization </p>
+
+
+    <img data-src="../lecture-relaxed-phylogenetics/fig_RelaxedClockParam.png" style="width:90%">
+
+<p> The "substitution tree" is in units of expected substitutions, i.e. genetic distances.</p>
+
+</section>
+
+<section>
+
+<h2>Genetic distance = rate $\times$ time</h2>
+
+<p> The relaxed molecular clock parameterization </p>
+
+
+    <img data-src="../lecture-relaxed-phylogenetics/fig_RelaxedClockParam2.png" style="width:90%">
+
+<p> The "substitution tree" is in units of expected substitutions, i.e. genetic distances.</p>
+
+</section>
+
+
+<section>
+
+<h2>Non-identifiability of rate and time</h2>
+
+    <img data-src="../lecture-relaxed-phylogenetics/fig_RelaxedNonidentifiabilityRateTime.png" style="width:80%">
+
+</section>
+
+<section>
+<h2>Bayesian phylogenetic posterior with a molecular clock</h2>
+
+    <p>Strict molecular clock:</p>
+
+    <p>$$T = \color{darkgreen}{\mu} \times \color{red}{g}$$</p>
+
+    <p>$$P(\color{red}{g}, \color{darkgreen}{\mu}, \color{blue}{\Theta}|D) \propto \Pr(D|T)\;P(\color{red}{g}|\color{blue}{\Theta})\;\color{darkgreen}{P(\mu)}\;\color{blue}{P(\Theta)}$$</p>
+
+    <p>Relaxed molecular clock:</p>
+
+    <p>$$T = \color{darkgreen}{\vec{\mu}} \star \color{red}{g}$$</p>
+
+    <p>$$P(\color{red}{g}, \color{darkgreen}{\vec{\mu}},\color{blue}{\Theta}|D) \propto \Pr(D|T)\;P(\color{red}{g}|\color{blue}{\Theta})\;\color{darkgreen}{P(\vec{\mu})}\;\color{blue}{P(\Theta)}$$</p>
+
+    <ul>
+    <li>Same posterior as L7 and L8, with the clock rate $\color{darkgreen}{\mu}$ now written out.
+    <li>where $\color{darkgreen}{P(\vec{\mu})}$ is the (model-based) prior for how much rate variation you allow.
+    <li> The phylogenetic likelihood only depends on the substitution tree $T$: $\Pr(D|T)$.
+    <li> The tree prior only depends on the time-tree $\color{red}{g}$: $P(\color{red}{g}|\color{blue}{\Theta})$.
+    <li> By fixing $\color{darkgreen}{\vec{\mu}} = 1$ we get a tree ($\color{red}{g}$) in units of substitutions (i.e. genetic distance).
+    </ul>
+
+</section>
+
+<section>
+<h2>How many parameters are in each of these models?</h2>
+
+    <p>Unrooted tree, no molecular clock constraint</p>
+    
+    <ul>
+    <li>unrooted substitution tree $T$ has $2n-3$ random variables, one for each branch length</li>
+    </ul>
+
+    <p>Strict molecular clock:</p>
+
+    <ul>
+    <li>$\color{red}{g}$ has $n-1$ random variables, one for the age of each internal node.</li>
+    <li>$\color{darkgreen}{\mu}$ is a one-dimensional parameter</li>
+    <li>total of $n$ dimensions</li>
+    </ul>
+
+    <p>Relaxed molecular clock:</p>
+
+    <ul>
+    <li>$\color{red}{g}$ has $n-1$ random variables, one for the age of each internal node.</li>
+    <li>$\color{darkgreen}{\vec{\mu}}$ contains $2n-2$ rate parameters</li>
+    <li>total of $3n-3$ dimensions</li>
+    <li>Only identifiable by priors on rates and times: $\color{darkgreen}{P(\vec{\mu})}$, $P(\color{red}{g}|\color{blue}{\Theta})$
+    </ul>
+    
+</section>
+
+<section>
+<h2>What models of rate variation should we consider?</h2>
+
+    <p> <b>Autocorrelated models</b> of rate variation assume the rate evolves down the tree:</p>
+    
+    $$P(\color{darkgreen}{\vec{\mu}}) = \prod_i P(\mu_i | \mu_{\text{parent}(i)})$$
+    
+<p> e.g.     $\text{log}(\mu_i) \sim \text{Normal}(\text{log}(\mu_{\text{parent}(i)}), \sigma t_i)$, where $t_i$ is the length of time separating the $i$'th node and its parent in the time tree and $\sigma$ is the rate of evolution of the rate of evolution per unit time in log space.
+    <p> <b>Uncorrelated models</b> of rate variation assume each branch has a rate drawn independently from a distribution</p>
+
+    $$P(\color{darkgreen}{\vec{\mu}}) = \prod_i P(\mu_i | \nu)$$
+
+    <p> where $\nu$ are parameters of the distribution they are drawn from, e.g. $\text{log}(\mu_i) \sim \text{Normal}(M, S)$, where $M$ is the mean of the log rate and $S$ is the standard deviation of the log-rate.</p>
+    
+</section>
+
+<section>
+<h2>Bayesian MCMC differences</h2>
+
+    <p> The main model in MrBayes samples unrooted trees with no molecular clock. </p>
+    <p><ul>
+    <li> Operator proposals have to be able to move from any unrooted tree to any other.
+    <li> Branch length proposals can propose any positive branch length for any branch.
+    </ul></p>
+    
+    <p> The main model in BEAST samples rooted time trees with a strict or relaxed molecular clock. </p>
+    <p><ul>
+    <li> Operators have to maintain constraints, so parameterise the tree on a time scale in which all leaves are fixed to their known age and all moves on tree topology and divergence times must maintain that constraint.
+    <li> Natural to operate on <i>divergence times </i> instead of <i>branch lengths</i>.
+    </ul></p>
+    
+    
+    <img data-src="../lecture-relaxed-phylogenetics/ClockConstraint.png" style="width:80%">
+
+   
+</section>
+
+<section>
+<h2>Conclusions</h2>
+
+    <ul class="spaced" style="margin-top:5%; width:85%">
+<li> The geometry of (time-)trees is understudied and advances could lead to new phylogenetic inference methods and better posterior summaries.
+<li> Both leaf- and node-calibration can produce time-trees in calendar units, (and new methods that directly model the sampling process can also be used for calibration).
+<li>Relaxed molecular clocks have many benefits over unconstrained models for phylogenetic inference
+<ul>
+  <li> They appear to estimate the phylogenetic tree more accurately on real data sets
+  <li> They automatically provide estimates of a root position, without the need for an outgroup
+  <li> They automatically provide estimates of relative divergence dates, or absolute divergence dates when calibration information is available
+</ul>
+</ul>
+</section>
+
+<section>
+    <h3>Recommended Reading</h3>
+
+    <div class="textbox" style="width: 80%; margin-left:10%; margin-top:2em">
+        <div class="title"><a href="https://decodinggenomes.org/" style="color:inherit; text-decoration:underline">Decoding Genomes</a> (Stadler et al., 2024)</div>
+        <ul class="spaced" style="margin-top:1em; margin-left:1em">
+            <li><b>Chapter 6.4</b>: Molecular clocks and time-trees</li>
+        </ul>
+    </div>
+
+    <p style="margin-top:1.5em; font-size:0.8em">Also recommended:
+        <ul style="font-size:0.8em">
+            <li>Drummond &amp; Bouckaert (2015), <i>Bayesian Evolutionary Analysis with BEAST</i></li>
+        </ul>
+    </p>
+</section>

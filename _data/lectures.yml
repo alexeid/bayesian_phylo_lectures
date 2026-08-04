@@ -121,10 +121,24 @@
   lecturer: Alexei Drummond
   section: advanced
 -
+  title: "Darwin's Computer: an overview"
+  folder: lecture-darwins-computer-322
+  lecturer: Alexei Drummond
+  date: 2026-08-05
+  section: biosci322
+
+-
   title: Bayesian phylogenetic inference
   folder: lecture-bayesian-phylogenetics-322
   lecturer: Alexei Drummond
   date: 2026-08-06
+  section: biosci322
+
+-
+  title: Molecular clocks and dated phylogenies
+  folder: lecture-relaxed-phylogenetics-322
+  lecturer: Alexei Drummond
+  date: 2026-08-07
   section: biosci322
 
 -
