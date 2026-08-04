@@ -10,118 +10,47 @@ section_name: "BIOSCI 322: Phylogenetics and Coalescence"
     <div class="lecture-number">Lecture {{ page.lecture_num }}</div>
     <h1>{{ page.title }}</h1>
     <div class="lecture-meta">
-        <span><i class="fas fa-calendar"></i> Week 11</span>
+        <span><i class="fas fa-calendar"></i> 7 August 2026</span>
         <span><i class="fas fa-clock"></i> 50 minutes</span>
         <span><i class="fas fa-book"></i> Required reading: <em>Decoding Genomes</em> Ch 6.4</span>
     </div>
 </div>
 
-<section class="section" id="tree-space">
-<h2>1. Understanding Tree Space</h2>
+<section class="section" id="the-question">
+<h2>The question this lecture answers</h2>
 
-<p>Before diving into molecular clocks, we need to understand the mathematical space in which phylogenetic trees exist. This "tree space" has unique geometric properties that affect how we search for optimal trees and summarize posterior distributions.</p>
-
-<h3>Tree Space for Time Trees</h3>
-
-<p>Consider the simplest non-trivial case: time trees for 3 taxa.</p>
+<p>A phylogeny with a <strong>calendar axis</strong> tells you when lineages last shared an
+ancestor. That is what turns a tree into a statement about history: when a virus entered a
+country, when two species diverged, how old a fossil lineage is.</p>
 
 <div class="figure">
-    <img src="{{ site.baseurl }}/lecture-relaxed-phylogenetics/fig_1_treesubspace.svg" alt="Tree subspace for 3 taxa" style="width: 60%;">
-    <div class="figure-caption">A two-dimensional space representing all possible time-trees for the topology ((1,2),3). The axes x and y are the two inter-coalescent intervals, with $t_{root} = x + y$</div>
+    <img src="{{ site.baseurl }}/lecture-relaxed-phylogenetics-322/douglas2021-figure4A.png"
+         alt="Time-calibrated SARS-CoV-2 phylogeny for New Zealand" style="width: 85%;">
+    <div class="figure-caption">
+        Figure 4A of Douglas <em>et al.</em> (2021), <em>Virus Evolution</em> 7(2):veab052 (CC BY).
+        A maximum-clade-credibility tree of SARS-CoV-2 genomes from New Zealand's first wave.
+        Rings are calendar months; red is the New Zealand deme and grey the rest of the world,
+        so each red cluster is a separate introduction. $t_1$ marks the first reported case and
+        $t_2$ the decrease in mobility.
+    </div>
 </div>
 
-<div class="definition-box">
-    <div class="title">Tree Subspace Properties</div>
-    <ul>
-        <li>Each tree topology defines a subspace</li>
-        <li>For time trees with $n$ taxa, each subspace is $(n-1)$-dimensional</li>
-        <li>The dimensions can be parameterized as:
-            <ul>
-                <li><strong>Inter-coalescent intervals:</strong> Forms a hypercube (all intervals independent)</li>
-                <li><strong>Node heights:</strong> Forms a simplex (heights must respect temporal ordering)</li>
-            </ul>
-        </li>
-        <li>Trees can be averaged within a subspace (arithmetic mean shown)</li>
-        <li>Distances between trees can be computed (Euclidean distance shown as dashed lines)</li>
-    </ul>
-</div>
-
-<h3>The Complete Tree Space</h3>
-
-<div class="figure">
-    <img src="{{ site.baseurl }}/lecture-relaxed-phylogenetics/fig_2_treespace.svg" alt="Complete tree space for 3 taxa" style="width: 65%;">
-    <div class="figure-caption">The complete tree space for 3 taxa showing how topology subspaces connect</div>
-</div>
-
-<p>Key features of tree space:</p>
-<ul>
-    <li>Each non-degenerate tree topology is a two-dimensional space</li>
-    <li>These subspaces meet at shared edges representing degenerate topologies</li>
-    <li>The star tree (all three taxa diverge simultaneously) is a one-dimensional subspace</li>
-    <li>The parameter for the star tree is just the age of the root</li>
-</ul>
+<p>The sample dates at the tips are known. Every <strong>internal</strong> date is estimated,
+and so has a posterior distribution and a credible interval, exactly like any other parameter
+from L8. The squares are posterior clade probabilities.</p>
 
 <div class="alert alert-info">
     <i class="fas fa-lightbulb"></i>
     <div>
-        <strong>Key insight:</strong> Tree space has both discrete (topology) and continuous (branch lengths/node times) components. MCMC must explore both!
+        <strong>The problem to solve:</strong> sequences record genetic distance, which is
+        rate multiplied by time. Before a tree can carry a calendar axis, something has to
+        separate those two.
     </div>
 </div>
-
-<h3>Alternative Visualizations of Tree Space</h3>
-
-<div class="figure">
-    <img src="{{ site.baseurl }}/lecture-relaxed-phylogenetics/tSpace2d.svg" alt="Alternative tree space visualization" style="width: 70%;">
-    <div class="figure-caption">Tree space using node height parameterization, where temporal constraints create simplices (triangular regions) rather than hypercubes</div>
-</div>
-
-<div class="alert alert-info">
-    <i class="fas fa-info-circle"></i>
-    <div>
-        <strong>Parameterization matters:</strong> When using node heights as parameters, the constraint that parent nodes must be older than child nodes creates simplices. In contrast, inter-coalescent intervals are independent, creating hypercubes.
-    </div>
-</div>
-
-<h3>Higher-Dimensional Tree Spaces</h3>
-
-<p>For 4 taxa, the tree space becomes more complex:</p>
-
-<div class="figure">
-    <img src="{{ site.baseurl }}/lecture-relaxed-phylogenetics/tauSpace.svg" alt="4-taxa tree space projection" style="width: 70%;">
-    <div class="figure-caption">Projection of 4-taxa tree space. The full space has 18 subspaces (only 6 shown). Each subspace is actually a 3D cube, shown as squares by fixing one dimension</div>
-</div>
-
-<div class="practice-box">
-    <h4>Tree Space Complexity</h4>
-    <p>As the number of taxa increases:</p>
-    <ul>
-        <li>3 taxa: 3 ranked topologies, 2D subspaces</li>
-        <li>4 taxa: 18 ranked topologies, 3D subspaces</li>
-        <li>5 taxa: 180 ranked topologies, 4D subspaces</li>
-    </ul>
-    <p><strong>For 4 taxa:</strong> There are 15 rooted topologies total. Of these:</p>
-    <ul>
-        <li>12 are "caterpillar" trees (fully pectinate) - each has only 1 ranking</li>
-        <li>3 are balanced trees - each has 2 possible rankings of the two internal nodes on the same side of the root</li>
-        <li>Total: 12 × 1 + 3 × 2 = 18 ranked topologies</li>
-    </ul>
-    <p><strong>Note:</strong> Each subspace corresponds to a <em>ranked topology</em> where the temporal order of all coalescence events is specified. When parameterized by inter-coalescent intervals, each subspace forms a hypercube (all intervals can vary independently). When parameterized by node heights, the subspaces form simplices due to temporal ordering constraints.</p>
-</div>
-
-<h3>Implications for Phylogenetic Inference</h3>
-
-<p>Understanding tree space helps us appreciate:</p>
-
-<ol>
-    <li><strong>Complexity of the search problem:</strong> Tree space grows super-exponentially with taxa</li>
-    <li><strong>Need for specialized moves:</strong> MCMC operators must handle both discrete topology changes and continuous parameter updates</li>
-    <li><strong>Challenges in summarization:</strong> Averaging trees across topologies is problematic</li>
-    <li><strong>Local optima:</strong> The discrete nature creates barriers between topology subspaces</li>
-</ol>
 </section>
 
 <section class="section" id="molecular-clock">
-<h2>2. The Molecular Clock Hypothesis</h2>
+<h2>1. The Molecular Clock Hypothesis</h2>
 
 <h3>Genetic Distance = Rate × Time</h3>
 
@@ -161,7 +90,7 @@ section_name: "BIOSCI 322: Phylogenetics and Coalescence"
 </section>
 
 <section class="section" id="identifiability">
-<h2>3. The Identifiability Problem</h2>
+<h2>2. The Identifiability Problem</h2>
 
 <h3>Non-identifiability of Rate and Time</h3>
 
@@ -227,7 +156,7 @@ section_name: "BIOSCI 322: Phylogenetics and Coalescence"
 </section>
 
 <section class="section" id="relaxed-clocks">
-<h2>4. Relaxed Molecular Clocks</h2>
+<h2>3. Relaxed Molecular Clocks</h2>
 
 <p>The strict molecular clock is often too restrictive. Relaxed clocks allow rate variation across branches.</p>
 
@@ -243,13 +172,6 @@ section_name: "BIOSCI 322: Phylogenetics and Coalescence"
     <p>Instead of a single rate $\mu$, we have a vector of rates $\vec{\mu} = (\mu_1, \mu_2, ..., \mu_{2n-2})$</p>
     <p>The substitution tree is computed as: $T = \vec{\mu} \star g$</p>
     <p>Where $\star$ denotes element-wise multiplication of rates and branch durations</p>
-</div>
-
-<h3>Alternative Relaxed Clock Visualization</h3>
-
-<div class="figure">
-    <img src="{{ site.baseurl }}/lecture-relaxed-phylogenetics/fig_RelaxedClockParam2.png" alt="Alternative relaxed clock view" style="width: 80%;">
-    <div class="figure-caption">Another view showing how branch-specific rates create the substitution tree</div>
 </div>
 
 <h3>Identifiability Under Relaxed Clocks</h3>
@@ -268,7 +190,7 @@ section_name: "BIOSCI 322: Phylogenetics and Coalescence"
 </section>
 
 <section class="section" id="bayesian-framework">
-<h2>5. Bayesian Framework for Molecular Clocks</h2>
+<h2>4. Bayesian Framework for Molecular Clocks</h2>
 
 <h3>Posterior with Strict Clock</h3>
 
@@ -315,7 +237,7 @@ section_name: "BIOSCI 322: Phylogenetics and Coalescence"
 </section>
 
 <section class="section" id="rate-models">
-<h2>6. Models of Rate Variation</h2>
+<h2>5. Models of Rate Variation</h2>
 
 <h3>Autocorrelated Models</h3>
 
@@ -379,83 +301,8 @@ section_name: "BIOSCI 322: Phylogenetics and Coalescence"
 </div>
 </section>
 
-<section class="section" id="parameter-counting">
-<h2>7. Parameter Dimensions</h2>
-
-<p>Understanding the number of parameters helps us appreciate model complexity:</p>
-
-<h3>Unrooted Tree (No Clock)</h3>
-<ul>
-    <li>$2n-3$ branch lengths (one per branch)</li>
-    <li>Total: $2n-3$ parameters</li>
-</ul>
-
-<h3>Strict Molecular Clock</h3>
-<ul>
-    <li>$n-1$ node heights (internal nodes)</li>
-    <li>1 clock rate $\mu$</li>
-    <li>Total: $n$ parameters</li>
-</ul>
-
-<h3>Relaxed Molecular Clock</h3>
-<ul>
-    <li>$n-1$ node heights</li>
-    <li>$2n-2$ rate parameters (one per branch)</li>
-    <li>Total: $3n-3$ parameters</li>
-</ul>
-
-<div class="alert alert-warning">
-    <i class="fas fa-exclamation-triangle"></i>
-    <div>
-        <strong>Overparameterization:</strong> Relaxed clocks have more parameters than unrooted trees! They are only identifiable through their priors.
-    </div>
-</div>
-</section>
-
-<section class="section" id="mcmc-differences">
-<h2>8. MCMC Implementation Differences</h2>
-
-<h3>MrBayes Approach (No Clock)</h3>
-
-<p>MrBayes samples unrooted trees without molecular clock constraints:</p>
-
-<ul>
-    <li>Operators must connect any unrooted tree to any other</li>
-    <li>Branch lengths can be any positive value</li>
-    <li>No temporal constraints</li>
-    <li>Simpler operators but no time information</li>
-</ul>
-
-<h3>BEAST Approach (With Clock)</h3>
-
-<p>BEAST samples rooted time trees with clock constraints:</p>
-
-<ul>
-    <li>Operators must maintain temporal constraints</li>
-    <li>All tips fixed at their sampling times</li>
-    <li>Internal nodes must be older than descendants</li>
-    <li>Natural to work with node heights rather than branch lengths</li>
-</ul>
-
-<div class="figure">
-    <img src="{{ site.baseurl }}/lecture-relaxed-phylogenetics/ClockConstraint.png" alt="Clock constraints in MCMC" style="width: 70%;">
-    <div class="figure-caption">MCMC operators must respect the constraint that parent nodes are older than children</div>
-</div>
-
-<div class="practice-box">
-    <h4>Clock-Constrained Operators</h4>
-    <p>Examples of operators that maintain temporal constraints:</p>
-    <ul>
-        <li><strong>Scale:</strong> Multiply all node heights by a factor</li>
-        <li><strong>Subtree slide:</strong> Move subtree up/down while maintaining order</li>
-        <li><strong>Wilson-Balding:</strong> Prune and regraft with valid node times</li>
-        <li><strong>Uniform node height:</strong> Sample new height within valid bounds</li>
-    </ul>
-</div>
-</section>
-
 <section class="section" id="advantages">
-<h2>9. Advantages of Molecular Clock Models</h2>
+<h2>6. Advantages of Molecular Clock Models</h2>
 
 <p>Relaxed molecular clocks offer several benefits over unconstrained models:</p>
 
@@ -504,40 +351,42 @@ section_name: "BIOSCI 322: Phylogenetics and Coalescence"
 <section class="section">
 <h2>Summary</h2>
 
-<p>This lecture covered two interrelated topics crucial for modern phylogenetics:</p>
+<p>This lecture answered one question: how do we put a date, with an interval, on a common
+ancestor?</p>
 
 <ol>
-    <li><strong>Tree space geometry:</strong>
+    <li><strong>The obstacle:</strong>
         <ul>
-            <li>Trees exist in a complex space with discrete and continuous components</li>
-            <li>Each topology defines a subspace of dimension $n-1$</li>
-            <li>Understanding tree space helps design better algorithms</li>
+            <li>Sequences record genetic distance, and distance = rate × time</li>
+            <li>Rate and time are non-identifiable: a fast rate over a short time and a slow
+                rate over a long time give identical likelihoods</li>
         </ul>
     </li>
-    
-    <li><strong>Molecular clocks:</strong>
+
+    <li><strong>The solution, calibration:</strong>
         <ul>
-            <li>Fundamental equation: distance = rate × time</li>
-            <li>Rate and time are non-identifiable without calibration</li>
-            <li>Strict clocks assume constant rates</li>
-            <li>Relaxed clocks allow rate variation</li>
+            <li><strong>Node</strong> calibration from a dated fossil</li>
+            <li><strong>Tip</strong> calibration from samples of different known ages: ancient
+                DNA, or a fast-evolving virus sequenced over months</li>
+            <li>Either one puts the whole tree on a scale of years</li>
         </ul>
     </li>
-    
-    <li><strong>Bayesian implementation:</strong>
+
+    <li><strong>Rate variation:</strong>
         <ul>
-            <li>Priors essential for identifiability</li>
-            <li>Different parameterizations for different software</li>
-            <li>MCMC must respect temporal constraints</li>
+            <li>Strict clocks assume one rate; relaxed clocks give every branch its own</li>
+            <li>Relaxed clocks are usually more realistic, but add non-identifiability that
+                only the priors resolve, so priors must be reported</li>
+            <li>Uncorrelated draws each rate independently; autocorrelated lets rate evolve
+                along the tree</li>
         </ul>
     </li>
-    
-    <li><strong>Practical advantages:</strong>
+
+    <li><strong>What you get out:</strong>
         <ul>
-            <li>Better tree estimation</li>
-            <li>Automatic rooting</li>
-            <li>Temporal information</li>
-            <li>Integration with other evolutionary models</li>
+            <li>A posterior distribution of dates for every ancestor, hence credible intervals</li>
+            <li>A rooted tree without needing an outgroup</li>
+            <li>Dates that are conditional on the clock model, substitution model and tree prior</li>
         </ul>
     </li>
 </ol>
@@ -558,7 +407,9 @@ section_name: "BIOSCI 322: Phylogenetics and Coalescence"
             <li>Drummond & Bouckaert (2015) "Bayesian Evolutionary Analysis with BEAST" - Chapters 6-7 (relaxed clocks in detail)</li>
             <li>Yang (2014) "Molecular Evolution: A Statistical Approach" - Chapter 7</li>
             <li>Drummond et al. (2006) "Relaxed phylogenetics and dating with confidence" - PLOS Biology</li>
-            <li>Billera et al. (2001) "Geometry of the space of phylogenetic trees" - Advances in Applied Mathematics</li>
+            <li>Douglas et al. (2021) "Phylodynamics reveals the role of human travel and contact
+                tracing in controlling the first wave of COVID-19 in four island nations" -
+                <em>Virus Evolution</em> 7(2):veab052. Source of the opening figure.</li>
         </ul>
     </div>
 </div>
@@ -566,11 +417,15 @@ section_name: "BIOSCI 322: Phylogenetics and Coalescence"
 <div class="self-assessment">
     <h4>Check Your Understanding</h4>
     <ol>
-        <li>Why is tree space not a simple Euclidean space?</li>
         <li>What makes rate and time non-identifiable in molecular evolution?</li>
         <li>How do node and tip calibrations solve the identifiability problem?</li>
+        <li>The SARS-CoV-2 tree in the opening figure has a calendar axis even though there are
+            no fossils. What calibrates it?</li>
         <li>What's the key difference between autocorrelated and uncorrelated relaxed clocks?</li>
-        <li>Why do relaxed clocks often produce better phylogenetic estimates than no-clock models?</li>
+        <li>Why do relaxed clocks often produce better phylogenetic estimates than no-clock
+            models, and what do they make you more dependent on?</li>
+        <li>A paper reports a divergence date of 12.4 Mya. What else must it report before you
+            can judge that number?</li>
     </ol>
 </div>
 </section>
