@@ -30,6 +30,7 @@ _site/
 # Decoding Genomes ebook and any text extracted from it - copyrighted, do not commit
 textbook/*.pdf
 textbook/chapters/
+Decoding_Genomes*.pdf
 
 # third-party teaching materials (not ours to publish)
 matthew_fullmer/
