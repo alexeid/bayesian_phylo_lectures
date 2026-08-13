@@ -17,7 +17,17 @@ lecture_num: 12
             <div style="font-size:0.5em;margin-top:0.2em;opacity:0.7;text-align:center">Living diversity of the major land-plant lineages. Harmon (2019), <i>PCM</i>, Fig. 10.1 (CC-BY 4.0).</div>
         </div>
         <div style="flex:0.85;font-size:0.84em">
-            <p style="margin:0 0 0.5em 0">About 300,000 flowering-plant species share the planet with a few hundred horsetails. Comparable imbalance appears across the tree of life.</p>
+            <div style="display:flex;gap:0.6em;margin:0 0 0.4em 0">
+                <div style="flex:1">
+                    <img data-src="figures/angiosperm_magnolia.jpg" style="width:100%;height:150px;object-fit:cover;border-radius:6px">
+                    <div style="font-size:0.52em;opacity:0.75;text-align:center;margin-top:0.15em">Angiosperm: <i>Magnolia sieboldii</i>. Ned Friedman, CC BY-SA 4.0.</div>
+                </div>
+                <div style="flex:1">
+                    <img data-src="figures/horsetail_equisetum.jpg" style="width:100%;height:150px;object-fit:cover;border-radius:6px">
+                    <div style="font-size:0.52em;opacity:0.75;text-align:center;margin-top:0.15em">Horsetail: <i>Equisetum telmateia</i>. R. &amp; N. Crawford, CC BY-SA 2.0.</div>
+                </div>
+            </div>
+            <p style="margin:0 0 0.5em 0">About 300,000 flowering-plant species share the planet with roughly 15 living horsetails, the whole of the family Equisetaceae. Comparable imbalance appears across the tree of life.</p>
             <p style="margin:0.4em 0">Two processes set the balance: the rate at which lineages <b>split</b> (speciation) and the rate at which they <b>die out</b> (extinction).</p>
             <p style="margin:0.4em 0;font-weight:600;color:#1d4ed8">This lecture builds the model that links those rates to the shape of a phylogeny, and asks how much of the history we can read back out.</p>
         </div>
@@ -68,15 +78,13 @@ lecture_num: 12
 
 <section>
     <h3>Extinction is hidden: the reconstructed tree</h3>
-    <div style="display:flex;gap:1.3em;width:96%;margin:0.2em auto;align-items:center">
-        <div style="flex:0.95">
-            <img data-src="../lecture-birth-death/bds_tree.png" style="width:100%;background:#fff;border-radius:6px;padding:0.3em">
-        </div>
-        <div style="flex:1.05;font-size:0.82em">
-            <p style="margin:0 0 0.4em 0">A lineage that goes extinct leaves no living descendants, so it is absent from a tree built only from species alive today.</p>
-            <p style="margin:0.4em 0">What we estimate is the <b>reconstructed tree</b>: the full birth-death tree with every extinct branch pruned away. This is the exact macroevolutionary parallel of the coalescent, where we only see the survivors of a population.</p>
-            <p style="margin:0.4em 0;font-weight:600;color:#c2410c">The signal of extinction is therefore indirect. It must be read from the spacing of the branching events that remain.</p>
-        </div>
+    <div id="bd-tree-sim" style="width:920px;margin:0 auto">
+        <img data-src="figures/full_vs_reconstructed.svg" style="width:100%;background:#fff;border-radius:6px;padding:0.3em 0.4em">
+    </div>
+    <div style="display:flex;gap:1.1em;width:96%;margin:0.3em auto 0;font-size:0.68em;text-align:left">
+        <div style="flex:1">A birth-death tree simulated in front of you, growing left to right. Grey lineages leave no living descendant.</div>
+        <div style="flex:1.1">The blue trace back from the present is the <b>reconstructed tree</b>. This is the exact macroevolutionary parallel of the coalescent, where we only see the survivors of a population.</div>
+        <div style="flex:1;font-weight:600;color:#c2410c">The signal of extinction is therefore indirect. It must be read from the spacing of the branching events that remain.</div>
     </div>
 </section>
 
@@ -138,6 +146,31 @@ lecture_num: 12
 </section>
 
 <section>
+    <h3>A worked example: dating the penguins</h3>
+    <p style="font-size:0.68em;width:94%;margin:0 auto 0.2em;text-align:center;opacity:0.9">19 living and 36 fossil species, with molecular data, morphological characters and fossil ages analysed jointly under the FBD model. Most fossil penguins sit on the stem, outside the crown group.</p>
+    <img data-src="figures/penguin_fbd_tree.png" style="max-height:470px;width:auto;background:#fff;border-radius:6px;padding:0.3em">
+    <div style="font-size:0.47em;margin-top:0.15em;opacity:0.75;width:92%;margin-left:auto;margin-right:auto">Maximum sampled-ancestor clade credibility tree. Numbers are clade posterior probabilities; filled circles are fossils inferred to be <b>sampled ancestors</b> rather than side branches. <i>Waimanu manneringi</i>, at the far left near 60 Ma, is from Waipara in North Canterbury; <i>Kairuku</i> is from Otago. Gavryushkina, Heath, Ksepka, Stadler, Welch and Drummond (2017), <i>Syst. Biol.</i> 66:57-73, Fig. 3 (CC BY-NC 4.0).</div>
+</section>
+
+<section>
+    <h3>What the stem fossils contribute</h3>
+    <div style="display:flex;gap:1.2em;width:96%;margin:0.2em auto;align-items:center">
+        <div style="flex:1.05">
+            <img data-src="figures/penguin_crown_tree.png" style="width:100%;background:#fff;border-radius:6px;padding:0.3em">
+            <div style="font-size:0.47em;margin-top:0.15em;opacity:0.75;text-align:center">The living penguins, with 95% HPD intervals on divergence times. Same study, Fig. 5.</div>
+        </div>
+        <div style="flex:0.95;font-size:0.76em">
+            <ul class="spaced" style="margin:0 0 0.4em 1em">
+                <li>The crown radiation is dated at <b>12.7 Ma</b> (95% HPD 9.9 to 15.7), younger than earlier estimates of 20 to 50 Ma, with most splits between living species inside the last 2 Myr.</li>
+                <li>Rerun with <b>crown fossils only</b>, the same estimate moves to 22.8 Ma (14.2 to 33.6). The stem fossils both shift the age and halve the interval.</li>
+                <li>Some fossils are inferred as <b>direct ancestors</b>. A birth-death model that forbids them returns older ages and a net diversification rate more than twice as high (0.092 against 0.039).</li>
+            </ul>
+            <p style="margin:0.3em 0 0 0;padding:0.4em 0.6em;background:#fff7ed;border-radius:6px">Estimated turnover $\varepsilon=\mu/\lambda\approx0.88$: over penguin history, extinction has run at nearly the rate of speciation. The 19 species alive today are a thin slice of the group.</p>
+        </div>
+    </div>
+</section>
+
+<section>
     <h3>Putting the two lectures together</h3>
     <p style="font-size:0.8em;width:92%;margin:0.2em auto 0.5em;text-align:center;opacity:0.9">The birth-death process is the prior on the species tree. The multispecies coalescent and the substitution model then build the data on top of it. One nested generative story runs from speciation to sequence.</p>
     <div style="display:flex;align-items:center;justify-content:center;gap:0.6em;width:96%;margin:0.3em auto;font-size:0.78em">
@@ -165,7 +198,7 @@ lecture_num: 12
         <li>A <b>birth-death process</b> models a species tree as lineages that speciate at rate $\lambda$ and go extinct at rate $\mu$; the Yule process is the special case with no extinction.</li>
         <li>We observe only the <b>reconstructed tree</b> of survivors, so extinction is inferred indirectly, chiefly from the <b>pull of the present</b> in lineage-through-time plots.</li>
         <li>The net diversification rate is recovered well; separating $\lambda$ and $\mu$ from living species alone is only <b>weakly identifiable</b>, so estimates lean on fossils or an explicit, biologically reasonable prior.</li>
-        <li><b>Fossils</b>, through the fossilised birth-death process, supply that evidence and underpin total-evidence dating.</li>
+        <li><b>Fossils</b>, through the fossilised birth-death process, supply that evidence and underpin total-evidence dating; in penguins, the stem fossils move the crown age from 22.8 Ma to 12.7 Ma and sharpen it.</li>
         <li>The birth-death model is the <b>species-tree prior</b> beneath last lecture's multispecies coalescent, completing one generative model from speciation to sequence.</li>
     </ul>
 </section>
@@ -177,5 +210,6 @@ lecture_num: 12
         <li><a class="cite" href="http://dx.doi.org/10.1146/annurev.ecolsys.37.091305.110035">Nee, <i>Birth-death models in macroevolution</i>, Annu. Rev. Ecol. Evol. Syst. (2006)</a>.</li>
         <li><a class="cite" href="http://dx.doi.org/10.1038/s41586-020-2176-1">Louca and Pennell, <i>Extant timetrees are consistent with a myriad of diversification histories</i>, Nature (2020)</a>.</li>
         <li><a class="cite" href="http://dx.doi.org/10.1016/j.jtbi.2010.09.010">Stadler, <i>Sampling through time in birth-death trees</i>, J. Theor. Biol. (2010)</a>.</li>
+        <li><a class="cite" href="http://dx.doi.org/10.1093/sysbio/syw060">Gavryushkina, Heath, Ksepka, Stadler, Welch and Drummond, <i>Bayesian total-evidence dating reveals the recent crown radiation of penguins</i>, Syst. Biol. (2017)</a>. Source of the penguin figures; open access, CC BY-NC 4.0.</li>
     </ul>
 </section>
